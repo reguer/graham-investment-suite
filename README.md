@@ -4,6 +4,10 @@ Suite React/Vite para analisis financiero defensivo basado en Benjamin Graham. L
 
 No es asesoria financiera. Es una herramienta de analisis; verifica datos, moneda, magnitudes y ADR ratio antes de decidir.
 
+## App publica
+
+https://reguer.github.io/graham-investment-suite/
+
 ## Instalacion
 
 ```bash
