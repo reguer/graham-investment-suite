@@ -1,6 +1,9 @@
 import net from "node:net";
 import { describe, expect, it } from "vitest";
-import { findAvailablePort, parseArgs } from "../scripts/start-dashboard.js";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { clearPidFile, findAvailablePort, parseArgs, writePidFile } from "../scripts/start-dashboard.js";
 
 function listenOn(port, host = "127.0.0.1") {
   const server = net.createServer();
@@ -25,5 +28,14 @@ describe("start-dashboard", () => {
     } finally {
       server.close();
     }
+  });
+
+  it("writes and clears only the matching dashboard pid", () => {
+    const dir = mkdtempSync(join(tmpdir(), "graham-pid-"));
+    const pidPath = join(dir, "dashboard.pid");
+    writePidFile(pidPath, 12345);
+    expect(readFileSync(pidPath, "utf8").trim()).toBe("12345");
+    expect(clearPidFile(pidPath, 99999)).toBe(false);
+    expect(clearPidFile(pidPath, 12345)).toBe(true);
   });
 });

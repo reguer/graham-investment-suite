@@ -9,6 +9,7 @@
     "test": "node scripts/run-local-bin.js vitest run",
     "test:watch": "node scripts/run-local-bin.js vitest",
     "dev:safe": "node scripts/start-dashboard.js",
+    "dev:stop": "node scripts/stop-dashboard.js",
     "build:artifact": "node scripts/bundle-artifact.js",
     "weekly:screen": "node scripts/weekly-screen.js",
     "weekly:report": "node scripts/weekly-screen.js",

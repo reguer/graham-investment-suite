@@ -97,6 +97,13 @@ npm run dev:safe
 ```
 
 El script revisa 5173 y, si esta ocupado, usa el siguiente puerto disponible.
+Al iniciar, registra su PID en `.local_runtime/dashboard.pid`.
+
+Para detener solo el dashboard registrado por este proyecto:
+
+```powershell
+npm run dev:stop
+```
 
 ```powershell
 # Usar puerto alternativo para este proyecto

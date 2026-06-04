@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import net from "node:net";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -47,14 +48,27 @@ export async function findAvailablePort(basePort = 5173, host = "127.0.0.1", max
   throw new Error(`No hay puerto libre entre ${basePort} y ${basePort + maxAttempts - 1}`);
 }
 
+export function writePidFile(pidPath, pid) {
+  writeFileSync(pidPath, `${pid}\n`, "utf8");
+}
+
+export function clearPidFile(pidPath, pid) {
+  if (!existsSync(pidPath)) return false;
+  const storedPid = readFileSync(pidPath, "utf8").trim();
+  if (storedPid !== String(pid)) return false;
+  rmSync(pidPath, { force: true });
+  return true;
+}
+
 export async function startDashboard(argv = process.argv) {
   const args = parseArgs(argv);
   const runtime = initRuntime();
   const port = await findAvailablePort(args.basePort, args.host);
   const url = `http://${args.host}:${port}/`;
+  const pidPath = join(runtime.runtimeDir, "dashboard.pid");
 
   if (args.dryRun) {
-    return { port, url, runtimeDir: runtime.runtimeDir, dryRun: true };
+    return { port, url, runtimeDir: runtime.runtimeDir, pidPath, dryRun: true };
   }
 
   console.log(`Dashboard local: ${url}`);
@@ -65,12 +79,15 @@ export async function startDashboard(argv = process.argv) {
     stdio: "inherit",
     shell: false,
   });
+  writePidFile(pidPath, child.pid);
+  console.log(`PID registrado: ${pidPath}`);
 
   child.on("exit", (code) => {
+    clearPidFile(pidPath, child.pid);
     process.exitCode = code ?? 0;
   });
 
-  return { port, url, runtimeDir: runtime.runtimeDir, child };
+  return { port, url, runtimeDir: runtime.runtimeDir, pidPath, child };
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("start-dashboard.js");
