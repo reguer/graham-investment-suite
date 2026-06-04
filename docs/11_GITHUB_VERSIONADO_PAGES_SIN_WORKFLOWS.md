@@ -189,11 +189,11 @@ Propuesta de script `scripts/deploy-pages.js` que:
 6. Hace commit y push normal a `gh-pages` sin force push
 
 ```powershell
-# Uso propuesto
-node scripts/deploy-pages.js
+# Validar sin publicar
+node scripts/deploy-pages.js --dry-run
 
-# Con confirmación
-node scripts/deploy-pages.js --confirm
+# Publicar
+npm run deploy:pages
 ```
 
 ### Opción 2: GitHub Pages desde rama main/docs
