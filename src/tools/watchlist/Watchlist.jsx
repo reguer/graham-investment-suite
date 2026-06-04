@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Dot from "../../components/ui/Dot.jsx";
 import MetricCard from "../../components/ui/MetricCard.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
+import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { watchlist, watchlistMeta } from "./watchlist.js";
 
@@ -16,13 +17,38 @@ function colorFor(level) {
 export default function Watchlist() {
   const [view, setView] = useState("all");
   const [query, setQuery] = useState("");
+  const [favorites, setFavorites] = useState([]);
   const results = useMemo(() => screenWatchlist(watchlist), []);
   const summary = useMemo(() => summarizeScreen(results), [results]);
+  const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(WATCHLIST_FAVORITES_KEY);
+      setFavorites(normalizeFavorites(JSON.parse(stored || "[]")));
+    } catch {
+      setFavorites([]);
+    }
+  }, []);
+
+  function handleToggleFavorite(ticker) {
+    setFavorites((current) => {
+      const next = toggleFavorite(current, ticker);
+      try {
+        window.localStorage.setItem(WATCHLIST_FAVORITES_KEY, JSON.stringify(next));
+      } catch {
+        // Favoritos siguen funcionando en memoria si localStorage falla.
+      }
+      return next;
+    });
+  }
+
   const filteredResults = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return results.filter((result) => {
+    const matches = results.filter((result) => {
       const matchesView =
         view === "all" ||
+        (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
         (view === "requested" && result.priority === "requested") ||
         (view === "pending" && result.alertLevel === "pending") ||
@@ -34,7 +60,8 @@ export default function Watchlist() {
           .some((value) => String(value).toLowerCase().includes(normalizedQuery));
       return matchesView && matchesQuery;
     });
-  }, [query, results, view]);
+    return sortFavoritesFirst(matches, favorites);
+  }, [favoriteSet, favorites, query, results, view]);
 
   return (
     <section>
@@ -50,12 +77,14 @@ export default function Watchlist() {
         <MetricCard label="Cerca" value={String(summary.near.length)} color={AC.yellow} />
         <MetricCard label="Observacion" value={String(summary.watch.length)} color={AC.gray} />
         <MetricCard label="Pendientes" value={String(summary.pending.length)} color={AC.blue} />
+        <MetricCard label="Favoritos" value={String(favorites.length)} color={AC.yellow} />
         <MetricCard label="Universo" value={String(results.length)} color={AC.blue} />
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
         {[
           ["all", "Todo"],
+          ["favorites", "Favoritos"],
           ["analyzed", "Analizadas"],
           ["requested", "Lote solicitado"],
           ["pending", "Pendientes"],
@@ -99,6 +128,25 @@ export default function Watchlist() {
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={() => handleToggleFavorite(result.ticker)}
+                    title={favoriteSet.has(result.ticker.toUpperCase()) ? "Quitar de favoritos" : "Marcar como favorito"}
+                    aria-label={favoriteSet.has(result.ticker.toUpperCase()) ? `Quitar ${result.ticker} de favoritos` : `Marcar ${result.ticker} como favorito`}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 6,
+                      border: `1px solid ${favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.border}`,
+                      background: favoriteSet.has(result.ticker.toUpperCase()) ? "#3f3412" : "#111827",
+                      color: favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.muted,
+                      cursor: "pointer",
+                      fontSize: 17,
+                      lineHeight: "26px",
+                    }}
+                  >
+                    {favoriteSet.has(result.ticker.toUpperCase()) ? "★" : "☆"}
+                  </button>
                   <Dot color={colorFor(result.alertLevel)} />
                   <strong style={{ fontSize: 18 }}>{result.ticker}</strong>
                   <span style={{ color: SURFACE.muted }}>{result.companyName}</span>
