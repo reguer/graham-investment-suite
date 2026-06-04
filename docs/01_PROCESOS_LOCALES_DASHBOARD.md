@@ -27,6 +27,14 @@ No existe `server.host` ni `server.port` explícitos en `vite.config.js`. Vite u
 
 ## 2. Comando real para desarrollo local
 
+Inicializar runtime local una vez por equipo:
+
+```powershell
+npm run runtime:init
+```
+
+El comando crea `.local_runtime/logs`, `.local_runtime/locks`, `.local_runtime/pids` y `.local_runtime/device.json`. Si `device.json` ya existe, se conserva.
+
 ```powershell
 # Levantar con puerto default
 npm run dev
