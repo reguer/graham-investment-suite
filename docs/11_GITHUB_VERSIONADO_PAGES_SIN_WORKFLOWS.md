@@ -11,33 +11,36 @@
 | Repositorio | `github.com/reguer/graham-investment-suite` |
 | Rama principal | `main` |
 | `.github/workflows/` | Directorio existe, **completamente vacío** |
-| Rama `gh-pages` | **No detectada** localmente |
+| Rama `gh-pages` | **Verificada en remoto** |
 | GitHub Pages URL | `https://reguer.github.io/graham-investment-suite/` — activa |
-| Mecanismo de deploy | **NO VERIFICADO** |
+| Mecanismo de deploy | **Verificado: rama `gh-pages`, carpeta `/`** |
 
-### Hipótesis sobre el mecanismo de deploy actual
+### Mecanismo real verificado
 
-Dado que:
-1. No hay workflow en `.github/workflows/`
-2. No hay rama `gh-pages` detectada localmente
-3. La URL pública está activa
+Verificado con:
 
-Las posibilidades son:
-- **A**: Deploy manual previo con `npx gh-pages -d dist` desde otra máquina
-- **B**: GitHub Pages desde rama `main` carpeta `/docs` (configurado en Settings)
-- **C**: Deploy desde GitHub.com con Actions creado y eliminado posteriormente
-- **D**: El `dist/` fue pusheado manualmente a rama main en algún momento
-
-**Acción recomendada**: Verificar en GitHub.com → Settings → Pages para confirmar el método.
-
-### Por qué vite.config.js detecta `GITHUB_ACTIONS`
-
-```javascript
-// vite.config.js (línea real del proyecto)
-base: process.env.GITHUB_ACTIONS ? "/graham-investment-suite/" : "/",
+```powershell
+gh api repos/reguer/graham-investment-suite/pages
 ```
 
-Esto sugiere que en algún momento se planificó o se usó un GitHub Actions workflow para el deploy. La variable `GITHUB_ACTIONS` solo está presente cuando el build corre en el entorno de GitHub Actions.
+Resultado operativo:
+
+```text
+branch: gh-pages
+path: /
+status: built
+html_url: https://reguer.github.io/graham-investment-suite/
+```
+
+La publicacion actual se hace con build local, copia de `dist/` a un worktree temporal de `gh-pages`, commit y push a `origin gh-pages`.
+
+### Base path de Vite
+
+```javascript
+base: command === "build" ? "/graham-investment-suite/" : "/",
+```
+
+El build debe usar `/graham-investment-suite/` porque GitHub Pages sirve este repo en una subruta. Si el build queda con `/assets/...`, el dashboard carga HTML pero queda en blanco porque el JavaScript apunta a `https://reguer.github.io/assets/...`.
 
 ---
 
@@ -74,17 +77,17 @@ Esto sugiere que en algún momento se planificó o se usó un GitHub Actions wor
 | `dist-temp/` | Build temporal | ✅ Ya excluido |
 | `.env` | Secretos y claves | ✅ Ya excluido |
 | `.env.*` | Todos los .env | ✅ Ya excluido |
-| `.env.local` | Config local por equipo | **Debe añadirse** |
+| `.env.local` | Config local por equipo | ✅ Ya excluido por `.env.*` |
 | `dev-server.log` | Log temporal | ✅ Ya excluido |
 | `dev-server.err.log` | Log de errores temporal | ✅ Ya excluido |
-| `.local_runtime/` | Runtime local (PIDs, locks, logs) | **Debe añadirse** |
-| `data/*.db` | Base de datos local | **Debe añadirse** |
-| `data/cache/` | Caché de datos | **Debe añadirse** |
-| `data/export/` | Exportaciones | **Debe añadirse** |
-| `*.pid` | PIDs de procesos | **Debe añadirse** |
-| `*.lock` | Lockfiles de procesos | **Debe añadirse** |
+| `.local_runtime/` | Runtime local (PIDs, locks, logs) | ✅ Ya excluido |
+| `data/*.db` | Base de datos local | ✅ Ya excluido |
+| `data/cache/` | Caché de datos | ✅ Ya excluido |
+| `data/export/` | Exportaciones | ✅ Ya excluido |
+| `*.pid` | PIDs de procesos | ✅ Ya excluido |
+| `*.lock` | Lockfiles de procesos | ✅ Ya excluido con excepciones para lockfiles de paquetes |
 
-### `.gitignore` actualizado propuesto
+### `.gitignore` actualizado
 
 Añadir a las líneas existentes:
 
@@ -96,6 +99,9 @@ Añadir a las líneas existentes:
 # Procesos
 *.pid
 *.lock
+!yarn.lock
+!package-lock.json
+!pnpm-lock.yaml
 
 # Base de datos local
 data/*.db
@@ -177,9 +183,10 @@ jobs:
 Propuesta de script `scripts/deploy-pages.js` que:
 1. Verifica que el equipo tiene `device_role = 'principal'`
 2. Verifica que el repo está limpio
-3. Ejecuta `npm run build` con `GITHUB_ACTIONS=true`
+3. Ejecuta `npm run build`
 4. Valida que `dist/` no contiene secretos
-5. Ejecuta `npx gh-pages -d dist` para subir a rama gh-pages
+5. Copia `dist/` a un worktree temporal de `gh-pages`
+6. Hace commit y push normal a `gh-pages` sin force push
 
 ```powershell
 # Uso propuesto
