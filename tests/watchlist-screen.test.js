@@ -40,4 +40,20 @@ describe("watchlist screening", () => {
     });
     expect(results[0].ticker).toBe("TEST");
   });
+
+  it("keeps pending companies visible without inventing Graham ratios", () => {
+    const result = evaluateCandidate({
+      ticker: "PENDING",
+      yahooSymbol: "PENDING.MX",
+      companyName: "Pending Co",
+      sector: "Technology",
+      analysisStatus: "pending_fundamentals",
+      watchReason: "Missing fundamentals",
+    }, { price: 25, source: "test" });
+
+    expect(result.alertLevel).toBe("pending");
+    expect(result.ratios).toBeNull();
+    expect(result.livePrice).toBe(25);
+    expect(result.classification.id).toBe("pending_fundamentals");
+  });
 });

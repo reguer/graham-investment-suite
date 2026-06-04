@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { watchlist } from "../src/tools/watchlist/watchlist.js";
-import { fetchStooqQuotes } from "../src/tools/watchlist/priceSources.js";
+import { watchlist, watchlistMeta } from "../src/tools/watchlist/watchlist.js";
+import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.js";
 import { fmt, pct } from "../src/lib/formatters.js";
 
@@ -11,13 +11,13 @@ function todayIso() {
 
 function renderRows(results) {
   return results
-    .map((item) => `| ${item.ticker} | ${item.companyName} | ${fmt(item.livePrice)} | ${fmt(item.ratios.maxDefensivePrice)} | ${fmt(item.ratios.pe)} | ${fmt(item.ratios.pb)} | ${fmt(item.ratios.pePb)} | ${fmt(item.ratios.debtRatio)} | ${fmt(item.ratios.currentRatio)} | ${pct(item.ratios.marginOfSafety)} | ${item.alertLabel} |`)
+    .map((item) => `| ${item.ticker} | ${item.yahooSymbol || item.ticker} | ${item.companyName} | ${fmt(item.livePrice)} | ${fmt(item.ratios?.maxDefensivePrice)} | ${fmt(item.ratios?.pe)} | ${fmt(item.ratios?.pb)} | ${fmt(item.ratios?.pePb)} | ${fmt(item.ratios?.debtRatio)} | ${fmt(item.ratios?.currentRatio)} | ${pct(item.ratios?.marginOfSafety)} | ${item.alertLabel} |`)
     .join("\n");
 }
 
 function renderSection(title, results, emptyText) {
   if (!results.length) return `## ${title}\n\n${emptyText}\n`;
-  return `## ${title}\n\n| Ticker | Empresa | Precio | Max defensivo | P/E | P/B | P/E x P/B | Debt | Current | MoS | Estado |\n|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|\n${renderRows(results)}\n`;
+  return `## ${title}\n\n| Ticker | Yahoo | Empresa | Precio | Max defensivo | P/E | P/B | P/E x P/B | Debt | Current | MoS | Estado |\n|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|\n${renderRows(results)}\n`;
 }
 
 function renderReport(results, quoteStatus) {
@@ -36,6 +36,9 @@ No es asesoria financiera. Este reporte usa el snapshot financiero de la watchli
 - Aprobadas: ${summary.approved.length}
 - Cerca de aprobar: ${summary.near.length}
 - En observacion: ${summary.watch.length}
+- Pendientes de primer analisis: ${summary.pending.length}
+- Analizadas: ${watchlistMeta.analyzedCount}
+- BMV/SIC validadas en catalogo: ${watchlistMeta.bmvSicCount}
 - Universo: ${results.length}
 
 ${renderSection("Aprobadas Graham", summary.approved, "No hay companias aprobadas esta semana.")}
@@ -43,6 +46,8 @@ ${renderSection("Aprobadas Graham", summary.approved, "No hay companias aprobada
 ${renderSection("Cerca de Aprobar", summary.near, "No hay companias cerca del rango esta semana.")}
 
 ${renderSection("En Observacion", summary.watch, "No hay companias en observacion.")}
+
+${renderSection("Pendientes de Primer Analisis", summary.pending, "No hay companias pendientes.")}
 
 ## Notas
 
@@ -55,9 +60,9 @@ async function main() {
   let quoteStatus = { ok: false, error: "sin intento de precios", source: "snapshot" };
 
   try {
-    quotes = await fetchStooqQuotes(watchlist.map((item) => item.ticker));
-    quoteStatus = { ok: Object.keys(quotes).length > 0, error: "", source: "Stooq" };
-    if (!quoteStatus.ok) quoteStatus.error = "Stooq no devolvio precios validos";
+    quotes = await fetchMarketQuotes(watchlist);
+    quoteStatus = { ok: Object.keys(quotes).length > 0, error: "", source: "Yahoo Finance Chart + Stooq fallback" };
+    if (!quoteStatus.ok) quoteStatus.error = "Yahoo/Stooq no devolvieron precios validos";
   } catch (error) {
     quoteStatus = { ok: false, error: error.message, source: "snapshot" };
   }

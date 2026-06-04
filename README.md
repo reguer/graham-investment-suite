@@ -83,6 +83,7 @@ npm run test:watch     # Modo watch de tests
 npm run build          # Build para produccion / GitHub Pages
 npm run build:artifact # Validar y regenerar artifacts standalone
 npm run weekly:screen  # Screening semanal + reporte Markdown
+npm run universe:refresh # Precios Yahoo para el universo masivo
 ```
 
 ---
@@ -114,6 +115,8 @@ La regla final documentada y probada es: si `isADR = true`, `epsAdj`, `bvps`, `t
 ## Alertas semanales y horario operativo
 
 `npm run weekly:screen` actualiza precios desde Stooq cuando esta disponible, recalcula la watchlist y genera `reports/weekly/YYYY-MM-DD.md`.
+
+El universo inicial incluye el lote solicitado por el usuario y 200 acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Pendiente de primer analisis`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
 
 **Horario operativo requerido: cierre de vela diaria a las 18:00 hrs CDMX.**
 
@@ -224,6 +227,7 @@ Las 8 estrategias propuestas incluyen: Graham defensivo puro, precio objetivo, m
 | `docs/12_BACKTESTING_ESTRATEGIAS.md` | Plan de backtesting |
 | `docs/13_ROADMAP_NOTION_READY.md` | Roadmap 20 Epics / 47 Stories |
 | `docs/14_PROMPTS_OPERATIVOS.md` | 18 prompts para Claude Code |
+| `docs/15_ESTRATEGIA_UNIVERSO_MASIVO_YAHOO.md` | Estrategia de ingesta masiva Yahoo/BMV |
 | `CHANGELOG.md` | Historial de cambios |
 
 ---

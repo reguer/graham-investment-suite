@@ -10,7 +10,9 @@
     "test:watch": "node scripts/run-local-bin.js vitest",
     "build:artifact": "node scripts/bundle-artifact.js",
     "weekly:screen": "node scripts/weekly-screen.js",
-    "weekly:report": "node scripts/weekly-screen.js"
+    "weekly:report": "node scripts/weekly-screen.js",
+    "universe:refresh": "node scripts/refresh-universe.js",
+    "universe:refresh:requested": "node scripts/refresh-universe.js --requested-only"
   },
   "dependencies": {
     "react": "^18.3.0",

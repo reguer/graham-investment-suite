@@ -13,7 +13,10 @@ dev-server.log
 dev-server.err.log
 .local_runtime/
 data/*.db
+data/*.db-shm
+data/*.db-wal
 data/cache/
+data/export/
 *.pid
 *.lock
 !yarn.lock

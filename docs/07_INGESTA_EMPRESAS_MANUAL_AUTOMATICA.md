@@ -8,14 +8,16 @@
 
 | Aspecto | Estado |
 |---------|--------|
-| Catálogo de empresas | 10 hardcodeadas en `src/tools/graham-analyzer/candidates.js` |
-| Proceso de ingesta | No existe — solo edición manual del archivo |
+| Catálogo de empresas | 10 analizadas en `candidates.js` + universo masivo en `src/tools/watchlist/universe.js` |
+| Proceso de ingesta | Primera fase implementada: catalogo versionado + refresco de precios Yahoo |
 | Script de adición | No existe |
 | BD de empresas | No existe |
 | Importación CSV | No existe |
-| Actualización automática | No existe para fundamentales; parcial para precios (Stooq) |
+| Actualización automática | Precios por Yahoo Chart + Stooq fallback; fundamentales aun pendientes |
 
-Para agregar una empresa actualmente: editar `candidates.js` directamente (requiere conocer el código).
+Para agregar una empresa con analisis completo actualmente: editar `candidates.js` directamente (requiere conocer el código). Para agregarla como pendiente de primer analisis: agregarla al universo en `src/tools/watchlist/universe.js`.
+
+La estrategia actualizada esta documentada en `docs/15_ESTRATEGIA_UNIVERSO_MASIVO_YAHOO.md`.
 
 ---
 

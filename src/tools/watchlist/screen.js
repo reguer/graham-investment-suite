@@ -2,6 +2,8 @@ import { classify } from "../graham-analyzer/classify.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 export function deriveSnapshot(candidate, price = candidate.price) {
+  if (!hasFinancialSnapshot(candidate)) return null;
+
   const epsAdj = candidate.price / candidate.pe;
   const bvps = candidate.price / candidate.pb;
   const pe = price / epsAdj;
@@ -39,9 +41,32 @@ export function deriveSnapshot(candidate, price = candidate.price) {
   return ratios;
 }
 
+export function hasFinancialSnapshot(candidate) {
+  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every((value) => Number.isFinite(Number(value)));
+}
+
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
   const price = quote?.price ?? candidate.price;
   const ratios = deriveSnapshot(candidate, price);
+  if (!ratios) {
+    return {
+      ...candidate,
+      quote,
+      livePrice: quote?.price ?? null,
+      ratios: null,
+      classification: {
+        id: "pending_fundamentals",
+        label: "PENDIENTE DE ANALISIS",
+        color: "#94a3b8",
+        reason: "Faltan fundamentales para calcular ratios Graham.",
+      },
+      alertLevel: "pending",
+      alertLabel: quote?.price ? "Precio disponible, faltan fundamentales" : "Pendiente de primer analisis",
+      closeToDefensive: false,
+      near: false,
+    };
+  }
+
   const classification = classify(ratios);
   const near =
     ratios.pePb <= policy.nearPePb &&
@@ -80,8 +105,9 @@ export function screenWatchlist(items, quotesByTicker = {}, policy = DEFAULT_ALE
   return items
     .map((item) => evaluateCandidate(item, quotesByTicker[item.ticker] ?? null, policy))
     .sort((a, b) => {
-      const rank = { approved: 0, near: 1, watch: 2 };
+      const rank = { approved: 0, near: 1, watch: 2, pending: 3 };
       if (rank[a.alertLevel] !== rank[b.alertLevel]) return rank[a.alertLevel] - rank[b.alertLevel];
+      if (!a.ratios || !b.ratios) return a.ticker.localeCompare(b.ticker);
       return a.ratios.pePb - b.ratios.pePb;
     });
 }
@@ -91,5 +117,6 @@ export function summarizeScreen(results) {
     approved: results.filter((result) => result.alertLevel === "approved"),
     near: results.filter((result) => result.alertLevel === "near"),
     watch: results.filter((result) => result.alertLevel === "watch"),
+    pending: results.filter((result) => result.alertLevel === "pending"),
   };
 }
