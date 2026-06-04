@@ -39,6 +39,9 @@ El comando crea `.local_runtime/logs`, `.local_runtime/locks`, `.local_runtime/p
 # Levantar con puerto default
 npm run dev
 
+# Levantar con deteccion automatica de puerto libre
+npm run dev:safe
+
 # Levantar con puerto específico si 5173 está ocupado
 npm run dev -- --port 5174
 
@@ -86,6 +89,14 @@ Get-Process -Id $pid
 ```
 
 **Acción correcta**: Cambiar el puerto del dashboard de este proyecto, **NO matar el proceso ajeno**.
+
+Desde v1.1, usar:
+
+```powershell
+npm run dev:safe
+```
+
+El script revisa 5173 y, si esta ocupado, usa el siguiente puerto disponible.
 
 ```powershell
 # Usar puerto alternativo para este proyecto
