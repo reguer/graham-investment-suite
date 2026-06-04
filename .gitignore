@@ -11,3 +11,11 @@ dist-temp/
 npm-debug.log*
 dev-server.log
 dev-server.err.log
+.local_runtime/
+data/*.db
+data/cache/
+*.pid
+*.lock
+!yarn.lock
+!package-lock.json
+!pnpm-lock.yaml
