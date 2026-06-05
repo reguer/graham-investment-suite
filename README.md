@@ -84,7 +84,12 @@ npm run build          # Build para produccion / GitHub Pages
 npm run build:artifact # Validar y regenerar artifacts standalone
 npm run weekly:screen  # Screening semanal + reporte Markdown
 npm run universe:refresh # Precios Yahoo para el universo masivo
+npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 ```
+
+## Datos local + GitHub
+
+PostgreSQL local se usa para datos operativos cuando `DATABASE_URL` esta configurado en `.env.local`. GitHub guarda solo datos publicos no sensibles como `data/public/companies.json` y reportes. Ver `docs/16_DATOS_POSTGRES_GITHUB.md`.
 
 ---
 

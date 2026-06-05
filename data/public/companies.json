@@ -1,0 +1,202 @@
+[
+  {
+    "ticker": "CTSH",
+    "yahooSymbol": "CTSH",
+    "companyName": "Cognizant Technology Solutions",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "IT Services",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "No es constructora: servicios IT con liquidez real, deuda baja y FCF positivo. P/E x P/B pasa, pero esta mas cerca del limite 22.5."
+  },
+  {
+    "ticker": "GRBK",
+    "yahooSymbol": "GRBK",
+    "companyName": "Green Brick Partners",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Deuda muy baja y current ratio amplio. Quick ratio bajo por inventario; aun asi pasa la regla Graham por margen razonable."
+  },
+  {
+    "ticker": "INGR",
+    "yahooSymbol": "INGR",
+    "companyName": "Ingredion",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Packaged Foods",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Defensiva de alimentos empaquetados, menos ciclica que homebuilders. Deuda bajo 1, liquidez suficiente y valuacion Graham razonable."
+  },
+  {
+    "ticker": "KBH",
+    "yahooSymbol": "KBH",
+    "companyName": "KB Home",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "La mas barata del grupo por P/E x P/B, pero quick ratio muy bajo por inventario. Aprobada por Graham defensivo, con riesgo operativo de ciclo e inventario."
+  },
+  {
+    "ticker": "LEN",
+    "yahooSymbol": "LEN",
+    "companyName": "Lennar",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Perfil Graham limpio: P/B cercano a 1, deuda moderada y liquidez muy amplia. Riesgo principal: concentracion ciclica en vivienda."
+  },
+  {
+    "ticker": "MHO",
+    "yahooSymbol": "MHO",
+    "companyName": "M/I Homes",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Pasa con mucho margen la regla 22.5 y mantiene liquidez alta. Empresa mas pequena: revisar volumen, geografias y sensibilidad al inventario."
+  },
+  {
+    "ticker": "MTH",
+    "yahooSymbol": "MTH",
+    "companyName": "Meritage Homes",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Cotiza bajo book value y conserva liquidez fuerte. Buen candidato Graham, aunque dependiente del ciclo de tasas/vivienda."
+  },
+  {
+    "ticker": "PHM",
+    "yahooSymbol": "PHM",
+    "companyName": "PulteGroup",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Constructor grande con valuacion dentro del limite 22.5 y liquidez alta; quick ratio bajo por inventario de vivienda, normal en el sector pero relevante para Graham."
+  },
+  {
+    "ticker": "TMHC",
+    "yahooSymbol": "TMHC",
+    "companyName": "Taylor Morrison Home",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Muy barata por P/E x P/B y con liquidez robusta. Mejor balance de liquidez que varias constructoras por quick ratio sobre 1."
+  },
+  {
+    "ticker": "TOL",
+    "yahooSymbol": "TOL",
+    "companyName": "Toll Brothers",
+    "exchange": "",
+    "market": "US",
+    "country": "USA",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Residential Construction",
+    "industry": "",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
+    "analysisStatus": "analyzed",
+    "validationStatus": "manual_snapshot",
+    "tags": [
+      "graham-approved"
+    ],
+    "notes": "Valuacion atractiva y FCF positivo; quick ratio bajo porque el balance depende de inventarios/lotes. Requiere cuidado con ciclo inmobiliario."
+  }
+]

@@ -16,7 +16,12 @@
     "weekly:report": "node scripts/weekly-screen.js",
     "universe:refresh": "node scripts/refresh-universe.js",
     "universe:refresh:requested": "node scripts/refresh-universe.js --requested-only",
-    "runtime:init": "node scripts/init-runtime.js"
+    "runtime:init": "node scripts/init-runtime.js",
+    "db:setup": "node scripts/db-setup.js",
+    "db:add-company": "node scripts/add-company.js",
+    "db:import": "node scripts/import-companies.js",
+    "db:migrate-candidates": "node scripts/migrate-candidates.js",
+    "fundamentals:update": "node scripts/update-fundamentals.js"
   },
   "dependencies": {
     "react": "^18.3.0",
