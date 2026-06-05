@@ -23,6 +23,14 @@ El reporte separa:
 - Aprobadas Graham
 - Cerca de aprobar
 - En observacion
+- Pendientes de primer analisis
+
+Los lunes y viernes agrega una seccion `Resumen Semanal`:
+
+- Lunes: foco en arranque de semana y captura manual prioritaria.
+- Viernes: foco en cierre semanal, aprobadas vigentes y preparacion del siguiente lote.
+
+De martes a jueves el reporte queda como `Revision ligera` para no inflar ruido operativo.
 
 ## Criterios
 
