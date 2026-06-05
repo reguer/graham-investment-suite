@@ -19,11 +19,13 @@ const moduleRoots = [
   join(process.cwd(), "node_modules"),
   join(process.cwd(), ".yarn_node_modules"),
   join(process.cwd(), ".local_node_modules"),
+  "C:\\npm-cache\\graham-repair\\node_modules",
 ];
-const candidates = moduleRoots.flatMap((root) => [
-  ...(directBins[binName] ? [join(root, ...directBins[binName])] : []),
-  join(root, ".bin", `${binName}${extension}`),
-]);
+const directCandidates = directBins[binName]
+  ? moduleRoots.map((root) => join(root, ...directBins[binName]))
+  : [];
+const shimCandidates = moduleRoots.map((root) => join(root, ".bin", `${binName}${extension}`));
+const candidates = [...directCandidates, ...shimCandidates];
 
 const binary = candidates.find((candidate) => existsSync(candidate));
 
@@ -38,6 +40,8 @@ const env = {
     NODE_PATH: [
       join(process.cwd(), "node_modules"),
       join(process.cwd(), ".yarn_node_modules"),
+      join(process.cwd(), ".local_node_modules"),
+      "C:\\npm-cache\\graham-repair\\node_modules",
       process.env.NODE_PATH,
     ].filter(Boolean).join(process.platform === "win32" ? ";" : ":"),
   };
@@ -49,7 +53,15 @@ if (!env.ESBUILD_BINARY_PATH && esbuildFallback && existsSync(esbuildFallback)) 
 }
 
 const isJavaScriptBin = binary.endsWith(".js") || binary.endsWith(".mjs") || binary.endsWith(".cjs");
-const child = spawn(isJavaScriptBin ? process.execPath : binary, isJavaScriptBin ? [binary, ...args] : args, {
+const isCmdShim = process.platform === "win32" && binary.endsWith(".cmd");
+const command = isJavaScriptBin ? process.execPath : isCmdShim ? "cmd.exe" : binary;
+const commandArgs = isJavaScriptBin
+  ? [binary, ...args]
+  : isCmdShim
+    ? ["/d", "/s", "/c", `"${binary}" ${args.map((arg) => `"${arg}"`).join(" ")}`]
+    : args;
+
+const child = spawn(command, commandArgs, {
   stdio: "inherit",
   env,
   shell: false,
