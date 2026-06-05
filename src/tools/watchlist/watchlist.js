@@ -1,5 +1,6 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
+import publicCompaniesJson from "../../../data/public/companies.json";
 
 export const DEFAULT_ALERT_POLICY = {
   nearPePb: 28,
@@ -21,7 +22,35 @@ export const analyzedWatchlist = grahamCandidates.map((candidate) => ({
 
 const analyzedByTicker = new Map(analyzedWatchlist.map((candidate) => [candidate.ticker.toUpperCase(), candidate]));
 
-const universeWatchlist = tickerUniverse.map((item) => {
+function normalizeExportedCompany(company) {
+  return {
+    ...company,
+    yahooSymbol: company.yahooSymbol || company.yahoo_symbol || company.ticker,
+    companyName: company.companyName || company.company_name || company.name || company.ticker,
+    quoteType: company.quoteType || company.quote_type || "EQUITY",
+    analysisStatus: company.analysisStatus || company.analysis_status || "pending_fundamentals",
+    validationStatus: company.validationStatus || company.validation_status || "needs_manual_review",
+    sourceDate: company.sourceDate || company.source_date,
+    notes: company.notes || company.note || "",
+  };
+}
+
+export const publicCompanies = publicCompaniesJson.map(normalizeExportedCompany);
+
+function mergeByTicker(sources) {
+  const byTicker = new Map();
+  for (const source of sources) {
+    for (const item of source) {
+      const key = item.ticker.toUpperCase();
+      byTicker.set(key, { ...(byTicker.get(key) || {}), ...item });
+    }
+  }
+  return [...byTicker.values()];
+}
+
+const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
+
+const universeWatchlist = persistedUniverse.map((item) => {
   const analyzed = analyzedByTicker.get(item.ticker.toUpperCase());
   if (analyzed) {
     return {
@@ -41,13 +70,15 @@ const universeWatchlist = tickerUniverse.map((item) => {
   };
 });
 
-const universeTickerKeys = new Set(tickerUniverse.map((item) => item.ticker.toUpperCase()));
+const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
 const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
 
 export const watchlist = [...universeWatchlist, ...analyzedOutsideUniverse];
 
 export const watchlistMeta = {
   ...universeMeta,
+  publicExportCount: publicCompanies.length,
   analyzedCount: analyzedWatchlist.length,
   pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
+  totalCount: watchlist.length,
 };

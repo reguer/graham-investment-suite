@@ -68,7 +68,7 @@ export default function Watchlist() {
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
-          Radar Graham con {watchlistMeta.analyzedCount} analizadas y {watchlistMeta.pendingCount} pendientes de primer analisis. Ejecuta <code>npm run universe:refresh</code> para actualizar precios Yahoo.
+          Radar Graham con {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.pendingCount} pendientes y {watchlistMeta.publicExportCount} registros persistidos en export publico. Ejecuta <code>npm run universe:refresh</code> para actualizar precios Yahoo.
         </p>
       </div>
 
