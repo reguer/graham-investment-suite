@@ -65,6 +65,35 @@ Para previsualizar el build localmente (no existe script en package.json, pero f
 npx vite preview --port 4173
 ```
 
+## 3.1 Captura desde el dashboard local
+
+Desde v1.2, el dashboard local expone endpoints privados de Vite solo durante desarrollo local:
+
+```text
+GET  /api/local/capture-status
+POST /api/local/company-capture
+```
+
+La pestana `Watchlist` usa esos endpoints para mostrar el boton `Capturar ahora`.
+
+La captura genera:
+
+```text
+reports/weekly/YYYY-MM-DD.md
+data/cache/company-capture-YYYY-MM-DD.json
+```
+
+Si `.env.local` contiene:
+
+```bash
+ENABLE_DAILY_CAPTURE=true
+CAPTURE_LOCAL_TIME=18:00
+```
+
+el servidor local programa una captura automatica diaria a las 18:00 mientras `npm run dev:safe` este abierto.
+
+En GitHub Pages estos endpoints no existen porque el sitio es estatico; la captura operativa debe hacerse desde el dashboard local.
+
 ## 4. Puerto que intenta usar
 
 | Proceso | Puerto default | Configurable |

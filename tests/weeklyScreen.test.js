@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getReportCadence, renderReport, todayIso } from "../scripts/weekly-screen.js";
+import { buildCapturePayload, getReportCadence, renderReport, todayIso } from "../scripts/weekly-screen.js";
 
 const approvedResult = {
   ticker: "KBH",
@@ -61,5 +61,20 @@ describe("weekly-screen report cadence", () => {
 
   it("formats dates as ISO report filenames", () => {
     expect(todayIso(new Date(2026, 5, 5))).toBe("2026-06-05");
+  });
+
+  it("builds a structured capture payload for validation", () => {
+    const payload = buildCapturePayload([approvedResult, pendingResult], { ok: true, source: "test" }, {
+      date: new Date(2026, 5, 5),
+    });
+
+    expect(payload.reportDate).toBe("2026-06-05");
+    expect(payload.counts.total).toBe(2);
+    expect(payload.counts.approved).toBe(1);
+    expect(payload.companies[0]).toMatchObject({
+      ticker: "KBH",
+      livePrice: 52,
+      alertLevel: "approved",
+    });
   });
 });

@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { existsSync } from "node:fs";
+import { createLocalDashboardApiPlugin } from "./scripts/local-dashboard-api.js";
 
 const localRequire = createRequire(import.meta.url);
 const repairedPackagePath = "C:/npm-cache/graham-repair/package.json";
@@ -28,7 +29,10 @@ const react = loadDevDependency("@vitejs/plugin-react").default;
 
 export default defineConfig(({ command }) => ({
   base: command === "build" ? "/graham-investment-suite/" : "/",
-  plugins: [react()],
+  plugins: [
+    react(),
+    command === "serve" ? createLocalDashboardApiPlugin() : null,
+  ].filter(Boolean),
   resolve: {
     alias: [
       { find: /^react$/, replacement: resolveDependency("react") },

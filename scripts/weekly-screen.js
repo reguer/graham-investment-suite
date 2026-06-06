@@ -6,7 +6,10 @@ import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.
 import { fmt, pct } from "../src/lib/formatters.js";
 
 export function todayIso(date = new Date()) {
-  return date.toISOString().slice(0, 10);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 export function getReportCadence(date = new Date()) {
@@ -104,6 +107,40 @@ ${results.map((item) => `- **${item.ticker}**: ${item.watchReason}`).join("\n")}
 `;
 }
 
+export function buildCapturePayload(results, quoteStatus, { date = new Date() } = {}) {
+  const summary = summarizeScreen(results);
+  return {
+    generatedAt: date.toISOString(),
+    reportDate: todayIso(date),
+    quoteStatus,
+    counts: {
+      approved: summary.approved.length,
+      near: summary.near.length,
+      watch: summary.watch.length,
+      pending: summary.pending.length,
+      analyzed: watchlistMeta.analyzedCount,
+      publicExport: watchlistMeta.publicExportCount,
+      bmvSic: watchlistMeta.bmvSicCount,
+      total: results.length,
+    },
+    companies: results.map((item) => ({
+      ticker: item.ticker,
+      yahooSymbol: item.yahooSymbol || item.ticker,
+      companyName: item.companyName,
+      market: item.market || "",
+      sector: item.sector || "",
+      analysisStatus: item.analysisStatus || "",
+      alertLevel: item.alertLevel,
+      alertLabel: item.alertLabel,
+      livePrice: item.livePrice,
+      quote: item.quote || null,
+      ratios: item.ratios || null,
+      classification: item.classification || null,
+      watchReason: item.watchReason || "",
+    })),
+  };
+}
+
 async function main() {
   let quotes = {};
   let quoteStatus = { ok: false, error: "sin intento de precios", source: "snapshot" };
@@ -117,14 +154,21 @@ async function main() {
   }
 
   const results = screenWatchlist(watchlist, quotes);
-  const report = renderReport(results, quoteStatus);
+  const now = new Date();
+  const report = renderReport(results, quoteStatus, { date: now });
+  const capture = buildCapturePayload(results, quoteStatus, { date: now });
   const reportDir = join(process.cwd(), "reports", "weekly");
+  const cacheDir = join(process.cwd(), "data", "cache");
   mkdirSync(reportDir, { recursive: true });
-  const reportPath = join(reportDir, `${todayIso()}.md`);
+  mkdirSync(cacheDir, { recursive: true });
+  const reportPath = join(reportDir, `${todayIso(now)}.md`);
+  const capturePath = join(cacheDir, `company-capture-${todayIso(now)}.json`);
   writeFileSync(reportPath, report, "utf8");
+  writeFileSync(capturePath, JSON.stringify(capture, null, 2), "utf8");
 
   console.log(report);
   console.log(`\nReporte guardado: ${reportPath}`);
+  console.log(`Captura guardada: ${capturePath}`);
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("weekly-screen.js");

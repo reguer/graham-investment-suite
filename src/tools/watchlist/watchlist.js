@@ -1,6 +1,6 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
-import publicCompaniesJson from "../../../data/public/companies.json";
+import publicCompaniesJson from "../../../data/public/companies.json" with { type: "json" };
 
 export const DEFAULT_ALERT_POLICY = {
   nearPePb: 28,

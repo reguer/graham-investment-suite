@@ -18,6 +18,8 @@ export default function Watchlist() {
   const [view, setView] = useState("all");
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
+  const [captureStatus, setCaptureStatus] = useState({ localApi: false, captureInProgress: false });
+  const [captureMessage, setCaptureMessage] = useState("");
   const results = useMemo(() => screenWatchlist(watchlist), []);
   const summary = useMemo(() => summarizeScreen(results), [results]);
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
@@ -31,6 +33,21 @@ export default function Watchlist() {
     }
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/local/capture-status")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (!cancelled && payload?.localApi) setCaptureStatus(payload);
+      })
+      .catch(() => {
+        if (!cancelled) setCaptureStatus({ localApi: false, captureInProgress: false });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   function handleToggleFavorite(ticker) {
     setFavorites((current) => {
       const next = toggleFavorite(current, ticker);
@@ -41,6 +58,21 @@ export default function Watchlist() {
       }
       return next;
     });
+  }
+
+  async function handleCompanyCapture() {
+    setCaptureMessage("Captura en proceso...");
+    setCaptureStatus((current) => ({ ...current, captureInProgress: true }));
+    try {
+      const response = await fetch("/api/local/company-capture", { method: "POST" });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la captura.");
+      setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
+      setCaptureMessage(`Captura lista. Reporte: ${payload.reportPath || "generado"}`);
+    } catch (error) {
+      setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
+      setCaptureMessage(error.message);
+    }
   }
 
   const filteredResults = useMemo(() => {
@@ -68,8 +100,43 @@ export default function Watchlist() {
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
-          Radar Graham con {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.pendingCount} pendientes y {watchlistMeta.publicExportCount} registros persistidos en export publico. Ejecuta <code>npm run universe:refresh</code> para actualizar precios Yahoo.
+          Radar Graham con {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.pendingCount} pendientes y {watchlistMeta.publicExportCount} registros persistidos en export publico.
         </p>
+      </div>
+
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14, marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+          <div>
+            <strong>Captura de empresas</strong>
+            <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 4 }}>
+              {captureStatus.localApi
+                ? `Automatica ${captureStatus.dailyCaptureEnabled ? "activa" : "apagada"} a las ${captureStatus.captureTime || "18:00"}.`
+                : "Disponible en dashboard local."}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleCompanyCapture}
+            disabled={!captureStatus.localApi || captureStatus.captureInProgress}
+            style={{
+              border: `1px solid ${captureStatus.localApi ? AC.blue : SURFACE.border}`,
+              background: captureStatus.localApi ? "#16345f" : "#111827",
+              color: captureStatus.localApi ? SURFACE.text : SURFACE.muted,
+              borderRadius: 6,
+              padding: "9px 12px",
+              cursor: captureStatus.localApi && !captureStatus.captureInProgress ? "pointer" : "not-allowed",
+              minWidth: 132,
+            }}
+          >
+            {captureStatus.captureInProgress ? "Capturando..." : "Capturar ahora"}
+          </button>
+        </div>
+        {captureMessage ? <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 10 }}>{captureMessage}</div> : null}
+        {captureStatus.lastCapture?.finishedAt ? (
+          <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 6 }}>
+            Ultima captura: {captureStatus.lastCapture.finishedAt}
+          </div>
+        ) : null}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
