@@ -14,6 +14,7 @@
     "build:artifact": "node scripts/bundle-artifact.js",
     "weekly:screen": "node scripts/weekly-screen.js",
     "weekly:report": "node scripts/weekly-screen.js",
+    "watchlist:analyze": "node scripts/analyze-watchlist.js",
     "universe:refresh": "node scripts/refresh-universe.js",
     "universe:refresh:requested": "node scripts/refresh-universe.js --requested-only",
     "runtime:init": "node scripts/init-runtime.js",

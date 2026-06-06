@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
-import { runPsql } from "./db-client.js";
+import { createDatabaseIfMissing, runPsql } from "./db-client.js";
 
 export function setupDatabase({ dryRun = false } = {}) {
   const schema = readFileSync("data/schema.sql", "utf8");
+  const createResult = createDatabaseIfMissing({ dryRun });
+  if (createResult.skipped) return createResult;
   return runPsql(schema, { dryRun });
 }
 

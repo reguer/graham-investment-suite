@@ -42,13 +42,51 @@ export function deriveSnapshot(candidate, price = candidate.price) {
 }
 
 export function hasFinancialSnapshot(candidate) {
-  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every((value) => Number.isFinite(Number(value)));
+  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every((value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)));
 }
 
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
   const price = quote?.price ?? candidate.price;
   const ratios = deriveSnapshot(candidate, price);
   if (!ratios) {
+    if (candidate.analysisStatus === "analyzed") {
+      return {
+        ...candidate,
+        quote,
+        livePrice: quote?.price ?? candidate.price ?? null,
+        ratios: null,
+        classification: {
+          id: candidate.classificationId || "rejected",
+          label: candidate.classificationLabel || "RECHAZADA",
+          color: "#ef4444",
+          reason: candidate.notes || "Analizada, pero con datos insuficientes para aprobar reglas Graham.",
+        },
+        alertLevel: "watch",
+        alertLabel: candidate.classificationLabel || "Analizada sin aprobacion Graham",
+        closeToDefensive: false,
+        near: false,
+      };
+    }
+
+    if (String(candidate.analysisStatus || "").startsWith("analysis_")) {
+      return {
+        ...candidate,
+        quote,
+        livePrice: quote?.price ?? candidate.price ?? null,
+        ratios: null,
+        classification: {
+          id: candidate.analysisStatus,
+          label: "NO SOPORTADA",
+          color: "#94a3b8",
+          reason: candidate.notes || "No se pudo completar el analisis automatico.",
+        },
+        alertLevel: "pending",
+        alertLabel: candidate.notes || "No soportada por analisis automatico",
+        closeToDefensive: false,
+        near: false,
+      };
+    }
+
     return {
       ...candidate,
       quote,

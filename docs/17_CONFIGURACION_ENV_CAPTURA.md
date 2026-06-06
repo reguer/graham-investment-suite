@@ -81,6 +81,13 @@ reports/weekly/YYYY-MM-DD.md
 data/cache/company-capture-YYYY-MM-DD.json
 ```
 
+Antes de generar el reporte, el boton intenta analizar todas las empresas no analizadas:
+
+- Empresas USA con CIK en SEC: usa SEC EDGAR `companyfacts` + precio Yahoo Chart del ticker base en USD.
+- Indices, futuros y empresas sin CIK SEC: quedan marcados como `analysis_unsupported` con razon explicita.
+- PostgreSQL: guarda empresas en `companies` y snapshots en `financial_snapshots`.
+- Export publico: actualiza `data/public/companies.json` para GitHub Pages.
+
 El archivo Markdown es el reporte humano.
 El JSON es la captura estructurada para validacion.
 

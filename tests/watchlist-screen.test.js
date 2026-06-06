@@ -56,4 +56,26 @@ describe("watchlist screening", () => {
     expect(result.livePrice).toBe(25);
     expect(result.classification.id).toBe("pending_fundamentals");
   });
+
+  it("does not treat null ratios as numeric zero", () => {
+    expect(evaluateCandidate({
+      ...candidate,
+      pb: null,
+      pePb: null,
+    }).alertLevel).toBe("pending");
+  });
+
+  it("keeps analyzed incomplete companies out of first-analysis pending", () => {
+    const result = evaluateCandidate({
+      ...candidate,
+      analysisStatus: "analyzed",
+      pb: null,
+      pePb: null,
+      classificationLabel: "RECHAZADA",
+      notes: "Datos insuficientes para aprobar.",
+    });
+
+    expect(result.alertLevel).toBe("watch");
+    expect(result.classification.id).toBe("rejected");
+  });
 });

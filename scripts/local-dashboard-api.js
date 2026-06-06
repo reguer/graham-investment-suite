@@ -43,7 +43,7 @@ export function loadLocalDashboardConfig(env = process.env) {
 
 export function runCompanyCapture({ cwd = process.cwd(), env = process.env } = {}) {
   return new Promise((resolve) => {
-    const child = spawn(process.execPath, ["scripts/weekly-screen.js"], {
+    const child = spawn(process.execPath, ["scripts/analyze-watchlist.js"], {
       cwd,
       env,
       shell: false,
@@ -62,13 +62,39 @@ export function runCompanyCapture({ cwd = process.cwd(), env = process.env } = {
       resolve({ ok: false, error: error.message, stdout, stderr });
     });
     child.on("exit", (code) => {
-      resolve({
-        ok: code === 0,
-        code,
-        stdout,
-        stderr,
-        reportPath: stdout.match(/Reporte guardado: (.+)/)?.[1]?.trim() || "",
-        capturePath: stdout.match(/Captura guardada: (.+)/)?.[1]?.trim() || "",
+      if (code !== 0) {
+        resolve({ ok: false, code, stdout, stderr, reportPath: "", capturePath: "" });
+        return;
+      }
+      const reportChild = spawn(process.execPath, ["scripts/weekly-screen.js"], {
+        cwd,
+        env,
+        shell: false,
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      let reportStdout = "";
+      let reportStderr = "";
+      reportChild.stdout.on("data", (chunk) => {
+        reportStdout += chunk.toString();
+      });
+      reportChild.stderr.on("data", (chunk) => {
+        reportStderr += chunk.toString();
+      });
+      reportChild.on("error", (error) => {
+        resolve({ ok: false, code: 1, stdout: stdout + reportStdout, stderr: `${stderr}${reportStderr}${error.message}`, reportPath: "", capturePath: "" });
+      });
+      reportChild.on("exit", (reportCode) => {
+        const combinedStdout = `${stdout}\n${reportStdout}`;
+        resolve({
+          ok: reportCode === 0,
+          code: reportCode,
+          stdout: combinedStdout,
+          stderr: `${stderr}\n${reportStderr}`,
+          reportPath: combinedStdout.match(/Reporte guardado: (.+)/)?.[1]?.trim() || "",
+          capturePath: combinedStdout.match(/Captura guardada: (.+)/)?.[1]?.trim() || "",
+          analyzed: Number(combinedStdout.match(/Analizadas: (\d+)/)?.[1] || 0),
+          unsupported: Number(combinedStdout.match(/No soportadas\/fallidas: (\d+)/)?.[1] || 0),
+        });
       });
     });
   });

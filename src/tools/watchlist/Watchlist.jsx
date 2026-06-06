@@ -68,7 +68,7 @@ export default function Watchlist() {
       const payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la captura.");
       setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
-      setCaptureMessage(`Captura lista. Reporte: ${payload.reportPath || "generado"}`);
+      setCaptureMessage(`Captura lista. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}. Reporte: ${payload.reportPath || "generado"}`);
     } catch (error) {
       setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
       setCaptureMessage(error.message);

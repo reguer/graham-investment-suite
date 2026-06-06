@@ -13,7 +13,7 @@ describe("watchlist universe merge", () => {
     for (const candidate of analyzedWatchlist) {
       expect(watchlist.some((item) => item.ticker === candidate.ticker)).toBe(true);
     }
-    expect(watchlistMeta.analyzedCount).toBe(analyzedWatchlist.length);
+    expect(watchlistMeta.analyzedCount).toBeGreaterThanOrEqual(analyzedWatchlist.length);
   });
 
   it("loads persisted companies from the public export", () => {

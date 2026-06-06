@@ -62,6 +62,25 @@ const universeWatchlist = persistedUniverse.map((item) => {
     };
   }
 
+  if (item.analysisStatus === "analyzed") {
+    return {
+      ...item,
+      yahooSymbol: item.yahooSymbol || item.ticker,
+      market: item.market || "US",
+      watchReason: item.watchReason || item.notes || "Analisis Graham automatico desde export publico.",
+      tags: item.tags?.length ? item.tags : ["sec-auto-analysis"],
+    };
+  }
+
+  if (String(item.analysisStatus || "").startsWith("analysis_")) {
+    return {
+      ...item,
+      yahooSymbol: item.yahooSymbol || item.ticker,
+      watchReason: item.watchReason || item.notes || "No se pudo completar el analisis automatico.",
+      tags: item.tags?.length ? item.tags : ["analysis-review"],
+    };
+  }
+
   return {
     ...item,
     analysisStatus: "pending_fundamentals",
@@ -78,7 +97,7 @@ export const watchlist = [...universeWatchlist, ...analyzedOutsideUniverse];
 export const watchlistMeta = {
   ...universeMeta,
   publicExportCount: publicCompanies.length,
-  analyzedCount: analyzedWatchlist.length,
+  analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
   pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
   totalCount: watchlist.length,
 };

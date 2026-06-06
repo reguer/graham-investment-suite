@@ -36,6 +36,11 @@ describe("classify", () => {
     expect(result.id).toBe("rejected");
   });
 
+  it("rejects incomplete valuation data", () => {
+    const result = classify({ ...base, pb: null, pePb: null });
+    expect(result.id).toBe("rejected");
+  });
+
   it("allows P/E 20 and P/E x P/B 22.5 when everything else passes", () => {
     const result = classify({ ...base, pe: 20, pb: 1.125, pePb: 22.5 });
     expect(result.id).toBe("graham_approved");

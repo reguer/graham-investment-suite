@@ -10,8 +10,13 @@ function isStrongCompany(ratios) {
   );
 }
 
+function isFiniteNumber(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+}
+
 export function classify(ratios) {
   const approved =
+    [ratios.pePb, ratios.debtRatio, ratios.currentRatio, ratios.pe, ratios.pb].every(isFiniteNumber) &&
     ratios.pePb <= 22.5 &&
     ratios.debtRatio < 1 &&
     ratios.currentRatio >= 2 &&
@@ -28,7 +33,7 @@ export function classify(ratios) {
     };
   }
 
-  const strong = isStrongCompany(ratios) && ratios.pePb > 22.5 && ratios.epsAllPositive === true;
+  const strong = isFiniteNumber(ratios.pePb) && isStrongCompany(ratios) && ratios.pePb > 22.5 && ratios.epsAllPositive === true;
 
   if (strong && ratios.epsGrowing === true) {
     return {

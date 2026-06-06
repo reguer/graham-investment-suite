@@ -39,6 +39,7 @@ export function runPsql(sql, { databaseUrl = getDatabaseUrl(), psqlPath = findPs
   const result = spawnSync(psqlPath, [databaseUrl, "-v", "ON_ERROR_STOP=1", "-c", sql], {
     cwd: process.cwd(),
     encoding: "utf8",
+    env: { ...process.env, PGCLIENTENCODING: process.platform === "win32" ? "WIN1252" : "UTF8" },
     stdio: "pipe",
     shell: false,
   });
@@ -46,6 +47,50 @@ export function runPsql(sql, { databaseUrl = getDatabaseUrl(), psqlPath = findPs
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(result.stderr || result.stdout);
   return { ok: true, stdout: result.stdout };
+}
+
+export function getDatabaseName(databaseUrl = getDatabaseUrl()) {
+  if (!databaseUrl) return "";
+  return new URL(databaseUrl).pathname.replace(/^\//, "");
+}
+
+export function getMaintenanceDatabaseUrl(databaseUrl = getDatabaseUrl()) {
+  if (!databaseUrl) return "";
+  const url = new URL(databaseUrl);
+  url.pathname = "/postgres";
+  return url.toString();
+}
+
+export function createDatabaseIfMissing({ databaseUrl = getDatabaseUrl(), psqlPath = findPsqlPath(), dryRun = false } = {}) {
+  const databaseName = getDatabaseName(databaseUrl);
+  if (!databaseUrl || !databaseName) {
+    return { ok: false, skipped: true, reason: "DATABASE_URL no configurado. No se creo la base." };
+  }
+  if (!/^[A-Za-z0-9_-]+$/.test(databaseName)) throw new Error(`Nombre de base invalido: ${databaseName}`);
+  if (dryRun) return { ok: true, dryRun: true, databaseName };
+
+  const maintenanceUrl = getMaintenanceDatabaseUrl(databaseUrl);
+  const existsResult = spawnSync(psqlPath, [maintenanceUrl, "-v", "ON_ERROR_STOP=1", "-tAc", `SELECT 1 FROM pg_database WHERE datname = ${sqlString(databaseName)}`], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    env: { ...process.env, PGCLIENTENCODING: process.platform === "win32" ? "WIN1252" : "UTF8" },
+    stdio: "pipe",
+    shell: false,
+  });
+  if (existsResult.error) throw existsResult.error;
+  if (existsResult.status !== 0) throw new Error(existsResult.stderr || existsResult.stdout);
+  if (existsResult.stdout.trim() === "1") return { ok: true, existed: true, databaseName };
+
+  const createResult = spawnSync(psqlPath, [maintenanceUrl, "-v", "ON_ERROR_STOP=1", "-c", `CREATE DATABASE ${databaseName}`], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    env: { ...process.env, PGCLIENTENCODING: process.platform === "win32" ? "WIN1252" : "UTF8" },
+    stdio: "pipe",
+    shell: false,
+  });
+  if (createResult.error) throw createResult.error;
+  if (createResult.status !== 0) throw new Error(createResult.stderr || createResult.stdout);
+  return { ok: true, created: true, databaseName };
 }
 
 export function sqlString(value) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeCompany, sqlString, upsertCompanySql } from "../scripts/db-client.js";
+import { getDatabaseName, getMaintenanceDatabaseUrl, normalizeCompany, sqlString, upsertCompanySql } from "../scripts/db-client.js";
 
 describe("db client", () => {
   it("normalizes a company for local db and public export", () => {
@@ -21,5 +21,12 @@ describe("db client", () => {
     const sql = upsertCompanySql({ ticker: "AAPL", name: "Apple Inc." });
     expect(sql).toContain("INSERT INTO companies");
     expect(sql).toContain("ON CONFLICT (ticker)");
+  });
+
+  it("derives database and maintenance urls without exposing credentials", () => {
+    const url = "postgresql://postgres:secret@127.0.0.1:5432/graham_suite";
+    expect(getDatabaseName(url)).toBe("graham_suite");
+    expect(getMaintenanceDatabaseUrl(url)).toContain("/postgres");
+    expect(getMaintenanceDatabaseUrl(url)).not.toContain("graham_suite");
   });
 });
