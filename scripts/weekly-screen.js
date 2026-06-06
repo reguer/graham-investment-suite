@@ -4,6 +4,8 @@ import { watchlist, watchlistMeta } from "../src/tools/watchlist/watchlist.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.js";
 import { fmt, pct } from "../src/lib/formatters.js";
+import { formatTelegramReportMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
+import { loadEnvLocal } from "./db-client.js";
 
 export function todayIso(date = new Date()) {
   const year = date.getFullYear();
@@ -154,6 +156,7 @@ async function main() {
   }
 
   const results = screenWatchlist(watchlist, quotes);
+  const summary = summarizeScreen(results);
   const now = new Date();
   const report = renderReport(results, quoteStatus, { date: now });
   const capture = buildCapturePayload(results, quoteStatus, { date: now });
@@ -169,6 +172,16 @@ async function main() {
   console.log(report);
   console.log(`\nReporte guardado: ${reportPath}`);
   console.log(`Captura guardada: ${capturePath}`);
+
+  const telegramEnv = { ...loadEnvLocal(), ...process.env };
+  if (shouldSendTelegram(telegramEnv)) {
+    try {
+      await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus }), { env: telegramEnv });
+      console.log("Telegram enviado: resumen semanal.");
+    } catch (error) {
+      console.log(`Telegram no enviado: ${error.message}`);
+    }
+  }
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("weekly-screen.js");
