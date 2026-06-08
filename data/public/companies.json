@@ -3640,14 +3640,14 @@
     "quoteType": "EQUITY",
     "sector": "IT Services",
     "industry": "",
-    "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-06-08",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "sec_auto_snapshot",
+    "validationStatus": "manual_snapshot",
     "tags": [
       "graham-approved"
     ],
-    "notes": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+    "notes": "No es constructora: servicios IT con liquidez real, deuda baja y FCF positivo. P/E x P/B pasa, pero esta mas cerca del limite 22.5.",
     "price": 53.45,
     "pe": 12.695961995249407,
     "pb": 1.6809346375132732,
@@ -6058,16 +6058,14 @@
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
     "industry": "",
-    "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-06-08",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "sec_auto_snapshot",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
-    "notes": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+    "notes": "Deuda muy baja y current ratio amplio. Quick ratio bajo por inventario; aun asi pasa la regla Graham por margen razonable.",
     "price": 68.46,
     "pe": 11.149837133550488,
     "pb": 1.5413576131507716,
@@ -7166,14 +7164,14 @@
     "quoteType": "EQUITY",
     "sector": "Packaged Foods",
     "industry": "",
-    "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-06-08",
+    "source": "Finviz + StockAnalysis",
+    "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "sec_auto_snapshot",
+    "validationStatus": "manual_snapshot",
     "tags": [
       "graham-approved"
     ],
-    "notes": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+    "notes": "Defensiva de alimentos empaquetados, menos ciclica que homebuilders. Deuda bajo 1, liquidez suficiente y valuacion Graham razonable.",
     "price": 99.82,
     "pe": 10.397916666666667,
     "pb": 1.43612947045859,
@@ -7652,11 +7650,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "La mas barata del grupo por P/E x P/B, pero quick ratio muy bajo por inventario. Aprobada por Graham defensivo, con riesgo operativo de ciclo e inventario.",
     "price": 51.45,
@@ -8267,11 +8263,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Perfil Graham limpio: P/B cercano a 1, deuda moderada y liquidez muy amplia. Riesgo principal: concentracion ciclica en vivienda.",
     "rawTicker": "LEN",
@@ -9237,11 +9231,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Pasa con mucho margen la regla 22.5 y mantiene liquidez alta. Empresa mas pequena: revisar volumen, geografias y sensibilidad al inventario.",
     "price": 138.43,
@@ -10191,11 +10183,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Cotiza bajo book value y conserva liquidez fuerte. Buen candidato Graham, aunque dependiente del ciclo de tasas/vivienda.",
     "price": 68.12,
@@ -11782,11 +11772,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Constructor grande con valuacion dentro del limite 22.5 y liquidez alta; quick ratio bajo por inventario de vivienda, normal en el sector pero relevante para Graham.",
     "price": 117.77,
@@ -13760,11 +13748,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Muy barata por P/E x P/B y con liquidez robusta. Mejor balance de liquidez que varias constructoras por quick ratio sobre 1.",
     "price": 71.5,
@@ -13900,11 +13886,9 @@
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
-    "validationStatus": "unsupported_sec_analysis",
+    "validationStatus": "manual_snapshot",
     "tags": [
-      "graham-approved",
-      "homebuilder",
-      "cyclical"
+      "graham-approved"
     ],
     "notes": "Valuacion atractiva y FCF positivo; quick ratio bajo porque el balance depende de inventarios/lotes. Requiere cuidado con ciclo inmobiliario.",
     "price": 139.53,

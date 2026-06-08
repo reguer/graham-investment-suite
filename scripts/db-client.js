@@ -197,7 +197,9 @@ export function loadPublicCompanies(path = PUBLIC_COMPANIES_PATH) {
 
 export function savePublicCompanies(companies, path = PUBLIC_COMPANIES_PATH) {
   mkdirSync(join(process.cwd(), "data", "public"), { recursive: true });
-  const normalized = companies.map(normalizeCompany).sort((a, b) => a.ticker.localeCompare(b.ticker));
+  const normalized = companies
+    .map((company) => ({ ...company, ...normalizeCompany(company) }))
+    .sort((a, b) => a.ticker.localeCompare(b.ticker));
   writeFileSync(path, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
   if (path === PUBLIC_COMPANIES_PATH) {
     mkdirSync(join(process.cwd(), "public", "data"), { recursive: true });
