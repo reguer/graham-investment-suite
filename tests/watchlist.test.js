@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { analyzedWatchlist, publicCompanies, watchlist, watchlistMeta } from "../src/tools/watchlist/watchlist.js";
+import { readFileSync } from "node:fs";
+import { analyzedWatchlist, buildWatchlist, buildWatchlistMeta, normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
+
+const publicCompanies = JSON.parse(readFileSync("data/public/companies.json", "utf8")).map(normalizeExportedCompany);
+const watchlist = buildWatchlist(publicCompanies);
+const watchlistMeta = buildWatchlistMeta(watchlist, publicCompanies);
 
 describe("watchlist universe merge", () => {
   it("keeps analyzed snapshots on their original quote symbol", () => {

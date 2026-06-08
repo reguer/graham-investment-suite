@@ -1,11 +1,17 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { watchlist, watchlistMeta } from "../src/tools/watchlist/watchlist.js";
+import { buildWatchlist, buildWatchlistMeta, normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.js";
 import { fmt, pct } from "../src/lib/formatters.js";
 import { formatTelegramReportMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
-import { loadEnvLocal } from "./db-client.js";
+import { loadEnvLocal, PUBLIC_COMPANIES_PATH } from "./db-client.js";
+
+function loadWatchlist() {
+  const publicCompanies = JSON.parse(readFileSync(PUBLIC_COMPANIES_PATH, "utf8")).map(normalizeExportedCompany);
+  const watchlist = buildWatchlist(publicCompanies);
+  return { watchlist, watchlistMeta: buildWatchlistMeta(watchlist, publicCompanies) };
+}
 
 export function todayIso(date = new Date()) {
   const year = date.getFullYear();
@@ -70,6 +76,7 @@ function renderWeeklySummary(summary, cadence) {
 }
 
 export function renderReport(results, quoteStatus, { date = new Date() } = {}) {
+  const { watchlistMeta } = loadWatchlist();
   const summary = summarizeScreen(results);
   const reportDate = todayIso(date);
   const cadence = getReportCadence(date);
@@ -111,6 +118,7 @@ ${results.map((item) => `- **${item.ticker}**: ${item.watchReason}`).join("\n")}
 
 export function buildCapturePayload(results, quoteStatus, { date = new Date() } = {}) {
   const summary = summarizeScreen(results);
+  const { watchlistMeta } = loadWatchlist();
   return {
     generatedAt: date.toISOString(),
     reportDate: todayIso(date),
@@ -144,6 +152,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date() } 
 }
 
 async function main() {
+  const { watchlist } = loadWatchlist();
   let quotes = {};
   let quoteStatus = { ok: false, error: "sin intento de precios", source: "snapshot" };
 

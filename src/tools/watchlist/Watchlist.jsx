@@ -5,7 +5,7 @@ import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
-import { watchlist, watchlistMeta } from "./watchlist.js";
+import { buildWatchlist, buildWatchlistMeta, fetchPublicCompanies } from "./watchlist.js";
 
 function colorFor(level) {
   if (level === "approved") return AC.green;
@@ -22,7 +22,10 @@ export default function Watchlist({ onManualCapture }) {
   const [captureMessage, setCaptureMessage] = useState("");
   const [newTicker, setNewTicker] = useState("");
   const [newCompanyName, setNewCompanyName] = useState("");
-  const results = useMemo(() => screenWatchlist(watchlist), []);
+  const [publicCompanies, setPublicCompanies] = useState([]);
+  const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
+  const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
+  const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
   const activeCount = summary.approved.length + summary.near.length;
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
@@ -34,6 +37,16 @@ export default function Watchlist({ onManualCapture }) {
     } catch {
       setFavorites([]);
     }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPublicCompanies(fetch, import.meta.env.BASE_URL).then((companies) => {
+      if (!cancelled) setPublicCompanies(companies);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {

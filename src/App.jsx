@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import Header from "./components/layout/Header.jsx";
 import Footer from "./components/layout/Footer.jsx";
-import GrahamAnalyzer from "./tools/graham-analyzer/GrahamAnalyzer.jsx";
-import MacroRadar from "./tools/macro-radar/MacroRadar.jsx";
-import Watchlist from "./tools/watchlist/Watchlist.jsx";
 import { SURFACE } from "./lib/colors.js";
+
+const GrahamAnalyzer = lazy(() => import("./tools/graham-analyzer/GrahamAnalyzer.jsx"));
+const MacroRadar = lazy(() => import("./tools/macro-radar/MacroRadar.jsx"));
+const Watchlist = lazy(() => import("./tools/watchlist/Watchlist.jsx"));
 
 const tabs = [
   { id: "graham", label: "Graham Analyzer" },
@@ -25,9 +26,11 @@ export default function App() {
     <div style={{ minHeight: "100vh", background: SURFACE.page, color: SURFACE.text }}>
       <Header tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
       <main style={{ maxWidth: 1180, margin: "0 auto", padding: "24px 18px 48px" }}>
-        {activeTab === "graham" ? <GrahamAnalyzer manualDraft={manualDraft} onManualDraftLoaded={() => setManualDraft(null)} /> : null}
-        {activeTab === "watchlist" ? <Watchlist onManualCapture={openManualCapture} /> : null}
-        {activeTab === "macro" ? <MacroRadar /> : null}
+        <Suspense fallback={<div style={{ color: SURFACE.muted }}>Cargando...</div>}>
+          {activeTab === "graham" ? <GrahamAnalyzer manualDraft={manualDraft} onManualDraftLoaded={() => setManualDraft(null)} /> : null}
+          {activeTab === "watchlist" ? <Watchlist onManualCapture={openManualCapture} /> : null}
+          {activeTab === "macro" ? <MacroRadar /> : null}
+        </Suspense>
       </main>
       <Footer />
     </div>

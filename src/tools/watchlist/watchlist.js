@@ -1,6 +1,5 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
-import publicCompaniesJson from "../../../data/public/companies.json" with { type: "json" };
 
 export const DEFAULT_ALERT_POLICY = {
   nearPePb: 28,
@@ -22,7 +21,7 @@ export const analyzedWatchlist = grahamCandidates.map((candidate) => ({
 
 const analyzedByTicker = new Map(analyzedWatchlist.map((candidate) => [candidate.ticker.toUpperCase(), candidate]));
 
-function normalizeExportedCompany(company) {
+export function normalizeExportedCompany(company) {
   return {
     ...company,
     yahooSymbol: company.yahooSymbol || company.yahoo_symbol || company.ticker,
@@ -35,7 +34,16 @@ function normalizeExportedCompany(company) {
   };
 }
 
-export const publicCompanies = publicCompaniesJson.map(normalizeExportedCompany);
+export async function fetchPublicCompanies(fetchImpl = fetch, baseUrl = "/") {
+  try {
+    const response = await fetchImpl(`${baseUrl.replace(/\/?$/, "/")}data/companies.json`);
+    if (!response.ok) throw new Error(`No se pudo cargar companies.json: ${response.status}`);
+    const payload = await response.json();
+    return Array.isArray(payload) ? payload.map(normalizeExportedCompany) : [];
+  } catch {
+    return [];
+  }
+}
 
 function mergeByTicker(sources) {
   const byTicker = new Map();
@@ -48,9 +56,9 @@ function mergeByTicker(sources) {
   return [...byTicker.values()];
 }
 
-const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
-
-const universeWatchlist = persistedUniverse.map((item) => {
+export function buildWatchlist(publicCompanies = []) {
+  const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
+  const universeWatchlist = persistedUniverse.map((item) => {
   const analyzed = analyzedByTicker.get(item.ticker.toUpperCase());
   if (analyzed) {
     return {
@@ -89,15 +97,22 @@ const universeWatchlist = persistedUniverse.map((item) => {
   };
 });
 
-const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
-const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
+  const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
+  const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
 
-export const watchlist = [...universeWatchlist, ...analyzedOutsideUniverse];
+  return [...universeWatchlist, ...analyzedOutsideUniverse];
+}
 
-export const watchlistMeta = {
-  ...universeMeta,
-  publicExportCount: publicCompanies.length,
-  analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
-  pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
-  totalCount: watchlist.length,
-};
+export function buildWatchlistMeta(watchlist, publicCompanies = []) {
+  return {
+    ...universeMeta,
+    publicExportCount: publicCompanies.length,
+    analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
+    pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
+    totalCount: watchlist.length,
+  };
+}
+
+export const publicCompanies = [];
+export const watchlist = buildWatchlist(publicCompanies);
+export const watchlistMeta = buildWatchlistMeta(watchlist, publicCompanies);

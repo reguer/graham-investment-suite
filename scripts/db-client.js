@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 
 export const PUBLIC_COMPANIES_PATH = join(process.cwd(), "data", "public", "companies.json");
+export const PUBLIC_BROWSER_COMPANIES_PATH = join(process.cwd(), "public", "data", "companies.json");
 
 export function loadEnvLocal(path = ".env.local") {
   if (!existsSync(path)) return {};
@@ -198,6 +199,10 @@ export function savePublicCompanies(companies, path = PUBLIC_COMPANIES_PATH) {
   mkdirSync(join(process.cwd(), "data", "public"), { recursive: true });
   const normalized = companies.map(normalizeCompany).sort((a, b) => a.ticker.localeCompare(b.ticker));
   writeFileSync(path, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
+  if (path === PUBLIC_COMPANIES_PATH) {
+    mkdirSync(join(process.cwd(), "public", "data"), { recursive: true });
+    writeFileSync(PUBLIC_BROWSER_COMPANIES_PATH, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
+  }
   return normalized;
 }
 

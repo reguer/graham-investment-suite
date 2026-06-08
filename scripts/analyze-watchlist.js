@@ -1,8 +1,9 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { classify } from "../src/tools/graham-analyzer/classify.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { buildSecGrahamSnapshot, fetchSecCompanyFacts, fetchSecTickerMap, hasMinimumGrahamSnapshot } from "../src/tools/watchlist/secFundamentals.js";
-import { watchlist } from "../src/tools/watchlist/watchlist.js";
+import { buildWatchlist, normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
 import { PUBLIC_COMPANIES_PATH, normalizeCompany, runPsql, upsertCompanySql, upsertFinancialSnapshotSql } from "./db-client.js";
 
 function todayIso() {
@@ -39,6 +40,8 @@ function loadPublicRecords() {
 function savePublicRecords(records) {
   const sorted = records.sort((a, b) => a.ticker.localeCompare(b.ticker));
   writeFileSync(PUBLIC_COMPANIES_PATH, `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
+  mkdirSync(join(process.cwd(), "public", "data"), { recursive: true });
+  writeFileSync(join(process.cwd(), "public", "data", "companies.json"), `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
   return sorted;
 }
 
@@ -145,7 +148,7 @@ export function existingSnapshotResult(item, reason) {
 
 export async function analyzeWatchlist({ argv = process.argv, fetchImpl = fetch } = {}) {
   const args = parseArgs(argv);
-  const targets = selectTargets(watchlist, args);
+  const targets = selectTargets(buildWatchlist(loadPublicRecords().map(normalizeExportedCompany)), args);
   const secMap = await fetchSecTickerMap(fetchImpl);
   const quoteTargets = targets
     .filter((item) => item.quoteType === "EQUITY" && secMap.has(item.ticker.toUpperCase()))

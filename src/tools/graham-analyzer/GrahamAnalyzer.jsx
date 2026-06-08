@@ -12,7 +12,7 @@ import AnalysisHistory from "./AnalysisHistory.jsx";
 import CandidatePanel from "./CandidatePanel.jsx";
 import CandidateAnalysis from "./CandidateAnalysis.jsx";
 import { screenWatchlist, summarizeScreen } from "../watchlist/screen.js";
-import { watchlist } from "../watchlist/watchlist.js";
+import { buildWatchlist, fetchPublicCompanies } from "../watchlist/watchlist.js";
 
 const views = [
   { id: "input", label: "Input" },
@@ -28,8 +28,9 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
   const [aiText, setAiText] = useState("");
   const [aiError, setAiError] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
+  const [publicCompanies, setPublicCompanies] = useState([]);
   const analysis = useAnalysis(form);
-  const screened = screenWatchlist(watchlist);
+  const screened = screenWatchlist(buildWatchlist(publicCompanies));
   const summary = summarizeScreen(screened);
   const candidateOpportunities = [...summary.approved, ...summary.near]
     .filter((item) => item.ratios)
@@ -65,6 +66,16 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
     setView("input");
     onManualDraftLoaded?.();
   }, [manualDraft, onManualDraftLoaded]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPublicCompanies(fetch, import.meta.env.BASE_URL).then((companies) => {
+      if (!cancelled) setPublicCompanies(companies);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
