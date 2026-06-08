@@ -10,7 +10,7 @@
 
 | Fuente | Datos | Modo | Automatización |
 |--------|-------|------|---------------|
-| **Yahoo Finance** | Fundamentales, Balance Sheet, Income Statement, Cash Flow, EPS histórico, ADR ratio | **MANUAL** — el usuario los captura a mano | No existe |
+| **Yahoo Finance** | Fundamentales, Balance Sheet, Income Statement, Cash Flow, EPS histórico, ADR ratio | **Manual + parcial automático** | `npm run fundamentals:ingest -- --all-unsupported` |
 | **Stooq CSV** | Precios spot (OHLCV) | **Automático** vía `scripts/weekly-screen.js` | Sí — `npm run weekly:screen` |
 | **candidates.js** | Snapshots de 10 empresas con fundamentales | **Hardcodeado** en código fuente | N/A |
 | **tests/fixtures/tsm.json** | Datos TSM para tests unitarios | Solo para tests | N/A |
@@ -18,7 +18,15 @@
 
 ### Limitación crítica actual
 
-**Todos los datos fundamentales se capturan manualmente.** Esto implica:
+Los datos fundamentales completos se capturan manualmente cuando se necesita una decision Graham defensiva completa. Desde 2026-06-08 existe una ingesta automatica complementaria para snapshots parciales Yahoo:
+
+- Usa `yahoo-finance2` y valida `price.currency` + `financialData.financialCurrency`.
+- Solo acepta `USD` por default.
+- Guarda `analysis_partial_yahoo` si Yahoo entrega precio, P/E, P/B, debt/equity y current ratio.
+- No marca `epsAllPositive=true` porque la llamada parcial no entrega historial EPS completo.
+- Si Yahoo reporta `CNY`, `KRW`, `MXN` u otra moneda, el ticker queda con `currency_rejected`.
+
+Esto implica:
 - Dependencia total de la disponibilidad del usuario
 - Riesgo de errores de captura (magnitudes, monedas, unidades)
 - Sin historial de cuándo se capturó cada dato
@@ -211,7 +219,7 @@ interface DataRecord {
 
 **Fundamentales (Yahoo Finance)**:
 - Yahoo devuelve `financialCurrency` en el objeto de datos
-- Si `financialCurrency !== 'USD'`: aplicar tipo de cambio
+- Si `financialCurrency !== 'USD'`: en la fase actual se rechaza antes de calcular ratios; la conversion FX queda pendiente
 - Para ADRs: Los estados financieros pueden estar en moneda local (ej. TWD para TSM)
   - **Solución implementada**: El campo `adrRatio` normaliza EPS, BVPS, TBVPS y NCAV
   - El `adrRatio` convierte unidades de participación, no monedas — el EPS ya debe estar en USD antes de aplicar el ratio
