@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildAlertItems, buildCapturePayload, getReportCadence, renderReport, todayIso } from "../scripts/weekly-screen.js";
+import { buildAlertItems, buildCapturePayload, getReportCadence, parseArgs, renderCsv, renderHtml, renderReport, todayIso } from "../scripts/weekly-screen.js";
 
 const approvedResult = {
   ticker: "KBH",
@@ -64,6 +64,15 @@ describe("weekly-screen report cadence", () => {
     expect(todayIso(new Date(2026, 5, 5))).toBe("2026-06-05");
   });
 
+  it("parses ticker, format and verbose flags", () => {
+    expect(parseArgs(["node", "weekly-screen.js", "--ticker", "kbh", "--format", "csv", "--verbose", "--no-telegram"])).toEqual({
+      ticker: "KBH",
+      format: "csv",
+      verbose: true,
+      noTelegram: true,
+    });
+  });
+
   it("builds a structured capture payload for validation", () => {
     const payload = buildCapturePayload([approvedResult, pendingResult], { ok: true, source: "test" }, {
       date: new Date(2026, 5, 5),
@@ -90,5 +99,15 @@ describe("weekly-screen report cadence", () => {
     }, getReportCadence(new Date(2026, 5, 1)));
 
     expect(alerts.map((alert) => alert.type)).toEqual(["aprobada_graham", "cerca_de_aprobar"]);
+  });
+
+  it("renders csv and html exports", () => {
+    const csv = renderCsv([approvedResult]);
+    const html = renderHtml([approvedResult], { ok: true, source: "test" }, { date: new Date(2026, 5, 5) });
+
+    expect(csv).toContain("ticker,yahoo,empresa");
+    expect(csv).toContain("KBH");
+    expect(html).toContain("<!doctype html>");
+    expect(html).toContain("Oportunidades Graham");
   });
 });

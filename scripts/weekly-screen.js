@@ -7,10 +7,27 @@ import { fmt, pct } from "../src/lib/formatters.js";
 import { formatTelegramReportMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
 import { loadEnvLocal, PUBLIC_COMPANIES_PATH } from "./db-client.js";
 
+export function parseArgs(argv) {
+  const args = { format: "md", ticker: "", verbose: false, noTelegram: false };
+  for (let index = 2; index < argv.length; index += 1) {
+    if (argv[index] === "--ticker") args.ticker = String(argv[index + 1] || "").trim().toUpperCase();
+    if (argv[index] === "--format") args.format = String(argv[index + 1] || "md").trim().toLowerCase();
+    if (argv[index] === "--verbose") args.verbose = true;
+    if (argv[index] === "--no-telegram") args.noTelegram = true;
+  }
+  if (!["md", "csv", "html"].includes(args.format)) throw new Error("Formato no soportado. Usa md, csv o html.");
+  return args;
+}
+
 function loadWatchlist() {
   const publicCompanies = JSON.parse(readFileSync(PUBLIC_COMPANIES_PATH, "utf8")).map(normalizeExportedCompany);
   const watchlist = buildWatchlist(publicCompanies);
   return { watchlist, watchlistMeta: buildWatchlistMeta(watchlist, publicCompanies) };
+}
+
+function filterResults(results, args) {
+  if (!args.ticker) return results;
+  return results.filter((item) => [item.ticker, item.yahooSymbol].filter(Boolean).map((value) => String(value).toUpperCase()).includes(args.ticker));
 }
 
 export function todayIso(date = new Date()) {
@@ -50,6 +67,49 @@ export function renderRows(results) {
   return results
     .map((item) => `| ${item.ticker} | ${item.yahooSymbol || item.ticker} | ${item.companyName} | ${fmt(item.livePrice)} | ${fmt(item.ratios?.maxDefensivePrice)} | ${fmt(item.ratios?.pe)} | ${fmt(item.ratios?.pb)} | ${fmt(item.ratios?.pePb)} | ${fmt(item.ratios?.debtRatio)} | ${fmt(item.ratios?.currentRatio)} | ${pct(item.ratios?.marginOfSafety)} | ${item.alertLabel} |`)
     .join("\n");
+}
+
+function csvEscape(value) {
+  const text = value === null || value === undefined ? "" : String(value);
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+export function renderCsv(results) {
+  const headers = ["ticker", "yahoo", "empresa", "precio", "max_defensivo", "pe", "pb", "pe_pb", "debt", "current", "mos", "estado", "estado_sistema", "tags", "nota"];
+  const rows = results.map((item) => [
+    item.ticker,
+    item.yahooSymbol || item.ticker,
+    item.companyName,
+    item.livePrice,
+    item.ratios?.maxDefensivePrice,
+    item.ratios?.pe,
+    item.ratios?.pb,
+    item.ratios?.pePb,
+    item.ratios?.debtRatio,
+    item.ratios?.currentRatio,
+    item.ratios?.marginOfSafety,
+    item.alertLabel,
+    item.systemStatus?.label,
+    Array.isArray(item.tags) ? item.tags.join("|") : item.tags || "",
+    item.watchReason || "",
+  ]);
+  return [headers, ...rows].map((row) => row.map(csvEscape).join(",")).join("\n") + "\n";
+}
+
+export function renderHtml(results, quoteStatus, options = {}) {
+  const markdown = renderReport(results, quoteStatus, options);
+  const escaped = markdown.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reporte Graham</title>
+  <style>body{font-family:system-ui,sans-serif;background:#060911;color:#e5e7eb;margin:24px}pre{white-space:pre-wrap;line-height:1.5}</style>
+</head>
+<body><pre>${escaped}</pre></body>
+</html>
+`;
 }
 
 export function renderSection(title, results, emptyText) {
@@ -204,6 +264,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date() } 
 }
 
 async function main() {
+  const args = parseArgs(process.argv);
   const { watchlist } = loadWatchlist();
   let quotes = {};
   let quoteStatus = { ok: false, error: "sin intento de precios", source: "snapshot" };
@@ -216,27 +277,37 @@ async function main() {
     quoteStatus = { ok: false, error: error.message, source: "snapshot" };
   }
 
-  const results = screenWatchlist(watchlist, quotes);
+  const results = filterResults(screenWatchlist(watchlist, quotes), args);
   const summary = summarizeScreen(results);
   const now = new Date();
   const cadence = getReportCadence(now);
-  const report = renderReport(results, quoteStatus, { date: now });
+  const report = args.format === "csv"
+    ? renderCsv(results)
+    : args.format === "html"
+      ? renderHtml(results, quoteStatus, { date: now })
+      : renderReport(results, quoteStatus, { date: now });
   const capture = buildCapturePayload(results, quoteStatus, { date: now });
   const reportDir = join(process.cwd(), "reports", "weekly");
+  const exportDir = join(process.cwd(), "data", "export");
   const cacheDir = join(process.cwd(), "data", "cache");
   mkdirSync(reportDir, { recursive: true });
+  mkdirSync(exportDir, { recursive: true });
   mkdirSync(cacheDir, { recursive: true });
-  const reportPath = join(reportDir, `${todayIso(now)}.md`);
+  const reportPath = args.format === "md"
+    ? join(reportDir, `${todayIso(now)}.md`)
+    : join(exportDir, `weekly-${todayIso(now)}${args.ticker ? `-${args.ticker}` : ""}.${args.format}`);
   const capturePath = join(cacheDir, `company-capture-${todayIso(now)}.json`);
   writeFileSync(reportPath, report, "utf8");
   writeFileSync(capturePath, JSON.stringify(capture, null, 2), "utf8");
 
-  console.log(report);
+  if (args.verbose || args.format === "md") console.log(report);
   console.log(`\nReporte guardado: ${reportPath}`);
   console.log(`Captura guardada: ${capturePath}`);
 
   const telegramEnv = { ...loadEnvLocal(), ...process.env };
-  if (cadence.includeWeeklySummary && shouldSendTelegram(telegramEnv)) {
+  if (args.noTelegram) {
+    console.log("Telegram omitido por --no-telegram.");
+  } else if (cadence.includeWeeklySummary && shouldSendTelegram(telegramEnv)) {
     try {
       await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus, cadence }), { env: telegramEnv });
       console.log("Telegram enviado: resumen semanal.");

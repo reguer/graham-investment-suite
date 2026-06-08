@@ -6,6 +6,7 @@ import { fmt, pct } from "../../lib/formatters.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
+import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
 import { buildWatchlist, buildWatchlistMeta, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
 
 function colorFor(level) {
@@ -26,6 +27,8 @@ export default function Watchlist({ onManualCapture }) {
   const [newCompanyName, setNewCompanyName] = useState("");
   const [publicCompanies, setPublicCompanies] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [sortKey, setSortKey] = useState("system");
   const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
@@ -143,13 +146,32 @@ export default function Watchlist({ onManualCapture }) {
           .filter(Boolean)
           .some((value) => String(value).toLowerCase().includes(normalizedQuery));
       const matchesTag = !selectedTag || normalizeTags(result.tags).includes(selectedTag);
-      return matchesView && matchesQuery && matchesTag;
+      const matchesStatus = !selectedStatus || result.systemStatus?.id === selectedStatus;
+      return matchesView && matchesQuery && matchesTag && matchesStatus;
     });
-    return sortFavoritesFirst(matches, favorites);
-  }, [favoriteSet, favorites, query, results, selectedTag, view]);
+    const sorted = sortFavoritesFirst(matches, favorites);
+    const column = WATCHLIST_TABLE_COLUMNS.find((item) => item.id === sortKey);
+    if (!column) return sorted;
+    return [...sorted].sort((a, b) => {
+      const favoriteDelta = Number(favoriteSet.has(b.ticker.toUpperCase())) - Number(favoriteSet.has(a.ticker.toUpperCase()));
+      if (favoriteDelta) return favoriteDelta;
+      if (sortKey === "system") return (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
+      const av = getTableCell(a, column);
+      const bv = getTableCell(b, column);
+      return String(av).localeCompare(String(bv), "es", { numeric: true });
+    });
+  }, [favoriteSet, favorites, query, results, selectedStatus, selectedTag, sortKey, view]);
 
   return (
     <section>
+      <style>{`
+        .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: #0b1020; margin-bottom: 12px; }
+        .watchlist-card-list { display: none; }
+        @media (max-width: 999px) {
+          .watchlist-table-shell { display: none; }
+          .watchlist-card-list { display: grid; gap: 10px; }
+        }
+      `}</style>
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
@@ -296,9 +318,80 @@ export default function Watchlist({ onManualCapture }) {
           <option value="">Todas las etiquetas</option>
           {allTags.map((tag) => <option key={tag} value={tag}>{tag}</option>)}
         </select>
+        <select
+          value={selectedStatus}
+          onChange={(event) => setSelectedStatus(event.target.value)}
+          style={{
+            minWidth: 210,
+            border: `1px solid ${SURFACE.border}`,
+            background: "#0b1020",
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Todos los estados</option>
+          {listSystemStatuses().map((status) => <option key={status.id} value={status.id}>{status.label}</option>)}
+        </select>
+        <select
+          value={sortKey}
+          onChange={(event) => setSortKey(event.target.value)}
+          style={{
+            minWidth: 190,
+            border: `1px solid ${SURFACE.border}`,
+            background: "#0b1020",
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="system">Orden por estado</option>
+          <option value="ticker">Orden por ticker</option>
+          <option value="pePb">Orden por P/E x P/B</option>
+          <option value="mos">Orden por MoS</option>
+          <option value="updated">Orden por fecha</option>
+        </select>
       </div>
 
-      <div style={{ display: "grid", gap: 10 }}>
+      <div className="watchlist-table-shell">
+        <table style={{ width: "100%", minWidth: 2600, borderCollapse: "collapse", fontSize: 12 }}>
+          <thead>
+            <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
+              {WATCHLIST_TABLE_COLUMNS.map((column) => (
+                <th key={column.id} style={{ padding: "9px 8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap", position: "sticky", top: 0, background: "#0b1020" }}>
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredResults.map((result) => (
+              <tr key={result.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
+                {WATCHLIST_TABLE_COLUMNS.map((column) => (
+                  <td key={column.id} style={{ padding: "8px", verticalAlign: "top", maxWidth: column.id === "reason" ? 420 : 180, whiteSpace: column.id === "reason" ? "normal" : "nowrap", color: ["reason", "tags", "validation"].includes(column.id) ? SURFACE.muted : SURFACE.text }}>
+                    {column.id === "ticker" ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 7 }}>
+                        <Dot color={colorFor(result.alertLevel)} />
+                        <button
+                          type="button"
+                          onClick={() => handleToggleFavorite(result.ticker)}
+                          title={favoriteSet.has(result.ticker.toUpperCase()) ? "Quitar de favoritos" : "Marcar como favorito"}
+                          style={{ border: 0, background: "transparent", color: favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.muted, cursor: "pointer", padding: 0 }}
+                        >
+                          {favoriteSet.has(result.ticker.toUpperCase()) ? "★" : "☆"}
+                        </button>
+                        <strong>{result.ticker}</strong>
+                      </span>
+                    ) : getTableCell(result, column)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="watchlist-card-list">
         {filteredResults.map((result) => (
           <article key={result.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start" }}>
