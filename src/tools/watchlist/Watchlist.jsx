@@ -10,6 +10,7 @@ import { buildWatchlist, buildWatchlistMeta, fetchPublicCompanies } from "./watc
 function colorFor(level) {
   if (level === "approved") return AC.green;
   if (level === "near") return AC.yellow;
+  if (level === "reference") return AC.blue;
   if (level === "pending") return AC.blue;
   return AC.gray;
 }
@@ -122,6 +123,7 @@ export default function Watchlist({ onManualCapture }) {
         (view === "opportunities" && ["approved", "near"].includes(result.alertLevel)) ||
         (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
+        (view === "reference" && result.alertLevel === "reference") ||
         (view === "discarded" && ["watch", "pending"].includes(result.alertLevel)) ||
         (view === "requested" && result.priority === "requested") ||
         (view === "pending" && result.alertLevel === "pending") ||
@@ -141,7 +143,7 @@ export default function Watchlist({ onManualCapture }) {
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
-          Radar Graham con {activeCount} en universo activo, {watchlistMeta.analyzedCount} analizadas y {watchlistMeta.publicExportCount} registros persistidos en export publico.
+          Radar Graham con {activeCount} en universo activo, {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.referenceCount || 0} referencias y {watchlistMeta.publicExportCount} registros persistidos en export publico.
         </p>
       </div>
 
@@ -201,6 +203,7 @@ export default function Watchlist({ onManualCapture }) {
           <span>Export publico: {watchlistMeta.publicExportCount} empresas</span>
           <span>Analizadas completas: {watchlistMeta.analyzedCount}</span>
           <span>Pendientes/no soportadas: {summary.pending.length}</span>
+          <span>Referencias mercado: {summary.reference.length}</span>
           <span>BD local: {captureStatus.hasDatabaseUrl ? "configurada" : "no detectada"}</span>
           <span>Proxima captura local: {captureStatus.nextScheduledCapture || "sin programar"}</span>
           <span>Telegram: {captureStatus.telegramEnabled ? "habilitado" : "apagado"}</span>
@@ -211,6 +214,7 @@ export default function Watchlist({ onManualCapture }) {
         <MetricCard label="Aprobadas" value={String(summary.approved.length)} color={AC.green} />
         <MetricCard label="Cerca" value={String(summary.near.length)} color={AC.yellow} />
         <MetricCard label="Observacion" value={String(summary.watch.length)} color={AC.gray} />
+        <MetricCard label="Referencias" value={String(summary.reference.length)} color={AC.blue} />
         <MetricCard label="Pendientes" value={String(summary.pending.length)} color={AC.blue} />
         <MetricCard label="Favoritos" value={String(favorites.length)} color={AC.yellow} />
         <MetricCard label="Universo activo" value={String(activeCount)} color={AC.green} />
@@ -223,6 +227,7 @@ export default function Watchlist({ onManualCapture }) {
           ["favorites", "Favoritos"],
           ["analyzed", "Analizadas"],
           ["discarded", "Descartadas"],
+          ["reference", "Referencias"],
           ["requested", "Lote solicitado"],
           ["pending", "Pendientes"],
           ["bmv", "BMV/SIC"],
@@ -314,7 +319,7 @@ export default function Watchlist({ onManualCapture }) {
               <div style={{ color: SURFACE.muted, fontSize: 12 }}>
                 Estado: {result.analysisStatus || "pendiente"} · Validacion: {result.validationStatus || "sin validar"} · Fuente: {result.source || "sin fuente"}
               </div>
-              {result.alertLevel === "pending" || result.analysisStatus !== "analyzed" ? (
+              {result.alertLevel === "pending" || (result.analysisStatus !== "analyzed" && result.alertLevel !== "reference") ? (
                 <button
                   type="button"
                   onClick={() => onManualCapture?.(result)}

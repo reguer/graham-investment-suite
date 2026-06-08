@@ -47,6 +47,25 @@ export function hasFinancialSnapshot(candidate) {
 
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
   const price = quote?.price ?? candidate.price;
+  if (isReferenceInstrument(candidate)) {
+    return {
+      ...candidate,
+      quote,
+      livePrice: price ?? null,
+      ratios: null,
+      classification: {
+        id: "index_reference",
+        label: "REFERENCIA",
+        color: "#38bdf8",
+        reason: candidate.notes || "Instrumento de referencia para comparar mercado; no se analiza con reglas Graham defensivas.",
+      },
+      alertLevel: "reference",
+      alertLabel: "Referencia de mercado",
+      closeToDefensive: false,
+      near: false,
+    };
+  }
+
   const ratios = deriveSnapshot(candidate, price);
   if (!ratios) {
     if (candidate.analysisStatus === "analyzed") {
@@ -143,7 +162,7 @@ export function screenWatchlist(items, quotesByTicker = {}, policy = DEFAULT_ALE
   return items
     .map((item) => evaluateCandidate(item, quotesByTicker[item.ticker] ?? null, policy))
     .sort((a, b) => {
-      const rank = { approved: 0, near: 1, watch: 2, pending: 3 };
+      const rank = { approved: 0, near: 1, watch: 2, reference: 3, pending: 4 };
       if (rank[a.alertLevel] !== rank[b.alertLevel]) return rank[a.alertLevel] - rank[b.alertLevel];
       if (!a.ratios || !b.ratios) return a.ticker.localeCompare(b.ticker);
       return a.ratios.pePb - b.ratios.pePb;
@@ -155,6 +174,16 @@ export function summarizeScreen(results) {
     approved: results.filter((result) => result.alertLevel === "approved"),
     near: results.filter((result) => result.alertLevel === "near"),
     watch: results.filter((result) => result.alertLevel === "watch"),
+    reference: results.filter((result) => result.alertLevel === "reference"),
     pending: results.filter((result) => result.alertLevel === "pending"),
   };
+}
+
+export function isReferenceInstrument(candidate) {
+  return (
+    candidate.analysisStatus === "index_reference" ||
+    candidate.validationStatus === "index_reference" ||
+    candidate.tags?.includes("index_reference") ||
+    ["INDEX", "ETF"].includes(String(candidate.quoteType || "").toUpperCase())
+  );
 }

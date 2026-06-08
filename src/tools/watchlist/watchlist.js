@@ -89,6 +89,15 @@ export function buildWatchlist(publicCompanies = []) {
     };
   }
 
+  if (item.analysisStatus === "index_reference" || item.validationStatus === "index_reference" || item.tags?.includes("index_reference")) {
+    return {
+      ...item,
+      yahooSymbol: item.yahooSymbol || item.ticker,
+      watchReason: item.watchReason || item.notes || "Referencia de mercado. No requiere analisis Graham.",
+      tags: item.tags?.length ? item.tags : ["index_reference"],
+    };
+  }
+
   return {
     ...item,
     analysisStatus: "pending_fundamentals",
@@ -108,7 +117,8 @@ export function buildWatchlistMeta(watchlist, publicCompanies = []) {
     ...universeMeta,
     publicExportCount: publicCompanies.length,
     analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
-    pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
+    referenceCount: watchlist.filter((item) => item.analysisStatus === "index_reference" || item.validationStatus === "index_reference").length,
+    pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed" && item.analysisStatus !== "index_reference").length,
     totalCount: watchlist.length,
   };
 }

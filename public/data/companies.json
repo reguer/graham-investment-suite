@@ -1,5 +1,93 @@
 [
   {
+    "ticker": "^DJI",
+    "yahooSymbol": "^DJI",
+    "companyName": "Dow Jones Industrial Average",
+    "exchange": "Yahoo Finance",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "INDEX",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "benchmark",
+      "industrial"
+    ],
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+  },
+  {
+    "ticker": "^GSPC",
+    "yahooSymbol": "^GSPC",
+    "companyName": "S&P 500",
+    "exchange": "Yahoo Finance",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "INDEX",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "benchmark",
+      "us-market"
+    ],
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+  },
+  {
+    "ticker": "^IXIC",
+    "yahooSymbol": "^IXIC",
+    "companyName": "Nasdaq Composite",
+    "exchange": "Yahoo Finance",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "INDEX",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "benchmark",
+      "technology"
+    ],
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+  },
+  {
+    "ticker": "^MXX",
+    "yahooSymbol": "^MXX",
+    "companyName": "S&P/BMV IPC",
+    "exchange": "Yahoo Finance",
+    "market": "Mexico",
+    "country": "Mexico",
+    "currency": "MXN",
+    "quoteType": "INDEX",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "benchmark",
+      "mexico"
+    ],
+    "notes": "Indice de referencia mexicano. No se analiza con reglas Graham defensivas."
+  },
+  {
     "ticker": "A",
     "yahooSymbol": "A",
     "companyName": "Agilent Technologies, Inc.",
@@ -12380,6 +12468,28 @@
     ]
   },
   {
+    "ticker": "QQQ",
+    "yahooSymbol": "QQQ",
+    "companyName": "Invesco QQQ Trust",
+    "exchange": "NasdaqGM",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "ETF",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "etf",
+      "technology"
+    ],
+    "notes": "ETF de referencia para Nasdaq 100. No se analiza con reglas Graham defensivas."
+  },
+  {
     "ticker": "RCL",
     "yahooSymbol": "RCL",
     "companyName": "Royal Caribbean Cruises Ltd.",
@@ -13275,6 +13385,28 @@
         "eps": 7.73
       }
     ]
+  },
+  {
+    "ticker": "SPY",
+    "yahooSymbol": "SPY",
+    "companyName": "SPDR S&P 500 ETF Trust",
+    "exchange": "NYSE Arca",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "ETF",
+    "sector": "",
+    "industry": "",
+    "source": "yahoo-reference",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
+    "tags": [
+      "index_reference",
+      "etf",
+      "us-market"
+    ],
+    "notes": "ETF de referencia para S&P 500. No se analiza con reglas Graham defensivas."
   },
   {
     "ticker": "SRE",

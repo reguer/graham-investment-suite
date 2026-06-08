@@ -78,4 +78,20 @@ describe("watchlist screening", () => {
     expect(result.alertLevel).toBe("watch");
     expect(result.classification.id).toBe("rejected");
   });
+
+  it("classifies indexes and ETFs as market references", () => {
+    const result = evaluateCandidate({
+      ticker: "^GSPC",
+      yahooSymbol: "^GSPC",
+      companyName: "S&P 500",
+      quoteType: "INDEX",
+      analysisStatus: "index_reference",
+      validationStatus: "index_reference",
+      tags: ["index_reference"],
+    }, { price: 5300, source: "test" });
+
+    expect(result.alertLevel).toBe("reference");
+    expect(result.ratios).toBeNull();
+    expect(result.classification.id).toBe("index_reference");
+  });
 });
