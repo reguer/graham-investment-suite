@@ -158,6 +158,7 @@ async function main() {
   const results = screenWatchlist(watchlist, quotes);
   const summary = summarizeScreen(results);
   const now = new Date();
+  const cadence = getReportCadence(now);
   const report = renderReport(results, quoteStatus, { date: now });
   const capture = buildCapturePayload(results, quoteStatus, { date: now });
   const reportDir = join(process.cwd(), "reports", "weekly");
@@ -174,13 +175,15 @@ async function main() {
   console.log(`Captura guardada: ${capturePath}`);
 
   const telegramEnv = { ...loadEnvLocal(), ...process.env };
-  if (shouldSendTelegram(telegramEnv)) {
+  if (cadence.includeWeeklySummary && shouldSendTelegram(telegramEnv)) {
     try {
       await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus }), { env: telegramEnv });
       console.log("Telegram enviado: resumen semanal.");
     } catch (error) {
       console.log(`Telegram no enviado: ${error.message}`);
     }
+  } else if (shouldSendTelegram(telegramEnv)) {
+    console.log("Telegram no enviado: solo se envian senales automaticas lunes y viernes.");
   }
 }
 

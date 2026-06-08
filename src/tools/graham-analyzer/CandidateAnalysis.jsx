@@ -39,14 +39,22 @@ export default function CandidateAnalysis({ candidates }) {
     Object.fromEntries(candidates.map((candidate) => [candidate.ticker, String(candidate.price)])),
   );
 
-  const selected = candidates.find((candidate) => candidate.ticker === selectedTicker) ?? candidates[0];
-  const price = Number(priceByTicker[selected.ticker] || selected.price);
-  const ratios = useMemo(() => buildRatios(selected, price), [selected, price]);
-  const classification = useMemo(() => classify(ratios), [ratios]);
-  const checks = useMemo(() => getChecks(ratios).filter((check) => ["pe", "pb", "pePb", "debt", "current", "quick", "fcf", "eps"].includes(check.id)), [ratios]);
+  const selected = candidates.find((candidate) => candidate.ticker === selectedTicker) ?? candidates[0] ?? null;
+  const price = selected ? Number(priceByTicker[selected.ticker] || selected.price) : 0;
+  const ratios = useMemo(() => (selected ? buildRatios(selected, price) : null), [selected, price]);
+  const classification = useMemo(() => (ratios ? classify(ratios) : null), [ratios]);
+  const checks = useMemo(() => (ratios ? getChecks(ratios).filter((check) => ["pe", "pb", "pePb", "debt", "current", "quick", "fcf", "eps"].includes(check.id)) : []), [ratios]);
 
   function updatePrice(value) {
     setPriceByTicker((current) => ({ ...current, [selected.ticker]: value }));
+  }
+
+  if (!selected || !ratios) {
+    return (
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 16, color: SURFACE.muted }}>
+        No hay candidatas Graham con datos completos en este momento.
+      </div>
+    );
   }
 
   return (
@@ -122,7 +130,7 @@ export default function CandidateAnalysis({ candidates }) {
 
           <article style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14 }}>
             <h3 style={{ margin: "0 0 10px", fontSize: 16 }}>Notas de investigacion</h3>
-            <p style={{ margin: 0, color: SURFACE.text, lineHeight: 1.55 }}>{selected.note}</p>
+            <p style={{ margin: 0, color: SURFACE.text, lineHeight: 1.55 }}>{selected.note || selected.watchReason || selected.notes}</p>
             <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 12 }}>
               Fuente: {selected.source} · Snapshot: {selected.sourceDate}
             </div>

@@ -15,13 +15,16 @@ function colorFor(level) {
 }
 
 export default function Watchlist() {
-  const [view, setView] = useState("all");
+  const [view, setView] = useState("opportunities");
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [captureStatus, setCaptureStatus] = useState({ localApi: false, captureInProgress: false });
   const [captureMessage, setCaptureMessage] = useState("");
+  const [newTicker, setNewTicker] = useState("");
+  const [newCompanyName, setNewCompanyName] = useState("");
   const results = useMemo(() => screenWatchlist(watchlist), []);
   const summary = useMemo(() => summarizeScreen(results), [results]);
+  const activeCount = summary.approved.length + summary.near.length;
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
 
   useEffect(() => {
@@ -60,17 +63,39 @@ export default function Watchlist() {
     });
   }
 
-  async function handleCompanyCapture() {
-    setCaptureMessage("Captura en proceso...");
+  async function runLocalAction(endpoint, pendingText, doneText) {
+    setCaptureMessage(pendingText);
     setCaptureStatus((current) => ({ ...current, captureInProgress: true }));
     try {
-      const response = await fetch("/api/local/company-capture", { method: "POST" });
+      const response = await fetch(endpoint, { method: "POST" });
       const payload = await response.json();
-      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la captura.");
+      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la accion.");
       setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
-      setCaptureMessage(`Captura lista. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}. Reporte: ${payload.reportPath || "generado"}`);
+      setCaptureMessage(`${doneText}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}. Reporte: ${payload.reportPath || "generado"}`);
     } catch (error) {
       setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
+      setCaptureMessage(error.message);
+    }
+  }
+
+  async function handleAddCompany() {
+    const ticker = newTicker.trim().toUpperCase();
+    if (!ticker) {
+      setCaptureMessage("Escribe un ticker para importar.");
+      return;
+    }
+    try {
+      const response = await fetch("/api/local/add-company", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ticker, yahooSymbol: ticker, companyName: newCompanyName.trim() || ticker, market: "US" }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo importar el ticker.");
+      setNewTicker("");
+      setNewCompanyName("");
+      setCaptureMessage(`${ticker} importada. Usa "Procesar fundamentales" para intentar analizarla.`);
+    } catch (error) {
       setCaptureMessage(error.message);
     }
   }
@@ -80,8 +105,10 @@ export default function Watchlist() {
     const matches = results.filter((result) => {
       const matchesView =
         view === "all" ||
+        (view === "opportunities" && ["approved", "near"].includes(result.alertLevel)) ||
         (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
+        (view === "discarded" && ["watch", "pending"].includes(result.alertLevel)) ||
         (view === "requested" && result.priority === "requested") ||
         (view === "pending" && result.alertLevel === "pending") ||
         (view === "bmv" && result.market === "BMV SIC");
@@ -100,35 +127,49 @@ export default function Watchlist() {
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
-          Radar Graham con {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.pendingCount} pendientes y {watchlistMeta.publicExportCount} registros persistidos en export publico.
+          Radar Graham con {activeCount} en universo activo, {watchlistMeta.analyzedCount} analizadas y {watchlistMeta.publicExportCount} registros persistidos en export publico.
         </p>
       </div>
 
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14, marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <div>
-            <strong>Captura de empresas</strong>
+            <strong>Operaciones locales</strong>
             <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 4 }}>
               {captureStatus.localApi
                 ? `Automatica ${captureStatus.dailyCaptureEnabled ? "activa" : "apagada"} a las ${captureStatus.captureTime || "18:00"}.`
                 : "Disponible en dashboard local."}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleCompanyCapture}
-            disabled={!captureStatus.localApi || captureStatus.captureInProgress}
-            style={{
-              border: `1px solid ${captureStatus.localApi ? AC.blue : SURFACE.border}`,
-              background: captureStatus.localApi ? "#16345f" : "#111827",
-              color: captureStatus.localApi ? SURFACE.text : SURFACE.muted,
-              borderRadius: 6,
-              padding: "9px 12px",
-              cursor: captureStatus.localApi && !captureStatus.captureInProgress ? "pointer" : "not-allowed",
-              minWidth: 132,
-            }}
-          >
-            {captureStatus.captureInProgress ? "Capturando..." : "Capturar ahora"}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {[
+              ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Actualizar precios"],
+              ["/api/local/process-companies", "Procesando fundamentales existentes...", "Procesamiento completo", "Procesar fundamentales"],
+            ].map(([endpoint, pendingText, doneText, label]) => (
+              <button
+                key={endpoint}
+                type="button"
+                onClick={() => runLocalAction(endpoint, pendingText, doneText)}
+                disabled={!captureStatus.localApi || captureStatus.captureInProgress}
+                style={{
+                  border: `1px solid ${captureStatus.localApi ? AC.blue : SURFACE.border}`,
+                  background: captureStatus.localApi ? "#16345f" : "#111827",
+                  color: captureStatus.localApi ? SURFACE.text : SURFACE.muted,
+                  borderRadius: 6,
+                  padding: "9px 12px",
+                  cursor: captureStatus.localApi && !captureStatus.captureInProgress ? "pointer" : "not-allowed",
+                }}
+              >
+                {captureStatus.captureInProgress ? "Trabajando..." : label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(120px, 180px) minmax(180px, 1fr) auto", gap: 8, marginTop: 12 }}>
+          <input value={newTicker} onChange={(event) => setNewTicker(event.target.value)} placeholder="Ticker Yahoo base" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={newCompanyName} onChange={(event) => setNewCompanyName(event.target.value)} placeholder="Nombre opcional" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <button type="button" onClick={handleAddCompany} disabled={!captureStatus.localApi} style={{ border: `1px solid ${captureStatus.localApi ? AC.green : SURFACE.border}`, background: "#12351f", color: captureStatus.localApi ? SURFACE.text : SURFACE.muted, borderRadius: 6, padding: "8px 10px" }}>
+            Importar ticker
           </button>
         </div>
         {captureMessage ? <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 10 }}>{captureMessage}</div> : null}
@@ -145,14 +186,16 @@ export default function Watchlist() {
         <MetricCard label="Observacion" value={String(summary.watch.length)} color={AC.gray} />
         <MetricCard label="Pendientes" value={String(summary.pending.length)} color={AC.blue} />
         <MetricCard label="Favoritos" value={String(favorites.length)} color={AC.yellow} />
-        <MetricCard label="Universo" value={String(results.length)} color={AC.blue} />
+        <MetricCard label="Universo activo" value={String(activeCount)} color={AC.green} />
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
         {[
-          ["all", "Todo"],
+          ["opportunities", "Oportunidades"],
+          ["all", "Todo auditado"],
           ["favorites", "Favoritos"],
           ["analyzed", "Analizadas"],
+          ["discarded", "Descartadas"],
           ["requested", "Lote solicitado"],
           ["pending", "Pendientes"],
           ["bmv", "BMV/SIC"],

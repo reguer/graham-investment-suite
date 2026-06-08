@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatTelegramReportMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
+import { formatTelegramHelpMessage, formatTelegramReportMessage, formatTickerSignalMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
 
 describe("telegram alerts", () => {
   it("requires explicit enable flag, token, and chat id", () => {
@@ -22,6 +22,18 @@ describe("telegram alerts", () => {
     expect(text).toContain("ALERTA GRAHAM - 2026-06-05");
     expect(text).toContain("Aprobadas: 1");
     expect(text).toContain("KBH");
+    expect(text).toContain("/ticker SIMBOLO");
+  });
+
+  it("formats command help and ticker details", () => {
+    expect(formatTelegramHelpMessage()).toContain("/ticker SIMBOLO");
+    expect(formatTickerSignalMessage({
+      ticker: "MU",
+      companyName: "Micron",
+      alertLabel: "Pendiente",
+      ratios: { pe: 10, pb: 1.2, pePb: 12, price: 100 },
+      watchReason: "Fixture",
+    })).toContain("MU - Micron");
   });
 
   it("sends a message without exposing credentials in the payload", async () => {
