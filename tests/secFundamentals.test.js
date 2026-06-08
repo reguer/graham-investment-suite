@@ -40,4 +40,14 @@ describe("SEC Graham snapshot", () => {
     expect(snapshot.epsGrowing).toBe(true);
     expect(hasMinimumGrahamSnapshot(snapshot)).toBe(true);
   });
+
+  it("does not accept null values as complete minimum Graham data", () => {
+    expect(hasMinimumGrahamSnapshot({
+      price: 50,
+      pe: 10,
+      pb: null,
+      debtRatio: 0.5,
+      currentRatio: 2,
+    })).toBe(false);
+  });
 });

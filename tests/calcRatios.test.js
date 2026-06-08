@@ -75,4 +75,56 @@ describe("calcRatios", () => {
     expect(ratios.fcf).toBe(71428386);
     expect(ratios.epsAllPositive).toBe(false);
   });
+
+  it("nulls pb and grahamFormula when equity is negative", () => {
+    const ratios = calcRatios({ ...tsm, equity: "-1000000" });
+
+    expect(ratios.pb).toBeNull();
+    expect(ratios.pePb).toBeNull();
+    expect(ratios.grahamFormula).toBeNull();
+    expect(ratios.hasNegativeEquity).toBe(true);
+  });
+
+  it("uses real year span for CAGR when year labels are provided", () => {
+    // Two entries separated by 4 years (not 1 interval)
+    const sparse = {
+      ...tsm,
+      eps1: "20",
+      epsYear1: "2025",
+      eps2: "10",
+      epsYear2: "2021",
+      eps3: "",
+      epsYear3: "",
+      eps4: "",
+      epsYear4: "",
+    };
+    const ratios = calcRatios(sparse);
+    // yearSpan = 2025 - 2021 = 4; CAGR = (20/10)^(1/4) - 1 ≈ 0.1892
+    expect(ratios.epsCagr).toBeCloseTo(Math.pow(2, 0.25) - 1, 4);
+  });
+
+  it("falls back to entry-count denominator for CAGR when years are missing", () => {
+    const noYears = {
+      ...tsm,
+      eps1: "20",
+      epsYear1: "",
+      eps2: "10",
+      epsYear2: "",
+      eps3: "",
+      epsYear3: "",
+      eps4: "",
+      epsYear4: "",
+    };
+    const ratios = calcRatios(noYears);
+    // yearSpan = length - 1 = 1; CAGR = (20/10)^(1/1) - 1 = 1.0
+    expect(ratios.epsCagr).toBeCloseTo(1.0, 4);
+  });
+
+  it("returns null CAGR and epsGrowing when only one EPS value exists", () => {
+    const oneEps = { ...tsm, eps1: "5.00", epsYear1: "2025", eps2: "", eps3: "", eps4: "" };
+    const ratios = calcRatios(oneEps);
+
+    expect(ratios.epsCagr).toBeNull();
+    expect(ratios.epsGrowing).toBe(false);
+  });
 });

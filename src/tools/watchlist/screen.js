@@ -9,7 +9,7 @@ export function deriveSnapshot(candidate, price = candidate.price) {
   const pe = price / epsAdj;
   const pb = price / bvps;
   const pePb = pe * pb;
-  const grahamFormula = Math.sqrt(22.5 * epsAdj * bvps);
+  const grahamFormula = epsAdj > 0 && bvps > 0 ? Math.sqrt(22.5 * epsAdj * bvps) : null;
   const pricePe20 = epsAdj * 20;
   const pricePb2 = bvps * 2;
   const maxDefensivePrice = Math.min(grahamFormula, pricePe20, pricePb2);
@@ -23,10 +23,10 @@ export function deriveSnapshot(candidate, price = candidate.price) {
     quickRatio: candidate.quickRatio,
     fcf: candidate.fcf,
     epsAllPositive: candidate.epsAllPositive,
-    epsGrowing: null,
-    roe: null,
-    roa: null,
-    tie: null,
+    epsGrowing: candidate.epsGrowing ?? null,
+    roe: candidate.roe ?? null,
+    roa: candidate.roa ?? null,
+    tie: candidate.tie ?? null,
     epsAdj,
     bvps,
     price,

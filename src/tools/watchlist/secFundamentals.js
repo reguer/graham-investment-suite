@@ -41,6 +41,10 @@ function safeRatio(numerator, denominator) {
   return Number.isFinite(numerator) && Number.isFinite(denominator) && denominator !== 0 ? numerator / denominator : null;
 }
 
+function isFiniteValue(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+}
+
 export async function fetchSecTickerMap(fetchImpl = fetch) {
   const response = await fetchImpl(SEC_TICKERS_URL, { headers: SEC_HEADERS });
   if (!response.ok) throw new Error(`SEC tickers devolvio ${response.status}: ${response.statusText}`);
@@ -78,6 +82,8 @@ export function buildSecGrahamSnapshot(companyFacts, price) {
   const netIncome = valueOf(annualFacts(companyFacts, ["NetIncomeLoss"], ["USD"])[0]);
   const operatingCashFlow = valueOf(annualFacts(companyFacts, ["NetCashProvidedByUsedInOperatingActivities"], ["USD"])[0]);
   const investingCashFlow = valueOf(annualFacts(companyFacts, ["NetCashProvidedByUsedInInvestingActivities"], ["USD"])[0]);
+  const ebit = valueOf(annualFacts(companyFacts, ["OperatingIncomeLoss"], ["USD"])[0]);
+  const interestExpense = valueOf(annualFacts(companyFacts, ["InterestExpense", "InterestAndDebtExpense"], ["USD"])[0]);
 
   const eps = valueOf(epsAnnual[0]);
   const bvps = safeRatio(equity, shares);
@@ -104,7 +110,9 @@ export function buildSecGrahamSnapshot(companyFacts, price) {
     epsGrowing: epsHistory.length >= 2 ? epsHistory.every((item, index, arr) => index === arr.length - 1 || item.eps >= arr[index + 1].eps) : null,
     roe: safeRatio(netIncome, equity),
     roa: safeRatio(netIncome, assets),
-    tie: null,
+    tie: interestExpense === 0 && Number.isFinite(ebit) && ebit > 0
+      ? Infinity
+      : safeRatio(ebit, interestExpense),
     epsAdj: eps,
     bvps,
     source: "SEC EDGAR companyfacts + Yahoo Chart price",
@@ -126,5 +134,5 @@ export function buildSecGrahamSnapshot(companyFacts, price) {
 }
 
 export function hasMinimumGrahamSnapshot(snapshot) {
-  return [snapshot?.price, snapshot?.pe, snapshot?.pb, snapshot?.debtRatio, snapshot?.currentRatio].every((value) => Number.isFinite(Number(value)));
+  return [snapshot?.price, snapshot?.pe, snapshot?.pb, snapshot?.debtRatio, snapshot?.currentRatio].every(isFiniteValue);
 }

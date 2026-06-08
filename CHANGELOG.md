@@ -6,6 +6,26 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ---
 
+## [Unreleased] — 2026-06-08 Bloque Lógica de Negocio
+
+### Fixed
+- `src/tools/graham-analyzer/calcRatios.js` — `grahamFormula` ya no se anula cuando `pe === null` sin necesidad; `grahamPrice()` ya tiene sus propias guardas (eps ≤ 0, bvps ≤ 0)
+- `src/tools/graham-analyzer/calcRatios.js` — CAGR de EPS ahora usa la diferencia real de años (`epsYearN` - `epsYear1`) como denominador cuando los años están disponibles; cae a `length - 1` si no lo están (comportamiento previo conservado para datos sin años)
+- `src/tools/watchlist/screen.js` — `deriveSnapshot()` ahora pasa `roe`, `roa` y `tie` del candidato en lugar de forzarlos a `null`; esto permite que `isStrongCompany()` en `classify.js` funcione correctamente en el screening, habilitando la categoría "EXCELENTE, PERO CARA" en Watchlist
+- `src/tools/watchlist/screen.js` — fórmula inline de `grahamFormula` ahora incluye guardia `null` (resultado NaN → null) consistente con `grahamPrice()` en calcRatios
+- `src/tools/watchlist/secFundamentals.js` — `buildSecGrahamSnapshot()` ahora calcula `tie` (interest coverage ratio) usando `OperatingIncomeLoss` / `InterestExpense` de SEC EDGAR; casos sin gasto de intereses con EBIT positivo retornan `Infinity`
+
+### Tests
+- `tests/calcRatios.test.js` — nuevos casos edge: equity negativo (P/B negativo pero finito, grahamFormula null), CAGR con años reales vs. sin años, `epsGrowing` null cuando hay un solo año de historia
+
+### Diagnóstico de mejoras (issues detectados fuera del roadmap previo)
+Ver tabla completa en `docs/13_ROADMAP_NOTION_READY.md` (E21, E22). Resumen:
+- **Lógica (8 issues):** divergencia Graham Analyzer vs. Watchlist en ROE/ROA/TIE; CAGR inflado con datos de años no consecutivos; grahamFormula con condición incorrecta; pePbTangible y hasIntangibleData huérfanos; equity negativo sin advertencia; edge cases sin tests
+- **UX (10 issues):** toolbar no sticky; sin feedback al guardar; loading IA sin spinner; historial sin sorting; EPS sin años explícitos; tabla candidatos sin responsive; colores fuera de design tokens; fecha datos no visible en Watchlist
+- **Consistencia técnica (3 issues):** grahamPrice() duplicado; epsGrowing con nullability inconsistente; candidatos sin fecha de captura
+
+---
+
 ## [Unreleased]
 
 ### Added

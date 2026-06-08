@@ -68,8 +68,8 @@ export function calcRatios(form) {
   const pricePE15 = epsAdj !== null && epsAdj > 0 ? epsAdj * 15 : null;
   const pricePB15 = bvps !== null && bvps > 0 ? bvps * 1.5 : null;
   const pricePB15Tangible = tangibleBvps !== null && tangibleBvps > 0 ? tangibleBvps * 1.5 : null;
-  const grahamFormula = pe === null ? null : grahamPrice(epsAdj, bvps);
-  const grahamFormulaTangible = pe === null ? null : grahamPrice(epsAdj, tangibleBvps);
+  const grahamFormula = grahamPrice(epsAdj, bvps);
+  const grahamFormulaTangible = grahamPrice(epsAdj, tangibleBvps);
   const mosGraham = grahamFormula !== null && price ? (grahamFormula - price) / price : null;
   const mosGrahamTangible = grahamFormulaTangible !== null && price ? (grahamFormulaTangible - price) / price : null;
   const intangibleWeight =
@@ -86,9 +86,14 @@ export function calcRatios(form) {
     epsHistory.length > 1 && epsHistory.every((entry, index) => index === epsHistory.length - 1 || entry.value >= epsHistory[index + 1].value);
   const newest = epsHistory[0]?.value;
   const oldest = epsHistory[epsHistory.length - 1]?.value;
+  const newestYear = Number(epsHistory[0]?.year) || null;
+  const oldestYear = Number(epsHistory[epsHistory.length - 1]?.year) || null;
+  const yearSpan = newestYear && oldestYear && newestYear > oldestYear
+    ? newestYear - oldestYear
+    : epsHistory.length - 1;
   const epsCagr =
-    epsHistory.length > 1 && newest > 0 && oldest > 0
-      ? Math.pow(newest / oldest, 1 / (epsHistory.length - 1)) - 1
+    epsHistory.length > 1 && newest > 0 && oldest > 0 && yearSpan > 0
+      ? Math.pow(newest / oldest, 1 / yearSpan) - 1
       : null;
 
   return {
@@ -125,6 +130,7 @@ export function calcRatios(form) {
     epsAdj,
     price,
     hasIntangibleData: intangiblesTotal > 0 || (netTangibleAssets !== null && netTangibleAssets > 0),
+    hasNegativeEquity: equity !== null && equity < 0,
     adrRatio,
   };
 }
