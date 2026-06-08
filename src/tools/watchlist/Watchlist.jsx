@@ -101,10 +101,13 @@ export default function Watchlist() {
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
           Radar Graham con {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.pendingCount} pendientes y {watchlistMeta.publicExportCount} registros persistidos en export publico.
+          {watchlistMeta.sourceDate ? (
+            <> · Datos al <strong style={{ color: SURFACE.text }}>{watchlistMeta.sourceDate}</strong></>
+          ) : null}
         </p>
       </div>
 
-      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14, marginBottom: 16 }}>
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14, marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <div>
             <strong>Captura de empresas</strong>
@@ -120,7 +123,7 @@ export default function Watchlist() {
             disabled={!captureStatus.localApi || captureStatus.captureInProgress}
             style={{
               border: `1px solid ${captureStatus.localApi ? AC.blue : SURFACE.border}`,
-              background: captureStatus.localApi ? "#16345f" : "#111827",
+              background: captureStatus.localApi ? SURFACE.activeBlue : "#111827",
               color: captureStatus.localApi ? SURFACE.text : SURFACE.muted,
               borderRadius: 6,
               padding: "9px 12px",
@@ -163,7 +166,7 @@ export default function Watchlist() {
             onClick={() => setView(id)}
             style={{
               border: `1px solid ${view === id ? AC.blue : SURFACE.border}`,
-              background: view === id ? "#16345f" : "#111827",
+              background: view === id ? SURFACE.activeBlue : "#111827",
               color: SURFACE.text,
               borderRadius: 6,
               padding: "8px 10px",
@@ -181,7 +184,7 @@ export default function Watchlist() {
             minWidth: 240,
             flex: "1 1 240px",
             border: `1px solid ${SURFACE.border}`,
-            background: "#0b1020",
+            background: SURFACE.panel,
             color: SURFACE.text,
             borderRadius: 6,
             padding: "8px 10px",
@@ -191,7 +194,7 @@ export default function Watchlist() {
 
       <div style={{ display: "grid", gap: 10 }}>
         {filteredResults.map((result) => (
-          <article key={result.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14 }}>
+          <article key={result.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

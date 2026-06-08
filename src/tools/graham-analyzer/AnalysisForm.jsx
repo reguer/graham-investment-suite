@@ -1,21 +1,41 @@
 import InputField from "../../components/ui/InputField.jsx";
 import NumericInput from "../../components/ui/NumericInput.jsx";
 import SectionTitle from "../../components/ui/SectionTitle.jsx";
-import { SURFACE } from "../../lib/colors.js";
+import { AC, SURFACE } from "../../lib/colors.js";
 
 function Grid({ children }) {
   return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 12 }}>{children}</div>;
 }
 
 function Toolbar({ prefillOptions, onPrefill, onReset, onAnalyze }) {
+  function handleReset() {
+    if (window.confirm("¿Limpiar todos los campos? Se perderán los datos no guardados.")) {
+      onReset();
+    }
+  }
+
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, flexWrap: "wrap", marginTop: 22 }}>
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
+        display: "flex",
+        justifyContent: "flex-end",
+        gap: 8,
+        flexWrap: "wrap",
+        padding: "10px 0",
+        background: SURFACE.page,
+        borderBottom: `1px solid ${SURFACE.border}`,
+        marginBottom: 16,
+      }}
+    >
       {prefillOptions.map((option) => (
         <button key={option.id} type="button" onClick={() => onPrefill(option.data)} style={buttonStyle("secondary")}>
           Cargar {option.label}
         </button>
       ))}
-      <button type="button" onClick={onReset} style={buttonStyle("secondary")}>Limpiar</button>
+      <button type="button" onClick={handleReset} style={buttonStyle("secondary")}>Limpiar</button>
       <button type="button" onClick={onAnalyze} style={buttonStyle("primary")}>Calcular resultados</button>
     </div>
   );
@@ -24,16 +44,19 @@ function Toolbar({ prefillOptions, onPrefill, onReset, onAnalyze }) {
 function buttonStyle(kind) {
   return {
     border: kind === "primary" ? "1px solid rgba(34, 197, 94, 0.45)" : `1px solid ${SURFACE.border}`,
-    background: kind === "primary" ? "rgba(34, 197, 94, 0.14)" : "#0b1020",
-    color: kind === "primary" ? "#bbf7d0" : SURFACE.text,
+    background: kind === "primary" ? "rgba(34, 197, 94, 0.14)" : SURFACE.panel,
+    color: kind === "primary" ? AC.greenText : SURFACE.text,
     borderRadius: 8,
     padding: "10px 13px",
+    cursor: "pointer",
   };
 }
 
 export default function AnalysisForm({ form, onChange, prefillOptions = [], onPrefill, onReset, onAnalyze }) {
   return (
     <div style={{ background: "rgba(15, 23, 42, 0.35)", border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 16 }}>
+      <Toolbar prefillOptions={prefillOptions} onPrefill={onPrefill} onReset={onReset} onAnalyze={onAnalyze} />
+
       <SectionTitle number="0" title="Identificacion" />
       <Grid>
         <InputField label="Ticker" value={form.ticker} onChange={(value) => onChange("ticker", value.toUpperCase())} placeholder="TSM" />
@@ -68,12 +91,16 @@ export default function AnalysisForm({ form, onChange, prefillOptions = [], onPr
 
       <SectionTitle number="3" title="EPS historico" subtitle="Ordenado del mas reciente al mas antiguo." />
       <Grid>
-        {[1, 2, 3, 4, 5].map((index) => (
-          <div key={index} style={{ display: "grid", gridTemplateColumns: "0.75fr 1fr", gap: 8 }}>
-            <InputField label={`Ano ${index}`} value={form[`epsYear${index}`]} onChange={(value) => onChange(`epsYear${index}`, value)} />
-            <NumericInput label={`EPS ${index}`} value={form[`eps${index}`]} onChange={(value) => onChange(`eps${index}`, value)} />
-          </div>
-        ))}
+        {[1, 2, 3, 4, 5].map((index) => {
+          const yearVal = form[`epsYear${index}`];
+          const epsLabel = yearVal ? `EPS ${yearVal}` : `EPS ${index}`;
+          return (
+            <div key={index} style={{ display: "grid", gridTemplateColumns: "0.75fr 1fr", gap: 8 }}>
+              <InputField label={`Año ${index}`} value={yearVal} onChange={(value) => onChange(`epsYear${index}`, value)} placeholder="2024" />
+              <NumericInput label={epsLabel} value={form[`eps${index}`]} onChange={(value) => onChange(`eps${index}`, value)} />
+            </div>
+          );
+        })}
       </Grid>
 
       <SectionTitle number="4" title="Cash Flow" />
@@ -97,10 +124,8 @@ export default function AnalysisForm({ form, onChange, prefillOptions = [], onPr
         value={form.notes}
         onChange={(event) => onChange("notes", event.target.value)}
         rows={3}
-        style={{ width: "100%", resize: "vertical", background: "#0b1020", color: SURFACE.text, border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 11 }}
+        style={{ width: "100%", resize: "vertical", background: SURFACE.panel, color: SURFACE.text, border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 11 }}
       />
-
-      <Toolbar prefillOptions={prefillOptions} onPrefill={onPrefill} onReset={onReset} onAnalyze={onAnalyze} />
     </div>
   );
 }

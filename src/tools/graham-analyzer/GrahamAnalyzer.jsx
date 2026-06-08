@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { SURFACE } from "../../lib/colors.js";
+import { useEffect, useState } from "react";
+import { AC, SURFACE } from "../../lib/colors.js";
 import { generateAnalysis } from "../../lib/anthropic.js";
 import { usePersistedState } from "../../hooks/usePersistedState.js";
 import { useAnalysis } from "../../hooks/useAnalysis.js";
@@ -27,7 +27,14 @@ export default function GrahamAnalyzer() {
   const [aiText, setAiText] = useState("");
   const [aiError, setAiError] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
+  const [saveToast, setSaveToast] = useState("");
   const analysis = useAnalysis(form);
+
+  useEffect(() => {
+    if (!saveToast) return;
+    const timer = setTimeout(() => setSaveToast(""), 2200);
+    return () => clearTimeout(timer);
+  }, [saveToast]);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -43,6 +50,7 @@ export default function GrahamAnalyzer() {
       aiText,
     };
     setHistory((current) => [item, ...current].slice(0, 50));
+    setSaveToast(`Análisis de ${form.ticker || "empresa"} guardado`);
     setView("history");
   }
 
@@ -62,6 +70,25 @@ export default function GrahamAnalyzer() {
 
   return (
     <section>
+      {saveToast ? (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+            zIndex: 100,
+            background: "rgba(34, 197, 94, 0.16)",
+            border: `1px solid rgba(34, 197, 94, 0.45)`,
+            color: AC.greenText,
+            borderRadius: 8,
+            padding: "12px 18px",
+            fontSize: 14,
+            pointerEvents: "none",
+          }}
+        >
+          {saveToast}
+        </div>
+      ) : null}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap", marginBottom: 18 }}>
         <div>
           <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Graham Analyzer</h1>
@@ -75,10 +102,11 @@ export default function GrahamAnalyzer() {
               onClick={() => setView(item.id)}
               style={{
                 border: `1px solid ${view === item.id ? "rgba(56, 189, 248, 0.45)" : SURFACE.border}`,
-                background: view === item.id ? "rgba(56, 189, 248, 0.12)" : "#0b1020",
-                color: view === item.id ? "#bae6fd" : SURFACE.text,
+                background: view === item.id ? "rgba(56, 189, 248, 0.12)" : SURFACE.panel,
+                color: view === item.id ? AC.blueText : SURFACE.text,
                 borderRadius: 8,
                 padding: "9px 12px",
+                cursor: "pointer",
               }}
             >
               {item.label}

@@ -1,9 +1,13 @@
 export const AC = {
   green: "#22c55e",
+  greenText: "#bbf7d0",
   yellow: "#eab308",
   orange: "#f97316",
   red: "#ef4444",
+  redText: "#fecaca",
   blue: "#38bdf8",
+  blueText: "#bae6fd",
+  blueLight: "#7dd3fc",
   gray: "#64748b",
   white: "#f8fafc",
 };
@@ -30,6 +34,7 @@ export const SURFACE = {
   page: "#060911",
   panel: "#0b1020",
   panelAlt: "#0f172a",
+  activeBlue: "#16345f",
   border: "rgba(148, 163, 184, 0.16)",
   muted: "#94a3b8",
   text: "#e2e8f0",
