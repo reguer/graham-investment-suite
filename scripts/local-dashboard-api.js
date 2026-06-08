@@ -1,6 +1,8 @@
 import { spawn } from "node:child_process";
+import { dirname } from "node:path";
 import { addCompany } from "./add-company.js";
 import { loadEnvLocal } from "./db-client.js";
+import { findPreferredNode } from "./node-runtime.js";
 
 const DEFAULT_CAPTURE_TIME = "18:00";
 
@@ -44,9 +46,10 @@ export function loadLocalDashboardConfig(env = process.env) {
 
 function runLocalScript(script, args = [], { cwd = process.cwd(), env = process.env } = {}) {
   return new Promise((resolve) => {
-    const child = spawn(process.execPath, [script, ...args], {
+    const nodePath = findPreferredNode(env);
+    const child = spawn(nodePath, [script, ...args], {
       cwd,
-      env,
+      env: { ...env, PATH: `${dirname(nodePath)};${env.PATH || ""}` },
       shell: false,
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -114,7 +117,7 @@ export async function runYahooSupplemental(options = {}) {
   });
   return {
     ...enriched,
-    partial: Number(yahoo.stdout.match(/Snapshots parciales USD: (\d+)/)?.[1] || 0),
+    partial: Number(yahoo.stdout.match(/Snapshots Yahoo USD\/FX: (\d+)/)?.[1] || 0),
     skipped: Number(yahoo.stdout.match(/Omitidas por datos\/moneda: (\d+)/)?.[1] || 0),
     failed: Number(yahoo.stdout.match(/Fallidas: (\d+)/)?.[1] || 0),
   };
