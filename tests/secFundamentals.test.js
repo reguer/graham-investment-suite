@@ -10,7 +10,6 @@ const companyFacts = {
       Liabilities: { units: { USD: [{ end: "2025-12-31", val: 400, filed: "2026-02-01" }] } },
       LiabilitiesCurrent: { units: { USD: [{ end: "2025-12-31", val: 200, filed: "2026-02-01" }] } },
       StockholdersEquity: { units: { USD: [{ end: "2025-12-31", val: 600, filed: "2026-02-01" }] } },
-      EntityCommonStockSharesOutstanding: { units: { shares: [{ end: "2025-12-31", val: 100, filed: "2026-02-01" }] } },
       EarningsPerShareDiluted: {
         units: {
           "USD/shares": [
@@ -22,6 +21,9 @@ const companyFacts = {
       NetIncomeLoss: { units: { USD: [{ fy: 2025, fp: "FY", end: "2025-12-31", val: 80, filed: "2026-02-01" }] } },
       NetCashProvidedByUsedInOperatingActivities: { units: { USD: [{ fy: 2025, fp: "FY", end: "2025-12-31", val: 120, filed: "2026-02-01" }] } },
       NetCashProvidedByUsedInInvestingActivities: { units: { USD: [{ fy: 2025, fp: "FY", end: "2025-12-31", val: -30, filed: "2026-02-01" }] } },
+    },
+    dei: {
+      EntityCommonStockSharesOutstanding: { units: { shares: [{ end: "2025-12-31", val: 100, filed: "2026-02-01" }] } },
     },
   },
 };
@@ -39,5 +41,15 @@ describe("SEC Graham snapshot", () => {
     expect(snapshot.epsAllPositive).toBe(true);
     expect(snapshot.epsGrowing).toBe(true);
     expect(hasMinimumGrahamSnapshot(snapshot)).toBe(true);
+  });
+
+  it("does not accept null values as complete minimum Graham data", () => {
+    expect(hasMinimumGrahamSnapshot({
+      price: 50,
+      pe: 10,
+      pb: null,
+      debtRatio: 0.5,
+      currentRatio: 2,
+    })).toBe(false);
   });
 });

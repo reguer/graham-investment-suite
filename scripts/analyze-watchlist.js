@@ -91,6 +91,58 @@ function unsupportedResult(item, reason) {
   };
 }
 
+export function hasExistingGrahamSnapshot(item) {
+  return [item.price, item.pe, item.pb, item.debtRatio, item.currentRatio]
+    .every((value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)));
+}
+
+export function existingSnapshotResult(item, reason) {
+  const snapshot = {
+    price: Number(item.price),
+    pe: Number(item.pe),
+    pb: Number(item.pb),
+    pePb: Number.isFinite(Number(item.pePb)) ? Number(item.pePb) : Number(item.pe) * Number(item.pb),
+    debtRatio: Number(item.debtRatio),
+    currentRatio: Number(item.currentRatio),
+    quickRatio: Number.isFinite(Number(item.quickRatio)) ? Number(item.quickRatio) : null,
+    fcf: Number.isFinite(Number(item.fcf)) ? Number(item.fcf) : null,
+    epsAllPositive: item.epsAllPositive === true,
+    epsGrowing: item.epsGrowing === true ? true : item.epsGrowing === false ? false : null,
+    source: item.source || "manual_snapshot",
+    sourceDate: item.sourceDate || todayIso(),
+  };
+  const classification = classify(snapshot);
+  const notes = item.watchReason || item.notes || reason;
+  return {
+    ticker: item.ticker,
+    status: "analyzed",
+    snapshot,
+    classification,
+    publicRecord: {
+      ...item,
+      source: snapshot.source,
+      sourceDate: snapshot.sourceDate,
+      analysisStatus: "analyzed",
+      validationStatus: item.validationStatus || "manual_snapshot",
+      price: snapshot.price,
+      pe: snapshot.pe,
+      pb: snapshot.pb,
+      pePb: snapshot.pePb,
+      debtRatio: snapshot.debtRatio,
+      currentRatio: snapshot.currentRatio,
+      quickRatio: snapshot.quickRatio,
+      fcf: snapshot.fcf,
+      epsAllPositive: snapshot.epsAllPositive,
+      epsGrowing: snapshot.epsGrowing,
+      classificationId: classification.id,
+      classificationLabel: classification.label,
+      notes,
+      watchReason: notes,
+      autoAnalysisNote: reason,
+    },
+  };
+}
+
 export async function analyzeWatchlist({ argv = process.argv, fetchImpl = fetch } = {}) {
   const args = parseArgs(argv);
   const targets = selectTargets(watchlist, args);
@@ -109,12 +161,16 @@ export async function analyzeWatchlist({ argv = process.argv, fetchImpl = fetch 
     }
     const secCompany = secMap.get(ticker);
     if (!secCompany) {
-      results.push(unsupportedResult(item, "No se encontro CIK en SEC para analisis automatico."));
+      results.push(hasExistingGrahamSnapshot(item)
+        ? existingSnapshotResult(item, "No se encontro CIK en SEC para analisis automatico.")
+        : unsupportedResult(item, "No se encontro CIK en SEC para analisis automatico."));
       continue;
     }
     const quote = quotes[ticker];
     if (!quote?.price) {
-      results.push(unsupportedResult(item, "No se obtuvo precio USD del ticker base para analisis automatico."));
+      results.push(hasExistingGrahamSnapshot(item)
+        ? existingSnapshotResult(item, "No se obtuvo precio USD del ticker base para analisis automatico.")
+        : unsupportedResult(item, "No se obtuvo precio USD del ticker base para analisis automatico."));
       continue;
     }
 
@@ -122,7 +178,9 @@ export async function analyzeWatchlist({ argv = process.argv, fetchImpl = fetch 
       const facts = await fetchSecCompanyFacts(secCompany.cik, fetchImpl);
       const snapshot = buildSecGrahamSnapshot(facts, quote.price);
       if (!hasMinimumGrahamSnapshot(snapshot)) {
-        results.push(unsupportedResult(item, "SEC no devolvio campos minimos para ratios Graham."));
+        results.push(hasExistingGrahamSnapshot(item)
+          ? existingSnapshotResult(item, "SEC no devolvio campos minimos para ratios Graham.")
+          : unsupportedResult(item, "SEC no devolvio campos minimos para ratios Graham."));
         continue;
       }
       const classification = classify(snapshot);
@@ -160,7 +218,9 @@ export async function analyzeWatchlist({ argv = process.argv, fetchImpl = fetch 
         },
       });
     } catch (error) {
-      results.push(unsupportedResult(item, `Fallo analisis SEC: ${error.message}`));
+      results.push(hasExistingGrahamSnapshot(item)
+        ? existingSnapshotResult(item, `Fallo analisis SEC: ${error.message}`)
+        : unsupportedResult(item, `Fallo analisis SEC: ${error.message}`));
     }
   }
 

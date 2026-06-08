@@ -18,16 +18,22 @@ https://reguer.github.io/graham-investment-suite/
 |---------|--------|
 | Version | 1.0.0 |
 | Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js |
-| Tests | 4 suites — `npm test` |
+| Tests | 19 suites — `npm test` |
 | Build | `npm run build` |
-| Dashboard local | `npm run dev` → localhost:5173 |
-| Base de datos | No implementada (localStorage) |
+| Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
+| Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
 | Alertas automaticas | Solo reporte Markdown semanal |
 | Scheduler local | No configurado |
 
 ---
 
 ## Instalacion
+
+Ubicacion local recomendada para evitar bloqueos de Google Drive:
+
+```text
+C:\Users\EDUARDO\Documents\00_Apps_Locales\GrahamAnalizer
+```
 
 ```bash
 npm install
@@ -49,6 +55,9 @@ DEVICE_ROLE=principal
 # Dashboard automatico a GitHub Pages (solo equipo principal)
 AUTO_PUSH_DASHBOARD=false
 
+# Base de datos PostgreSQL local (opcional, no versionar credenciales)
+DATABASE_URL=
+
 # Alertas Telegram (opcional)
 ENABLE_TELEGRAM_ALERTS=false
 TELEGRAM_BOT_TOKEN=
@@ -60,7 +69,7 @@ TELEGRAM_CHAT_ID=
 ## Desarrollo — Dashboard local
 
 ```bash
-npm run dev
+npm run dev:safe
 ```
 
 Abre `http://localhost:5173` en el navegador.
@@ -68,7 +77,7 @@ Abre `http://localhost:5173` en el navegador.
 Si el puerto 5173 esta ocupado por otro proyecto:
 
 ```bash
-npm run dev -- --port 5174
+npm run dev:safe -- --port 5174
 ```
 
 Ver `docs/01_PROCESOS_LOCALES_DASHBOARD.md` para el manejo de puertos y procesos locales.
@@ -78,10 +87,11 @@ Ver `docs/01_PROCESOS_LOCALES_DASHBOARD.md` para el manejo de puertos y procesos
 ## Pruebas y build
 
 ```bash
-npm test               # Correr las 4 suites de tests
+npm test               # Correr las suites de tests
 npm run test:watch     # Modo watch de tests
 npm run build          # Build para produccion / GitHub Pages
 npm run build:artifact # Validar y regenerar artifacts standalone
+npm run watchlist:analyze -- --all # Analisis completo del universo con SEC/Yahoo + PostgreSQL/export publico
 npm run weekly:screen  # Screening semanal + reporte Markdown
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe

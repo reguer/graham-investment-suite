@@ -3,11 +3,16 @@ const SEC_FACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK";
 const SEC_HEADERS = { "user-agent": "GrahamInvestmentSuite/1.0 local" };
 
 function factList(companyFacts, concepts, preferredUnits = ["USD"]) {
-  const usGaap = companyFacts?.facts?.["us-gaap"] || {};
+  const namespaces = [
+    companyFacts?.facts?.["us-gaap"] || {},
+    companyFacts?.facts?.dei || {},
+  ];
   for (const concept of concepts) {
-    const units = usGaap[concept]?.units || {};
-    for (const unit of preferredUnits) {
-      if (Array.isArray(units[unit])) return units[unit];
+    for (const namespace of namespaces) {
+      const units = namespace[concept]?.units || {};
+      for (const unit of preferredUnits) {
+        if (Array.isArray(units[unit])) return units[unit];
+      }
     }
   }
   return [];
@@ -39,6 +44,10 @@ function valueOf(fact) {
 
 function safeRatio(numerator, denominator) {
   return Number.isFinite(numerator) && Number.isFinite(denominator) && denominator !== 0 ? numerator / denominator : null;
+}
+
+function isFiniteValue(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 }
 
 export async function fetchSecTickerMap(fetchImpl = fetch) {
@@ -126,5 +135,5 @@ export function buildSecGrahamSnapshot(companyFacts, price) {
 }
 
 export function hasMinimumGrahamSnapshot(snapshot) {
-  return [snapshot?.price, snapshot?.pe, snapshot?.pb, snapshot?.debtRatio, snapshot?.currentRatio].every((value) => Number.isFinite(Number(value)));
+  return [snapshot?.price, snapshot?.pe, snapshot?.pb, snapshot?.debtRatio, snapshot?.currentRatio].every(isFiniteValue);
 }
