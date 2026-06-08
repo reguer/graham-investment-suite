@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SURFACE } from "../../lib/colors.js";
 import { generateAnalysis } from "../../lib/anthropic.js";
 import { usePersistedState } from "../../hooks/usePersistedState.js";
@@ -21,7 +21,7 @@ const views = [
   { id: "history", label: "History" },
 ];
 
-export default function GrahamAnalyzer() {
+export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded }) {
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [view, setView] = useState("input");
   const [history, setHistory] = usePersistedState([]);
@@ -51,6 +51,20 @@ export default function GrahamAnalyzer() {
       note: item.watchReason || item.notes,
     }));
   const hasInputData = Boolean(form.ticker || form.companyName || form.price || form.epsTTM);
+
+  useEffect(() => {
+    if (!manualDraft) return;
+    setForm({
+      ...EMPTY_FORM,
+      ticker: manualDraft.ticker || "",
+      companyName: manualDraft.companyName || "",
+      date: new Date().toISOString().slice(0, 10),
+      price: manualDraft.livePrice ? String(manualDraft.livePrice) : manualDraft.price ? String(manualDraft.price) : "",
+      notes: `Captura manual solicitada desde Watchlist. Fuente sugerida: Yahoo Finance. Razon actual: ${manualDraft.watchReason || manualDraft.notes || "pendiente de fundamentales"}`,
+    });
+    setView("input");
+    onManualDraftLoaded?.();
+  }, [manualDraft, onManualDraftLoaded]);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));

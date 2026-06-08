@@ -14,7 +14,7 @@ function colorFor(level) {
   return AC.gray;
 }
 
-export default function Watchlist() {
+export default function Watchlist({ onManualCapture }) {
   const [view, setView] = useState("opportunities");
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
@@ -71,7 +71,8 @@ export default function Watchlist() {
       const payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la accion.");
       setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
-      setCaptureMessage(`${doneText}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}. Reporte: ${payload.reportPath || "generado"}`);
+      const yahooText = Number.isFinite(payload.partial) && payload.partial > 0 ? ` Parciales Yahoo: ${payload.partial}.` : "";
+      setCaptureMessage(`${doneText}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}.${yahooText} Reporte: ${payload.reportPath || "generado"}`);
     } catch (error) {
       setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
       setCaptureMessage(error.message);
@@ -145,6 +146,7 @@ export default function Watchlist() {
             {[
               ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Actualizar precios"],
               ["/api/local/process-companies", "Procesando fundamentales existentes...", "Procesamiento completo", "Procesar fundamentales"],
+              ["/api/local/yahoo-supplemental", "Intentando Yahoo complementario para no soportadas...", "Yahoo complementario completo", "Rescatar con Yahoo"],
             ].map(([endpoint, pendingText, doneText, label]) => (
               <button
                 key={endpoint}
@@ -178,6 +180,18 @@ export default function Watchlist() {
             Ultima captura: {captureStatus.lastCapture.finishedAt}
           </div>
         ) : null}
+      </div>
+
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#08111f", padding: 14, marginBottom: 16 }}>
+        <strong>Estado de datos</strong>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10, marginTop: 10, color: SURFACE.muted, fontSize: 13 }}>
+          <span>Export publico: {watchlistMeta.publicExportCount} empresas</span>
+          <span>Analizadas completas: {watchlistMeta.analyzedCount}</span>
+          <span>Pendientes/no soportadas: {summary.pending.length}</span>
+          <span>BD local: {captureStatus.hasDatabaseUrl ? "configurada" : "no detectada"}</span>
+          <span>Proxima captura local: {captureStatus.nextScheduledCapture || "sin programar"}</span>
+          <span>Telegram: {captureStatus.telegramEnabled ? "habilitado" : "apagado"}</span>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
@@ -283,6 +297,27 @@ export default function Watchlist() {
             </div>
 
             <p style={{ color: SURFACE.text, margin: "12px 0 0", lineHeight: 1.5 }}>{result.watchReason}</p>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
+              <div style={{ color: SURFACE.muted, fontSize: 12 }}>
+                Estado: {result.analysisStatus || "pendiente"} · Validacion: {result.validationStatus || "sin validar"} · Fuente: {result.source || "sin fuente"}
+              </div>
+              {result.alertLevel === "pending" || result.analysisStatus !== "analyzed" ? (
+                <button
+                  type="button"
+                  onClick={() => onManualCapture?.(result)}
+                  style={{
+                    border: `1px solid ${AC.yellow}`,
+                    background: "#3f3412",
+                    color: AC.yellow,
+                    borderRadius: 6,
+                    padding: "8px 10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Captura manual
+                </button>
+              ) : null}
+            </div>
           </article>
         ))}
       </div>

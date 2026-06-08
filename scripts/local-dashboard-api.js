@@ -102,6 +102,24 @@ export async function runPriceRefresh(options = {}) {
   });
 }
 
+export async function runYahooSupplemental(options = {}) {
+  const yahoo = await runLocalScript("scripts/data-ingestion.js", ["--all-unsupported"], options);
+  if (!yahoo.ok) return enrichRunResult(yahoo);
+  const report = await runLocalScript("scripts/weekly-screen.js", [], options);
+  const enriched = enrichRunResult({
+    ok: report.ok,
+    code: report.code,
+    stdout: `${yahoo.stdout}\n${report.stdout}`,
+    stderr: `${yahoo.stderr}\n${report.stderr}`,
+  });
+  return {
+    ...enriched,
+    partial: Number(yahoo.stdout.match(/Snapshots parciales USD: (\d+)/)?.[1] || 0),
+    skipped: Number(yahoo.stdout.match(/Omitidas por datos\/moneda: (\d+)/)?.[1] || 0),
+    failed: Number(yahoo.stdout.match(/Fallidas: (\d+)/)?.[1] || 0),
+  };
+}
+
 export function createLocalDashboardApiPlugin() {
   let captureInProgress = false;
   let lastCapture = null;
@@ -189,6 +207,23 @@ export function createLocalDashboardApiPlugin() {
         const startedAt = new Date().toISOString();
         const result = await runPriceRefresh();
         lastCapture = { ...result, trigger: "manual-price-refresh", startedAt, finishedAt: new Date().toISOString() };
+        captureInProgress = false;
+        sendJson(response, result.ok ? 200 : 500, lastCapture);
+      });
+
+      server.middlewares.use("/api/local/yahoo-supplemental", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        if (captureInProgress) {
+          sendJson(response, 409, { ok: false, busy: true, error: "Ya hay una captura en proceso." });
+          return;
+        }
+        captureInProgress = true;
+        const startedAt = new Date().toISOString();
+        const result = await runYahooSupplemental();
+        lastCapture = { ...result, trigger: "manual-yahoo-supplemental", startedAt, finishedAt: new Date().toISOString() };
         captureInProgress = false;
         sendJson(response, result.ok ? 200 : 500, lastCapture);
       });

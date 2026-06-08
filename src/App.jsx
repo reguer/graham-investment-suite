@@ -14,13 +14,19 @@ const tabs = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("graham");
+  const [manualDraft, setManualDraft] = useState(null);
+
+  function openManualCapture(company) {
+    setManualDraft(company);
+    setActiveTab("graham");
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: SURFACE.page, color: SURFACE.text }}>
       <Header tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
       <main style={{ maxWidth: 1180, margin: "0 auto", padding: "24px 18px 48px" }}>
-        {activeTab === "graham" ? <GrahamAnalyzer /> : null}
-        {activeTab === "watchlist" ? <Watchlist /> : null}
+        {activeTab === "graham" ? <GrahamAnalyzer manualDraft={manualDraft} onManualDraftLoaded={() => setManualDraft(null)} /> : null}
+        {activeTab === "watchlist" ? <Watchlist onManualCapture={openManualCapture} /> : null}
         {activeTab === "macro" ? <MacroRadar /> : null}
       </main>
       <Footer />
