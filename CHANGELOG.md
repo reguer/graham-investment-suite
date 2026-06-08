@@ -16,6 +16,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - `scripts/run-mode.js` y `npm run run:mode` para modos `once`, `watch` y `dashboard`.
 - Reportes semanales con bloque `Origen` basado en `.local_runtime/device.json`.
 - Tests adicionales para casos borde de Graham: quick ratio sin inventario, EPS cero y EPS CAGR con un solo año.
+- Backtesting v2.0 basico con `backtesting/engine.js`, estrategia Graham defensiva, metricas y reporte Markdown.
+- Descarga historica OHLCV con Stooq/Yahoo fallback via `npm run historical:download`.
+- Fixture `backtesting/tests/fixtures/mini_universe.json` y tests de compra, salida por valuacion y stop loss.
 - `docs/00_PREFLIGHT_ESTADO_REAL.md` — Diagnóstico técnico inicial del repositorio
 - `docs/01_PROCESOS_LOCALES_DASHBOARD.md` — Aislamiento de procesos y puertos locales
 - `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` — Jerarquía de fuentes de datos y propuesta de automatización

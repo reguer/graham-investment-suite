@@ -99,6 +99,8 @@ npm run weekly:screen  # Screening semanal + reporte Markdown
 npm run weekly:screen -- --ticker KBH --format csv --no-telegram # Export filtrado sin enviar Telegram
 npm run run:mode -- --mode watch --interval-minutes 15 # Poll local de precios/reportes mientras el equipo esta encendido
 npm run runtime:init # Crea .local_runtime/device.json sin tocar .env.local
+npm run historical:download # Descarga OHLCV historico para 10 tickers base
+npm run backtest:mini # Ejecuta fixture minimo de backtesting Graham defensivo
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
@@ -247,9 +249,14 @@ data/cache/
 
 ## Backtesting
 
-El sistema de backtesting no esta implementado aun. El plan completo esta en `docs/12_BACKTESTING_ESTRATEGIAS.md`.
+El backtesting v2.0 basico ya existe para estrategia Graham defensiva:
 
-Las 8 estrategias propuestas incluyen: Graham defensivo puro, precio objetivo, margen de seguridad, tendencia fuerte, mixta, alertas lunes/viernes, entrada por watchlist y espera de condicion completa.
+```bash
+npm run historical:download -- --start 2020-01-01 --end 2026-06-08
+npm run backtest:mini
+```
+
+La descarga historica usa Stooq si entrega CSV y Yahoo Chart como fallback sin API key. El motor inicial usa fundamentales snapshot como proxy historico, por lo que sirve para validar flujo, reglas y sensibilidad a precio, no como resultado historico definitivo. El plan completo sigue en `docs/12_BACKTESTING_ESTRATEGIAS.md`.
 
 ---
 

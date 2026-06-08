@@ -1,6 +1,6 @@
 # 12 — Plan de Backtesting y Evaluación de Estrategias
 
-> Propuesta completa para convertir el proyecto en un sistema de backtesting histórico. El sistema actual NO tiene motor de backtesting — solo tiene screening semanal.
+> Plan y estado de backtesting histórico. Desde 2026-06-08 existe un motor básico Graham defensivo con histórico de precios y fixture mínimo; el backtesting completo con fundamentales históricos sigue pendiente.
 
 ---
 
@@ -8,12 +8,12 @@
 
 | Aspecto | Estado |
 |---------|--------|
-| Motor de backtesting | **No existe** |
-| Datos históricos | **No existen** en el repo |
-| Estrategias definidas formalmente | No existen como código |
+| Motor de backtesting | **Básico implementado** en `backtesting/engine.js` |
+| Datos históricos | 10 CSV 2020-01-01 a 2026-06-08 en `backtesting/data/historical/` |
+| Estrategias definidas formalmente | Graham defensivo básico en `backtesting/strategies/graham-defensive.js` |
 | Resultados históricos | Solo `reports/weekly/*.md` (desde 2026) |
 | Benchmark | No existe en el sistema |
-| Métricas de desempeño | No calculadas |
+| Métricas de desempeño | Básicas en `backtesting/metrics.js` |
 
 Lo que SÍ existe y puede usarse como base:
 - `calcRatios()` — calcula todos los ratios en cualquier momento si se tienen los datos
@@ -53,7 +53,7 @@ backtesting/
 │   └── ...
 │
 ├── reports/
-│   ├── graham-defensive_report.md
+│   ├── graham-defensive-mini-report.md
 │   └── strategy-comparison.md
 │
 ├── config/
@@ -70,7 +70,7 @@ backtesting/
 
 ## 3. Fuentes de datos históricos
 
-### Stooq (recomendado — ya integrado)
+### Stooq (recomendado — ya integrado con fallback)
 
 Stooq permite descargar series históricas de precios:
 
@@ -79,18 +79,16 @@ URL: https://stooq.com/q/d/l/?s=kbh.us&d1=20200101&d2=20261231&i=d
 Formato: CSV con columnas Date, Open, High, Low, Close, Volume
 ```
 
-El módulo `priceSources.js` ya usa Stooq para precios spot. Puede extenderse para histórico.
+El módulo `priceSources.js` ya usa Stooq para precios spot e histórico. Si Stooq devuelve un challenge HTML en vez de CSV, `fetchHistoricalPrices()` usa Yahoo Chart como fallback sin API key.
 
-### Yahoo Finance (alternativo)
+### Yahoo Finance (fallback implementado)
 
 Con `yahoo-finance2` se pueden obtener series históricas:
 
 ```javascript
-// No implementado aún
-const history = await yahooFinance.historical('KBH', {
-  period1: '2020-01-01',
-  period2: '2026-12-31',
-  interval: '1d'
+fetchYahooHistoricalPrices("KBH", {
+  startDate: "2020-01-01",
+  endDate: "2026-06-08"
 })
 ```
 
@@ -267,6 +265,8 @@ Current ratio trimestral — manual o Yahoo Finance
 - Aplicar backtesting solo sobre el precio, usando los fundamentales actuales
 - Documentar claramente esta simplificación como sesgo del backtest
 
+Esta opción práctica es la que está implementada en v2.0 básico. No debe interpretarse como simulación histórica definitiva hasta incorporar fundamentales históricos por periodo.
+
 ---
 
 ## 9. Reproducibilidad
@@ -294,7 +294,7 @@ Los resultados con el mismo `code_version` + `strategy_version` + `data_source_v
 Para validar el motor sin correr backtest completo:
 
 ```javascript
-// backtesting/tests/test-mini-dataset.js
+// backtesting/tests/backtesting.test.js
 
 // Dataset de 3 empresas, 2 años, datos simplificados
 import miniUniverse from './fixtures/mini_universe.json'
@@ -303,7 +303,8 @@ import miniUniverse from './fixtures/mini_universe.json'
 // Test 2: Empresa que sale de criterios Graham → debe vender
 // Test 3: Stop loss: empresa cae -20% → debe salir
 
-// Resultado esperado documentado para validación
+// Resultado esperado documentado para validación:
+// SAFE compra y mantiene, EXIT sale por P/E x P/B, DROP sale por stop loss.
 ```
 
 ---
@@ -312,14 +313,14 @@ import miniUniverse from './fixtures/mini_universe.json'
 
 | Paso | Descripción | Prioridad | Dependencias |
 |------|-------------|-----------|-------------|
-| 1 | Crear carpeta `backtesting/` con estructura | Alta | — |
-| 2 | Descargar precios históricos de Stooq para las 10 empresas | Alta | — |
-| 3 | Crear `backtesting/strategies/graham-defensive.js` | Alta | Paso 2 |
-| 4 | Crear motor de ejecución de backtests | Alta | Pasos 2-3 |
-| 5 | Calcular métricas básicas (retorno, drawdown, win rate) | Media | Paso 4 |
+| 1 | Crear carpeta `backtesting/` con estructura | Alta | ✅ Completado |
+| 2 | Descargar precios históricos para las 10 empresas | Alta | ✅ Completado con Stooq/Yahoo fallback |
+| 3 | Crear `backtesting/strategies/graham-defensive.js` | Alta | ✅ Completado básico |
+| 4 | Crear motor de ejecución de backtests | Alta | ✅ Completado básico |
+| 5 | Calcular métricas básicas (retorno, drawdown, win rate) | Media | ✅ Completado básico |
 | 6 | Comparar vs benchmark S&P 500 | Media | Paso 5 |
-| 7 | Crear reporte HTML de resultados | Media | Paso 6 |
+| 7 | Crear reporte de resultados | Media | ✅ Markdown básico; HTML pendiente |
 | 8 | Agregar datos fundamentales históricos | Alta | Manual |
 | 9 | Crear las 8 estrategias restantes | Media | Paso 8 |
-| 10 | Crear tests de backtesting | Media | Paso 4 |
+| 10 | Crear tests de backtesting | Media | ✅ Completado con mini_universe |
 | 11 | Integrar resultados con BD SQLite | Media | Paso 4 + BD |

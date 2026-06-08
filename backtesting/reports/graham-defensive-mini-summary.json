@@ -1,0 +1,79 @@
+{
+  "metrics": {
+    "initialCapital": 100000,
+    "finalEquity": 119363.53552199999,
+    "totalReturn": 0.19363535521999992,
+    "annualizedReturn": 0.19436111739278616,
+    "maxDrawdown": -0.22326456464480485,
+    "tradeCount": 3,
+    "openTradeCount": 0,
+    "winRate": 0.6666666666666666,
+    "profitFactor": 8.991467042165791,
+    "averageHoldDays": 209.66666666666666,
+    "sharpe": 5.789882028710678,
+    "sortino": null
+  },
+  "trades": [
+    {
+      "id": "graham-defensive-DROP-2024-01-02",
+      "ticker": "DROP",
+      "companyName": "Drawdown Test Co",
+      "strategy": "graham-defensive",
+      "strategyVersion": "0.1.0",
+      "entryDate": "2024-01-02",
+      "entryPrice": 50.05,
+      "entryCondition": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+      "shares": 199,
+      "capitalInvested": 9969.90995,
+      "exitDate": "2024-03-29",
+      "exitPrice": 37.962,
+      "exitCondition": "Stop loss -20%.",
+      "grossReturnPct": -0.2415184815184814,
+      "netReturnPct": -0.24303392910785504,
+      "pnl": -2423.0263879999984,
+      "holdDays": 87
+    },
+    {
+      "id": "graham-defensive-EXIT-2024-01-02",
+      "ticker": "EXIT",
+      "companyName": "Exit Valuation Co",
+      "strategy": "graham-defensive",
+      "strategyVersion": "0.1.0",
+      "entryDate": "2024-01-02",
+      "entryPrice": 40.03999999999999,
+      "entryCondition": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+      "shares": 249,
+      "capitalInvested": 9979.929959999998,
+      "exitDate": "2024-06-28",
+      "exitPrice": 119.88,
+      "exitCondition": "P/E x P/B 90.00 > 28.",
+      "grossReturnPct": 1.9940059940059944,
+      "netReturnPct": 1.9880239640479407,
+      "pnl": 19840.339920000002,
+      "holdDays": 178
+    },
+    {
+      "id": "graham-defensive-SAFE-2024-01-02",
+      "ticker": "SAFE",
+      "companyName": "Safe Builder Co",
+      "strategy": "graham-defensive",
+      "strategyVersion": "0.1.0",
+      "entryDate": "2024-01-02",
+      "entryPrice": 50.05,
+      "entryCondition": "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+      "shares": 199,
+      "capitalInvested": 9969.90995,
+      "exitDate": "2024-12-31",
+      "exitPrice": 59.94,
+      "exitCondition": "Cierre del periodo de backtest.",
+      "grossReturnPct": 0.19760239760239762,
+      "netReturnPct": 0.19520958561917603,
+      "pnl": 1946.22199,
+      "holdDays": 364
+    }
+  ],
+  "assumptions": [
+    "Backtesting v2.0 basico usa fundamentales snapshot como proxy historico.",
+    "No incluye impuestos, dividendos, FX ni datos fundamentales trimestrales historicos."
+  ]
+}
