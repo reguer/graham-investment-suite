@@ -6,7 +6,7 @@ import { fmt, pct } from "../../lib/formatters.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
-import { buildWatchlist, buildWatchlistMeta, fetchPublicCompanies } from "./watchlist.js";
+import { buildWatchlist, buildWatchlistMeta, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
 
 function colorFor(level) {
   if (level === "approved") return AC.green;
@@ -25,10 +25,12 @@ export default function Watchlist({ onManualCapture }) {
   const [newTicker, setNewTicker] = useState("");
   const [newCompanyName, setNewCompanyName] = useState("");
   const [publicCompanies, setPublicCompanies] = useState([]);
+  const [selectedTag, setSelectedTag] = useState("");
   const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
+  const allTags = useMemo(() => collectTags(results), [results]);
   const statusCounts = useMemo(() => results.reduce((counts, result) => {
     const id = result.systemStatus?.id || "watch_observation";
     counts[id] = (counts[id] || 0) + 1;
@@ -140,10 +142,11 @@ export default function Watchlist({ onManualCapture }) {
         [result.ticker, result.yahooSymbol, result.companyName, result.sector, result.market]
           .filter(Boolean)
           .some((value) => String(value).toLowerCase().includes(normalizedQuery));
-      return matchesView && matchesQuery;
+      const matchesTag = !selectedTag || normalizeTags(result.tags).includes(selectedTag);
+      return matchesView && matchesQuery && matchesTag;
     });
     return sortFavoritesFirst(matches, favorites);
-  }, [favoriteSet, favorites, query, results, view]);
+  }, [favoriteSet, favorites, query, results, selectedTag, view]);
 
   return (
     <section>
@@ -278,6 +281,21 @@ export default function Watchlist({ onManualCapture }) {
             padding: "8px 10px",
           }}
         />
+        <select
+          value={selectedTag}
+          onChange={(event) => setSelectedTag(event.target.value)}
+          style={{
+            minWidth: 190,
+            border: `1px solid ${SURFACE.border}`,
+            background: "#0b1020",
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Todas las etiquetas</option>
+          {allTags.map((tag) => <option key={tag} value={tag}>{tag}</option>)}
+        </select>
       </div>
 
       <div style={{ display: "grid", gap: 10 }}>
@@ -331,6 +349,15 @@ export default function Watchlist({ onManualCapture }) {
             </div>
 
             <p style={{ color: SURFACE.text, margin: "12px 0 0", lineHeight: 1.5 }}>{result.watchReason}</p>
+            {normalizeTags(result.tags).length ? (
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
+                {normalizeTags(result.tags).slice(0, 8).map((tag) => (
+                  <span key={tag} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 999, color: SURFACE.muted, fontSize: 11, padding: "3px 7px", background: "#060911" }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
               <div style={{ color: SURFACE.muted, fontSize: 12 }}>
                 Estado: {result.systemStatus?.label || result.analysisStatus || "pendiente"} · Validacion: {result.validationStatus || "sin validar"} · Fuente: {result.source || "sin fuente"}

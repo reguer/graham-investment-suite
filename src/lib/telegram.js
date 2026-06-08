@@ -4,20 +4,22 @@ export function shouldSendTelegram(env = process.env) {
     Boolean(env.TELEGRAM_CHAT_ID);
 }
 
-export function formatTelegramReportMessage({ date, summary, quoteStatus }) {
+export function formatTelegramReportMessage({ date, summary, quoteStatus, cadence = null }) {
   return [
     `ALERTA GRAHAM - ${date}`,
+    cadence?.label ? `Tipo: ${cadence.label}` : null,
     quoteStatus.ok ? `Precios: ${quoteStatus.source}` : `Precios: fallo (${quoteStatus.error})`,
     `Aprobadas: ${summary.approved.length}`,
     `Cerca: ${summary.near.length}`,
     `Observacion: ${summary.watch.length}`,
+    `Referencias: ${summary.reference?.length || 0}`,
     `Pendientes/no soportadas: ${summary.pending.length}`,
     "",
     `Aprobadas destacadas: ${summary.approved.slice(0, 5).map((item) => item.ticker).join(", ") || "Sin aprobadas"}`,
     `Cerca destacadas: ${summary.near.slice(0, 5).map((item) => item.ticker).join(", ") || "Sin cercanas"}`,
     "",
     "Comandos: /resumen, /aprobadas, /cerca, /ticker SIMBOLO, /ayuda",
-  ].join("\n");
+  ].filter((line) => line !== null).join("\n");
 }
 
 export function formatTelegramHelpMessage() {

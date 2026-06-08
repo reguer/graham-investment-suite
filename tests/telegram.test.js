@@ -15,11 +15,14 @@ describe("telegram alerts", () => {
         approved: [{ ticker: "KBH" }],
         near: [],
         watch: [{ ticker: "AAPL" }],
+        reference: [],
         pending: [{ ticker: "SP500" }],
       },
+      cadence: { label: "Alerta formal de viernes" },
     });
 
     expect(text).toContain("ALERTA GRAHAM - 2026-06-05");
+    expect(text).toContain("Tipo: Alerta formal de viernes");
     expect(text).toContain("Aprobadas: 1");
     expect(text).toContain("KBH");
     expect(text).toContain("/ticker SIMBOLO");

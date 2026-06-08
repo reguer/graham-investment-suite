@@ -123,6 +123,19 @@ export function buildWatchlistMeta(watchlist, publicCompanies = []) {
   };
 }
 
+export function normalizeTags(tags) {
+  if (Array.isArray(tags)) return tags.map((tag) => String(tag).trim()).filter(Boolean);
+  return String(tags || "").split(",").map((tag) => tag.trim()).filter(Boolean);
+}
+
+export function collectTags(items) {
+  const tags = new Set();
+  for (const item of items) {
+    for (const tag of normalizeTags(item.tags)) tags.add(tag);
+  }
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
 export const publicCompanies = [];
 export const watchlist = buildWatchlist(publicCompanies);
 export const watchlistMeta = buildWatchlistMeta(watchlist, publicCompanies);

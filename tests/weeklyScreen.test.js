@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCapturePayload, getReportCadence, renderReport, todayIso } from "../scripts/weekly-screen.js";
+import { buildAlertItems, buildCapturePayload, getReportCadence, renderReport, todayIso } from "../scripts/weekly-screen.js";
 
 const approvedResult = {
   ticker: "KBH",
@@ -46,6 +46,7 @@ describe("weekly-screen report cadence", () => {
     expect(report).toContain("# Oportunidades Graham - 2026-06-05");
     expect(report).toContain("Alerta formal de viernes");
     expect(report).toContain("## Resumen Semanal");
+    expect(report).toContain("## Alertas Accionables");
     expect(report).toContain("Aprobadas destacadas: KBH");
   });
 
@@ -71,10 +72,23 @@ describe("weekly-screen report cadence", () => {
     expect(payload.reportDate).toBe("2026-06-05");
     expect(payload.counts.total).toBe(2);
     expect(payload.counts.approved).toBe(1);
+    expect(payload.counts.reference).toBe(0);
     expect(payload.companies[0]).toMatchObject({
       ticker: "KBH",
       livePrice: 52,
       alertLevel: "approved",
     });
+  });
+
+  it("builds actionable alert items for approved and near names", () => {
+    const alerts = buildAlertItems({
+      approved: [approvedResult],
+      near: [{ ...approvedResult, ticker: "LEN" }],
+      watch: [],
+      reference: [],
+      pending: [],
+    }, getReportCadence(new Date(2026, 5, 1)));
+
+    expect(alerts.map((alert) => alert.type)).toEqual(["aprobada_graham", "cerca_de_aprobar"]);
   });
 });

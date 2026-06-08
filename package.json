@@ -24,7 +24,8 @@
     "db:migrate-candidates": "node scripts/run-node22.js scripts/migrate-candidates.js",
     "fundamentals:update": "node scripts/run-node22.js scripts/update-fundamentals.js",
     "fundamentals:ingest": "node scripts/run-node22.js scripts/data-ingestion.js",
-    "scheduler:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-weekly-alerts.ps1"
+    "scheduler:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-weekly-alerts.ps1",
+    "security:audit": "node scripts/run-node22.js scripts/security-audit.js"
   },
   "dependencies": {
     "react": "^18.3.0",

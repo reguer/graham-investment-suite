@@ -1,7 +1,7 @@
 # 08 — Sistema de Alertas: Local y Telegram
 
 > Diseño del sistema de alertas para notificar cambios de estado, precios objetivo y errores de sistema.
-> El sistema actual NO tiene alertas automáticas más allá del reporte semanal en Markdown. Todo lo documentado es una propuesta.
+> Estado actualizado: el sistema genera reporte Markdown, alertas accionables lunes/viernes y envio Telegram opcional cuando `.env.local` lo habilita. No se versionan tokens ni chat IDs.
 
 ---
 
@@ -9,10 +9,10 @@
 
 | Aspecto | Estado |
 |---------|--------|
-| Alertas automáticas | No existen |
+| Alertas automáticas | Lunes/viernes via `weekly-screen.js` + Task Scheduler |
 | Reporte semanal | Sí — `reports/weekly/YYYY-MM-DD.md` vía `npm run weekly:screen` |
 | Alertas en dashboard | Solo visual (colores semáforo) |
-| Telegram | No implementado |
+| Telegram | Implementado en `src/lib/telegram.js`, desactivado si no hay variables locales |
 | Email | No implementado |
 | Notificaciones del sistema (Windows) | No implementado |
 | Historial de alertas | No existe |
@@ -155,25 +155,12 @@ Margen de Seguridad: 64.2%
 💻 Laptop Eduardo (principal)
 ```
 
-### Módulo propuesto: `src/lib/telegram.js`
+### Módulo actual: `src/lib/telegram.js`
 
-```javascript
-// src/lib/telegram.js — PROPUESTO (no existe)
-export async function sendTelegramAlert(alert) {
-  const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
-  if (!process.env.ENABLE_TELEGRAM_ALERTS || !token || !chatId) return
-  
-  const text = formatAlertMessage(alert)
-  const url = `https://api.telegram.org/bot${token}/sendMessage`
-  
-  await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' })
-  })
-}
-```
+- `shouldSendTelegram(env)`: exige `ENABLE_TELEGRAM_ALERTS=true`, token y chat id.
+- `formatTelegramReportMessage()`: genera resumen compacto para lunes/viernes.
+- `formatTickerSignalMessage()`: formato de respuesta por ticker para comandos futuros.
+- `sendTelegramMessage()`: envia `sendMessage` sin hardcodear credenciales.
 
 ---
 
@@ -234,7 +221,7 @@ El usuario puede suprimir una alerta desde el dashboard:
 
 ## 8. Historial y persistencia de alertas
 
-Todas las alertas se guardan en la tabla `alerts_emitted` de la BD SQLite.
+Pendiente: crear tabla `alerts_emitted` en PostgreSQL para deduplicar historico. Por ahora el reporte Markdown y `data/cache/company-capture-YYYY-MM-DD.json` guardan evidencia de cada corrida.
 
 **Retención propuesta**: Mantener todas las alertas sin límite de tiempo (son livianas en espacio).
 

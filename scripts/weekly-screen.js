@@ -75,6 +75,54 @@ function renderWeeklySummary(summary, cadence) {
 `;
 }
 
+export function buildAlertItems(summary, cadence) {
+  const alerts = [];
+  for (const item of summary.approved.slice(0, 12)) {
+    alerts.push({
+      severity: "alta",
+      type: "aprobada_graham",
+      ticker: item.ticker,
+      message: `${item.ticker} esta dentro del rango Graham defensivo. Revisar liquidez, deuda y precio antes de operar.`,
+    });
+  }
+  for (const item of summary.near.slice(0, 12)) {
+    alerts.push({
+      severity: "media",
+      type: "cerca_de_aprobar",
+      ticker: item.ticker,
+      message: `${item.ticker} esta cerca del rango defensivo. Vigilar precio vivo y margen de seguridad.`,
+    });
+  }
+  if (cadence.type === "formal_friday" && summary.pending.length) {
+    alerts.push({
+      severity: "media",
+      type: "pendientes_semana",
+      ticker: "PENDIENTES",
+      message: `${summary.pending.length} instrumentos siguen pendientes/no soportados. Cerrar la semana depurando captura manual o exclusion.`,
+    });
+  }
+  if (cadence.type === "formal_monday" && summary.watch.length) {
+    alerts.push({
+      severity: "baja",
+      type: "revision_observacion",
+      ticker: "OBSERVACION",
+      message: `${summary.watch.length} empresas estan en observacion. Priorizar solo las que tengan catalizador o mejora de precio.`,
+    });
+  }
+  return alerts;
+}
+
+export function renderAlertsSection(summary, cadence) {
+  const alerts = buildAlertItems(summary, cadence);
+  if (!alerts.length) return "## Alertas Accionables\n\nNo hay alertas accionables nuevas bajo las reglas actuales.\n";
+  return `## Alertas Accionables
+
+| Severidad | Tipo | Ticker | Senal |
+|---|---|---|---|
+${alerts.map((alert) => `| ${alert.severity} | ${alert.type} | ${alert.ticker} | ${alert.message} |`).join("\n")}
+`;
+}
+
 export function renderReport(results, quoteStatus, { date = new Date() } = {}) {
   const { watchlistMeta } = loadWatchlist();
   const summary = summarizeScreen(results);
@@ -102,6 +150,8 @@ No es asesoria financiera. Este reporte usa el snapshot financiero de la watchli
 
 ${renderWeeklySummary(summary, cadence)}
 
+${renderAlertsSection(summary, cadence)}
+
 ${renderSection("Aprobadas Graham", summary.approved, "No hay companias aprobadas esta semana.")}
 
 ${renderSection("Cerca de Aprobar", summary.near, "No hay companias cerca del rango esta semana.")}
@@ -127,6 +177,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date() } 
       approved: summary.approved.length,
       near: summary.near.length,
       watch: summary.watch.length,
+      reference: summary.reference.length,
       pending: summary.pending.length,
       analyzed: watchlistMeta.analyzedCount,
       publicExport: watchlistMeta.publicExportCount,
@@ -146,6 +197,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date() } 
       quote: item.quote || null,
       ratios: item.ratios || null,
       classification: item.classification || null,
+      systemStatus: item.systemStatus || null,
       watchReason: item.watchReason || "",
     })),
   };
@@ -186,7 +238,7 @@ async function main() {
   const telegramEnv = { ...loadEnvLocal(), ...process.env };
   if (cadence.includeWeeklySummary && shouldSendTelegram(telegramEnv)) {
     try {
-      await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus }), { env: telegramEnv });
+      await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus, cadence }), { env: telegramEnv });
       console.log("Telegram enviado: resumen semanal.");
     } catch (error) {
       console.log(`Telegram no enviado: ${error.message}`);
