@@ -46,7 +46,7 @@ export function hasFinancialSnapshot(candidate) {
 }
 
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
-  const price = quote?.price ?? candidate.price;
+  const price = quote?.price ?? candidate.lastPrice ?? candidate.price;
   if (isReferenceInstrument(candidate)) {
     return {
       ...candidate,

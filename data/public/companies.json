@@ -19,7 +19,12 @@
       "benchmark",
       "industrial"
     ],
-    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 50786.01,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "USD"
   },
   {
     "ticker": "^GSPC",
@@ -41,7 +46,12 @@
       "benchmark",
       "us-market"
     ],
-    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 7405.73,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "USD"
   },
   {
     "ticker": "^IXIC",
@@ -63,7 +73,12 @@
       "benchmark",
       "technology"
     ],
-    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas."
+    "notes": "Indice de referencia. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 25929.662,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "USD"
   },
   {
     "ticker": "^MXX",
@@ -85,7 +100,12 @@
       "benchmark",
       "mexico"
     ],
-    "notes": "Indice de referencia mexicano. No se analiza con reglas Graham defensivas."
+    "notes": "Indice de referencia mexicano. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 65698.1,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "MXN"
   },
   {
     "ticker": "A",
@@ -12487,7 +12507,12 @@
       "etf",
       "technology"
     ],
-    "notes": "ETF de referencia para Nasdaq 100. No se analiza con reglas Graham defensivas."
+    "notes": "ETF de referencia para Nasdaq 100. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 716.07,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "USD"
   },
   {
     "ticker": "RCL",
@@ -13406,7 +13431,12 @@
       "etf",
       "us-market"
     ],
-    "notes": "ETF de referencia para S&P 500. No se analiza con reglas Graham defensivas."
+    "notes": "ETF de referencia para S&P 500. No se analiza con reglas Graham defensivas.",
+    "lastPrice": 739.22,
+    "lastPriceDate": "2026-06-08",
+    "lastPriceUpdatedAt": "2026-06-08T20:50:24.886Z",
+    "lastPriceSource": "Yahoo Finance Chart",
+    "quoteCurrency": "USD"
   },
   {
     "ticker": "SRE",

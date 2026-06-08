@@ -94,4 +94,13 @@ describe("watchlist screening", () => {
     expect(result.ratios).toBeNull();
     expect(result.classification.id).toBe("index_reference");
   });
+
+  it("uses lastPrice as live price while preserving the base financial snapshot", () => {
+    const result = evaluateCandidate({ ...candidate, lastPrice: 180 });
+
+    expect(result.livePrice).toBe(180);
+    expect(result.ratios.pe).toBeCloseTo(18);
+    expect(result.ratios.pb).toBeCloseTo(1.8);
+    expect(result.ratios.pePb).toBeCloseTo(32.4);
+  });
 });

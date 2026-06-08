@@ -1,36 +1,67 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { tickerUniverse, universeMeta } from "../src/tools/watchlist/universe.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
+import { normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
+import { insertPriceSnapshotSql, PUBLIC_COMPANIES_PATH, runPsql } from "./db-client.js";
 
-function todayIso() {
-  return new Date().toISOString().slice(0, 10);
+export function todayIso(date = new Date()) {
+  return date.toISOString().slice(0, 10);
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
   const args = new Set(argv.slice(2));
   return {
     requestedOnly: args.has("--requested-only"),
+    referencesOnly: args.has("--references-only"),
   };
 }
 
-async function main() {
-  const args = parseArgs(process.argv);
-  const items = args.requestedOnly ? tickerUniverse.filter((item) => item.priority === "requested") : tickerUniverse;
-  const quotes = await fetchMarketQuotes(items);
-  const resolved = items.filter((item) => quotes[item.ticker]);
-  const unresolved = items.filter((item) => !quotes[item.ticker]);
+export function loadPublicUniverse(path = PUBLIC_COMPANIES_PATH) {
+  return JSON.parse(readFileSync(path, "utf8")).map(normalizeExportedCompany);
+}
 
-  const payload = {
-    generatedAt: new Date().toISOString(),
-    mode: args.requestedOnly ? "requested-only" : "all",
-    meta: universeMeta,
+function savePublicUniverse(records, path = PUBLIC_COMPANIES_PATH) {
+  const sorted = records.sort((a, b) => a.ticker.localeCompare(b.ticker));
+  writeFileSync(path, `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
+  mkdirSync(join(process.cwd(), "public", "data"), { recursive: true });
+  writeFileSync(join(process.cwd(), "public", "data", "companies.json"), `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
+  return sorted;
+}
+
+export function selectRefreshTargets(records, args) {
+  let items = records;
+  if (args.requestedOnly) items = items.filter((item) => item.priority === "requested");
+  if (args.referencesOnly) items = items.filter((item) => item.analysisStatus === "index_reference" || item.validationStatus === "index_reference");
+  return items.filter((item) => item.yahooSymbol || item.yahoo_symbol || item.ticker);
+}
+
+export function mergeQuotesIntoRecords(records, quotes, { date = new Date() } = {}) {
+  const refreshedAt = date.toISOString();
+  return records.map((record) => {
+    const quote = quotes[record.ticker];
+    if (!quote) return record;
+    return {
+      ...record,
+      lastPrice: quote.price,
+      lastPriceDate: quote.date || todayIso(date),
+      lastPriceUpdatedAt: refreshedAt,
+      lastPriceSource: quote.source,
+      quoteCurrency: quote.currency || record.currency || "",
+    };
+  });
+}
+
+export function buildRefreshPayload({ records, targets, quotes, args, date = new Date() }) {
+  const resolved = targets.filter((item) => quotes[item.ticker]);
+  const unresolved = targets.filter((item) => !quotes[item.ticker]);
+  return {
+    generatedAt: date.toISOString(),
+    mode: args.requestedOnly ? "requested-only" : args.referencesOnly ? "references-only" : "all",
     counts: {
-      requested: universeMeta.requestedCount,
-      bmvSic: universeMeta.bmvSicCount,
-      total: items.length,
+      total: targets.length,
       resolved: resolved.length,
       unresolved: unresolved.length,
+      publicExport: records.length,
     },
     quotes,
     unresolved: unresolved.map((item) => ({
@@ -40,19 +71,49 @@ async function main() {
       validationStatus: item.validationStatus,
     })),
   };
-
-  const cacheDir = join(process.cwd(), "data", "cache");
-  mkdirSync(cacheDir, { recursive: true });
-  const filePath = join(cacheDir, `yahoo-universe-snapshot-${todayIso()}.json`);
-  writeFileSync(filePath, JSON.stringify(payload, null, 2), "utf8");
-
-  console.log(`Universo consultado: ${items.length}`);
-  console.log(`Precios resueltos: ${resolved.length}`);
-  console.log(`Pendientes: ${unresolved.length}`);
-  console.log(`Snapshot guardado: ${filePath}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+function persistPriceSnapshots(targets, quotes) {
+  const statements = targets
+    .filter((item) => quotes[item.ticker])
+    .map((item) => insertPriceSnapshotSql({
+      ticker: item.ticker,
+      yahooSymbol: item.yahooSymbol,
+      ...quotes[item.ticker],
+      marketTime: [quotes[item.ticker].date, quotes[item.ticker].time].filter(Boolean).join(" "),
+    }));
+  if (!statements.length) return { ok: true, skipped: false, stdout: "" };
+  return runPsql(statements.join("\n"));
+}
+
+export async function refreshUniversePrices({ argv = process.argv, fetcher = fetchMarketQuotes, date = new Date() } = {}) {
+  const args = parseArgs(argv);
+  const records = loadPublicUniverse();
+  const targets = selectRefreshTargets(records, args);
+  const quotes = await fetcher(targets);
+  const nextRecords = mergeQuotesIntoRecords(records, quotes, { date });
+  savePublicUniverse(nextRecords);
+
+  const payload = buildRefreshPayload({ records: nextRecords, targets, quotes, args, date });
+  const cacheDir = join(process.cwd(), "data", "cache");
+  mkdirSync(cacheDir, { recursive: true });
+  const filePath = join(cacheDir, `yahoo-universe-snapshot-${todayIso(date)}.json`);
+  writeFileSync(filePath, JSON.stringify(payload, null, 2), "utf8");
+
+  const dbResult = persistPriceSnapshots(targets, quotes);
+  return { ...payload, filePath, dbSkipped: Boolean(dbResult.skipped) };
+}
+
+const isCli = process.argv[1] && process.argv[1].endsWith("refresh-universe.js");
+if (isCli) {
+  refreshUniversePrices().then((payload) => {
+    console.log(`Universo consultado: ${payload.counts.total}`);
+    console.log(`Precios resueltos: ${payload.counts.resolved}`);
+    console.log(`Pendientes: ${payload.counts.unresolved}`);
+    console.log(`Snapshot guardado: ${payload.filePath}`);
+    if (payload.dbSkipped) console.log("PostgreSQL omitido: DATABASE_URL no configurado.");
+  }).catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

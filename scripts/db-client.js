@@ -190,6 +190,17 @@ ON CONFLICT (ticker, snapshot_date, source) DO UPDATE SET
   notes = EXCLUDED.notes;`.trim();
 }
 
+export function insertPriceSnapshotSql(snapshot) {
+  return `
+INSERT INTO price_snapshots (
+  ticker, yahoo_symbol, price, currency, source, market_time
+) VALUES (
+  ${sqlString(snapshot.ticker)}, ${sqlString(snapshot.yahooSymbol || snapshot.symbol || snapshot.ticker)},
+  ${sqlNumber(snapshot.price)}, ${sqlString(snapshot.currency || "")},
+  ${sqlString(snapshot.source || "price-refresh")}, ${sqlString(snapshot.marketTime || snapshot.date || "")}
+);`.trim();
+}
+
 export function loadPublicCompanies(path = PUBLIC_COMPANIES_PATH) {
   if (!existsSync(path)) return [];
   return JSON.parse(readFileSync(path, "utf8"));
