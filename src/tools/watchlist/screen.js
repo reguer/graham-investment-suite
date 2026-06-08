@@ -1,4 +1,5 @@
 import { classify } from "../graham-analyzer/classify.js";
+import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 export function deriveSnapshot(candidate, price = candidate.price) {
@@ -48,7 +49,7 @@ export function hasFinancialSnapshot(candidate) {
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
   const price = quote?.price ?? candidate.lastPrice ?? candidate.price;
   if (isReferenceInstrument(candidate)) {
-    return {
+    return withSystemStatus({
       ...candidate,
       quote,
       livePrice: price ?? null,
@@ -63,13 +64,13 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
       alertLabel: "Referencia de mercado",
       closeToDefensive: false,
       near: false,
-    };
+    });
   }
 
   const ratios = deriveSnapshot(candidate, price);
   if (!ratios) {
     if (candidate.analysisStatus === "analyzed") {
-      return {
+      return withSystemStatus({
         ...candidate,
         quote,
         livePrice: quote?.price ?? candidate.price ?? null,
@@ -84,11 +85,11 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
         alertLabel: candidate.classificationLabel || "Analizada sin aprobacion Graham",
         closeToDefensive: false,
         near: false,
-      };
+      });
     }
 
     if (String(candidate.analysisStatus || "").startsWith("analysis_")) {
-      return {
+      return withSystemStatus({
         ...candidate,
         quote,
         livePrice: quote?.price ?? candidate.price ?? null,
@@ -103,10 +104,10 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
         alertLabel: candidate.notes || "No soportada por analisis automatico",
         closeToDefensive: false,
         near: false,
-      };
+      });
     }
 
-    return {
+    return withSystemStatus({
       ...candidate,
       quote,
       livePrice: quote?.price ?? null,
@@ -121,7 +122,7 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
       alertLabel: quote?.price ? "Precio disponible, faltan fundamentales" : "Pendiente de primer analisis",
       closeToDefensive: false,
       near: false,
-    };
+    });
   }
 
   const classification = classify(ratios);
@@ -145,7 +146,7 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     alertLabel = "Cerca de aprobar";
   }
 
-  return {
+  return withSystemStatus({
     ...candidate,
     quote,
     livePrice: price,
@@ -155,7 +156,7 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     alertLabel,
     closeToDefensive,
     near,
-  };
+  });
 }
 
 export function screenWatchlist(items, quotesByTicker = {}, policy = DEFAULT_ALERT_POLICY) {
@@ -186,4 +187,8 @@ export function isReferenceInstrument(candidate) {
     candidate.tags?.includes("index_reference") ||
     ["INDEX", "ETF"].includes(String(candidate.quoteType || "").toUpperCase())
   );
+}
+
+function withSystemStatus(result) {
+  return { ...result, systemStatus: mapSystemStatus(result) };
 }

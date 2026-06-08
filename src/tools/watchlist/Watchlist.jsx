@@ -5,6 +5,7 @@ import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
+import { listSystemStatuses } from "./statusMapper.js";
 import { buildWatchlist, buildWatchlistMeta, fetchPublicCompanies } from "./watchlist.js";
 
 function colorFor(level) {
@@ -28,6 +29,11 @@ export default function Watchlist({ onManualCapture }) {
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
+  const statusCounts = useMemo(() => results.reduce((counts, result) => {
+    const id = result.systemStatus?.id || "watch_observation";
+    counts[id] = (counts[id] || 0) + 1;
+    return counts;
+  }, {}), [results]);
   const activeCount = summary.approved.length + summary.near.length;
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
 
@@ -124,6 +130,7 @@ export default function Watchlist({ onManualCapture }) {
         (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
         (view === "reference" && result.alertLevel === "reference") ||
+        (view === "statuses" && result.systemStatus) ||
         (view === "discarded" && ["watch", "pending"].includes(result.alertLevel)) ||
         (view === "requested" && result.priority === "requested") ||
         (view === "pending" && result.alertLevel === "pending") ||
@@ -220,6 +227,14 @@ export default function Watchlist({ onManualCapture }) {
         <MetricCard label="Universo activo" value={String(activeCount)} color={AC.green} />
       </div>
 
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8, marginBottom: 16 }}>
+        {listSystemStatuses().map((status) => (
+          <div key={status.id} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, background: "#08111f", padding: "8px 10px", color: SURFACE.muted, fontSize: 12 }}>
+            <span style={{ color: status.color }}>●</span> {status.label}: <strong style={{ color: SURFACE.text }}>{statusCounts[status.id] || 0}</strong>
+          </div>
+        ))}
+      </div>
+
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
         {[
           ["opportunities", "Oportunidades"],
@@ -227,6 +242,7 @@ export default function Watchlist({ onManualCapture }) {
           ["favorites", "Favoritos"],
           ["analyzed", "Analizadas"],
           ["discarded", "Descartadas"],
+          ["statuses", "Estados"],
           ["reference", "Referencias"],
           ["requested", "Lote solicitado"],
           ["pending", "Pendientes"],
@@ -317,7 +333,7 @@ export default function Watchlist({ onManualCapture }) {
             <p style={{ color: SURFACE.text, margin: "12px 0 0", lineHeight: 1.5 }}>{result.watchReason}</p>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
               <div style={{ color: SURFACE.muted, fontSize: 12 }}>
-                Estado: {result.analysisStatus || "pendiente"} · Validacion: {result.validationStatus || "sin validar"} · Fuente: {result.source || "sin fuente"}
+                Estado: {result.systemStatus?.label || result.analysisStatus || "pendiente"} · Validacion: {result.validationStatus || "sin validar"} · Fuente: {result.source || "sin fuente"}
               </div>
               {result.alertLevel === "pending" || (result.analysisStatus !== "analyzed" && result.alertLevel !== "reference") ? (
                 <button
