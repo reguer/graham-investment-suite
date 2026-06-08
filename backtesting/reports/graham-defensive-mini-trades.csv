@@ -1,0 +1,4 @@
+id,ticker,company,entry_date,exit_date,entry_price,exit_price,shares,capital_invested,pnl,net_return_pct,benchmark_return_pct,alpha_vs_benchmark,exit_condition
+graham-defensive-DROP-2024-01-02,DROP,Drawdown Test Co,2024-01-02,2024-03-29,50.05,37.962,199,9969.90995,-2423.0263879999984,-0.24303392910785504,0.04,-0.283033929107855,Stop loss -20%.
+graham-defensive-EXIT-2024-01-02,EXIT,Exit Valuation Co,2024-01-02,2024-06-28,40.03999999999999,119.88,249,9979.929959999998,19840.339920000002,1.9880239640479407,0.1,1.8880239640479406,P/E x P/B 90.00 > 28.
+graham-defensive-SAFE-2024-01-02,SAFE,Safe Builder Co,2024-01-02,2024-12-31,50.05,59.94,199,9969.90995,1946.22199,0.19520958561917603,0.15,0.04520958561917604,Cierre del periodo de backtest.

@@ -100,7 +100,7 @@ npm run weekly:screen -- --ticker KBH --format csv --no-telegram # Export filtra
 npm run run:mode -- --mode watch --interval-minutes 15 # Poll local de precios/reportes mientras el equipo esta encendido
 npm run runtime:init # Crea .local_runtime/device.json sin tocar .env.local
 npm run historical:download # Descarga OHLCV historico para 10 tickers base
-npm run backtest:mini # Ejecuta fixture minimo de backtesting Graham defensivo
+npm run backtest:mini # Ejecuta fixture minimo, genera MD/JSON/CSV y export publico
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
@@ -257,6 +257,16 @@ npm run backtest:mini
 ```
 
 La descarga historica usa Stooq si entrega CSV y Yahoo Chart como fallback sin API key. El motor inicial usa fundamentales snapshot como proxy historico, por lo que sirve para validar flujo, reglas y sensibilidad a precio, no como resultado historico definitivo. El plan completo sigue en `docs/12_BACKTESTING_ESTRATEGIAS.md`.
+
+`npm run backtest:mini` tambien genera:
+
+- `backtesting/reports/graham-defensive-mini-report.md`
+- `backtesting/reports/graham-defensive-mini-summary.json`
+- `backtesting/reports/graham-defensive-mini-trades.csv`
+- `backtesting/reports/graham-defensive-mini-equity.csv`
+- `public/data/backtesting-summary.json`
+
+La pestaña **Backtesting** del dashboard carga ese ultimo JSON en runtime, separada con `React.lazy` para no inflar el bundle inicial.
 
 ---
 

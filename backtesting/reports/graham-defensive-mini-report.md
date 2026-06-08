@@ -19,16 +19,20 @@ Estrategia: Graham defensivo basico (graham-defensive v0.1.0)
 | Trades cerrados | 3 |
 | Win rate | 66.67% |
 | Profit factor | 8.99 |
+| Benchmark | S&P 500 fixture |
+| Retorno benchmark | 15.00% |
+| Exceso vs benchmark | 4.36% |
+| Alfa promedio por trade | 55.01% |
 | Sharpe | 5.79 |
 | Sortino | N/A |
 
 ## Trades
 
-| Ticker | Entrada | Salida | Precio entrada | Precio salida | Retorno neto | Motivo salida |
-|---|---|---|---:|---:|---:|---|
-| DROP | 2024-01-02 | 2024-03-29 | $50.05 | $37.96 | -24.30% | Stop loss -20%. |
-| EXIT | 2024-01-02 | 2024-06-28 | $40.04 | $119.88 | 198.80% | P/E x P/B 90.00 > 28. |
-| SAFE | 2024-01-02 | 2024-12-31 | $50.05 | $59.94 | 19.52% | Cierre del periodo de backtest. |
+| Ticker | Entrada | Salida | Precio entrada | Precio salida | Retorno neto | Benchmark | Alfa | Motivo salida |
+|---|---|---|---:|---:|---:|---:|---:|---|
+| DROP | 2024-01-02 | 2024-03-29 | $50.05 | $37.96 | -24.30% | 4.00% | -28.30% | Stop loss -20%. |
+| EXIT | 2024-01-02 | 2024-06-28 | $40.04 | $119.88 | 198.80% | 10.00% | 188.80% | P/E x P/B 90.00 > 28. |
+| SAFE | 2024-01-02 | 2024-12-31 | $50.05 | $59.94 | 19.52% | 15.00% | 4.52% | Cierre del periodo de backtest. |
 
 ## Equity Curve
 

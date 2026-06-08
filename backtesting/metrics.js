@@ -38,6 +38,7 @@ export function calculateBacktestMetrics({ equityCurve, trades, initialCapital, 
   const grossProfit = winners.reduce((sum, trade) => sum + trade.pnl, 0);
   const grossLoss = Math.abs(losses.reduce((sum, trade) => sum + trade.pnl, 0));
   const dailyReturns = equityCurve.slice(1).map((point, index) => pctChange(equityCurve[index].equity, point.equity));
+  const alphaValues = closedTrades.map((trade) => trade.alphaVsBenchmark).filter((value) => value !== null && value !== undefined && Number.isFinite(Number(value)));
   const downsideReturns = dailyReturns.filter((value) => value < 0);
   const dailyRiskFree = riskFreeRate / 252;
   const excessDaily = dailyReturns.map((value) => value - dailyRiskFree);
@@ -55,6 +56,7 @@ export function calculateBacktestMetrics({ equityCurve, trades, initialCapital, 
     winRate: closedTrades.length ? winners.length / closedTrades.length : null,
     profitFactor: grossLoss > 0 ? grossProfit / grossLoss : grossProfit > 0 ? Infinity : null,
     averageHoldDays: closedTrades.length ? mean(closedTrades.map((trade) => trade.holdDays)) : null,
+    averageAlphaVsBenchmark: alphaValues.length ? mean(alphaValues) : null,
     sharpe,
     sortino,
   };

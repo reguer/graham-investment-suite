@@ -12,7 +12,7 @@
 | Datos históricos | 10 CSV 2020-01-01 a 2026-06-08 en `backtesting/data/historical/` |
 | Estrategias definidas formalmente | Graham defensivo básico en `backtesting/strategies/graham-defensive.js` |
 | Resultados históricos | Solo `reports/weekly/*.md` (desde 2026) |
-| Benchmark | No existe en el sistema |
+| Benchmark | Básico implementado con fixture SP500 |
 | Métricas de desempeño | Básicas en `backtesting/metrics.js` |
 
 Lo que SÍ existe y puede usarse como base:
@@ -54,6 +54,9 @@ backtesting/
 │
 ├── reports/
 │   ├── graham-defensive-mini-report.md
+│   ├── graham-defensive-mini-summary.json
+│   ├── graham-defensive-mini-trades.csv
+│   └── graham-defensive-mini-equity.csv
 │   └── strategy-comparison.md
 │
 ├── config/
@@ -318,8 +321,8 @@ import miniUniverse from './fixtures/mini_universe.json'
 | 3 | Crear `backtesting/strategies/graham-defensive.js` | Alta | ✅ Completado básico |
 | 4 | Crear motor de ejecución de backtests | Alta | ✅ Completado básico |
 | 5 | Calcular métricas básicas (retorno, drawdown, win rate) | Media | ✅ Completado básico |
-| 6 | Comparar vs benchmark S&P 500 | Media | Paso 5 |
-| 7 | Crear reporte de resultados | Media | ✅ Markdown básico; HTML pendiente |
+| 6 | Comparar vs benchmark S&P 500 | Media | ✅ Fixture SP500 y alfa por trade |
+| 7 | Crear reporte de resultados | Media | ✅ Markdown, CSV y vista dashboard básica |
 | 8 | Agregar datos fundamentales históricos | Alta | Manual |
 | 9 | Crear las 8 estrategias restantes | Media | Paso 8 |
 | 10 | Crear tests de backtesting | Media | ✅ Completado con mini_universe |

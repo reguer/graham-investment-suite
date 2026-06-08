@@ -9,6 +9,20 @@ function uniqueDates(universe) {
   return [...new Set(universe.flatMap((company) => (company.prices || []).map((point) => point.date)))].sort();
 }
 
+function priceOnOrBefore(priceMap, date) {
+  if (priceMap.has(date)) return priceMap.get(date);
+  const dates = [...priceMap.keys()].filter((candidate) => candidate <= date).sort();
+  return dates.length ? priceMap.get(dates.at(-1)) : null;
+}
+
+function benchmarkReturn(benchmark, startDate, endDate) {
+  if (!benchmark?.prices?.length) return null;
+  const map = toPriceMap(benchmark);
+  const start = priceOnOrBefore(map, startDate);
+  const end = priceOnOrBefore(map, endDate);
+  return start && end ? (end - start) / start : null;
+}
+
 function daysBetween(start, end) {
   return Math.max(Math.round((new Date(end) - new Date(start)) / (24 * 60 * 60 * 1000)), 0);
 }
@@ -26,6 +40,7 @@ export function runBacktest({
   stopLossPct = -0.2,
   exitPePb = 28,
   strategy = GRAHAM_DEFENSIVE_STRATEGY,
+  benchmark = null,
 } = {}) {
   const companies = universe || [];
   const dates = uniqueDates(companies);
@@ -56,6 +71,8 @@ export function runBacktest({
       position.netReturnPct = pnl / position.capitalInvested;
       position.pnl = pnl;
       position.holdDays = daysBetween(position.entryDate, date);
+      position.benchmarkReturnInPeriod = benchmarkReturn(benchmark, position.entryDate, date);
+      position.alphaVsBenchmark = position.benchmarkReturnInPeriod === null ? null : position.netReturnPct - position.benchmarkReturnInPeriod;
       trades.push(position);
       positions.delete(company.ticker);
       completedTickers.add(company.ticker);
@@ -114,6 +131,8 @@ export function runBacktest({
     position.netReturnPct = pnl / position.capitalInvested;
     position.pnl = pnl;
     position.holdDays = daysBetween(position.entryDate, lastDate);
+    position.benchmarkReturnInPeriod = benchmarkReturn(benchmark, position.entryDate, lastDate);
+    position.alphaVsBenchmark = position.benchmarkReturnInPeriod === null ? null : position.netReturnPct - position.benchmarkReturnInPeriod;
     trades.push(position);
     cash += proceeds - commission;
     positions.delete(ticker);
@@ -131,6 +150,7 @@ export function runBacktest({
   }
 
   const metrics = calculateBacktestMetrics({ equityCurve, trades, initialCapital });
+  const benchmarkTotalReturn = benchmarkReturn(benchmark, dates[0], lastDate);
   return {
     strategy,
     initialCapital,
@@ -138,6 +158,12 @@ export function runBacktest({
     trades,
     equityCurve,
     metrics,
+    benchmark: benchmark ? {
+      ticker: benchmark.ticker,
+      name: benchmark.name || benchmark.companyName || benchmark.ticker,
+      totalReturn: benchmarkTotalReturn,
+      excessReturn: benchmarkTotalReturn === null ? null : metrics.totalReturn - benchmarkTotalReturn,
+    } : null,
     assumptions: [
       "Backtesting v2.0 basico usa fundamentales snapshot como proxy historico.",
       "No incluye impuestos, dividendos, FX ni datos fundamentales trimestrales historicos.",

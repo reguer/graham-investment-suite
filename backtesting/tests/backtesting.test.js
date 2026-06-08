@@ -4,11 +4,12 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { runBacktest } from "../engine.js";
 import { calculateBacktestMetrics, calculateMaxDrawdown } from "../metrics.js";
-import { renderBacktestMarkdown } from "../report.js";
+import { renderBacktestMarkdown, renderEquityCurveCsv, renderTradesCsv } from "../report.js";
 import { buildRatiosAtPrice, shouldEnterGrahamDefensive } from "../strategies/graham-defensive.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const miniUniverse = JSON.parse(readFileSync(join(__dirname, "fixtures", "mini_universe.json"), "utf8"));
+const benchmark = JSON.parse(readFileSync(join(__dirname, "fixtures", "benchmark_sp500.json"), "utf8"));
 
 describe("backtesting engine", () => {
   it("recalculates valuation ratios from snapshot fundamentals and live price", () => {
@@ -29,6 +30,7 @@ describe("backtesting engine", () => {
       slippagePct: 0,
       stopLossPct: -0.2,
       exitPePb: 28,
+      benchmark,
     });
 
     const byTicker = Object.fromEntries(result.trades.map((trade) => [trade.ticker, trade]));
@@ -37,6 +39,8 @@ describe("backtesting engine", () => {
     expect(byTicker.EXIT.exitCondition).toContain("P/E x P/B");
     expect(byTicker.DROP.exitCondition).toContain("Stop loss");
     expect(byTicker.EXIT.netReturnPct).toBeGreaterThan(1);
+    expect(byTicker.EXIT.benchmarkReturnInPeriod).toBeCloseTo(0.1, 4);
+    expect(byTicker.EXIT.alphaVsBenchmark).toBeGreaterThan(1);
     expect(byTicker.DROP.netReturnPct).toBeLessThan(0);
   });
 
@@ -47,14 +51,22 @@ describe("backtesting engine", () => {
       maxPositionPct: 0.1,
       commissionPct: 0,
       slippagePct: 0,
+      benchmark,
     });
     const markdown = renderBacktestMarkdown(result);
+    const tradesCsv = renderTradesCsv(result.trades);
+    const equityCsv = renderEquityCurveCsv(result.equityCurve);
 
     expect(result.metrics.tradeCount).toBe(3);
     expect(result.metrics.finalEquity).toBeGreaterThan(90000);
+    expect(result.benchmark.totalReturn).toBeCloseTo(0.15, 4);
+    expect(result.benchmark.excessReturn).toBeGreaterThan(0);
     expect(result.metrics.maxDrawdown).toBeLessThanOrEqual(0);
     expect(markdown).toContain("# Backtest Graham defensivo");
+    expect(markdown).toContain("Retorno benchmark");
     expect(markdown).toContain("SAFE");
+    expect(tradesCsv).toContain("alpha_vs_benchmark");
+    expect(equityCsv).toContain("date,equity,cash,open_positions");
   });
 
   it("handles standalone metric calculations", () => {
