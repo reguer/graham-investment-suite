@@ -56,6 +56,7 @@
 | **E20 UX/CLI** | S45 Mejorar CLI de screening | Más opciones en weekly-screen | Añadir --ticker, --format (md/csv/html), --verbose | 🟡 Media | 📋 Pendiente | — | `scripts/weekly-screen.js` | `npm run weekly:screen -- --ticker KBH --format csv` | Backward compatibility | Manual | v1.5 |
 | **E20 UX/CLI** | S46 Exportar a CSV | Exportar tabla de screening a CSV | Añadir opción de exportar resultados del screening a CSV | 🟡 Media | 📋 Pendiente | S45 | `scripts/weekly-screen.js`, `data/export/` | CSV generado con todas las columnas de la tabla | Caracteres especiales en nombres | Auto | v1.5 |
 | **E20 UX/CLI** | S47 Exportar a Notion | Sincronizar tabla con Notion | Script que usa Notion API para crear/actualizar tabla de empresas | 🟢 Baja | 📋 Pendiente | S46 | `scripts/export-to-notion.js` (nuevo) | Tabla visible en Notion con datos del screening | Requiere token de Notion | Manual | v3.0 |
+| **E22 UX Dashboard** | S65 Tabla candidatos responsive | Evitar overflow en pantallas chicas | Renderizar tabla desktop y cards móviles para candidatos Graham bajo 1000px | 🟠 Alta | ✅ Completado | — | `src/tools/graham-analyzer/CandidatePanel.jsx`, `tests/candidatePanel.test.jsx` | Candidatos se ven como cards en móvil y como tabla en desktop | Mantener duplicación visual sincronizada | Manual | v1.5 |
 
 ---
 
