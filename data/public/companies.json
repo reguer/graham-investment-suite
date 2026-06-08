@@ -1588,30 +1588,6 @@
     ]
   },
   {
-    "ticker": "BAIDU",
-    "yahooSymbol": "BIDUN.MX",
-    "companyName": "Baidu, Inc.",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Solicitados",
-    "industry": "EQUITY",
-    "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-08",
-    "analysisStatus": "analysis_unsupported",
-    "validationStatus": "unsupported_sec_analysis",
-    "tags": [
-      "requested",
-      "pending-analysis"
-    ],
-    "notes": "No se encontro CIK en SEC para analisis automatico.",
-    "rawTicker": "BAIDU",
-    "priority": "requested",
-    "watchReason": "No se encontro CIK en SEC para analisis automatico."
-  },
-  {
     "ticker": "BB",
     "yahooSymbol": "BB",
     "companyName": "BlackBerry Limited",
@@ -1680,6 +1656,30 @@
         "eps": -0.32
       }
     ]
+  },
+  {
+    "ticker": "BIDU",
+    "yahooSymbol": "BIDU",
+    "companyName": "Baidu, Inc.",
+    "exchange": "",
+    "market": "NASDAQ",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Solicitados",
+    "industry": "EQUITY",
+    "source": "User requested batch + Yahoo Finance Search",
+    "sourceDate": "2026-06-08",
+    "analysisStatus": "analysis_unsupported",
+    "validationStatus": "unsupported_sec_analysis",
+    "tags": [
+      "requested",
+      "pending-analysis"
+    ],
+    "notes": "SEC no devolvio campos minimos para ratios Graham.",
+    "rawTicker": "BIDU",
+    "priority": "requested",
+    "watchReason": "SEC no devolvio campos minimos para ratios Graham."
   },
   {
     "ticker": "BKNG",

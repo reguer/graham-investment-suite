@@ -11,7 +11,7 @@ export const requestedTickers = [
   { rawTicker: "SKHYNIX", ticker: "SKHYNIX", yahooSymbol: "000660.KS", companyName: "SK hynix Inc.", quoteType: "EQUITY", market: "Korea Exchange", validationStatus: "validated_yahoo_not_mx" },
   { rawTicker: "BB", ticker: "BB", yahooSymbol: "BB", companyName: "BlackBerry Limited", quoteType: "EQUITY", market: "NYSE", validationStatus: "validated_yahoo_not_mx" },
   { rawTicker: "MSTR", ticker: "MSTR", yahooSymbol: "MSTR.MX", companyName: "Strategy Inc", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "BAIDU", ticker: "BAIDU", yahooSymbol: "BIDUN.MX", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
+  { rawTicker: "BIDU", ticker: "BIDU", yahooSymbol: "BIDU", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "NASDAQ", validationStatus: "validated_yahoo" },
   { rawTicker: "TSLA", ticker: "TSLA", yahooSymbol: "TSLA.MX", companyName: "Tesla, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "AMD", ticker: "AMD", yahooSymbol: "AMD.MX", companyName: "Advanced Micro Devices, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
