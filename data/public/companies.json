@@ -1599,7 +1599,7 @@
     "sector": "Solicitados",
     "industry": "EQUITY",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -2988,7 +2988,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -5885,7 +5885,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -7131,7 +7131,7 @@
     "sector": "Solicitados",
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -12869,7 +12869,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -12893,7 +12893,7 @@
     "sector": "Solicitados",
     "industry": "EQUITY",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -13109,7 +13109,7 @@
     "sector": "Solicitados",
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-06-05",
+    "sourceDate": "2026-06-08",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
