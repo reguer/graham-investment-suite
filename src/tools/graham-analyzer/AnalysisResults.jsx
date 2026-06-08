@@ -38,6 +38,9 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
           <MetricCard label="P/E x P/B" value={fmt(ratios.pePb)} sublabel="Regla 22.5" color={alertFor("pePb", ratios.pePb)} ref="15 x 1.5" />
           <MetricCard label="Margen seguridad" value={pct(ratios.mosGraham)} sublabel={`Formula ${fmt(ratios.grahamFormula)}`} color={alertFor("mos", ratios.mosGraham)} ref="Cap. 20" />
           <MetricCard label="P/B tangible" value={fmt(ratios.pbTangible)} sublabel={`TBVPS ${fmt(ratios.tangibleBvps)}`} color={alertFor("pb", ratios.pbTangible)} ref="Activos tangibles" />
+          {ratios.pePbTangible !== null ? (
+            <MetricCard label="P/E x P/B tangible" value={fmt(ratios.pePbTangible)} sublabel="Regla 22.5 sin intangibles" color={alertFor("pePb", ratios.pePbTangible)} ref="Sin goodwill/intangibles" />
+          ) : null}
           <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={ratios.intangibleWeight < 0.1 ? AC.green : ratios.intangibleWeight <= 0.3 ? AC.yellow : AC.red} />
         </>,
       )}

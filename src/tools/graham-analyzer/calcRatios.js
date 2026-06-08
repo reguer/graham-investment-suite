@@ -82,8 +82,11 @@ export function calcRatios(form) {
     }))
     .filter((entry) => entry.value !== null);
   const epsAllPositive = epsHistory.length > 0 && epsHistory.every((entry) => entry.value > 0);
+  // null = insufficient data (< 2 entries); matches secFundamentals.js contract
   const epsGrowing =
-    epsHistory.length > 1 && epsHistory.every((entry, index) => index === epsHistory.length - 1 || entry.value >= epsHistory[index + 1].value);
+    epsHistory.length > 1
+      ? epsHistory.every((entry, index) => index === epsHistory.length - 1 || entry.value >= epsHistory[index + 1].value)
+      : null;
   const newest = epsHistory[0]?.value;
   const oldest = epsHistory[epsHistory.length - 1]?.value;
   const newestYear = Number(epsHistory[0]?.year) || null;
@@ -129,7 +132,6 @@ export function calcRatios(form) {
     shares,
     epsAdj,
     price,
-    hasIntangibleData: intangiblesTotal > 0 || (netTangibleAssets !== null && netTangibleAssets > 0),
     hasNegativeEquity: equity !== null && equity < 0,
     adrRatio,
   };

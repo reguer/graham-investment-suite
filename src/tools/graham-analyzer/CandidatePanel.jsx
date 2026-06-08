@@ -1,5 +1,6 @@
 import { AC, SURFACE } from "../../lib/colors.js";
 import Dot from "../../components/ui/Dot.jsx";
+import { CANDIDATES_CAPTURE_DATE } from "./candidates.js";
 
 export default function CandidatePanel({ candidates }) {
   return (
@@ -7,9 +8,12 @@ export default function CandidatePanel({ candidates }) {
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline", flexWrap: "wrap", marginBottom: 10 }}>
         <div>
           <h2 style={{ margin: 0, fontSize: 17, letterSpacing: 0 }}>Candidatas Graham investigadas</h2>
-          <p style={{ margin: "4px 0 0", color: SURFACE.muted, fontSize: 12 }}>Filtro preliminar Finviz; verificacion con StockAnalysis y reglas del proyecto. Abre la pestana Candidatas para ver notas y recalculo en vivo.</p>
+          <p style={{ margin: "4px 0 0", color: SURFACE.muted, fontSize: 12 }}>
+            Filtro preliminar Finviz; verificacion con StockAnalysis y reglas del proyecto. Abre la pestana Candidatas para ver notas y recalculo en vivo.
+          </p>
+          <p style={{ margin: "2px 0 0", color: SURFACE.muted, fontSize: 11 }}>Datos capturados: {CANDIDATES_CAPTURE_DATE}</p>
         </div>
-        <span style={{ color: "#bbf7d0", fontSize: 12 }}>{candidates.length} aprobadas</span>
+        <span style={{ color: AC.greenText, fontSize: 12 }}>{candidates.length} aprobadas</span>
       </div>
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 760 }}>

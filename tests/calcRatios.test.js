@@ -120,11 +120,12 @@ describe("calcRatios", () => {
     expect(ratios.epsCagr).toBeCloseTo(1.0, 4);
   });
 
-  it("returns null CAGR and epsGrowing when only one EPS value exists", () => {
+  it("returns null CAGR and null epsGrowing when only one EPS value exists", () => {
     const oneEps = { ...tsm, eps1: "5.00", epsYear1: "2025", eps2: "", eps3: "", eps4: "" };
     const ratios = calcRatios(oneEps);
 
     expect(ratios.epsCagr).toBeNull();
-    expect(ratios.epsGrowing).toBe(false);
+    // null = trend unknown (not enough data), consistent with secFundamentals.js
+    expect(ratios.epsGrowing).toBeNull();
   });
 });

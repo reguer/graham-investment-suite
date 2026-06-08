@@ -1,3 +1,5 @@
+export const CANDIDATES_CAPTURE_DATE = "2026-06-03";
+
 export const grahamCandidates = [
   {
     ticker: "PHM",
@@ -13,7 +15,7 @@ export const grahamCandidates = [
     fcf: 1831.38,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Constructor grande con valuacion dentro del limite 22.5 y liquidez alta; quick ratio bajo por inventario de vivienda, normal en el sector pero relevante para Graham.",
   },
   {
@@ -30,7 +32,7 @@ export const grahamCandidates = [
     fcf: 365.79,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Perfil Graham limpio: P/B cercano a 1, deuda moderada y liquidez muy amplia. Riesgo principal: concentracion ciclica en vivienda.",
   },
   {
@@ -47,7 +49,7 @@ export const grahamCandidates = [
     fcf: 1332.53,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Valuacion atractiva y FCF positivo; quick ratio bajo porque el balance depende de inventarios/lotes. Requiere cuidado con ciclo inmobiliario.",
   },
   {
@@ -64,7 +66,7 @@ export const grahamCandidates = [
     fcf: 601.88,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Muy barata por P/E x P/B y con liquidez robusta. Mejor balance de liquidez que varias constructoras por quick ratio sobre 1.",
   },
   {
@@ -81,7 +83,7 @@ export const grahamCandidates = [
     fcf: 208.15,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Cotiza bajo book value y conserva liquidez fuerte. Buen candidato Graham, aunque dependiente del ciclo de tasas/vivienda.",
   },
   {
@@ -98,7 +100,7 @@ export const grahamCandidates = [
     fcf: 1728,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "No es constructora: servicios IT con liquidez real, deuda baja y FCF positivo. P/E x P/B pasa, pero esta mas cerca del limite 22.5.",
   },
   {
@@ -115,7 +117,7 @@ export const grahamCandidates = [
     fcf: 446,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Defensiva de alimentos empaquetados, menos ciclica que homebuilders. Deuda bajo 1, liquidez suficiente y valuacion Graham razonable.",
   },
   {
@@ -132,7 +134,7 @@ export const grahamCandidates = [
     fcf: 156.5,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Pasa con mucho margen la regla 22.5 y mantiene liquidez alta. Empresa mas pequena: revisar volumen, geografias y sensibilidad al inventario.",
   },
   {
@@ -149,7 +151,7 @@ export const grahamCandidates = [
     fcf: 475.53,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "La mas barata del grupo por P/E x P/B, pero quick ratio muy bajo por inventario. Aprobada por Graham defensivo, con riesgo operativo de ciclo e inventario.",
   },
   {
@@ -166,7 +168,7 @@ export const grahamCandidates = [
     fcf: 164.48,
     epsAllPositive: true,
     source: "Finviz + StockAnalysis",
-    sourceDate: "2026-06-03",
+    sourceDate: CANDIDATES_CAPTURE_DATE,
     note: "Deuda muy baja y current ratio amplio. Quick ratio bajo por inventario; aun asi pasa la regla Graham por margen razonable.",
   },
 ];
