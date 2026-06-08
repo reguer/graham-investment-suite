@@ -1,4 +1,6 @@
-export const grahamCandidates = [
+export const CANDIDATES_CAPTURE_DATE = "2026-06-03";
+
+const candidateSnapshots = [
   {
     ticker: "PHM",
     companyName: "PulteGroup",
@@ -170,3 +172,8 @@ export const grahamCandidates = [
     note: "Deuda muy baja y current ratio amplio. Quick ratio bajo por inventario; aun asi pasa la regla Graham por margen razonable.",
   },
 ];
+
+export const grahamCandidates = candidateSnapshots.map((candidate) => ({
+  ...candidate,
+  captureDate: candidate.captureDate || CANDIDATES_CAPTURE_DATE,
+}));
