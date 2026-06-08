@@ -23,7 +23,8 @@
     "db:import": "node scripts/import-companies.js",
     "db:migrate-candidates": "node scripts/migrate-candidates.js",
     "fundamentals:update": "node scripts/update-fundamentals.js",
-    "fundamentals:ingest": "node scripts/data-ingestion.js"
+    "fundamentals:ingest": "node scripts/data-ingestion.js",
+    "scheduler:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-weekly-alerts.ps1"
   },
   "dependencies": {
     "react": "^18.3.0",

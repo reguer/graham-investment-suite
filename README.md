@@ -22,6 +22,8 @@ https://reguer.github.io/graham-investment-suite/
 | Build | `npm run build` |
 | Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
 | Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
+| Yahoo complementario | `npm run fundamentals:ingest -- --all-unsupported` |
+| Scheduler lunes/viernes | `npm run scheduler:install` |
 | Alertas automaticas | Solo reporte Markdown semanal |
 | Scheduler local | No configurado |
 
@@ -92,9 +94,11 @@ npm run test:watch     # Modo watch de tests
 npm run build          # Build para produccion / GitHub Pages
 npm run build:artifact # Validar y regenerar artifacts standalone
 npm run watchlist:analyze -- --all # Analisis completo del universo con SEC/Yahoo + PostgreSQL/export publico
+npm run fundamentals:ingest -- --all-unsupported # Rescata no soportadas con Yahoo Finance parcial en USD
 npm run weekly:screen  # Screening semanal + reporte Markdown
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
+npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
 ```
 
 ## Datos local + GitHub
@@ -108,6 +112,10 @@ PostgreSQL local se usa para datos operativos cuando `DATABASE_URL` esta configu
 Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Statement, Cash Flow, EPS TTM, Shares Outstanding, Net Tangible Assets o Goodwill + Intangibles y ADR ratio cuando aplique.
 
 **Yahoo Finance es la fuente principal** de datos fundamentales. Stooq se usa automaticamente para precios spot en el screening semanal.
+
+La ingesta automatica complementaria usa `yahoo-finance2` para intentar rescatar empresas que SEC no pudo analizar. Si Yahoo entrega precio, P/E, P/B, debt/equity, current ratio y moneda USD, el sistema guarda un snapshot `analysis_partial_yahoo`. Ese snapshot permite seguimiento y causa exacta, pero no equivale a aprobacion Graham defensiva porque Yahoo no entrega historial EPS completo en esa llamada. BIDU, por ejemplo, queda rechazado por moneda cuando Yahoo reporta fundamentales en CNY.
+
+En la corrida del 2026-06-08 el universo quedo asi: 113 analizadas completas, 82 parciales Yahoo en USD y 36 no soportadas o rechazadas por datos/moneda. `yahoo-finance2@3.15.2` mostro advertencia de entorno porque recomienda Node >=22; en Node 20.20.0 funciono para la corrida, pero conviene actualizar Node en la siguiente fase.
 
 Ver `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` para la guia completa de captura y validacion de datos en USD.
 

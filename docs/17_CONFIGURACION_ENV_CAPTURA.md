@@ -84,8 +84,19 @@ data/cache/company-capture-YYYY-MM-DD.json
 Antes de generar el reporte, el boton intenta analizar todas las empresas no analizadas:
 
 - Empresas USA con CIK en SEC: usa SEC EDGAR `companyfacts` + precio Yahoo Chart del ticker base en USD.
+- Empresas no soportadas por SEC: `npm run fundamentals:ingest -- --all-unsupported` intenta snapshot parcial Yahoo en USD. Si Yahoo reporta moneda distinta, queda rechazado por moneda.
 - Indices, futuros y empresas sin CIK SEC: quedan marcados como `analysis_unsupported` con razon explicita.
 - PostgreSQL: guarda empresas en `companies` y snapshots en `financial_snapshots`.
+
+## Scheduler lunes/viernes
+
+Para crear la tarea local de Windows sin sobrescribir una existente:
+
+```bash
+npm run scheduler:install
+```
+
+La tarea corre `npm run weekly:screen` lunes y viernes a las 18:00 desde esta carpeta. Las credenciales de Telegram se leen solo desde `.env.local`; este script no las imprime ni las modifica.
 - Export publico: actualiza `data/public/companies.json` para GitHub Pages.
 
 El archivo Markdown es el reporte humano.
