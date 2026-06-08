@@ -41,6 +41,7 @@ describe("weekly-screen report cadence", () => {
   it("renders a weekly summary for Friday formal reports", () => {
     const report = renderReport([approvedResult, pendingResult], { ok: true, source: "test" }, {
       date: new Date(2026, 5, 5),
+      device: { device_name: "Laptop Test", device_id: "device-1", device_role: "principal" },
     });
 
     expect(report).toContain("# Oportunidades Graham - 2026-06-05");
@@ -48,6 +49,7 @@ describe("weekly-screen report cadence", () => {
     expect(report).toContain("## Resumen Semanal");
     expect(report).toContain("## Alertas Accionables");
     expect(report).toContain("Aprobadas destacadas: KBH");
+    expect(report).toContain("Generado desde: Laptop Test (device-1, rol: principal)");
   });
 
   it("keeps midweek reports lightweight", () => {
@@ -76,12 +78,14 @@ describe("weekly-screen report cadence", () => {
   it("builds a structured capture payload for validation", () => {
     const payload = buildCapturePayload([approvedResult, pendingResult], { ok: true, source: "test" }, {
       date: new Date(2026, 5, 5),
+      device: { device_name: "Laptop Test", device_id: "device-1", device_role: "principal" },
     });
 
     expect(payload.reportDate).toBe("2026-06-05");
     expect(payload.counts.total).toBe(2);
     expect(payload.counts.approved).toBe(1);
     expect(payload.counts.reference).toBe(0);
+    expect(payload.device.device_id).toBe("device-1");
     expect(payload.companies[0]).toMatchObject({
       ticker: "KBH",
       livePrice: 52,

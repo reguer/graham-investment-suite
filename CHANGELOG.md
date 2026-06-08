@@ -9,6 +9,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Dashboard Watchlist con tabla densa de 30 columnas, filtros por estado/tag y vista responsive real.
+- `scripts/weekly-screen.js` con `--ticker`, `--format md/csv/html`, `--verbose` y `--no-telegram`.
+- Export CSV/HTML de screening en `data/export/`.
+- `scripts/alert-dispatcher.js` para evitar envios Telegram duplicados desde equipos secundarios.
+- `scripts/run-mode.js` y `npm run run:mode` para modos `once`, `watch` y `dashboard`.
+- Reportes semanales con bloque `Origen` basado en `.local_runtime/device.json`.
+- Tests adicionales para casos borde de Graham: quick ratio sin inventario, EPS cero y EPS CAGR con un solo año.
 - `docs/00_PREFLIGHT_ESTADO_REAL.md` — Diagnóstico técnico inicial del repositorio
 - `docs/01_PROCESOS_LOCALES_DASHBOARD.md` — Aislamiento de procesos y puertos locales
 - `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` — Jerarquía de fuentes de datos y propuesta de automatización
@@ -28,6 +35,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ### Changed
 - `README.md` — Ampliado con configuración local, multiordenador, alertas, GitHub Pages y troubleshooting (preservando contenido existente)
+- `docs/weekly-alerts.md` — Actualizado con CLI, exports, Telegram multiordenador y modo watch.
+- `docs/13_ROADMAP_NOTION_READY.md` — Marcadas historias completadas y riesgos pendientes reales.
 
 ---
 

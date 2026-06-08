@@ -75,4 +75,38 @@ describe("calcRatios", () => {
     expect(ratios.fcf).toBe(71428386);
     expect(ratios.epsAllPositive).toBe(false);
   });
+
+  it("calculates quick ratio without inventing inventory when inventory is empty", () => {
+    const ratios = calcRatios({ ...tsm, inventory: "" });
+
+    expect(ratios.quickRatio).toBeCloseTo(ratios.currentRatio, 6);
+  });
+
+  it("nulls EPS-dependent ratios when EPS is zero", () => {
+    const ratios = calcRatios({ ...tsm, epsTTM: "0" });
+
+    expect(ratios.epsAdj).toBe(0);
+    expect(ratios.pe).toBeNull();
+    expect(ratios.pricePE15).toBeNull();
+    expect(ratios.grahamFormula).toBeNull();
+    expect(ratios.grahamFormulaTangible).toBeNull();
+  });
+
+  it("does not calculate EPS CAGR with a single EPS year", () => {
+    const ratios = calcRatios({
+      ...tsm,
+      eps1: "10",
+      epsYear1: "2025",
+      eps2: "",
+      epsYear2: "",
+      eps3: "",
+      epsYear3: "",
+      eps4: "",
+      epsYear4: "",
+    });
+
+    expect(ratios.epsHistory).toHaveLength(1);
+    expect(ratios.epsCagr).toBeNull();
+    expect(ratios.epsGrowing).toBe(false);
+  });
 });

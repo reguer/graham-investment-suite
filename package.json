@@ -25,6 +25,7 @@
     "fundamentals:update": "node scripts/run-node22.js scripts/update-fundamentals.js",
     "fundamentals:ingest": "node scripts/run-node22.js scripts/data-ingestion.js",
     "scheduler:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-weekly-alerts.ps1",
+    "run:mode": "node scripts/run-node22.js scripts/run-mode.js",
     "security:audit": "node scripts/run-node22.js scripts/security-audit.js"
   },
   "dependencies": {

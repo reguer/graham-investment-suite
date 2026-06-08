@@ -4,8 +4,9 @@ import { buildWatchlist, buildWatchlistMeta, normalizeExportedCompany } from "..
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.js";
 import { fmt, pct } from "../src/lib/formatters.js";
-import { formatTelegramReportMessage, sendTelegramMessage, shouldSendTelegram } from "../src/lib/telegram.js";
 import { loadEnvLocal, PUBLIC_COMPANIES_PATH } from "./db-client.js";
+import { dispatchTelegramReport } from "./alert-dispatcher.js";
+import { getDeviceLabel, initRuntime } from "./init-runtime.js";
 
 export function parseArgs(argv) {
   const args = { format: "md", ticker: "", verbose: false, noTelegram: false };
@@ -183,7 +184,7 @@ ${alerts.map((alert) => `| ${alert.severity} | ${alert.type} | ${alert.ticker} |
 `;
 }
 
-export function renderReport(results, quoteStatus, { date = new Date() } = {}) {
+export function renderReport(results, quoteStatus, { date = new Date(), device = null } = {}) {
   const { watchlistMeta } = loadWatchlist();
   const summary = summarizeScreen(results);
   const reportDate = todayIso(date);
@@ -223,16 +224,21 @@ ${renderSection("Pendientes de Primer Analisis", summary.pending, "No hay compan
 ## Notas
 
 ${results.map((item) => `- **${item.ticker}**: ${item.watchReason}`).join("\n")}
+
+## Origen
+
+Generado desde: ${device ? getDeviceLabel(device) : "Equipo local sin device.json"}
 `;
 }
 
-export function buildCapturePayload(results, quoteStatus, { date = new Date() } = {}) {
+export function buildCapturePayload(results, quoteStatus, { date = new Date(), device = null } = {}) {
   const summary = summarizeScreen(results);
   const { watchlistMeta } = loadWatchlist();
   return {
     generatedAt: date.toISOString(),
     reportDate: todayIso(date),
     quoteStatus,
+    device,
     counts: {
       approved: summary.approved.length,
       near: summary.near.length,
@@ -265,6 +271,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date() } 
 
 async function main() {
   const args = parseArgs(process.argv);
+  const runtime = initRuntime();
   const { watchlist } = loadWatchlist();
   let quotes = {};
   let quoteStatus = { ok: false, error: "sin intento de precios", source: "snapshot" };
@@ -284,9 +291,9 @@ async function main() {
   const report = args.format === "csv"
     ? renderCsv(results)
     : args.format === "html"
-      ? renderHtml(results, quoteStatus, { date: now })
-      : renderReport(results, quoteStatus, { date: now });
-  const capture = buildCapturePayload(results, quoteStatus, { date: now });
+      ? renderHtml(results, quoteStatus, { date: now, device: runtime.device })
+      : renderReport(results, quoteStatus, { date: now, device: runtime.device });
+  const capture = buildCapturePayload(results, quoteStatus, { date: now, device: runtime.device });
   const reportDir = join(process.cwd(), "reports", "weekly");
   const exportDir = join(process.cwd(), "data", "export");
   const cacheDir = join(process.cwd(), "data", "cache");
@@ -305,17 +312,23 @@ async function main() {
   console.log(`Captura guardada: ${capturePath}`);
 
   const telegramEnv = { ...loadEnvLocal(), ...process.env };
-  if (args.noTelegram) {
-    console.log("Telegram omitido por --no-telegram.");
-  } else if (cadence.includeWeeklySummary && shouldSendTelegram(telegramEnv)) {
+  if (cadence.includeWeeklySummary || args.noTelegram) {
     try {
-      await sendTelegramMessage(formatTelegramReportMessage({ date: todayIso(now), summary, quoteStatus, cadence }), { env: telegramEnv });
-      console.log("Telegram enviado: resumen semanal.");
+      const dispatch = await dispatchTelegramReport({
+        date: todayIso(now),
+        summary,
+        quoteStatus,
+        cadence,
+        device: runtime.device,
+        env: telegramEnv,
+        noTelegram: args.noTelegram,
+      });
+      console.log(dispatch.ok ? "Telegram enviado: resumen semanal." : dispatch.reason);
     } catch (error) {
       console.log(`Telegram no enviado: ${error.message}`);
     }
-  } else if (shouldSendTelegram(telegramEnv)) {
-    console.log("Telegram no enviado: solo se envian senales automaticas lunes y viernes.");
+  } else {
+    if (telegramEnv.ENABLE_TELEGRAM_ALERTS === "true") console.log("Telegram no enviado: solo se envian senales automaticas lunes y viernes.");
   }
 }
 

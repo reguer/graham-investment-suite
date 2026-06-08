@@ -18,14 +18,14 @@ https://reguer.github.io/graham-investment-suite/
 |---------|--------|
 | Version | 1.0.0 |
 | Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js >=22 |
-| Tests | 19 suites — `npm test` |
+| Tests | 30 suites — `npm test` |
 | Build | `npm run build` |
 | Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
 | Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
 | Yahoo complementario | `npm run fundamentals:ingest -- --all-unsupported` |
 | Scheduler lunes/viernes | `npm run scheduler:install` |
-| Alertas automaticas | Solo reporte Markdown semanal |
-| Scheduler local | No configurado |
+| Alertas automaticas | Markdown + Telegram opcional solo desde equipo principal |
+| Scheduler local | Script Windows disponible con `npm run scheduler:install` |
 
 ---
 
@@ -96,6 +96,9 @@ npm run build:artifact # Validar y regenerar artifacts standalone
 npm run watchlist:analyze -- --all # Analisis completo del universo con SEC/Yahoo + PostgreSQL/export publico
 npm run fundamentals:ingest -- --all-unsupported # Rescata no soportadas con Yahoo Finance parcial en USD
 npm run weekly:screen  # Screening semanal + reporte Markdown
+npm run weekly:screen -- --ticker KBH --format csv --no-telegram # Export filtrado sin enviar Telegram
+npm run run:mode -- --mode watch --interval-minutes 15 # Poll local de precios/reportes mientras el equipo esta encendido
+npm run runtime:init # Crea .local_runtime/device.json sin tocar .env.local
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
@@ -139,15 +142,30 @@ La regla final documentada y probada es: si `isADR = true`, `epsAdj`, `bvps`, `t
 
 ## Alertas semanales y horario operativo
 
-`npm run weekly:screen` actualiza precios desde Stooq cuando esta disponible, recalcula la watchlist y genera `reports/weekly/YYYY-MM-DD.md`.
+`npm run weekly:screen` actualiza precios desde Yahoo Chart + Stooq fallback cuando esta disponible, recalcula la watchlist y genera `reports/weekly/YYYY-MM-DD.md`.
+
+Opciones del CLI:
+
+```bash
+npm run weekly:screen -- --ticker KBH
+npm run weekly:screen -- --ticker KBH --format csv --no-telegram
+npm run weekly:screen -- --ticker KBH --format html --no-telegram
+npm run weekly:screen -- --verbose
+```
+
+Los reportes Markdown y HTML incluyen el origen del equipo desde `.local_runtime/device.json`. Ese archivo es local, no se versiona y se crea con `npm run runtime:init` o al arrancar scripts que usan runtime local.
 
 El universo inicial incluye el lote solicitado por el usuario y 200 acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Pendiente de primer analisis`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
 
 **Horario operativo requerido: cierre de vela diaria a las 18:00 hrs CDMX.**
 
-Los lunes y viernes se generan alertas formales. El sistema puede actualizar datos en cualquier momento que el ordenador este encendido.
+Los lunes y viernes se generan alertas formales. Si `ENABLE_TELEGRAM_ALERTS=true`, `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` existen en `.env.local`, solo el equipo con `device_role = principal` o `primary` envia Telegram. Los equipos secundarios registran/reportan localmente para evitar alertas duplicadas.
 
-Para automatizar la ejecucion al cierre diario, ver `docs/09_MODO_LOCAL_TIEMPO_REAL.md`.
+Para automatizar la ejecucion al cierre diario, ver `docs/09_MODO_LOCAL_TIEMPO_REAL.md`. Para polling local controlado:
+
+```bash
+npm run run:mode -- --mode watch --interval-minutes 15
+```
 
 ---
 
@@ -188,6 +206,8 @@ src/
     └── watchlist/           — Screening semanal (4 archivos)
 scripts/
 ├── weekly-screen.js         — Screening automatico
+├── run-mode.js              — Modo once/watch/dashboard
+├── alert-dispatcher.js      — Gate anti-duplicados para Telegram por device_role
 ├── bundle-artifact.js       — Validacion de artifacts
 └── run-local-bin.js         — Wrapper de binarios
 tests/
