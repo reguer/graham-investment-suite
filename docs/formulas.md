@@ -57,3 +57,16 @@ Se adopta la regla explicita del handoff actual: ADR ajusta EPS, BVPS, TBVPS y N
 - `ncav = ((121,525,973 - 80,758,462) / 25,932,525) x 5 = 7.8603`.
 
 Por lo tanto no se aceptan tests que esperen `P/E ~31.92`, `P/B ~2.24` o NCAV negativo con este mismo fixture y `adrRatio = 5`.
+
+## Ingesta automatica Yahoo / FX
+
+La formula Graham pura no cambia. Para snapshots automaticos desde Yahoo Finance se normalizan los datos antes de calcular:
+
+- La moneda objetivo del dashboard es USD, salvo que se indique otra con `--expected-currency`.
+- Si Yahoo reporta precio o estados financieros en otra moneda, se consulta un par FX de Yahoo Finance, por ejemplo `CNYUSD=X`, `KRWUSD=X` o el inverso disponible.
+- Los montos de balance, income statement y cash flow se convierten a la moneda objetivo antes de calcular ratios.
+- Si el precio listado y el EPS anual reportado no estan en la misma escala de accion o ADR, se infiere `shareScale = (price / trailingPE) / epsAnnualConverted`.
+- Esa escala se aplica a EPS historico, BVPS, TBVPS y NCAV para alinear el analisis con el instrumento comprable.
+- Si los datos necesarios siguen ausentes o no son aplicables, la empresa se marca como `yahoo_model_rejected` cuando puede descartarse por modelo, o queda pendiente solo si el instrumento no es una accion analizable por Graham, como indices o futuros.
+
+Esta decision permite analizar empresas no SEC con moneda local, como BIDU en CNY o SKHYNIX en KRW, sin mezclar monedas ni aceptar ratios de fuentes incompatibles.

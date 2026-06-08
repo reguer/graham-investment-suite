@@ -17,7 +17,7 @@ https://reguer.github.io/graham-investment-suite/
 | Aspecto | Estado |
 |---------|--------|
 | Version | 1.0.0 |
-| Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js |
+| Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js >=22 |
 | Tests | 19 suites — `npm test` |
 | Build | `npm run build` |
 | Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
@@ -113,9 +113,11 @@ Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Sta
 
 **Yahoo Finance es la fuente principal** de datos fundamentales. Stooq se usa automaticamente para precios spot en el screening semanal.
 
-La ingesta automatica complementaria usa `yahoo-finance2` para intentar rescatar empresas que SEC no pudo analizar. Si Yahoo entrega precio, P/E, P/B, debt/equity, current ratio y moneda USD, el sistema guarda un snapshot `analysis_partial_yahoo`. Ese snapshot permite seguimiento y causa exacta, pero no equivale a aprobacion Graham defensiva porque Yahoo no entrega historial EPS completo en esa llamada. BIDU, por ejemplo, queda rechazado por moneda cuando Yahoo reporta fundamentales en CNY.
+La ingesta automatica complementaria usa `yahoo-finance2` con Node 22 para intentar rescatar empresas que SEC no pudo analizar. Primero intenta `fundamentalsTimeSeries` + FX controlado; si Yahoo entrega estados anuales, EPS historico, precio, P/E, P/B, deuda y liquidez, guarda un snapshot `yahoo_full_fx`. Si la empresa queda descartada por P/E nulo, P/B nulo, liquidez no aplicable o ratios faltantes, se marca como `yahoo_model_rejected` en vez de dejarla pendiente.
 
-En la corrida del 2026-06-08 el universo quedo asi: 113 analizadas completas, 82 parciales Yahoo en USD y 36 no soportadas o rechazadas por datos/moneda. `yahoo-finance2@3.15.2` mostro advertencia de entorno porque recomienda Node >=22; en Node 20.20.0 funciono para la corrida, pero conviene actualizar Node en la siguiente fase.
+En la corrida del 2026-06-08 el universo quedo asi: 226 analizadas y 5 no analizables por naturaleza del instrumento (`INDEX`/`FUTURE`). BIDU se convirtio desde CNY a USD; SKHYNIX desde KRW a USD. El proyecto instala/usa Node 22.22.3 via `nvm` cuando existe, sin tocar `.env.local`.
+
+El export grande se sirve desde `public/data/companies.json` en GitHub Pages y dashboard local. La app carga ese archivo en runtime y divide las pestañas con `React.lazy`, por lo que el bundle principal queda debajo de 150 kB.
 
 Ver `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` para la guia completa de captura y validacion de datos en USD.
 

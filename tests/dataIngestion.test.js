@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseArgs } from "../scripts/data-ingestion.js";
-import { buildYahooSupplementalSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
+import { buildYahooDeepSnapshot, buildYahooSupplementalSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
 
 const yahooFixture = {
   price: { currency: "USD", regularMarketPrice: 100 },
@@ -53,5 +53,49 @@ describe("Yahoo supplemental ingestion", () => {
 
     expect(result.ok).toBe(false);
     expect(result.reason).toContain("ratios minimos");
+  });
+
+  it("builds a converted deep Yahoo snapshot with inferred share scale", () => {
+    const result = buildYahooDeepSnapshot({
+      symbol: "BIDU",
+      expectedCurrency: "USD",
+      priceCurrency: "USD",
+      financialCurrency: "CNY",
+      priceFx: { ok: true, rate: 1, source: "same-currency" },
+      financialFx: { ok: true, rate: 0.15, source: "Yahoo Finance CNYUSD=X" },
+      summary: {
+        price: { currency: "USD", regularMarketPrice: 120 },
+        summaryDetail: { trailingPE: 12 },
+        defaultKeyStatistics: { priceToBook: 1.5 },
+        financialData: { financialCurrency: "CNY" },
+      },
+      annual: [
+        {
+          date: "2025-12-31",
+          totalAssets: 1000,
+          currentAssets: 600,
+          inventory: 50,
+          totalLiabilitiesNetMinorityInterest: 400,
+          currentLiabilities: 200,
+          stockholdersEquity: 600,
+          dilutedAverageShares: 10,
+          totalRevenue: 800,
+          EBIT: 120,
+          interestExpense: 10,
+          netIncome: 100,
+          operatingCashFlow: 140,
+          investingCashFlow: -40,
+          dilutedEPS: 5,
+        },
+        { date: "2024-12-31", dilutedEPS: 4 },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.snapshot.pe).toBeCloseTo(12);
+    expect(result.snapshot.pb).toBeCloseTo(1.5);
+    expect(result.snapshot.currentRatio).toBeCloseTo(3);
+    expect(result.snapshot.epsHistory).toHaveLength(2);
+    expect(result.warnings.join(" ")).toContain("Fundamentales convertidos");
   });
 });

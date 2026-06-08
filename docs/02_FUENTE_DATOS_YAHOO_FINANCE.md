@@ -20,11 +20,11 @@
 
 Los datos fundamentales completos se capturan manualmente cuando se necesita una decision Graham defensiva completa. Desde 2026-06-08 existe una ingesta automatica complementaria para snapshots parciales Yahoo:
 
-- Usa `yahoo-finance2` y valida `price.currency` + `financialData.financialCurrency`.
-- Solo acepta `USD` por default.
-- Guarda `analysis_partial_yahoo` si Yahoo entrega precio, P/E, P/B, debt/equity y current ratio.
-- No marca `epsAllPositive=true` porque la llamada parcial no entrega historial EPS completo.
-- Si Yahoo reporta `CNY`, `KRW`, `MXN` u otra moneda, el ticker queda con `currency_rejected`.
+- Usa `yahoo-finance2` con Node 22 y valida `price.currency` + `financialData.financialCurrency`.
+- Convierte a `USD` por default con pares Yahoo como `CNYUSD=X` o `KRWUSD=X`.
+- Intenta primero `fundamentalsTimeSeries` anual con `module: "all"` para obtener estados financieros e historial EPS.
+- Guarda `yahoo_full_fx` cuando el snapshot queda completo y `yahoo_model_rejected` cuando la fuente permite descartar por modelo Graham.
+- Para ADR/listados con escala distinta, infiere una escala por accion desde P/E Yahoo para alinear precio, EPS y estados financieros.
 
 Esto implica:
 - Dependencia total de la disponibilidad del usuario
@@ -219,7 +219,7 @@ interface DataRecord {
 
 **Fundamentales (Yahoo Finance)**:
 - Yahoo devuelve `financialCurrency` en el objeto de datos
-- Si `financialCurrency !== 'USD'`: en la fase actual se rechaza antes de calcular ratios; la conversion FX queda pendiente
+- Si `financialCurrency !== 'USD'`: se obtiene FX desde Yahoo y se convierte antes de calcular ratios
 - Para ADRs: Los estados financieros pueden estar en moneda local (ej. TWD para TSM)
   - **Solución implementada**: El campo `adrRatio` normaliza EPS, BVPS, TBVPS y NCAV
   - El `adrRatio` convierte unidades de participación, no monedas — el EPS ya debe estar en USD antes de aplicar el ratio
