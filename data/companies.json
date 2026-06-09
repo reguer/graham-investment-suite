@@ -3460,14 +3460,15 @@
     "industry": "Banks Regional",
     "source": "Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
+    "analysisStatus": "analysis_external_pending",
+    "validationStatus": "source_required",
     "tags": [
       "bmv-sic",
-      "pending-analysis"
+      "pending-analysis",
+      "source-required"
     ],
-    "notes": "Yahoo complementario fallo: Quote not found for symbol: CMA",
-    "watchReason": "Yahoo complementario fallo: Quote not found for symbol: CMA"
+    "notes": "Yahoo Finance no devolvio quote fundamental para CMA/CMA.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
+    "watchReason": "Yahoo Finance no devolvio quote fundamental para CMA/CMA.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
   },
   {
     "ticker": "CMCSA",
@@ -4033,16 +4034,17 @@
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "validated_yahoo_commodity",
+    "analysisStatus": "market_reference",
+    "validationStatus": "market_reference",
     "tags": [
-      "universe",
-      "pending-analysis"
+      "market_reference",
+      "commodity",
+      "copper"
     ],
-    "notes": "Universo sincronizado para ingesta local Yahoo/PostgreSQL.",
+    "notes": "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas.",
     "rawTicker": "COPPER",
     "priority": "requested",
-    "watchReason": "No se analiza con Graham automatico: quoteType=FUTURE.",
+    "watchReason": "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas.",
     "lastPrice": 6.352,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
@@ -7065,19 +7067,20 @@
     "industry": "Banks Regional",
     "source": "Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
+    "analysisStatus": "analysis_external_pending",
     "validationStatus": "yahoo_partial_incomplete",
     "tags": [
       "bmv-sic",
-      "pending-analysis"
+      "pending-analysis",
+      "source-required"
     ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual.",
     "lastPrice": 906.46,
     "lastPriceDate": "2026-05-20",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual."
   },
   {
     "ticker": "FTNT",
@@ -7781,16 +7784,17 @@
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "validated_yahoo_commodity",
+    "analysisStatus": "market_reference",
+    "validationStatus": "market_reference",
     "tags": [
-      "universe",
-      "pending-analysis"
+      "market_reference",
+      "commodity",
+      "gold"
     ],
-    "notes": "Universo sincronizado para ingesta local Yahoo/PostgreSQL.",
+    "notes": "Futuro de oro para contexto macro. No se analiza con reglas Graham defensivas.",
     "rawTicker": "GOLD",
     "priority": "requested",
-    "watchReason": "No se analiza con Graham automatico: quoteType=FUTURE.",
+    "watchReason": "Futuro de oro para contexto macro. No se analiza con reglas Graham defensivas.",
     "lastPrice": 4284.8,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
@@ -8588,14 +8592,15 @@
     "industry": "Medical Instruments & Supplies",
     "source": "Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
+    "analysisStatus": "analysis_external_pending",
+    "validationStatus": "source_required",
     "tags": [
       "bmv-sic",
-      "pending-analysis"
+      "pending-analysis",
+      "source-required"
     ],
-    "notes": "Yahoo complementario fallo: Quote not found for symbol: HOLX",
-    "watchReason": "Yahoo complementario fallo: Quote not found for symbol: HOLX"
+    "notes": "Yahoo Finance no devolvio quote fundamental estable para HOLX/HOLX.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
+    "watchReason": "Yahoo Finance no devolvio quote fundamental estable para HOLX/HOLX.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
   },
   {
     "ticker": "HON",
@@ -9298,16 +9303,17 @@
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "validated_yahoo",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
     "tags": [
-      "universe",
-      "pending-analysis"
+      "index_reference",
+      "benchmark",
+      "nasdaq-100"
     ],
-    "notes": "Universo sincronizado para ingesta local Yahoo/PostgreSQL.",
+    "notes": "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas.",
     "rawTicker": "Index100",
     "priority": "requested",
-    "watchReason": "No se analiza con Graham automatico: quoteType=INDEX.",
+    "watchReason": "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas.",
     "lastPrice": 29084.5,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
@@ -9771,14 +9777,15 @@
     "industry": "Communication Equipment",
     "source": "Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
+    "analysisStatus": "analysis_external_pending",
+    "validationStatus": "source_required",
     "tags": [
       "bmv-sic",
-      "pending-analysis"
+      "pending-analysis",
+      "source-required"
     ],
-    "notes": "Yahoo complementario fallo: Quote not found for symbol: JNPR",
-    "watchReason": "Yahoo complementario fallo: Quote not found for symbol: JNPR"
+    "notes": "Yahoo Finance no devolvio quote fundamental estable para JNPR/JNPR.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
+    "watchReason": "Yahoo Finance no devolvio quote fundamental estable para JNPR/JNPR.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
   },
   {
     "ticker": "JPM",
@@ -16099,16 +16106,17 @@
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "validated_yahoo_commodity",
+    "analysisStatus": "market_reference",
+    "validationStatus": "market_reference",
     "tags": [
-      "universe",
-      "pending-analysis"
+      "market_reference",
+      "commodity",
+      "silver"
     ],
-    "notes": "Universo sincronizado para ingesta local Yahoo/PostgreSQL.",
+    "notes": "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas.",
     "rawTicker": "SILVER",
     "priority": "requested",
-    "watchReason": "No se analiza con Graham automatico: quoteType=FUTURE.",
+    "watchReason": "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas.",
     "lastPrice": 65.46,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
@@ -16415,16 +16423,17 @@
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "validated_yahoo",
+    "analysisStatus": "index_reference",
+    "validationStatus": "index_reference",
     "tags": [
-      "universe",
-      "pending-analysis"
+      "index_reference",
+      "benchmark",
+      "sp500"
     ],
-    "notes": "Universo sincronizado para ingesta local Yahoo/PostgreSQL.",
+    "notes": "Indice S&P 500 de referencia. No se analiza con reglas Graham defensivas.",
     "rawTicker": "SP500",
     "priority": "requested",
-    "watchReason": "No se analiza con Graham automatico: quoteType=INDEX.",
+    "watchReason": "Indice S&P 500 de referencia. No se analiza con reglas Graham defensivas.",
     "lastPrice": 7386.65,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
@@ -18500,19 +18509,20 @@
     "industry": "Drug Manufacturers Specialty & Generic",
     "source": "Yahoo Finance Search",
     "sourceDate": "2026-06-09",
-    "analysisStatus": "pending_fundamentals",
+    "analysisStatus": "analysis_external_pending",
     "validationStatus": "yahoo_partial_incomplete",
     "tags": [
       "bmv-sic",
-      "pending-analysis"
+      "pending-analysis",
+      "source-required"
     ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual.",
     "lastPrice": 278.43,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual."
   },
   {
     "ticker": "VZ",
