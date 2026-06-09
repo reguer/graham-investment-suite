@@ -23,7 +23,7 @@ if (-not $npm) {
 
 $action = New-ScheduledTaskAction `
   -Execute $npm `
-  -Argument "run weekly:screen" `
+  -Argument "run weekly:pipeline" `
   -WorkingDirectory $repo
 
 $trigger = New-ScheduledTaskTrigger `

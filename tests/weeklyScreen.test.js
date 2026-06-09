@@ -49,6 +49,8 @@ describe("weekly-screen report cadence", () => {
     expect(report).toContain("## Resumen Semanal");
     expect(report).toContain("## Alertas Accionables");
     expect(report).toContain("Aprobadas destacadas: KBH");
+    expect(report).toContain("Fuente/captura requerida: 1");
+    expect(report).toContain("## Fuente o Captura Requerida");
     expect(report).toContain("Generado desde: Laptop Test (device-1, rol: principal)");
   });
 

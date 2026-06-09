@@ -1,8 +1,8 @@
 const SOURCE_DATE = "2026-06-09";
 
 export const requestedTickers = [
-  { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", validationStatus: "validated_yahoo" },
-  { rawTicker: "SP500", ticker: "SP500", yahooSymbol: "^GSPC", companyName: "S&P 500", quoteType: "INDEX", market: "US", validationStatus: "validated_yahoo" },
+  { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "nasdaq-100"], notes: "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "SP500", ticker: "SP500", yahooSymbol: "^GSPC", companyName: "S&P 500", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "sp500"], notes: "Indice S&P 500 de referencia. No se analiza con reglas Graham defensivas." },
   { rawTicker: "MU", ticker: "MU", yahooSymbol: "MU.MX", companyName: "Micron Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "MRVL", ticker: "MRVL", yahooSymbol: "MRVL1.MX", companyName: "Marvell Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
   { rawTicker: "SNDK", ticker: "SNDK", yahooSymbol: "SNDK1.MX", companyName: "Sandisk Corporation", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
@@ -14,9 +14,9 @@ export const requestedTickers = [
   { rawTicker: "BIDU", ticker: "BIDU", yahooSymbol: "BIDU", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "NASDAQ", validationStatus: "validated_yahoo" },
   { rawTicker: "TSLA", ticker: "TSLA", yahooSymbol: "TSLA.MX", companyName: "Tesla, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "AMD", ticker: "AMD", yahooSymbol: "AMD.MX", companyName: "Advanced Micro Devices, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
-  { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
-  { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
+  { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "gold"], notes: "Futuro de oro para contexto macro. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "silver"], notes: "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "copper"], notes: "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas." },
   { rawTicker: "META", ticker: "META", yahooSymbol: "META.MX", companyName: "Meta Platforms, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
 ];
 

@@ -15,8 +15,9 @@ Estado 2026-06-09:
 
 - Export publico: 306 instrumentos.
 - Analizadas: 290.
-- Referencias: 6.
-- Pendientes/no Graham: 10.
+- Referencias indice/ETF: 8.
+- Referencias macro: 3.
+- Pendientes por fuente/captura: 5.
 - Precios resueltos: 287 de 306.
 
 ## Fuentes
@@ -31,6 +32,9 @@ Estado 2026-06-09:
 |--------|-------------|--------|
 | `pending_fundamentals` | Existe ticker, pero faltan fundamentales Graham | Mostrar en dashboard sin ratios |
 | `analyzed` | Tiene snapshot financiero completo | Calcular ratios y clasificacion |
+| `index_reference` | Indice o ETF de benchmark | Mostrar como referencia, sin Graham |
+| `market_reference` | Futuro o commodity macro | Mostrar como referencia, sin Graham |
+| `analysis_external_pending` | Yahoo/SEC no entregaron snapshot suficiente | Resolver alias, SEC EDGAR o captura manual |
 | `needs_manual_review` | Yahoo no valida el simbolo esperado o usa alias | Revisar ticker manualmente |
 | `missing_data` | Yahoo no entrega datos suficientes | Mantener sin alertas Graham |
 
@@ -67,9 +71,10 @@ npm run universe:refresh
 npm run universe:refresh:requested
 npm run fundamentals:ingest -- --limit 80
 npm run weekly:screen
+npm run weekly:pipeline -- --no-telegram
 ```
 
-`universe:sync` escribe el catalogo a PostgreSQL/export publico en chunks. `universe:refresh` guarda snapshots en `data/cache/`, carpeta ignorada por Git. Esto evita subir datos temporales o cache de proveedores.
+`weekly:pipeline` ejecuta el flujo local completo en orden: `universe:sync`, `universe:refresh`, `fundamentals:ingest` y `weekly:screen`. `universe:sync` escribe el catalogo a PostgreSQL/export publico en chunks. `universe:refresh` guarda snapshots en `data/cache/`, carpeta ignorada por Git. Esto evita subir datos temporales o cache de proveedores.
 
 ## Limites actuales
 
@@ -84,7 +89,7 @@ Mientras no exista extraccion fundamental validada:
 
 ## Pendientes actuales
 
-- Commodities/futuros (`GOLD`, `SILVER`, `COPPER`) e indices (`INDEX100`, `SP500`) no se analizan con Graham; sirven como referencias macro/mercado.
+- Commodities/futuros (`GOLD`, `SILVER`, `COPPER`) e indices (`INDEX100`, `SP500`) ya no se cuentan como pendientes Graham; sirven como referencias macro/mercado.
 - `FITB` y `VTRS`: Yahoo no devolvio estados anuales suficientes en la corrida; requieren reintento posterior o captura manual.
 - `CMA`, `HOLX`, `JNPR`: Yahoo no devolvio quote fundamental para `.MX` ni ticker base en la corrida; revisar simbolo/alias Yahoo o capturar manualmente.
 

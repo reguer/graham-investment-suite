@@ -96,12 +96,20 @@ export function buildWatchlist(publicCompanies = []) {
     };
   }
 
-  if (item.analysisStatus === "index_reference" || item.validationStatus === "index_reference" || item.tags?.includes("index_reference")) {
+  if (
+    item.analysisStatus === "index_reference" ||
+    item.analysisStatus === "market_reference" ||
+    item.validationStatus === "index_reference" ||
+    item.validationStatus === "market_reference" ||
+    item.tags?.includes("index_reference") ||
+    item.tags?.includes("market_reference") ||
+    ["INDEX", "ETF", "FUTURE"].includes(String(item.quoteType || "").toUpperCase())
+  ) {
     return {
       ...item,
       yahooSymbol: item.yahooSymbol || item.ticker,
       watchReason: item.watchReason || item.notes || "Referencia de mercado. No requiere analisis Graham.",
-      tags: item.tags?.length ? item.tags : ["index_reference"],
+      tags: item.tags?.length ? item.tags : ["market_reference"],
     };
   }
 

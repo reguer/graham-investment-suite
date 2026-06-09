@@ -72,7 +72,14 @@ export const SYSTEM_STATUSES = {
 };
 
 export function mapSystemStatus(item) {
-  if (item.alertLevel === "reference" || item.analysisStatus === "index_reference" || item.validationStatus === "index_reference") {
+  if (
+    item.alertLevel === "reference" ||
+    item.analysisStatus === "index_reference" ||
+    item.analysisStatus === "market_reference" ||
+    item.validationStatus === "index_reference" ||
+    item.validationStatus === "market_reference" ||
+    ["INDEX", "ETF", "FUTURE"].includes(String(item.quoteType || "").toUpperCase())
+  ) {
     return SYSTEM_STATUSES.index_reference;
   }
   if (item.alertLevel === "approved" || item.classification?.id === "graham_approved") {
@@ -90,11 +97,16 @@ export function mapSystemStatus(item) {
   if (item.classification?.id === "rejected" || item.classification?.label === "RECHAZADA" || item.validationStatus === "yahoo_model_rejected") {
     return SYSTEM_STATUSES.rejected_model;
   }
+  if (
+    item.validationStatus === "needs_manual_review" ||
+    item.validationStatus === "yahoo_partial_incomplete" ||
+    item.validationStatus === "source_required" ||
+    item.analysisStatus === "analysis_external_pending"
+  ) {
+    return SYSTEM_STATUSES.manual_review;
+  }
   if (String(item.analysisStatus || "").startsWith("analysis_")) {
     return SYSTEM_STATUSES.unsupported_analysis;
-  }
-  if (item.validationStatus === "needs_manual_review" || item.validationStatus === "yahoo_partial_incomplete") {
-    return SYSTEM_STATUSES.manual_review;
   }
   if (item.analysisStatus === "pending_fundamentals" || item.alertLevel === "pending") {
     return SYSTEM_STATUSES.pending_fundamentals;

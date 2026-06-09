@@ -3,6 +3,7 @@ import Dot from "../../components/ui/Dot.jsx";
 import MetricCard from "../../components/ui/MetricCard.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
+import { buildDataIssueRows } from "./dataQuality.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
@@ -56,6 +57,7 @@ export default function Watchlist({ onManualCapture }) {
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
   const allTags = useMemo(() => collectTags(results), [results]);
+  const dataIssues = useMemo(() => buildDataIssueRows(watchlist), [watchlist]);
   const statusCounts = useMemo(() => results.reduce((counts, result) => {
     const id = result.systemStatus?.id || "watch_observation";
     counts[id] = (counts[id] || 0) + 1;
@@ -277,6 +279,38 @@ export default function Watchlist({ onManualCapture }) {
           <span>Telegram: {captureStatus.telegramEnabled ? "habilitado" : "apagado"}</span>
         </div>
       </div>
+
+      {dataIssues.length ? (
+        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14, marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: 10 }}>
+            <strong>Fuentes pendientes</strong>
+            <span style={{ color: SURFACE.muted, fontSize: 12 }}>{dataIssues.length} tickers requieren fuente o captura</span>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", minWidth: 900, borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
+                  {["Ticker", "Yahoo", "Estado", "Fuente sugerida", "Accion", "Nota"].map((label) => (
+                    <th key={label} style={{ padding: "8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap" }}>{label}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dataIssues.slice(0, 12).map((issue) => (
+                  <tr key={issue.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
+                    <td style={{ padding: "8px", color: issue.severity === "high" ? AC.red : AC.yellow, fontWeight: 700 }}>{issue.ticker}</td>
+                    <td style={{ padding: "8px", color: SURFACE.text }}>{issue.yahooSymbol}</td>
+                    <td style={{ padding: "8px", color: SURFACE.text }}>{issue.status}</td>
+                    <td style={{ padding: "8px", color: SURFACE.muted }}>{issue.source}</td>
+                    <td style={{ padding: "8px", color: SURFACE.text, maxWidth: 320 }}>{issue.action}</td>
+                    <td style={{ padding: "8px", color: SURFACE.muted, maxWidth: 360 }}>{issue.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : null}
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
         <MetricCard label="Aprobadas" value={String(summary.approved.length)} color={AC.green} />

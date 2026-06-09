@@ -27,6 +27,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - Pestaña lazy `Backtesting` en el dashboard que carga `public/data/backtesting-summary.json`.
 - Benchmark real `^GSPC` descargable con alias `SP500`, backtest `public-10` y selector de escenarios en dashboard.
 - `scripts/export-to-notion.js` con dry-run seguro y payload local para sincronización futura con Notion.
+- `scripts/weekly-pipeline.js` y `npm run weekly:pipeline` para ejecutar en orden `universe:sync -> universe:refresh -> fundamentals:ingest -> weekly:screen`.
+- Tabla `Fuentes pendientes` en Watchlist para ver ticker, alias Yahoo, severidad, fuente sugerida y accion de rescate.
 - `docs/00_PREFLIGHT_ESTADO_REAL.md` — Diagnóstico técnico inicial del repositorio
 - `docs/01_PROCESOS_LOCALES_DASHBOARD.md` — Aislamiento de procesos y puertos locales
 - `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` — Jerarquía de fuentes de datos y propuesta de automatización
@@ -52,11 +54,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - `README.md` — Ampliado con configuración local, multiordenador, alertas, GitHub Pages y troubleshooting (preservando contenido existente)
 - `docs/weekly-alerts.md` — Actualizado con CLI, exports, Telegram multiordenador y modo watch.
 - `docs/13_ROADMAP_NOTION_READY.md` — Marcadas historias completadas y riesgos pendientes reales.
+- Indices, ETFs y futuros se separan como referencias de mercado para no aparecer como pendientes Graham.
+- Reporte semanal renombra pendientes a `Fuente/captura requerida` cuando falta alias, SEC EDGAR o captura manual.
 
 ### Estado de datos
-- Corrida local 2026-06-09: 306 instrumentos en export publico; 290 analizados, 6 referencias, 10 pendientes/no Graham.
+- Corrida local 2026-06-09: 306 instrumentos en export publico; 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura.
 - Precios Yahoo resueltos para 287 de 306 instrumentos; 19 quedaron sin precio de listado en la corrida.
-- Pendientes actuales: commodities/futuros (`GOLD`, `SILVER`, `COPPER`), indices solicitados (`INDEX100`, `SP500`), parciales Yahoo sin estados anuales (`FITB`, `VTRS`) y tickers sin quote fundamental Yahoo en la corrida (`CMA`, `HOLX`, `JNPR`).
+- Referencias macro: `GOLD`, `SILVER`, `COPPER`; referencias solicitadas: `INDEX100`, `SP500`.
+- Pendientes actuales por fuente/captura: parciales Yahoo sin estados anuales (`FITB`, `VTRS`) y tickers sin quote fundamental Yahoo en la corrida (`CMA`, `HOLX`, `JNPR`).
 
 ---
 

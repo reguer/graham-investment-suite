@@ -159,7 +159,7 @@ export function buildAlertItems(summary, cadence) {
       severity: "media",
       type: "pendientes_semana",
       ticker: "PENDIENTES",
-      message: `${summary.pending.length} instrumentos siguen pendientes/no soportados. Cerrar la semana depurando captura manual o exclusion.`,
+      message: `${summary.pending.length} instrumentos requieren fuente o captura manual. Cerrar la semana depurando alias, SEC EDGAR o captura asistida.`,
     });
   }
   if (cadence.type === "formal_monday" && summary.watch.length) {
@@ -204,7 +204,7 @@ No es asesoria financiera. Este reporte usa el snapshot financiero de la watchli
 - Aprobadas: ${summary.approved.length}
 - Cerca de aprobar: ${summary.near.length}
 - En observacion: ${summary.watch.length}
-- Pendientes de primer analisis: ${summary.pending.length}
+- Fuente/captura requerida: ${summary.pending.length}
 - Analizadas: ${watchlistMeta.analyzedCount}
 - BMV/SIC validadas en catalogo: ${watchlistMeta.bmvSicCount}
 - Universo: ${results.length}
@@ -219,7 +219,7 @@ ${renderSection("Cerca de Aprobar", summary.near, "No hay companias cerca del ra
 
 ${renderSection("En Observacion", summary.watch, "No hay companias en observacion.")}
 
-${renderSection("Pendientes de Primer Analisis", summary.pending, "No hay companias pendientes.")}
+${renderSection("Fuente o Captura Requerida", summary.pending, "No hay companias pendientes de fuente o captura.")}
 
 ## Notas
 

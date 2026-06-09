@@ -79,6 +79,25 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
 
   const criticalRatioCount = countAvailableCriticalRatios(candidate);
   if (criticalRatioCount < 3) {
+    if (candidate.validationStatus === "yahoo_model_rejected") {
+      return withSystemStatus({
+        ...candidate,
+        quote,
+        livePrice: quote?.price ?? candidate.price ?? null,
+        ratios: null,
+        classification: {
+          id: candidate.classificationId || "rejected",
+          label: candidate.classificationLabel || "RECHAZADA",
+          color: "#ef4444",
+          reason: candidate.notes || "Rechazada por modelo Graham defensivo con datos parciales no comparables.",
+        },
+        alertLevel: "watch",
+        alertLabel: candidate.classificationLabel || "Rechazada por modelo",
+        closeToDefensive: false,
+        near: false,
+      });
+    }
+
     return withSystemStatus({
       ...candidate,
       analysisStatus: "analysis_incomplete",
@@ -214,9 +233,12 @@ export function summarizeScreen(results) {
 export function isReferenceInstrument(candidate) {
   return (
     candidate.analysisStatus === "index_reference" ||
+    candidate.analysisStatus === "market_reference" ||
     candidate.validationStatus === "index_reference" ||
+    candidate.validationStatus === "market_reference" ||
     candidate.tags?.includes("index_reference") ||
-    ["INDEX", "ETF"].includes(String(candidate.quoteType || "").toUpperCase())
+    candidate.tags?.includes("market_reference") ||
+    ["INDEX", "ETF", "FUTURE"].includes(String(candidate.quoteType || "").toUpperCase())
   );
 }
 

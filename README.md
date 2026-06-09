@@ -22,7 +22,7 @@ https://reguer.github.io/graham-investment-suite/
 | Build | `npm run build` |
 | Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
 | Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
-| Universo actual | 306 instrumentos: 290 analizados, 6 referencias, 10 pendientes/no Graham al 2026-06-09 |
+| Universo actual | 306 instrumentos: 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura al 2026-06-09 |
 | Yahoo complementario | `npm run fundamentals:ingest -- --all-unsupported` |
 | Scheduler lunes/viernes | `npm run scheduler:install` |
 | Alertas automaticas | Markdown + Telegram opcional solo desde equipo principal |
@@ -106,6 +106,7 @@ npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500 # Backtes
 npm run notion:export -- --dry-run --limit 25 # Payload local para Notion sin enviar secretos
 npm run universe:sync # Sincroniza universe.js a PostgreSQL/export publico sin perder snapshots
 npm run universe:refresh # Precios Yahoo para el universo masivo
+npm run weekly:pipeline -- --no-telegram # Flujo completo local: sync -> refresh -> ingest -> weekly screen
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
 ```
@@ -124,7 +125,7 @@ Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Sta
 
 La ingesta automatica complementaria usa `yahoo-finance2` con Node 22 para intentar rescatar empresas que SEC no pudo analizar. Primero intenta `fundamentalsTimeSeries` + FX controlado; si Yahoo entrega estados anuales, EPS historico, precio, P/E, P/B, deuda y liquidez, guarda un snapshot `yahoo_full_fx`. Si la empresa queda descartada por P/E nulo, P/B nulo, liquidez no aplicable o ratios faltantes, se marca como `yahoo_model_rejected` en vez de dejarla pendiente.
 
-En la corrida local del 2026-06-09 el universo quedo asi: 306 instrumentos, 290 analizados, 6 referencias y 10 pendientes/no Graham. `npm run universe:refresh` resolvio precios para 287 de 306 instrumentos. Los pendientes no se eliminan: quedan marcados como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed`, `INDEX` o `FUTURE` hasta tener una fuente alternativa confiable o captura manual.
+En la corrida local del 2026-06-09 el universo quedo asi: 306 instrumentos, 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura. `npm run universe:refresh` resolvio precios para 287 de 306 instrumentos. Los pendientes no se eliminan: quedan marcados como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed` o `source_required` hasta tener una fuente alternativa confiable o captura manual. Indices, ETFs y futuros quedan como referencias y no se muestran como pendientes Graham.
 
 Flujo local recomendado para alimentar datos sin depender de sesiones Codex:
 
@@ -133,6 +134,12 @@ npm run universe:sync
 npm run universe:refresh
 npm run fundamentals:ingest -- --limit 80
 npm run weekly:screen -- --no-telegram
+```
+
+Para correrlo como una sola tarea local:
+
+```bash
+npm run weekly:pipeline -- --no-telegram
 ```
 
 `universe:sync` agrega nuevos tickers desde `src/tools/watchlist/universe.js` a PostgreSQL/export publico y preserva snapshots analizados. `universe:refresh` actualiza precios. `fundamentals:ingest` usa Yahoo Finance localmente; si un simbolo `.MX` no entrega fundamentales, intenta automaticamente el ticker base USA y conserva la trazabilidad en notas.
@@ -181,7 +188,7 @@ npm run weekly:screen -- --verbose
 
 Los reportes Markdown y HTML incluyen el origen del equipo desde `.local_runtime/device.json`. Ese archivo es local, no se versiona y se crea con `npm run runtime:init` o al arrancar scripts que usan runtime local.
 
-El universo inicial incluye el lote solicitado por el usuario y 200 acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Pendiente de primer analisis`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
+El universo inicial incluye el lote solicitado por el usuario y acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Fuente/captura requerida`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
 
 **Horario operativo requerido: cierre de vela diaria a las 18:00 hrs CDMX.**
 

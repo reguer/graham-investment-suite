@@ -71,6 +71,10 @@
 | Ingesta Yahoo E05/S11-S12 | ✅ Completado ampliado | Fallback `.MX -> ticker base`; corrida local: 290 analizadas, 6 referencias, 10 pendientes | Resolver 3 tickers sin quote fundamental y 2 parciales sin estados anuales |
 | PostgreSQL E06/S13-S14 | ✅ Completado robustecido | `universe:sync` y `universe:refresh` escriben en chunks para evitar `ENAMETOOLONG` | Migraciones versionadas futuras |
 | Candidatas Graham | ✅ Complementado | Se conservaron candidatas previas y se sumaron sectores utilities/industrials/defensive/health/financial/tech | No usar candidatas como límite del universo |
+| Referencias mercado E07/S15 | ✅ Robustecido | `INDEX100`, `SP500`, ETFs, índices y futuros se separan como `reference`/`market_reference` | No aplicar Graham a instrumentos sin fundamentales corporativos |
+| Fuentes pendientes E10/S22 | ✅ Completado | Watchlist muestra tabla `Fuentes pendientes` con causa, fuente sugerida y acción por ticker | Resolver `CMA`, `FITB`, `HOLX`, `JNPR`, `VTRS` con alias/SEC/captura manual |
+| Scheduler E12/S25 | ✅ Robustecido | `npm run scheduler:install` apunta al flujo completo `npm run weekly:pipeline` | Validar tarea real en Windows Task Scheduler |
+| Pipeline semanal | ✅ Completado | `npm run weekly:pipeline -- --no-telegram` ejecuta sync, refresh, ingest y reporte semanal | Separar en el futuro frecuencia diaria de precios vs trimestral de fundamentales |
 
 ---
 

@@ -100,6 +100,12 @@ npm run fundamentals:ingest -- --limit 80
 npm run weekly:screen -- --no-telegram
 ```
 
+Atajo equivalente para scheduler o corrida manual completa:
+
+```bash
+npm run weekly:pipeline -- --no-telegram
+```
+
 Orden:
 
 1. `universe:sync` toma `src/tools/watchlist/universe.js` como catalogo fuente, agrega nuevos tickers al export publico y a PostgreSQL, y preserva snapshots ya analizados.
@@ -111,11 +117,12 @@ Estado de la corrida 2026-06-09:
 
 - Export publico: 306 instrumentos.
 - Analizadas: 290.
-- Referencias: 6.
-- Pendientes/no Graham: 10.
+- Referencias indice/ETF: 8.
+- Referencias macro: 3.
+- Pendientes por fuente/captura: 5.
 - Precios resueltos: 287 de 306.
 
-Los pendientes por datos no se eliminan automaticamente. Se marcan como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed`, `INDEX` o `FUTURE` hasta completar fuente alternativa o captura manual.
+Los pendientes por datos no se eliminan automaticamente. Se marcan como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed` o `source_required` hasta completar fuente alternativa o captura manual. Indices, ETFs y futuros quedan como referencias, no como pendientes Graham.
 
 Fuentes de rescate para pendientes:
 
@@ -132,7 +139,7 @@ Para crear la tarea local de Windows sin sobrescribir una existente:
 npm run scheduler:install
 ```
 
-La tarea corre `npm run weekly:screen` lunes y viernes a las 18:00 desde esta carpeta. Las credenciales de Telegram se leen solo desde `.env.local`; este script no las imprime ni las modifica.
+La tarea corre `npm run weekly:pipeline` lunes y viernes a las 18:00 desde esta carpeta. Las credenciales de Telegram se leen solo desde `.env.local`; este script no las imprime ni las modifica.
 - Export publico: actualiza `data/public/companies.json` para GitHub Pages.
 
 El archivo Markdown es el reporte humano.

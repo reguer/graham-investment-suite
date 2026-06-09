@@ -96,6 +96,24 @@ describe("watchlist screening", () => {
     expect(result.ratios).toBeNull();
   });
 
+  it("keeps Yahoo model rejections out of the source capture queue", () => {
+    const result = evaluateCandidate({
+      ticker: "BANK",
+      companyName: "Rejected Bank",
+      validationStatus: "yahoo_model_rejected",
+      pe: null,
+      pb: null,
+      debtRatio: 0.4,
+      currentRatio: null,
+      fcf: null,
+      notes: "Rechazada por modelo Graham defensivo.",
+    });
+
+    expect(result.alertLevel).toBe("watch");
+    expect(result.alertLabel).toBe("Rechazada por modelo");
+    expect(result.ratios).toBeNull();
+  });
+
   it("classifies indexes and ETFs as market references", () => {
     const result = evaluateCandidate({
       ticker: "^GSPC",

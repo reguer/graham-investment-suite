@@ -34,7 +34,11 @@ function shouldPreserveSnapshot(existing) {
   return (
     existing?.analysisStatus === "analyzed" ||
     existing?.analysisStatus === "index_reference" ||
+    existing?.analysisStatus === "market_reference" ||
+    existing?.analysisStatus === "analysis_external_pending" ||
     existing?.validationStatus === "index_reference" ||
+    existing?.validationStatus === "market_reference" ||
+    existing?.validationStatus === "source_required" ||
     existing?.pe !== undefined ||
     existing?.pb !== undefined ||
     existing?.classificationId
