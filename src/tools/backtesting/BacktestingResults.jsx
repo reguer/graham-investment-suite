@@ -23,6 +23,7 @@ function Metric({ label, value }) {
 export default function BacktestingResults() {
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState("");
+  const [scenarioId, setScenarioId] = useState("base");
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL || "/";
@@ -35,9 +36,13 @@ export default function BacktestingResults() {
       .catch((err) => setError(err.message));
   }, []);
 
-  const trades = useMemo(() => (summary?.trades || []).slice().sort((a, b) => String(a.entryDate).localeCompare(String(b.entryDate))), [summary]);
-  const metrics = summary?.metrics || {};
-  const benchmark = summary?.benchmark || {};
+  const scenario = useMemo(() => {
+    const scenarios = summary?.scenarios || [];
+    return scenarios.find((item) => item.id === scenarioId) || scenarios[0] || summary;
+  }, [summary, scenarioId]);
+  const trades = useMemo(() => (scenario?.trades || []).slice().sort((a, b) => String(a.entryDate).localeCompare(String(b.entryDate))), [scenario]);
+  const metrics = scenario?.metrics || {};
+  const benchmark = scenario?.benchmark || summary?.benchmark || {};
 
   if (error) {
     return <div style={{ color: "#fecaca", border: "1px solid rgba(248,113,113,.35)", borderRadius: 8, padding: 16 }}>{error}</div>;
@@ -51,6 +56,23 @@ export default function BacktestingResults() {
         <p style={{ color: SURFACE.muted, margin: "6px 0 0", maxWidth: 840 }}>
           Estrategia defensiva básica con precios históricos y fundamentales snapshot como proxy. No es una simulación histórica definitiva.
         </p>
+      </div>
+
+      <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+        <label style={{ color: SURFACE.muted, fontSize: 13 }} htmlFor="scenario">Escenario</label>
+        <select
+          id="scenario"
+          value={scenario?.id || scenarioId}
+          onChange={(event) => setScenarioId(event.target.value)}
+          style={{ background: "rgba(15, 23, 42, 0.9)", color: SURFACE.text, border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: "9px 10px" }}
+        >
+          {(summary.scenarios || [{ id: "base", label: "Base" }]).map((item) => (
+            <option key={item.id} value={item.id}>{item.label}</option>
+          ))}
+        </select>
+        <span style={{ color: SURFACE.muted, fontSize: 13 }}>
+          Posición {pct(scenario?.params?.maxPositionPct)} · Stop {pct(scenario?.params?.stopLossPct)} · Salida P/E x P/B {scenario?.params?.exitPePb ?? "N/A"}
+        </span>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10 }}>
@@ -92,7 +114,7 @@ export default function BacktestingResults() {
       </div>
 
       <div style={{ color: SURFACE.muted, fontSize: 13 }}>
-        Generado: {summary.generatedAt || "N/A"} · Benchmark: {benchmark.name || benchmark.ticker || "N/A"}
+        Generado: {summary.generatedAt || "N/A"} · Universo: {summary.universe || "N/A"} · Benchmark: {benchmark.name || benchmark.ticker || "N/A"}
       </div>
     </section>
   );

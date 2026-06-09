@@ -12,7 +12,7 @@
 | Datos históricos | 10 CSV 2020-01-01 a 2026-06-08 en `backtesting/data/historical/` |
 | Estrategias definidas formalmente | Graham defensivo básico en `backtesting/strategies/graham-defensive.js` |
 | Resultados históricos | Solo `reports/weekly/*.md` (desde 2026) |
-| Benchmark | Básico implementado con fixture SP500 |
+| Benchmark | `^GSPC` histórico real descargado via alias `SP500` |
 | Métricas de desempeño | Básicas en `backtesting/metrics.js` |
 
 Lo que SÍ existe y puede usarse como base:
@@ -321,8 +321,8 @@ import miniUniverse from './fixtures/mini_universe.json'
 | 3 | Crear `backtesting/strategies/graham-defensive.js` | Alta | ✅ Completado básico |
 | 4 | Crear motor de ejecución de backtests | Alta | ✅ Completado básico |
 | 5 | Calcular métricas básicas (retorno, drawdown, win rate) | Media | ✅ Completado básico |
-| 6 | Comparar vs benchmark S&P 500 | Media | ✅ Fixture SP500 y alfa por trade |
-| 7 | Crear reporte de resultados | Media | ✅ Markdown, CSV y vista dashboard básica |
+| 6 | Comparar vs benchmark S&P 500 | Media | ✅ `^GSPC` histórico real, alfa por trade y exceso vs benchmark |
+| 7 | Crear reporte de resultados | Media | ✅ Markdown, CSV, JSON público y vista dashboard con escenarios |
 | 8 | Agregar datos fundamentales históricos | Alta | Manual |
 | 9 | Crear las 8 estrategias restantes | Media | Paso 8 |
 | 10 | Crear tests de backtesting | Media | ✅ Completado con mini_universe |

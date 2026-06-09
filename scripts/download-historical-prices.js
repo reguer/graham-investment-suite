@@ -3,6 +3,10 @@ import { join } from "node:path";
 import { fetchHistoricalPrices } from "../src/tools/watchlist/priceSources.js";
 
 const DEFAULT_TICKERS = ["KBH", "MTH", "TOL", "TMHC", "LEN", "INGR", "CTSH", "MHO", "GRBK", "PHM"];
+const HISTORICAL_ALIASES = {
+  SP500: { ticker: "^GSPC", symbol: "^GSPC" },
+  GSPC: { ticker: "^GSPC", symbol: "^GSPC" },
+};
 
 function todayIso() {
   return new Date().toISOString().slice(0, 10);
@@ -33,10 +37,12 @@ export async function downloadHistoricalPrices({ tickers, startDate, endDate, ou
   mkdirSync(outDir, { recursive: true });
   const results = [];
   for (const ticker of tickers) {
-    const rows = await fetchHistoricalPrices(ticker, { startDate, endDate, fetchImpl });
-    const path = join(outDir, `${ticker}_${startDate}_${endDate}.csv`.replace(/:/g, "-"));
+    const target = HISTORICAL_ALIASES[ticker] || ticker;
+    const outputTicker = typeof target === "string" ? ticker : target.ticker;
+    const rows = await fetchHistoricalPrices(target, { startDate, endDate, fetchImpl });
+    const path = join(outDir, `${outputTicker}_${startDate}_${endDate}.csv`.replace(/:/g, "-"));
     writeFileSync(path, serializeHistoricalCsv(rows), "utf8");
-    results.push({ ticker, path, rows: rows.length });
+    results.push({ ticker: outputTicker, path, rows: rows.length });
   }
   return results;
 }

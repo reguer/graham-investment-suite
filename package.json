@@ -26,6 +26,7 @@
     "fundamentals:ingest": "node scripts/run-node22.js scripts/data-ingestion.js",
     "historical:download": "node scripts/run-node22.js scripts/download-historical-prices.js",
     "backtest:mini": "node scripts/run-node22.js scripts/run-backtest.js",
+    "notion:export": "node scripts/run-node22.js scripts/export-to-notion.js",
     "scheduler:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-weekly-alerts.ps1",
     "run:mode": "node scripts/run-node22.js scripts/run-mode.js",
     "security:audit": "node scripts/run-node22.js scripts/security-audit.js"

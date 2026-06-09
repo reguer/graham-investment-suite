@@ -101,6 +101,8 @@ npm run run:mode -- --mode watch --interval-minutes 15 # Poll local de precios/r
 npm run runtime:init # Crea .local_runtime/device.json sin tocar .env.local
 npm run historical:download # Descarga OHLCV historico para 10 tickers base
 npm run backtest:mini # Ejecuta fixture minimo, genera MD/JSON/CSV y export publico
+npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500 # Backtest 10 tickers con benchmark real ^GSPC
+npm run notion:export -- --dry-run --limit 25 # Payload local para Notion sin enviar secretos
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
@@ -266,7 +268,24 @@ La descarga historica usa Stooq si entrega CSV y Yahoo Chart como fallback sin A
 - `backtesting/reports/graham-defensive-mini-equity.csv`
 - `public/data/backtesting-summary.json`
 
-La pestaña **Backtesting** del dashboard carga ese ultimo JSON en runtime, separada con `React.lazy` para no inflar el bundle inicial.
+La pestaña **Backtesting** del dashboard carga ese ultimo JSON en runtime, separada con `React.lazy` para no inflar el bundle inicial. Actualmente permite seleccionar escenarios Base, Conservador y Paciente generados por el CLI.
+
+Para correr el lote real inicial:
+
+```bash
+npm run historical:download -- --tickers SP500 --start 2020-01-01 --end 2026-06-08
+npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500
+```
+
+`SP500` se normaliza internamente a `^GSPC` para evitar problemas de escape de `^` en PowerShell.
+
+## Export Notion
+
+```bash
+npm run notion:export -- --dry-run --limit 25
+```
+
+Genera `data/export/notion-watchlist-payload.json`. El envio real requiere `NOTION_TOKEN` y `NOTION_DATABASE_ID` en entorno local; no se versionan ni se imprimen.
 
 ---
 

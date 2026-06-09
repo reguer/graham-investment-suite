@@ -21,6 +21,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - Fixture `backtesting/tests/fixtures/mini_universe.json` y tests de compra, salida por valuacion y stop loss.
 - Benchmark SP500 fixture, alfa por trade y exports CSV de trades/equity curve para backtesting.
 - Pestaña lazy `Backtesting` en el dashboard que carga `public/data/backtesting-summary.json`.
+- Benchmark real `^GSPC` descargable con alias `SP500`, backtest `public-10` y selector de escenarios en dashboard.
+- `scripts/export-to-notion.js` con dry-run seguro y payload local para sincronización futura con Notion.
 - `docs/00_PREFLIGHT_ESTADO_REAL.md` — Diagnóstico técnico inicial del repositorio
 - `docs/01_PROCESOS_LOCALES_DASHBOARD.md` — Aislamiento de procesos y puertos locales
 - `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` — Jerarquía de fuentes de datos y propuesta de automatización
