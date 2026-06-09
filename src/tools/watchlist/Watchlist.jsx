@@ -17,6 +17,28 @@ function colorFor(level) {
   return AC.gray;
 }
 
+const PROCESS_NOTE_PREFIXES = ["snapshot", "sec", "analisis", "análisis", "pendiente", "datos incompletos"];
+
+function normalizeReasonPrefix(reason) {
+  return String(reason || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function shouldShowWatchReason(reason) {
+  const text = String(reason || "").trim();
+  if (text.length <= 40) return false;
+  const normalized = normalizeReasonPrefix(text);
+  return !PROCESS_NOTE_PREFIXES.some((prefix) => normalized.startsWith(prefix.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
+}
+
+function getVisibleWatchReason(result) {
+  const reason = result.watchReason || result.notes || "";
+  return shouldShowWatchReason(reason) ? reason : "";
+}
+
 export default function Watchlist({ onManualCapture }) {
   const [view, setView] = useState("opportunities");
   const [query, setQuery] = useState("");
@@ -189,37 +211,51 @@ export default function Watchlist({ onManualCapture }) {
                 : "Disponible en dashboard local."}
             </div>
           </div>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {[
-              ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Actualizar precios"],
-              ["/api/local/process-companies", "Procesando fundamentales existentes...", "Procesamiento completo", "Procesar fundamentales"],
-              ["/api/local/yahoo-supplemental", "Intentando Yahoo complementario para no soportadas...", "Yahoo complementario completo", "Rescatar con Yahoo"],
-            ].map(([endpoint, pendingText, doneText, label]) => (
-              <button
-                key={endpoint}
-                type="button"
-                onClick={() => runLocalAction(endpoint, pendingText, doneText)}
-                disabled={!captureStatus.localApi || captureStatus.captureInProgress}
-                style={{
-                  border: `1px solid ${captureStatus.localApi ? AC.blue : SURFACE.border}`,
-                  background: captureStatus.localApi ? "#16345f" : "#111827",
-                  color: captureStatus.localApi ? SURFACE.text : SURFACE.muted,
-                  borderRadius: 6,
-                  padding: "9px 12px",
-                  cursor: captureStatus.localApi && !captureStatus.captureInProgress ? "pointer" : "not-allowed",
-                }}
-              >
-                {captureStatus.captureInProgress ? "Trabajando..." : label}
-              </button>
-            ))}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            {captureStatus.localApi ? (
+              [
+                ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Actualizar precios"],
+                ["/api/local/process-companies", "Procesando fundamentales existentes...", "Procesamiento completo", "Procesar fundamentales"],
+                ["/api/local/yahoo-supplemental", "Intentando Yahoo complementario para no soportadas...", "Yahoo complementario completo", "Rescatar con Yahoo"],
+              ].map(([endpoint, pendingText, doneText, label]) => (
+                <button
+                  key={endpoint}
+                  type="button"
+                  onClick={() => runLocalAction(endpoint, pendingText, doneText)}
+                  disabled={captureStatus.captureInProgress}
+                  style={{
+                    border: `1px solid ${AC.blue}`,
+                    background: "#16345f",
+                    color: SURFACE.text,
+                    borderRadius: 6,
+                    padding: "9px 12px",
+                    cursor: !captureStatus.captureInProgress ? "pointer" : "not-allowed",
+                  }}
+                >
+                  {captureStatus.captureInProgress ? "Trabajando..." : label}
+                </button>
+              ))
+            ) : (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: SURFACE.muted, border: `1px solid ${SURFACE.border}`, background: "#111827", borderRadius: 6, padding: "9px 12px", fontSize: 13 }}>
+                <span aria-hidden="true" style={{ color: AC.blue }}>ⓘ</span>
+                Solo disponible en dashboard local
+              </span>
+            )}
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "minmax(120px, 180px) minmax(180px, 1fr) auto", gap: 8, marginTop: 12 }}>
           <input value={newTicker} onChange={(event) => setNewTicker(event.target.value)} placeholder="Ticker Yahoo base" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
           <input value={newCompanyName} onChange={(event) => setNewCompanyName(event.target.value)} placeholder="Nombre opcional" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <button type="button" onClick={handleAddCompany} disabled={!captureStatus.localApi} style={{ border: `1px solid ${captureStatus.localApi ? AC.green : SURFACE.border}`, background: "#12351f", color: captureStatus.localApi ? SURFACE.text : SURFACE.muted, borderRadius: 6, padding: "8px 10px" }}>
-            Importar ticker
-          </button>
+          {captureStatus.localApi ? (
+            <button type="button" onClick={handleAddCompany} style={{ border: `1px solid ${AC.green}`, background: "#12351f", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }}>
+              Importar ticker
+            </button>
+          ) : (
+            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, border: `1px solid ${SURFACE.border}`, background: "#111827", color: SURFACE.muted, borderRadius: 6, padding: "8px 10px", fontSize: 12 }}>
+              <span aria-hidden="true" style={{ color: AC.blue }}>ⓘ</span>
+              Solo disponible en dashboard local
+            </span>
+          )}
         </div>
         {captureMessage ? <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 10 }}>{captureMessage}</div> : null}
         {captureStatus.lastCapture?.finishedAt ? (
@@ -382,7 +418,7 @@ export default function Watchlist({ onManualCapture }) {
                         </button>
                         <strong>{result.ticker}</strong>
                       </span>
-                    ) : getTableCell(result, column)}
+                    ) : column.id === "reason" ? getVisibleWatchReason(result) : getTableCell(result, column)}
                   </td>
                 ))}
               </tr>
@@ -441,7 +477,9 @@ export default function Watchlist({ onManualCapture }) {
               <small>MoS <strong>{pct(result.ratios?.marginOfSafety)}</strong></small>
             </div>
 
-            <p style={{ color: SURFACE.text, margin: "12px 0 0", lineHeight: 1.5 }}>{result.watchReason}</p>
+            {getVisibleWatchReason(result) ? (
+              <p style={{ color: SURFACE.text, margin: "12px 0 0", lineHeight: 1.5 }}>{getVisibleWatchReason(result)}</p>
+            ) : null}
             {normalizeTags(result.tags).length ? (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
                 {normalizeTags(result.tags).slice(0, 8).map((tag) => (

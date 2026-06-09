@@ -41,6 +41,37 @@ function selectTargets(records, args) {
     .slice(0, args.limit);
 }
 
+export function buildSymbolCandidates(item, ticker) {
+  return [...new Set([
+    item.yahooSymbol || item.yahoo_symbol || ticker,
+    ticker,
+  ].filter(Boolean))];
+}
+
+async function fetchBuiltSnapshot(symbols, { fetcher, deepFetcher, expectedCurrency }) {
+  let lastError = null;
+  for (const symbol of symbols) {
+    try {
+      try {
+        return {
+          symbol,
+          built: buildYahooDeepSnapshot(await deepFetcher(symbol, { expectedCurrency })),
+        };
+      } catch (deepError) {
+        lastError = deepError;
+        const raw = await fetcher(symbol);
+        return {
+          symbol,
+          built: buildYahooSupplementalSnapshot(raw, { symbol, expectedCurrency }),
+        };
+      }
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error("No se pudo consultar Yahoo Finance.");
+}
+
 function persist(result) {
   const statements = [upsertCompanySql(result.publicRecord)];
   if (result.snapshot) {
@@ -67,15 +98,15 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
 
   for (const item of targets) {
     const ticker = item.ticker.toUpperCase();
-    const symbol = item.yahooSymbol || item.yahoo_symbol || ticker;
+    let symbol = item.yahooSymbol || item.yahoo_symbol || ticker;
     try {
-      let built = null;
-      try {
-        built = buildYahooDeepSnapshot(await deepFetcher(symbol, { expectedCurrency: args.expectedCurrency }));
-      } catch {
-        const raw = await fetcher(symbol);
-        built = buildYahooSupplementalSnapshot(raw, { symbol, expectedCurrency: args.expectedCurrency });
-      }
+      const fetched = await fetchBuiltSnapshot(buildSymbolCandidates(item, ticker), {
+        fetcher,
+        deepFetcher,
+        expectedCurrency: args.expectedCurrency,
+      });
+      symbol = fetched.symbol;
+      const built = fetched.built;
       if (!built.ok) {
         const snapshot = built.snapshot || null;
         const hasDisqualifyingSnapshot = snapshot?.price && (
@@ -137,11 +168,12 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
         built.reason,
         ...built.warnings,
         classification.reason,
+        symbol !== (item.yahooSymbol || item.yahoo_symbol || ticker) ? `Fundamentales obtenidos con simbolo Yahoo base ${symbol}.` : "",
       ].filter(Boolean).join(" ");
       const normalized = normalizeCompany({
         ...item,
         ticker,
-        yahooSymbol: symbol,
+        yahooSymbol: item.yahooSymbol || item.yahoo_symbol || symbol,
         source: built.snapshot.source,
         sourceDate: built.snapshot.sourceDate,
         analysisStatus: built.snapshot?.epsHistory?.length >= 2 ? "analyzed" : "analysis_partial_yahoo",

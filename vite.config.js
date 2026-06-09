@@ -1,33 +1,51 @@
-import { createRequire } from "node:module";
 import { existsSync } from "node:fs";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { join } from "node:path";
 import { createLocalDashboardApiPlugin } from "./scripts/local-dashboard-api.js";
 
-const localRequire = createRequire(import.meta.url);
 const repairedPackagePath = "C:/npm-cache/graham-repair/package.json";
-const repairedRequire = existsSync(repairedPackagePath) ? createRequire(repairedPackagePath) : null;
+const repairedNodeModules = "C:/npm-cache/graham-repair/node_modules";
 
-function loadDevDependency(name) {
+const repairedEntryPoints = {
+  vite: ["vite", "dist", "node", "index.js"],
+  "@vitejs/plugin-react": ["@vitejs", "plugin-react", "dist", "index.mjs"],
+  react: ["react", "index.js"],
+  "react/jsx-runtime": ["react", "jsx-runtime.js"],
+  "react-dom": ["react-dom", "index.js"],
+  "react-dom/client": ["react-dom", "client.js"],
+};
+
+async function loadDevDependency(name) {
   try {
-    return localRequire(name);
+    return await import(name);
   } catch {
-    if (!repairedRequire) throw new Error(`No se pudo cargar ${name}. Ejecuta npm install.`);
-    return repairedRequire(name);
+    if (!existsSync(repairedPackagePath)) {
+      throw new Error(`No se pudo cargar ${name}. Ejecuta npm install.`);
+    }
+    const parts = repairedEntryPoints[name];
+    if (!parts) throw new Error(`No hay fallback reparado configurado para ${name}.`);
+    return import(pathToFileURL(join(repairedNodeModules, ...parts)).href);
   }
 }
 
-function resolveDependency(name) {
+async function resolveDependency(name) {
   try {
-    return localRequire.resolve(name);
+    return fileURLToPath(await import.meta.resolve(name));
   } catch {
-    if (!repairedRequire) throw new Error(`No se pudo resolver ${name}. Ejecuta npm install.`);
-    return repairedRequire.resolve(name);
+    if (!existsSync(repairedPackagePath)) {
+      throw new Error(`No se pudo resolver ${name}. Ejecuta npm install.`);
+    }
+    const parts = repairedEntryPoints[name];
+    if (!parts) throw new Error(`No hay fallback reparado configurado para ${name}.`);
+    return join(repairedNodeModules, ...parts);
   }
 }
 
-const { defineConfig } = loadDevDependency("vite");
-const react = loadDevDependency("@vitejs/plugin-react").default;
+const { defineConfig } = await loadDevDependency("vite");
+const reactModule = await loadDevDependency("@vitejs/plugin-react");
+const react = reactModule.default;
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(async ({ command }) => ({
   base: command === "build" ? "/graham-investment-suite/" : "/",
   plugins: [
     react(),
@@ -35,10 +53,10 @@ export default defineConfig(({ command }) => ({
   ].filter(Boolean),
   resolve: {
     alias: [
-      { find: /^react$/, replacement: resolveDependency("react") },
-      { find: /^react\/jsx-runtime$/, replacement: resolveDependency("react/jsx-runtime") },
-      { find: /^react-dom$/, replacement: resolveDependency("react-dom") },
-      { find: /^react-dom\/client$/, replacement: resolveDependency("react-dom/client") },
+      { find: /^react$/, replacement: await resolveDependency("react") },
+      { find: /^react\/jsx-runtime$/, replacement: await resolveDependency("react/jsx-runtime") },
+      { find: /^react-dom$/, replacement: await resolveDependency("react-dom") },
+      { find: /^react-dom\/client$/, replacement: await resolveDependency("react-dom/client") },
     ],
   },
   test: {

@@ -2,6 +2,8 @@ import Dot from "../../components/ui/Dot.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 
 export default function InterpretationPanel({ checks, aiText, aiError, aiLoading, onRequestAI }) {
+  const hasAnthropicApiKey = Boolean(import.meta.env.VITE_ANTHROPIC_API_KEY);
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "minmax(260px, 0.9fr) minmax(280px, 1.1fr)", gap: 14 }}>
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 14, background: "#0b1020" }}>
@@ -30,6 +32,11 @@ export default function InterpretationPanel({ checks, aiText, aiError, aiLoading
             {aiLoading ? "Generando..." : "Generar IA"}
           </button>
         </div>
+        {!hasAnthropicApiKey ? (
+          <div style={{ display: "inline-block", color: AC.yellow, border: `1px solid ${AC.yellow}`, background: "rgba(245, 158, 11, 0.08)", borderRadius: 6, padding: "4px 7px", fontSize: 11, marginBottom: 10 }}>
+            VITE_ANTHROPIC_API_KEY no configurada — ver .env.example
+          </div>
+        ) : null}
         {aiError ? <div style={{ color: "#fecaca", marginBottom: 10 }}>{aiError}</div> : null}
         <pre style={{ whiteSpace: "pre-wrap", margin: 0, color: aiText ? SURFACE.text : SURFACE.muted, fontFamily: "Instrument Sans, sans-serif", lineHeight: 1.55 }}>
           {aiText || "La interpretacion por reglas ya esta en el checklist. La IA requiere entorno compatible o VITE_ANTHROPIC_API_KEY."}

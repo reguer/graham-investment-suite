@@ -54,7 +54,8 @@ describe("watchlist screening", () => {
     expect(result.alertLevel).toBe("pending");
     expect(result.ratios).toBeNull();
     expect(result.livePrice).toBe(25);
-    expect(result.classification.id).toBe("pending_fundamentals");
+    expect(result.classification.id).toBe("analysis_incomplete");
+    expect(result.classification.label).toBe("DATOS INSUFICIENTES");
   });
 
   it("does not treat null ratios as numeric zero", () => {
@@ -77,6 +78,22 @@ describe("watchlist screening", () => {
 
     expect(result.alertLevel).toBe("watch");
     expect(result.classification.id).toBe("rejected");
+  });
+
+  it("marks companies with fewer than three critical ratios as incomplete", () => {
+    const result = evaluateCandidate({
+      ticker: "EMPTY",
+      companyName: "Empty Co",
+      pe: null,
+      pb: null,
+      debtRatio: 0.4,
+      currentRatio: null,
+      fcf: null,
+    });
+
+    expect(result.analysisStatus).toBe("analysis_incomplete");
+    expect(result.alertLabel).toBe("Datos insuficientes");
+    expect(result.ratios).toBeNull();
   });
 
   it("classifies indexes and ETFs as market references", () => {

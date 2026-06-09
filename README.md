@@ -18,10 +18,11 @@ https://reguer.github.io/graham-investment-suite/
 |---------|--------|
 | Version | 1.0.0 |
 | Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js >=22 |
-| Tests | 30 suites — `npm test` |
+| Tests | 35+ suites — `npm test` |
 | Build | `npm run build` |
 | Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
 | Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
+| Universo actual | 306 instrumentos: 290 analizados, 6 referencias, 10 pendientes/no Graham al 2026-06-09 |
 | Yahoo complementario | `npm run fundamentals:ingest -- --all-unsupported` |
 | Scheduler lunes/viernes | `npm run scheduler:install` |
 | Alertas automaticas | Markdown + Telegram opcional solo desde equipo principal |
@@ -103,6 +104,7 @@ npm run historical:download # Descarga OHLCV historico para 10 tickers base
 npm run backtest:mini # Ejecuta fixture minimo, genera MD/JSON/CSV y export publico
 npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500 # Backtest 10 tickers con benchmark real ^GSPC
 npm run notion:export -- --dry-run --limit 25 # Payload local para Notion sin enviar secretos
+npm run universe:sync # Sincroniza universe.js a PostgreSQL/export publico sin perder snapshots
 npm run universe:refresh # Precios Yahoo para el universo masivo
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
 npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
@@ -122,7 +124,27 @@ Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Sta
 
 La ingesta automatica complementaria usa `yahoo-finance2` con Node 22 para intentar rescatar empresas que SEC no pudo analizar. Primero intenta `fundamentalsTimeSeries` + FX controlado; si Yahoo entrega estados anuales, EPS historico, precio, P/E, P/B, deuda y liquidez, guarda un snapshot `yahoo_full_fx`. Si la empresa queda descartada por P/E nulo, P/B nulo, liquidez no aplicable o ratios faltantes, se marca como `yahoo_model_rejected` en vez de dejarla pendiente.
 
-En la corrida del 2026-06-08 el universo quedo asi: 226 analizadas y 5 no analizables por naturaleza del instrumento (`INDEX`/`FUTURE`). BIDU se convirtio desde CNY a USD; SKHYNIX desde KRW a USD. El proyecto instala/usa Node 22.22.3 via `nvm` cuando existe, sin tocar `.env.local`.
+En la corrida local del 2026-06-09 el universo quedo asi: 306 instrumentos, 290 analizados, 6 referencias y 10 pendientes/no Graham. `npm run universe:refresh` resolvio precios para 287 de 306 instrumentos. Los pendientes no se eliminan: quedan marcados como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed`, `INDEX` o `FUTURE` hasta tener una fuente alternativa confiable o captura manual.
+
+Flujo local recomendado para alimentar datos sin depender de sesiones Codex:
+
+```bash
+npm run universe:sync
+npm run universe:refresh
+npm run fundamentals:ingest -- --limit 80
+npm run weekly:screen -- --no-telegram
+```
+
+`universe:sync` agrega nuevos tickers desde `src/tools/watchlist/universe.js` a PostgreSQL/export publico y preserva snapshots analizados. `universe:refresh` actualiza precios. `fundamentals:ingest` usa Yahoo Finance localmente; si un simbolo `.MX` no entrega fundamentales, intenta automaticamente el ticker base USA y conserva la trazabilidad en notas.
+
+Fuentes para completar pendientes:
+- Yahoo Finance `fundamentalsTimeSeries` y `quoteSummary` como fuente automatica primaria.
+- Yahoo Finance ticker base USA cuando el listado `.MX` solo sirve para precio/tradabilidad.
+- SEC EDGAR `companyfacts` para emisoras USA con CIK cuando el pipeline SEC aplique.
+- Captura manual desde Yahoo Finance para casos parciales donde Yahoo no entregue estados anuales.
+- Futuros/indices no se fuerzan a Graham; se mantienen como referencias o activos macro.
+
+BIDU se convirtio desde CNY a USD; SKHYNIX desde KRW a USD. El proyecto instala/usa Node 22.22.3 via scripts locales cuando existe, sin tocar `.env.local`.
 
 El export grande se sirve desde `public/data/companies.json` en GitHub Pages y dashboard local. La app carga ese archivo en runtime y divide las pestañas con `React.lazy`, por lo que el bundle principal queda debajo de 150 kB.
 

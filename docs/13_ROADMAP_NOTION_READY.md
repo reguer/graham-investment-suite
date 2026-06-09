@@ -60,6 +60,20 @@
 
 ---
 
+## Actualización operativa 2026-06-09
+
+| Area | Estado | Evidencia | Pendiente |
+|------|--------|-----------|-----------|
+| Vite E03/S06 | ✅ Completado | `vite.config.js` usa `import()` dinámico; `npm run build` limpio sin warning CJS | — |
+| Watchlist UX E10/S22 | ✅ Completado | Botones locales bloqueados se reemplazan por mensaje informativo en GitHub Pages; razones internas se ocultan | — |
+| Calidad datos E10/S20-S22 | ✅ Completado | `screen.js` marca `DATOS INSUFICIENTES` si faltan 3 de 5 ratios críticos | Completar fuentes alternativas para parciales |
+| Universo masivo E05/E09/E10 | ✅ Completado ampliado | `universe.js` + `universe:sync`; export público en 306 instrumentos | Mantener expansión sectorial por lotes versionados |
+| Ingesta Yahoo E05/S11-S12 | ✅ Completado ampliado | Fallback `.MX -> ticker base`; corrida local: 290 analizadas, 6 referencias, 10 pendientes | Resolver 3 tickers sin quote fundamental y 2 parciales sin estados anuales |
+| PostgreSQL E06/S13-S14 | ✅ Completado robustecido | `universe:sync` y `universe:refresh` escriben en chunks para evitar `ENAMETOOLONG` | Migraciones versionadas futuras |
+| Candidatas Graham | ✅ Complementado | Se conservaron candidatas previas y se sumaron sectores utilities/industrials/defensive/health/financial/tech | No usar candidatas como límite del universo |
+
+---
+
 ## Leyenda de estados
 
 | Emoji | Estado |

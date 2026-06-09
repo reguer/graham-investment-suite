@@ -9,6 +9,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `npm run universe:sync` para sincronizar `src/tools/watchlist/universe.js` hacia PostgreSQL y exports publicos sin degradar snapshots ya analizados.
+- Universo ampliado a 306 instrumentos, con sectores adicionales de utilities, infraestructura electrica, consumo defensivo, salud, financieras y tecnologia razonable.
+- Fallback automatico de fundamentales Yahoo: primero intenta simbolo SIC `.MX` y despues ticker base USA cuando Yahoo no entrega fundamentales para el listado mexicano.
+- Candidatas Graham complementadas: se conservan las candidatas previas de constructoras y se suman nuevas empresas diversificadas por sector.
 - Dashboard Watchlist con tabla densa de 30 columnas, filtros por estado/tag y vista responsive real.
 - `scripts/weekly-screen.js` con `--ticker`, `--format md/csv/html`, `--verbose` y `--no-telegram`.
 - Export CSV/HTML de screening en `data/export/`.
@@ -41,9 +45,18 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - `CHANGELOG.md` — Este archivo
 
 ### Changed
+- `vite.config.js` migro de `createRequire()` a `import()` dinamico para eliminar el warning CJS de Vite, preservando fallback local reparado.
+- Watchlist reemplaza botones locales bloqueados en GitHub Pages por mensajes informativos y oculta notas internas de proceso en la tabla/cards.
+- Screening marca como `DATOS INSUFICIENTES` las empresas con menos de 3 de 5 ratios criticos disponibles.
+- Ingesta y refresh PostgreSQL escriben en chunks para soportar universos grandes sin `ENAMETOOLONG`.
 - `README.md` — Ampliado con configuración local, multiordenador, alertas, GitHub Pages y troubleshooting (preservando contenido existente)
 - `docs/weekly-alerts.md` — Actualizado con CLI, exports, Telegram multiordenador y modo watch.
 - `docs/13_ROADMAP_NOTION_READY.md` — Marcadas historias completadas y riesgos pendientes reales.
+
+### Estado de datos
+- Corrida local 2026-06-09: 306 instrumentos en export publico; 290 analizados, 6 referencias, 10 pendientes/no Graham.
+- Precios Yahoo resueltos para 287 de 306 instrumentos; 19 quedaron sin precio de listado en la corrida.
+- Pendientes actuales: commodities/futuros (`GOLD`, `SILVER`, `COPPER`), indices solicitados (`INDEX100`, `SP500`), parciales Yahoo sin estados anuales (`FITB`, `VTRS`) y tickers sin quote fundamental Yahoo en la corrida (`CMA`, `HOLX`, `JNPR`).
 
 ---
 

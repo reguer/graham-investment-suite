@@ -2,6 +2,12 @@ import { classify } from "../graham-analyzer/classify.js";
 import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
+const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
+
+function isAvailableRatio(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+}
+
 export function deriveSnapshot(candidate, price = candidate.price) {
   if (!hasFinancialSnapshot(candidate)) return null;
 
@@ -43,7 +49,11 @@ export function deriveSnapshot(candidate, price = candidate.price) {
 }
 
 export function hasFinancialSnapshot(candidate) {
-  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every((value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)));
+  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every(isAvailableRatio);
+}
+
+export function countAvailableCriticalRatios(candidate) {
+  return CRITICAL_RATIO_KEYS.filter((key) => isAvailableRatio(candidate[key])).length;
 }
 
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
@@ -62,6 +72,27 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
       },
       alertLevel: "reference",
       alertLabel: "Referencia de mercado",
+      closeToDefensive: false,
+      near: false,
+    });
+  }
+
+  const criticalRatioCount = countAvailableCriticalRatios(candidate);
+  if (criticalRatioCount < 3) {
+    return withSystemStatus({
+      ...candidate,
+      analysisStatus: "analysis_incomplete",
+      quote,
+      livePrice: quote?.price ?? candidate.price ?? null,
+      ratios: null,
+      classification: {
+        id: "analysis_incomplete",
+        label: "DATOS INSUFICIENTES",
+        color: "#94a3b8",
+        reason: "Faltan al menos 3 de 5 ratios criticos para evaluar con Graham.",
+      },
+      alertLevel: "pending",
+      alertLabel: "Datos insuficientes",
       closeToDefensive: false,
       near: false,
     });

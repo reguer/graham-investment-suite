@@ -17,6 +17,7 @@
     "watchlist:analyze": "node scripts/run-node22.js scripts/analyze-watchlist.js",
     "universe:refresh": "node scripts/run-node22.js scripts/refresh-universe.js",
     "universe:refresh:requested": "node scripts/run-node22.js scripts/refresh-universe.js --requested-only",
+    "universe:sync": "node scripts/run-node22.js scripts/sync-universe.js",
     "runtime:init": "node scripts/run-node22.js scripts/init-runtime.js",
     "db:setup": "node scripts/run-node22.js scripts/db-setup.js",
     "db:add-company": "node scripts/run-node22.js scripts/add-company.js",

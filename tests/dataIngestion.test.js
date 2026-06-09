@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseArgs } from "../scripts/data-ingestion.js";
+import { buildSymbolCandidates, parseArgs } from "../scripts/data-ingestion.js";
 import { buildYahooDeepSnapshot, buildYahooSupplementalSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
 
 const yahooFixture = {
@@ -21,6 +21,11 @@ describe("Yahoo supplemental ingestion", () => {
   it("parses unsupported and ticker modes", () => {
     expect(parseArgs(["node", "script", "--all-unsupported", "--limit", "5"]).limit).toBe(5);
     expect(parseArgs(["node", "script", "--ticker", "mu"]).ticker).toBe("MU");
+  });
+
+  it("tries the BMV/SIC Yahoo symbol first and then the base ticker", () => {
+    expect(buildSymbolCandidates({ yahooSymbol: "ETN.MX" }, "ETN")).toEqual(["ETN.MX", "ETN"]);
+    expect(buildSymbolCandidates({ yahooSymbol: "BIDU" }, "BIDU")).toEqual(["BIDU"]);
   });
 
   it("builds a USD partial snapshot without pretending EPS history is complete", () => {

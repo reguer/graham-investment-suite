@@ -4,6 +4,8 @@ import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
 import { insertPriceSnapshotSql, PUBLIC_COMPANIES_PATH, runPsql } from "./db-client.js";
 
+const PRICE_SNAPSHOT_DB_CHUNK_SIZE = 25;
+
 export function todayIso(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
@@ -83,7 +85,15 @@ function persistPriceSnapshots(targets, quotes) {
       marketTime: [quotes[item.ticker].date, quotes[item.ticker].time].filter(Boolean).join(" "),
     }));
   if (!statements.length) return { ok: true, skipped: false, stdout: "" };
-  return runPsql(statements.join("\n"));
+  let dbResult = { ok: true, skipped: false };
+  let dbSkipped = false;
+  for (let index = 0; index < statements.length; index += PRICE_SNAPSHOT_DB_CHUNK_SIZE) {
+    const result = runPsql(statements.slice(index, index + PRICE_SNAPSHOT_DB_CHUNK_SIZE).join("\n"));
+    if (result.skipped) dbSkipped = true;
+    dbResult = result;
+  }
+  if (dbSkipped) return { ok: false, skipped: true, reason: "DATABASE_URL no configurado. No se escribio en PostgreSQL." };
+  return dbResult;
 }
 
 export async function refreshUniversePrices({ argv = process.argv, fetcher = fetchMarketQuotes, date = new Date() } = {}) {

@@ -59,7 +59,7 @@ export async function fetchYahooFundamentals(symbol, fetchImpl = fetch) {
     const client = yahooClient();
     return client.quoteSummary(symbol, {
       modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"],
-    });
+    }, { validateResult: false });
   }
 
   const modules = "price,summaryDetail,defaultKeyStatistics,financialData";
@@ -98,7 +98,7 @@ export async function fetchYahooDeepFundamentals(symbol, { expectedCurrency = "U
   const period1 = new Date();
   period1.setFullYear(period2.getFullYear() - years);
   const [summary, annual] = await Promise.all([
-    client.quoteSummary(symbol, { modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"] }),
+    client.quoteSummary(symbol, { modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"] }, { validateResult: false }),
     client.fundamentalsTimeSeries(symbol, { period1, period2, type: "annual", module: "all" }, { validateResult: false }),
   ]);
   const priceCurrency = summary?.price?.currency || "";

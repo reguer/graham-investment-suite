@@ -10,13 +10,20 @@ export const DEFAULT_ALERT_POLICY = {
   grahamDistancePct: 0.15,
 };
 
+function buildCandidateTags(candidate) {
+  const tags = ["manual-candidate"];
+  if (candidate.pePb <= 22.5 && candidate.pe <= 20 && candidate.pb <= 2) tags.push("graham-watch");
+  if (candidate.sector) tags.push(String(candidate.sector).split("/")[0].trim().toLowerCase().replace(/\s+/g, "-"));
+  return tags;
+}
+
 export const analyzedWatchlist = grahamCandidates.map((candidate) => ({
   ...candidate,
   analysisStatus: "analyzed",
   yahooSymbol: candidate.yahooSymbol || candidate.ticker,
   market: candidate.market || "US",
   watchReason: candidate.note,
-  tags: candidate.sector === "Residential Construction" ? ["graham-approved", "homebuilder", "cyclical"] : ["graham-approved"],
+  tags: buildCandidateTags(candidate),
 }));
 
 const analyzedByTicker = new Map(analyzedWatchlist.map((candidate) => [candidate.ticker.toUpperCase(), candidate]));
