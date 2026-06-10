@@ -5,13 +5,14 @@ import { usePersistedState } from "../../hooks/usePersistedState.js";
 import { useAnalysis } from "../../hooks/useAnalysis.js";
 import { EMPTY_FORM } from "./constants.js";
 import { prefillOptions } from "./prefills.js";
-import { grahamCandidates } from "./candidates.js";
 import { buildPrompt } from "./prompts.js";
 import AnalysisForm from "./AnalysisForm.jsx";
 import AnalysisResults from "./AnalysisResults.jsx";
 import AnalysisHistory from "./AnalysisHistory.jsx";
 import CandidatePanel from "./CandidatePanel.jsx";
 import CandidateAnalysis from "./CandidateAnalysis.jsx";
+import { screenWatchlist, summarizeScreen } from "../watchlist/screen.js";
+import { buildWatchlist, fetchPublicCompanies } from "../watchlist/watchlist.js";
 
 const views = [
   { id: "input", label: "Input" },
@@ -20,7 +21,7 @@ const views = [
   { id: "history", label: "History" },
 ];
 
-export default function GrahamAnalyzer() {
+export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded }) {
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [view, setView] = useState("input");
   const [history, setHistory] = usePersistedState([]);
@@ -28,7 +29,54 @@ export default function GrahamAnalyzer() {
   const [aiError, setAiError] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [saveToast, setSaveToast] = useState("");
+  const [publicCompanies, setPublicCompanies] = useState([]);
   const analysis = useAnalysis(form);
+  const screened = screenWatchlist(buildWatchlist(publicCompanies));
+  const summary = summarizeScreen(screened);
+  const candidateOpportunities = [...summary.approved, ...summary.near]
+    .filter((item) => item.ratios)
+    .map((item) => ({
+      ticker: item.ticker,
+      companyName: item.companyName,
+      sector: item.sector || item.market || "",
+      price: item.livePrice ?? item.price,
+      pe: item.ratios.pe,
+      pb: item.ratios.pb,
+      pePb: item.ratios.pePb,
+      debtRatio: item.ratios.debtRatio,
+      currentRatio: item.ratios.currentRatio,
+      quickRatio: item.ratios.quickRatio,
+      fcf: item.ratios.fcf,
+      epsAllPositive: item.ratios.epsAllPositive,
+      source: item.source || "watchlist",
+      sourceDate: item.sourceDate || "",
+      note: item.watchReason || item.notes,
+    }));
+  const hasInputData = Boolean(form.ticker || form.companyName || form.price || form.epsTTM);
+
+  useEffect(() => {
+    if (!manualDraft) return;
+    setForm({
+      ...EMPTY_FORM,
+      ticker: manualDraft.ticker || "",
+      companyName: manualDraft.companyName || "",
+      date: new Date().toISOString().slice(0, 10),
+      price: manualDraft.livePrice ? String(manualDraft.livePrice) : manualDraft.price ? String(manualDraft.price) : "",
+      notes: `Captura manual solicitada desde Watchlist. Fuente sugerida: Yahoo Finance. Razon actual: ${manualDraft.watchReason || manualDraft.notes || "pendiente de fundamentales"}`,
+    });
+    setView("input");
+    onManualDraftLoaded?.();
+  }, [manualDraft, onManualDraftLoaded]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPublicCompanies(fetch, import.meta.env.BASE_URL).then((companies) => {
+      if (!cancelled) setPublicCompanies(companies);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!saveToast) return;
@@ -117,7 +165,7 @@ export default function GrahamAnalyzer() {
 
       {view === "input" ? (
         <>
-          <CandidatePanel candidates={grahamCandidates} />
+          <CandidatePanel candidates={candidateOpportunities} />
           <AnalysisForm
             form={form}
             onChange={updateField}
@@ -129,7 +177,16 @@ export default function GrahamAnalyzer() {
         </>
       ) : null}
 
-      {view === "results" ? (
+      {view === "results" && !hasInputData ? (
+        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 18 }}>
+          <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Sin datos para mostrar resultados</h2>
+          <p style={{ margin: 0, color: SURFACE.muted }}>
+            Captura una empresa en Input o usa un prefill antes de abrir Results. No se calculan ratios Graham con campos vacios.
+          </p>
+        </div>
+      ) : null}
+
+      {view === "results" && hasInputData ? (
         <AnalysisResults
           form={form}
           ratios={analysis.ratios}
@@ -143,7 +200,7 @@ export default function GrahamAnalyzer() {
         />
       ) : null}
 
-      {view === "candidates" ? <CandidateAnalysis candidates={grahamCandidates} /> : null}
+      {view === "candidates" ? <CandidateAnalysis candidates={candidateOpportunities} /> : null}
 
       {view === "history" ? (
         <AnalysisHistory

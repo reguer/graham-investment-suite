@@ -3,8 +3,16 @@ import { hostname } from "node:os";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 
-const runtimeDir = join(process.cwd(), ".local_runtime");
-const devicePath = join(runtimeDir, "device.json");
+export function getRuntimePaths(root = process.cwd()) {
+  const runtimeDir = join(root, ".local_runtime");
+  return {
+    runtimeDir,
+    devicePath: join(runtimeDir, "device.json"),
+    logsDir: join(runtimeDir, "logs"),
+    locksDir: join(runtimeDir, "locks"),
+    pidsDir: join(runtimeDir, "pids"),
+  };
+}
 
 function readJson(path) {
   try {
@@ -14,10 +22,11 @@ function readJson(path) {
   }
 }
 
-export function initRuntime({ now = new Date() } = {}) {
+export function initRuntime({ now = new Date(), root = process.cwd() } = {}) {
+  const { runtimeDir, devicePath, logsDir, locksDir, pidsDir } = getRuntimePaths(root);
   mkdirSync(runtimeDir, { recursive: true });
-  for (const folder of ["logs", "locks", "pids"]) {
-    mkdirSync(join(runtimeDir, folder), { recursive: true });
+  for (const folder of [logsDir, locksDir, pidsDir]) {
+    mkdirSync(folder, { recursive: true });
   }
 
   const existingDevice = existsSync(devicePath) ? readJson(devicePath) : null;
@@ -25,6 +34,7 @@ export function initRuntime({ now = new Date() } = {}) {
     device_id: randomUUID(),
     device_name: hostname(),
     device_role: "secondary",
+    auto_push_enabled: false,
     created_at: now.toISOString(),
   };
 
@@ -35,9 +45,19 @@ export function initRuntime({ now = new Date() } = {}) {
   return {
     runtimeDir,
     devicePath,
+    logsDir,
+    locksDir,
+    pidsDir,
     device,
     createdDevice: !existingDevice,
   };
+}
+
+export function getDeviceLabel(device = {}) {
+  const name = device.device_name || "Equipo local";
+  const id = device.device_id || "sin-device-id";
+  const role = device.device_role || "secondary";
+  return `${name} (${id}, rol: ${role})`;
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("init-runtime.js");

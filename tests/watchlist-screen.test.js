@@ -54,7 +54,8 @@ describe("watchlist screening", () => {
     expect(result.alertLevel).toBe("pending");
     expect(result.ratios).toBeNull();
     expect(result.livePrice).toBe(25);
-    expect(result.classification.id).toBe("pending_fundamentals");
+    expect(result.classification.id).toBe("analysis_incomplete");
+    expect(result.classification.label).toBe("DATOS INSUFICIENTES");
   });
 
   it("does not treat null ratios as numeric zero", () => {
@@ -77,5 +78,64 @@ describe("watchlist screening", () => {
 
     expect(result.alertLevel).toBe("watch");
     expect(result.classification.id).toBe("rejected");
+  });
+
+  it("marks companies with fewer than three critical ratios as incomplete", () => {
+    const result = evaluateCandidate({
+      ticker: "EMPTY",
+      companyName: "Empty Co",
+      pe: null,
+      pb: null,
+      debtRatio: 0.4,
+      currentRatio: null,
+      fcf: null,
+    });
+
+    expect(result.analysisStatus).toBe("analysis_incomplete");
+    expect(result.alertLabel).toBe("Datos insuficientes");
+    expect(result.ratios).toBeNull();
+  });
+
+  it("keeps Yahoo model rejections out of the source capture queue", () => {
+    const result = evaluateCandidate({
+      ticker: "BANK",
+      companyName: "Rejected Bank",
+      validationStatus: "yahoo_model_rejected",
+      pe: null,
+      pb: null,
+      debtRatio: 0.4,
+      currentRatio: null,
+      fcf: null,
+      notes: "Rechazada por modelo Graham defensivo.",
+    });
+
+    expect(result.alertLevel).toBe("watch");
+    expect(result.alertLabel).toBe("Rechazada por modelo");
+    expect(result.ratios).toBeNull();
+  });
+
+  it("classifies indexes and ETFs as market references", () => {
+    const result = evaluateCandidate({
+      ticker: "^GSPC",
+      yahooSymbol: "^GSPC",
+      companyName: "S&P 500",
+      quoteType: "INDEX",
+      analysisStatus: "index_reference",
+      validationStatus: "index_reference",
+      tags: ["index_reference"],
+    }, { price: 5300, source: "test" });
+
+    expect(result.alertLevel).toBe("reference");
+    expect(result.ratios).toBeNull();
+    expect(result.classification.id).toBe("index_reference");
+  });
+
+  it("uses lastPrice as live price while preserving the base financial snapshot", () => {
+    const result = evaluateCandidate({ ...candidate, lastPrice: 180 });
+
+    expect(result.livePrice).toBe(180);
+    expect(result.ratios.pe).toBeCloseTo(18);
+    expect(result.ratios.pb).toBeCloseTo(1.8);
+    expect(result.ratios.pePb).toBeCloseTo(32.4);
   });
 });

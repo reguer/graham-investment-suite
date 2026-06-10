@@ -2,7 +2,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
-import { parseImportFile } from "../scripts/import-companies.js";
+import { dedupeCompanies, parseImportFile } from "../scripts/import-companies.js";
 
 describe("import companies", () => {
   it("parses json imports", () => {
@@ -19,5 +19,16 @@ describe("import companies", () => {
     const [company] = parseImportFile(file);
     expect(company.companyName).toBe("Apple");
     expect(company.tags).toEqual(["core", "tech"]);
+  });
+
+  it("detects duplicate tickers in an import batch", () => {
+    const { companies, duplicateTickers } = dedupeCompanies([
+      { ticker: "MSFT", companyName: "Microsoft" },
+      { ticker: "MSFT", companyName: "Microsoft duplicate" },
+      { ticker: "AAPL", companyName: "Apple" },
+    ]);
+
+    expect(companies.map((company) => company.ticker)).toEqual(["MSFT", "AAPL"]);
+    expect(duplicateTickers).toEqual(["MSFT"]);
   });
 });

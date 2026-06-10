@@ -29,6 +29,26 @@ Ver tabla completa en `docs/13_ROADMAP_NOTION_READY.md` (E21, E22). Resumen:
 ## [Unreleased]
 
 ### Added
+- `npm run universe:sync` para sincronizar `src/tools/watchlist/universe.js` hacia PostgreSQL y exports publicos sin degradar snapshots ya analizados.
+- Universo ampliado a 306 instrumentos, con sectores adicionales de utilities, infraestructura electrica, consumo defensivo, salud, financieras y tecnologia razonable.
+- Fallback automatico de fundamentales Yahoo: primero intenta simbolo SIC `.MX` y despues ticker base USA cuando Yahoo no entrega fundamentales para el listado mexicano.
+- Candidatas Graham complementadas: se conservan las candidatas previas de constructoras y se suman nuevas empresas diversificadas por sector.
+- Dashboard Watchlist con tabla densa de 30 columnas, filtros por estado/tag y vista responsive real.
+- `scripts/weekly-screen.js` con `--ticker`, `--format md/csv/html`, `--verbose` y `--no-telegram`.
+- Export CSV/HTML de screening en `data/export/`.
+- `scripts/alert-dispatcher.js` para evitar envios Telegram duplicados desde equipos secundarios.
+- `scripts/run-mode.js` y `npm run run:mode` para modos `once`, `watch` y `dashboard`.
+- Reportes semanales con bloque `Origen` basado en `.local_runtime/device.json`.
+- Tests adicionales para casos borde de Graham: quick ratio sin inventario, EPS cero y EPS CAGR con un solo año.
+- Backtesting v2.0 basico con `backtesting/engine.js`, estrategia Graham defensiva, metricas y reporte Markdown.
+- Descarga historica OHLCV con Stooq/Yahoo fallback via `npm run historical:download`.
+- Fixture `backtesting/tests/fixtures/mini_universe.json` y tests de compra, salida por valuacion y stop loss.
+- Benchmark SP500 fixture, alfa por trade y exports CSV de trades/equity curve para backtesting.
+- Pestaña lazy `Backtesting` en el dashboard que carga `public/data/backtesting-summary.json`.
+- Benchmark real `^GSPC` descargable con alias `SP500`, backtest `public-10` y selector de escenarios en dashboard.
+- `scripts/export-to-notion.js` con dry-run seguro y payload local para sincronización futura con Notion.
+- `scripts/weekly-pipeline.js` y `npm run weekly:pipeline` para ejecutar en orden `universe:sync -> universe:refresh -> fundamentals:ingest -> weekly:screen`.
+- Tabla `Fuentes pendientes` en Watchlist para ver ticker, alias Yahoo, severidad, fuente sugerida y accion de rescate.
 - `docs/00_PREFLIGHT_ESTADO_REAL.md` — Diagnóstico técnico inicial del repositorio
 - `docs/01_PROCESOS_LOCALES_DASHBOARD.md` — Aislamiento de procesos y puertos locales
 - `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` — Jerarquía de fuentes de datos y propuesta de automatización
@@ -47,7 +67,21 @@ Ver tabla completa en `docs/13_ROADMAP_NOTION_READY.md` (E21, E22). Resumen:
 - `CHANGELOG.md` — Este archivo
 
 ### Changed
+- `vite.config.js` migro de `createRequire()` a `import()` dinamico para eliminar el warning CJS de Vite, preservando fallback local reparado.
+- Watchlist reemplaza botones locales bloqueados en GitHub Pages por mensajes informativos y oculta notas internas de proceso en la tabla/cards.
+- Screening marca como `DATOS INSUFICIENTES` las empresas con menos de 3 de 5 ratios criticos disponibles.
+- Ingesta y refresh PostgreSQL escriben en chunks para soportar universos grandes sin `ENAMETOOLONG`.
 - `README.md` — Ampliado con configuración local, multiordenador, alertas, GitHub Pages y troubleshooting (preservando contenido existente)
+- `docs/weekly-alerts.md` — Actualizado con CLI, exports, Telegram multiordenador y modo watch.
+- `docs/13_ROADMAP_NOTION_READY.md` — Marcadas historias completadas y riesgos pendientes reales.
+- Indices, ETFs y futuros se separan como referencias de mercado para no aparecer como pendientes Graham.
+- Reporte semanal renombra pendientes a `Fuente/captura requerida` cuando falta alias, SEC EDGAR o captura manual.
+
+### Estado de datos
+- Corrida local 2026-06-09: 306 instrumentos en export publico; 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura.
+- Precios Yahoo resueltos para 287 de 306 instrumentos; 19 quedaron sin precio de listado en la corrida.
+- Referencias macro: `GOLD`, `SILVER`, `COPPER`; referencias solicitadas: `INDEX100`, `SP500`.
+- Pendientes actuales por fuente/captura: parciales Yahoo sin estados anuales (`FITB`, `VTRS`) y tickers sin quote fundamental Yahoo en la corrida (`CMA`, `HOLX`, `JNPR`).
 
 ---
 

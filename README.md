@@ -17,17 +17,26 @@ https://reguer.github.io/graham-investment-suite/
 | Aspecto | Estado |
 |---------|--------|
 | Version | 1.0.0 |
-| Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js |
-| Tests | 4 suites — `npm test` |
+| Stack | React 18.3 + Vite 5.4 + Vitest 2.0 + Node.js >=22 |
+| Tests | 35+ suites — `npm test` |
 | Build | `npm run build` |
-| Dashboard local | `npm run dev` → localhost:5173 |
-| Base de datos | No implementada (localStorage) |
-| Alertas automaticas | Solo reporte Markdown semanal |
-| Scheduler local | No configurado |
+| Dashboard local | `npm run dev:safe` → localhost:5173 o siguiente puerto libre |
+| Base de datos | PostgreSQL local si `DATABASE_URL` existe; export publico en `data/public/companies.json` |
+| Universo actual | 306 instrumentos: 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura al 2026-06-09 |
+| Yahoo complementario | `npm run fundamentals:ingest -- --all-unsupported` |
+| Scheduler lunes/viernes | `npm run scheduler:install` |
+| Alertas automaticas | Markdown + Telegram opcional solo desde equipo principal |
+| Scheduler local | Script Windows disponible con `npm run scheduler:install` |
 
 ---
 
 ## Instalacion
+
+Ubicacion local recomendada para evitar bloqueos de Google Drive:
+
+```text
+C:\Users\EDUARDO\Documents\00_Apps_Locales\GrahamAnalizer
+```
 
 ```bash
 npm install
@@ -49,6 +58,9 @@ DEVICE_ROLE=principal
 # Dashboard automatico a GitHub Pages (solo equipo principal)
 AUTO_PUSH_DASHBOARD=false
 
+# Base de datos PostgreSQL local (opcional, no versionar credenciales)
+DATABASE_URL=
+
 # Alertas Telegram (opcional)
 ENABLE_TELEGRAM_ALERTS=false
 TELEGRAM_BOT_TOKEN=
@@ -60,7 +72,7 @@ TELEGRAM_CHAT_ID=
 ## Desarrollo — Dashboard local
 
 ```bash
-npm run dev
+npm run dev:safe
 ```
 
 Abre `http://localhost:5173` en el navegador.
@@ -68,7 +80,7 @@ Abre `http://localhost:5173` en el navegador.
 Si el puerto 5173 esta ocupado por otro proyecto:
 
 ```bash
-npm run dev -- --port 5174
+npm run dev:safe -- --port 5174
 ```
 
 Ver `docs/01_PROCESOS_LOCALES_DASHBOARD.md` para el manejo de puertos y procesos locales.
@@ -78,13 +90,25 @@ Ver `docs/01_PROCESOS_LOCALES_DASHBOARD.md` para el manejo de puertos y procesos
 ## Pruebas y build
 
 ```bash
-npm test               # Correr las 4 suites de tests
+npm test               # Correr las suites de tests
 npm run test:watch     # Modo watch de tests
 npm run build          # Build para produccion / GitHub Pages
 npm run build:artifact # Validar y regenerar artifacts standalone
+npm run watchlist:analyze -- --all # Analisis completo del universo con SEC/Yahoo + PostgreSQL/export publico
+npm run fundamentals:ingest -- --all-unsupported # Rescata no soportadas con Yahoo Finance parcial en USD
 npm run weekly:screen  # Screening semanal + reporte Markdown
+npm run weekly:screen -- --ticker KBH --format csv --no-telegram # Export filtrado sin enviar Telegram
+npm run run:mode -- --mode watch --interval-minutes 15 # Poll local de precios/reportes mientras el equipo esta encendido
+npm run runtime:init # Crea .local_runtime/device.json sin tocar .env.local
+npm run historical:download # Descarga OHLCV historico para 10 tickers base
+npm run backtest:mini # Ejecuta fixture minimo, genera MD/JSON/CSV y export publico
+npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500 # Backtest 10 tickers con benchmark real ^GSPC
+npm run notion:export -- --dry-run --limit 25 # Payload local para Notion sin enviar secretos
+npm run universe:sync # Sincroniza universe.js a PostgreSQL/export publico sin perder snapshots
 npm run universe:refresh # Precios Yahoo para el universo masivo
+npm run weekly:pipeline -- --no-telegram # Flujo completo local: sync -> refresh -> ingest -> weekly screen
 npm run db:migrate-candidates # Exporta candidatas a data/public y PostgreSQL si DATABASE_URL existe
+npm run scheduler:install # Crea tarea Windows lunes/viernes 18:00 sin sobrescribir si ya existe
 ```
 
 ## Datos local + GitHub
@@ -98,6 +122,38 @@ PostgreSQL local se usa para datos operativos cuando `DATABASE_URL` esta configu
 Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Statement, Cash Flow, EPS TTM, Shares Outstanding, Net Tangible Assets o Goodwill + Intangibles y ADR ratio cuando aplique.
 
 **Yahoo Finance es la fuente principal** de datos fundamentales. Stooq se usa automaticamente para precios spot en el screening semanal.
+
+La ingesta automatica complementaria usa `yahoo-finance2` con Node 22 para intentar rescatar empresas que SEC no pudo analizar. Primero intenta `fundamentalsTimeSeries` + FX controlado; si Yahoo entrega estados anuales, EPS historico, precio, P/E, P/B, deuda y liquidez, guarda un snapshot `yahoo_full_fx`. Si la empresa queda descartada por P/E nulo, P/B nulo, liquidez no aplicable o ratios faltantes, se marca como `yahoo_model_rejected` en vez de dejarla pendiente.
+
+En la corrida local del 2026-06-09 el universo quedo asi: 306 instrumentos, 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura. `npm run universe:refresh` resolvio precios para 287 de 306 instrumentos. Los pendientes no se eliminan: quedan marcados como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed` o `source_required` hasta tener una fuente alternativa confiable o captura manual. Indices, ETFs y futuros quedan como referencias y no se muestran como pendientes Graham.
+
+Flujo local recomendado para alimentar datos sin depender de sesiones Codex:
+
+```bash
+npm run universe:sync
+npm run universe:refresh
+npm run fundamentals:ingest -- --limit 80
+npm run weekly:screen -- --no-telegram
+```
+
+Para correrlo como una sola tarea local:
+
+```bash
+npm run weekly:pipeline -- --no-telegram
+```
+
+`universe:sync` agrega nuevos tickers desde `src/tools/watchlist/universe.js` a PostgreSQL/export publico y preserva snapshots analizados. `universe:refresh` actualiza precios. `fundamentals:ingest` usa Yahoo Finance localmente; si un simbolo `.MX` no entrega fundamentales, intenta automaticamente el ticker base USA y conserva la trazabilidad en notas.
+
+Fuentes para completar pendientes:
+- Yahoo Finance `fundamentalsTimeSeries` y `quoteSummary` como fuente automatica primaria.
+- Yahoo Finance ticker base USA cuando el listado `.MX` solo sirve para precio/tradabilidad.
+- SEC EDGAR `companyfacts` para emisoras USA con CIK cuando el pipeline SEC aplique.
+- Captura manual desde Yahoo Finance para casos parciales donde Yahoo no entregue estados anuales.
+- Futuros/indices no se fuerzan a Graham; se mantienen como referencias o activos macro.
+
+BIDU se convirtio desde CNY a USD; SKHYNIX desde KRW a USD. El proyecto instala/usa Node 22.22.3 via scripts locales cuando existe, sin tocar `.env.local`.
+
+El export grande se sirve desde `public/data/companies.json` en GitHub Pages y dashboard local. La app carga ese archivo en runtime y divide las pestañas con `React.lazy`, por lo que el bundle principal queda debajo de 150 kB.
 
 Ver `docs/02_FUENTE_DATOS_YAHOO_FINANCE.md` para la guia completa de captura y validacion de datos en USD.
 
@@ -119,15 +175,30 @@ La regla final documentada y probada es: si `isADR = true`, `epsAdj`, `bvps`, `t
 
 ## Alertas semanales y horario operativo
 
-`npm run weekly:screen` actualiza precios desde Stooq cuando esta disponible, recalcula la watchlist y genera `reports/weekly/YYYY-MM-DD.md`.
+`npm run weekly:screen` actualiza precios desde Yahoo Chart + Stooq fallback cuando esta disponible, recalcula la watchlist y genera `reports/weekly/YYYY-MM-DD.md`.
 
-El universo inicial incluye el lote solicitado por el usuario y 200 acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Pendiente de primer analisis`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
+Opciones del CLI:
+
+```bash
+npm run weekly:screen -- --ticker KBH
+npm run weekly:screen -- --ticker KBH --format csv --no-telegram
+npm run weekly:screen -- --ticker KBH --format html --no-telegram
+npm run weekly:screen -- --verbose
+```
+
+Los reportes Markdown y HTML incluyen el origen del equipo desde `.local_runtime/device.json`. Ese archivo es local, no se versiona y se crea con `npm run runtime:init` o al arrancar scripts que usan runtime local.
+
+El universo inicial incluye el lote solicitado por el usuario y acciones BMV/SIC validadas por Yahoo Finance Search con simbolo `.MX`. Las empresas sin fundamentales quedan como `Fuente/captura requerida`; no se calculan ratios Graham hasta tener captura manual o extraccion fundamental validada.
 
 **Horario operativo requerido: cierre de vela diaria a las 18:00 hrs CDMX.**
 
-Los lunes y viernes se generan alertas formales. El sistema puede actualizar datos en cualquier momento que el ordenador este encendido.
+Los lunes y viernes se generan alertas formales. Si `ENABLE_TELEGRAM_ALERTS=true`, `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID` existen en `.env.local`, solo el equipo con `device_role = principal` o `primary` envia Telegram. Los equipos secundarios registran/reportan localmente para evitar alertas duplicadas.
 
-Para automatizar la ejecucion al cierre diario, ver `docs/09_MODO_LOCAL_TIEMPO_REAL.md`.
+Para automatizar la ejecucion al cierre diario, ver `docs/09_MODO_LOCAL_TIEMPO_REAL.md`. Para polling local controlado:
+
+```bash
+npm run run:mode -- --mode watch --interval-minutes 15
+```
 
 ---
 
@@ -168,6 +239,8 @@ src/
     └── watchlist/           — Screening semanal (4 archivos)
 scripts/
 ├── weekly-screen.js         — Screening automatico
+├── run-mode.js              — Modo once/watch/dashboard
+├── alert-dispatcher.js      — Gate anti-duplicados para Telegram por device_role
 ├── bundle-artifact.js       — Validacion de artifacts
 └── run-local-bin.js         — Wrapper de binarios
 tests/
@@ -207,9 +280,41 @@ data/cache/
 
 ## Backtesting
 
-El sistema de backtesting no esta implementado aun. El plan completo esta en `docs/12_BACKTESTING_ESTRATEGIAS.md`.
+El backtesting v2.0 basico ya existe para estrategia Graham defensiva:
 
-Las 8 estrategias propuestas incluyen: Graham defensivo puro, precio objetivo, margen de seguridad, tendencia fuerte, mixta, alertas lunes/viernes, entrada por watchlist y espera de condicion completa.
+```bash
+npm run historical:download -- --start 2020-01-01 --end 2026-06-08
+npm run backtest:mini
+```
+
+La descarga historica usa Stooq si entrega CSV y Yahoo Chart como fallback sin API key. El motor inicial usa fundamentales snapshot como proxy historico, por lo que sirve para validar flujo, reglas y sensibilidad a precio, no como resultado historico definitivo. El plan completo sigue en `docs/12_BACKTESTING_ESTRATEGIAS.md`.
+
+`npm run backtest:mini` tambien genera:
+
+- `backtesting/reports/graham-defensive-mini-report.md`
+- `backtesting/reports/graham-defensive-mini-summary.json`
+- `backtesting/reports/graham-defensive-mini-trades.csv`
+- `backtesting/reports/graham-defensive-mini-equity.csv`
+- `public/data/backtesting-summary.json`
+
+La pestaña **Backtesting** del dashboard carga ese ultimo JSON en runtime, separada con `React.lazy` para no inflar el bundle inicial. Actualmente permite seleccionar escenarios Base, Conservador y Paciente generados por el CLI.
+
+Para correr el lote real inicial:
+
+```bash
+npm run historical:download -- --tickers SP500 --start 2020-01-01 --end 2026-06-08
+npm run backtest:mini -- --universe public-10 --benchmark-ticker SP500
+```
+
+`SP500` se normaliza internamente a `^GSPC` para evitar problemas de escape de `^` en PowerShell.
+
+## Export Notion
+
+```bash
+npm run notion:export -- --dry-run --limit 25
+```
+
+Genera `data/export/notion-watchlist-payload.json`. El envio real requiere `NOTION_TOKEN` y `NOTION_DATABASE_ID` en entorno local; no se versionan ni se imprimen.
 
 ---
 

@@ -84,8 +84,62 @@ data/cache/company-capture-YYYY-MM-DD.json
 Antes de generar el reporte, el boton intenta analizar todas las empresas no analizadas:
 
 - Empresas USA con CIK en SEC: usa SEC EDGAR `companyfacts` + precio Yahoo Chart del ticker base en USD.
+- Empresas no soportadas por SEC: `npm run fundamentals:ingest -- --all-unsupported` intenta snapshot Yahoo completo con `fundamentalsTimeSeries`, valida/convierten monedas con FX Yahoo y marca rechazos por modelo cuando Graham no aplica.
 - Indices, futuros y empresas sin CIK SEC: quedan marcados como `analysis_unsupported` con razon explicita.
 - PostgreSQL: guarda empresas en `companies` y snapshots en `financial_snapshots`.
+- GitHub Pages: lee `public/data/companies.json`; los scripts sincronizan ese archivo desde `data/public/companies.json`.
+
+## Flujo local masivo recomendado
+
+Este flujo no depende de Codex ni de creditos de una sesion. Corre en la terminal local con Node 22 y escribe en PostgreSQL si `DATABASE_URL` existe:
+
+```bash
+npm run universe:sync
+npm run universe:refresh
+npm run fundamentals:ingest -- --limit 80
+npm run weekly:screen -- --no-telegram
+```
+
+Atajo equivalente para scheduler o corrida manual completa:
+
+```bash
+npm run weekly:pipeline -- --no-telegram
+```
+
+Orden:
+
+1. `universe:sync` toma `src/tools/watchlist/universe.js` como catalogo fuente, agrega nuevos tickers al export publico y a PostgreSQL, y preserva snapshots ya analizados.
+2. `universe:refresh` actualiza precios desde Yahoo Chart/Stooq y guarda `price_snapshots` en chunks para universos grandes.
+3. `fundamentals:ingest` intenta `fundamentalsTimeSeries` y `quoteSummary` desde Yahoo Finance. Si un simbolo BMV/SIC `.MX` no entrega fundamentales, intenta el ticker base.
+4. `weekly:screen` genera reporte Markdown/CSV/HTML y, si se habilita Telegram, envia solo desde equipo principal.
+
+Estado de la corrida 2026-06-09:
+
+- Export publico: 306 instrumentos.
+- Analizadas: 290.
+- Referencias indice/ETF: 8.
+- Referencias macro: 3.
+- Pendientes por fuente/captura: 5.
+- Precios resueltos: 287 de 306.
+
+Los pendientes por datos no se eliminan automaticamente. Se marcan como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed` o `source_required` hasta completar fuente alternativa o captura manual. Indices, ETFs y futuros quedan como referencias, no como pendientes Graham.
+
+Fuentes de rescate para pendientes:
+
+- Yahoo Finance ticker base USA cuando `.MX` no entrega fundamentales.
+- SEC EDGAR `companyfacts` cuando exista CIK y aplique a emisora USA.
+- Captura manual desde Yahoo Finance para Balance Sheet, Income Statement, Cash Flow y EPS history.
+- Indices/futuros se mantienen como referencias de contexto, no como empresas Graham.
+
+## Scheduler lunes/viernes
+
+Para crear la tarea local de Windows sin sobrescribir una existente:
+
+```bash
+npm run scheduler:install
+```
+
+La tarea corre `npm run weekly:pipeline` lunes y viernes a las 18:00 desde esta carpeta. Las credenciales de Telegram se leen solo desde `.env.local`; este script no las imprime ni las modifica.
 - Export publico: actualiza `data/public/companies.json` para GitHub Pages.
 
 El archivo Markdown es el reporte humano.

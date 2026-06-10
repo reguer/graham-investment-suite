@@ -1,5 +1,12 @@
 import { classify } from "../graham-analyzer/classify.js";
+import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
+
+const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
+
+function isAvailableRatio(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+}
 
 export function deriveSnapshot(candidate, price = candidate.price) {
   if (!hasFinancialSnapshot(candidate)) return null;
@@ -42,15 +49,78 @@ export function deriveSnapshot(candidate, price = candidate.price) {
 }
 
 export function hasFinancialSnapshot(candidate) {
-  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every((value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)));
+  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every(isAvailableRatio);
+}
+
+export function countAvailableCriticalRatios(candidate) {
+  return CRITICAL_RATIO_KEYS.filter((key) => isAvailableRatio(candidate[key])).length;
 }
 
 export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALERT_POLICY) {
-  const price = quote?.price ?? candidate.price;
+  const price = quote?.price ?? candidate.lastPrice ?? candidate.price;
+  if (isReferenceInstrument(candidate)) {
+    return withSystemStatus({
+      ...candidate,
+      quote,
+      livePrice: price ?? null,
+      ratios: null,
+      classification: {
+        id: "index_reference",
+        label: "REFERENCIA",
+        color: "#38bdf8",
+        reason: candidate.notes || "Instrumento de referencia para comparar mercado; no se analiza con reglas Graham defensivas.",
+      },
+      alertLevel: "reference",
+      alertLabel: "Referencia de mercado",
+      closeToDefensive: false,
+      near: false,
+    });
+  }
+
+  const criticalRatioCount = countAvailableCriticalRatios(candidate);
+  if (criticalRatioCount < 3) {
+    if (candidate.validationStatus === "yahoo_model_rejected") {
+      return withSystemStatus({
+        ...candidate,
+        quote,
+        livePrice: quote?.price ?? candidate.price ?? null,
+        ratios: null,
+        classification: {
+          id: candidate.classificationId || "rejected",
+          label: candidate.classificationLabel || "RECHAZADA",
+          color: "#ef4444",
+          reason: candidate.notes || "Rechazada por modelo Graham defensivo con datos parciales no comparables.",
+        },
+        alertLevel: "watch",
+        alertLabel: candidate.classificationLabel || "Rechazada por modelo",
+        closeToDefensive: false,
+        near: false,
+      });
+    }
+
+    return withSystemStatus({
+      ...candidate,
+      analysisStatus: "analysis_incomplete",
+      quote,
+      livePrice: quote?.price ?? candidate.price ?? null,
+      ratios: null,
+      classification: {
+        id: "analysis_incomplete",
+        label: "DATOS INSUFICIENTES",
+        color: "#94a3b8",
+        reason: "Faltan al menos 3 de 5 ratios criticos para evaluar con Graham.",
+      },
+      alertLevel: "pending",
+      alertLabel: "Datos insuficientes",
+      closeToDefensive: false,
+      near: false,
+    });
+  }
+
   const ratios = deriveSnapshot(candidate, price);
   if (!ratios) {
     if (candidate.analysisStatus === "analyzed") {
-      return {
+      return withSystemStatus({
         ...candidate,
         quote,
         livePrice: quote?.price ?? candidate.price ?? null,
@@ -65,11 +135,11 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
         alertLabel: candidate.classificationLabel || "Analizada sin aprobacion Graham",
         closeToDefensive: false,
         near: false,
-      };
+      });
     }
 
     if (String(candidate.analysisStatus || "").startsWith("analysis_")) {
-      return {
+      return withSystemStatus({
         ...candidate,
         quote,
         livePrice: quote?.price ?? candidate.price ?? null,
@@ -84,10 +154,10 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
         alertLabel: candidate.notes || "No soportada por analisis automatico",
         closeToDefensive: false,
         near: false,
-      };
+      });
     }
 
-    return {
+    return withSystemStatus({
       ...candidate,
       quote,
       livePrice: quote?.price ?? null,
@@ -102,7 +172,7 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
       alertLabel: quote?.price ? "Precio disponible, faltan fundamentales" : "Pendiente de primer analisis",
       closeToDefensive: false,
       near: false,
-    };
+    });
   }
 
   const classification = classify(ratios);
@@ -126,7 +196,7 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     alertLabel = "Cerca de aprobar";
   }
 
-  return {
+  return withSystemStatus({
     ...candidate,
     quote,
     livePrice: price,
@@ -136,14 +206,14 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     alertLabel,
     closeToDefensive,
     near,
-  };
+  });
 }
 
 export function screenWatchlist(items, quotesByTicker = {}, policy = DEFAULT_ALERT_POLICY) {
   return items
     .map((item) => evaluateCandidate(item, quotesByTicker[item.ticker] ?? null, policy))
     .sort((a, b) => {
-      const rank = { approved: 0, near: 1, watch: 2, pending: 3 };
+      const rank = { approved: 0, near: 1, watch: 2, reference: 3, pending: 4 };
       if (rank[a.alertLevel] !== rank[b.alertLevel]) return rank[a.alertLevel] - rank[b.alertLevel];
       if (!a.ratios || !b.ratios) return a.ticker.localeCompare(b.ticker);
       return a.ratios.pePb - b.ratios.pePb;
@@ -155,6 +225,23 @@ export function summarizeScreen(results) {
     approved: results.filter((result) => result.alertLevel === "approved"),
     near: results.filter((result) => result.alertLevel === "near"),
     watch: results.filter((result) => result.alertLevel === "watch"),
+    reference: results.filter((result) => result.alertLevel === "reference"),
     pending: results.filter((result) => result.alertLevel === "pending"),
   };
+}
+
+export function isReferenceInstrument(candidate) {
+  return (
+    candidate.analysisStatus === "index_reference" ||
+    candidate.analysisStatus === "market_reference" ||
+    candidate.validationStatus === "index_reference" ||
+    candidate.validationStatus === "market_reference" ||
+    candidate.tags?.includes("index_reference") ||
+    candidate.tags?.includes("market_reference") ||
+    ["INDEX", "ETF", "FUTURE"].includes(String(candidate.quoteType || "").toUpperCase())
+  );
+}
+
+function withSystemStatus(result) {
+  return { ...result, systemStatus: mapSystemStatus(result) };
 }

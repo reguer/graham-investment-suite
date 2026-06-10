@@ -11,7 +11,7 @@ describe("ticker universe", () => {
 
   it("includes the complete user requested batch", () => {
     const requested = new Set(requestedTickers.map((item) => item.rawTicker));
-    for (const ticker of ["Index100", "SP500", "MU", "MRVL", "SNDK", "NVDA", "INTC", "SKHYNIX", "BB", "MSTR", "BAIDU", "TSLA", "AMD", "GOLD", "SILVER", "COPPER", "META"]) {
+    for (const ticker of ["Index100", "SP500", "MU", "MRVL", "SNDK", "NVDA", "INTC", "SKHYNIX", "BB", "MSTR", "BIDU", "TSLA", "AMD", "GOLD", "SILVER", "COPPER", "META"]) {
       expect(requested.has(ticker)).toBe(true);
     }
   });
@@ -20,7 +20,7 @@ describe("ticker universe", () => {
     const byRaw = new Map(requestedTickers.map((item) => [item.rawTicker, item]));
     expect(byRaw.get("MRVL").yahooSymbol).toBe("MRVL1.MX");
     expect(byRaw.get("SNDK").yahooSymbol).toBe("SNDK1.MX");
-    expect(byRaw.get("BAIDU").yahooSymbol).toBe("BIDUN.MX");
+    expect(byRaw.get("BIDU").yahooSymbol).toBe("BIDU");
     expect(byRaw.get("Index100").yahooSymbol).toBe("^NDX");
     expect(byRaw.get("SP500").yahooSymbol).toBe("^GSPC");
   });

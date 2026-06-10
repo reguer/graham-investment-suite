@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getDatabaseName, getMaintenanceDatabaseUrl, normalizeCompany, sqlString, upsertCompanySql } from "../scripts/db-client.js";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { getDatabaseName, getMaintenanceDatabaseUrl, normalizeCompany, savePublicCompanies, sqlString, upsertCompanySql } from "../scripts/db-client.js";
 
 describe("db client", () => {
   it("normalizes a company for local db and public export", () => {
@@ -28,5 +31,27 @@ describe("db client", () => {
     expect(getDatabaseName(url)).toBe("graham_suite");
     expect(getMaintenanceDatabaseUrl(url)).toContain("/postgres");
     expect(getMaintenanceDatabaseUrl(url)).not.toContain("graham_suite");
+  });
+
+  it("preserves calculated fields in public exports", () => {
+    const dir = mkdtempSync(join(tmpdir(), "graham-public-"));
+    const path = join(dir, "companies.json");
+    const saved = savePublicCompanies(
+      [
+        {
+          ticker: "BIDU",
+          companyName: "Baidu",
+          pe: 9.5,
+          classification: { id: "rejected", label: "RECHAZADA" },
+          analysisStatus: "analyzed",
+        },
+      ],
+      path,
+    );
+
+    const fromDisk = JSON.parse(readFileSync(path, "utf8"));
+    expect(saved[0].pe).toBe(9.5);
+    expect(fromDisk[0].classification.label).toBe("RECHAZADA");
+    expect(fromDisk[0].analysisStatus).toBe("analyzed");
   });
 });

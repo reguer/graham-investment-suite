@@ -1,4 +1,5 @@
 const STOOQ_BASE_URL = "https://stooq.com/q/l/";
+const STOOQ_DOWNLOAD_BASE_URL = "https://stooq.com/q/d/l/";
 const YAHOO_CHART_BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart/";
 
 function parseCsvLine(line) {
@@ -67,6 +68,10 @@ function yahooTimestampToIso(seconds) {
   return new Date(seconds * 1000).toISOString().slice(0, 10);
 }
 
+function isoToUnixSeconds(value) {
+  return Math.floor(new Date(`${value}T00:00:00Z`).getTime() / 1000);
+}
+
 export async function fetchYahooChartQuote(target, fetchImpl = fetch) {
   const { ticker, symbol } = normalizeQuoteTarget(target);
   const url = `${YAHOO_CHART_BASE_URL}${encodeURIComponent(symbol)}?range=1d&interval=1d`;
@@ -127,4 +132,78 @@ export async function fetchMarketQuotes(targets, fetchImpl = fetch) {
   } catch {
     return yahooQuotes;
   }
+}
+
+function compactDate(value) {
+  return String(value || "").replace(/-/g, "");
+}
+
+function normalizeStooqHistorySymbol(target) {
+  const { ticker, symbol } = normalizeQuoteTarget(target);
+  const raw = String(symbol || ticker).trim().toLowerCase();
+  const stooqSymbol = raw.includes(".") || raw.includes("^") || raw.includes("=") ? raw : `${raw}.us`;
+  return { ticker, symbol: stooqSymbol };
+}
+
+export function parseStooqHistoricalCsv(text, ticker = "") {
+  const lines = String(text || "").trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length <= 1) return [];
+  return lines.slice(1).map((line) => {
+    const [date, open, high, low, close, volume] = parseCsvLine(line);
+    const row = {
+      ticker,
+      date,
+      open: Number(open),
+      high: Number(high),
+      low: Number(low),
+      close: Number(close),
+      volume: Number(volume),
+      source: "Stooq",
+    };
+    return row;
+  }).filter((row) => row.date && [row.open, row.high, row.low, row.close].every(Number.isFinite));
+}
+
+export async function fetchStooqHistoricalPrices(target, { startDate, endDate, interval = "d", fetchImpl = fetch } = {}) {
+  const { ticker, symbol } = normalizeStooqHistorySymbol(target);
+  const url = `${STOOQ_DOWNLOAD_BASE_URL}?s=${encodeURIComponent(symbol)}&d1=${compactDate(startDate)}&d2=${compactDate(endDate)}&i=${interval}`;
+  const response = await fetchImpl(url, { headers: { "user-agent": "Mozilla/5.0" } });
+  if (!response.ok) throw new Error(`Stooq historico devolvio ${response.status}: ${response.statusText}`);
+  return parseStooqHistoricalCsv(await response.text(), ticker);
+}
+
+export function parseYahooHistoricalChart(payload, ticker = "") {
+  const result = payload?.chart?.result?.[0];
+  const timestamps = result?.timestamp || [];
+  const quote = result?.indicators?.quote?.[0] || {};
+  return timestamps.map((seconds, index) => ({
+    ticker,
+    date: yahooTimestampToIso(seconds),
+    open: Number(quote.open?.[index]),
+    high: Number(quote.high?.[index]),
+    low: Number(quote.low?.[index]),
+    close: Number(quote.close?.[index]),
+    volume: Number(quote.volume?.[index]),
+    source: "Yahoo Finance Chart",
+  })).filter((row) => row.date && [row.open, row.high, row.low, row.close].every(Number.isFinite));
+}
+
+export async function fetchYahooHistoricalPrices(target, { startDate, endDate, interval = "1d", fetchImpl = fetch } = {}) {
+  const { ticker, symbol } = normalizeQuoteTarget(target);
+  const period1 = isoToUnixSeconds(startDate);
+  const period2 = isoToUnixSeconds(endDate) + 24 * 60 * 60;
+  const url = `${YAHOO_CHART_BASE_URL}${encodeURIComponent(symbol)}?period1=${period1}&period2=${period2}&interval=${interval}&events=history`;
+  const response = await fetchImpl(url, { headers: { "user-agent": "Mozilla/5.0" } });
+  if (!response.ok) throw new Error(`Yahoo historico devolvio ${response.status}: ${response.statusText}`);
+  return parseYahooHistoricalChart(await response.json(), ticker);
+}
+
+export async function fetchHistoricalPrices(target, { startDate, endDate, fetchImpl = fetch } = {}) {
+  try {
+    const stooqRows = await fetchStooqHistoricalPrices(target, { startDate, endDate, fetchImpl });
+    if (stooqRows.length) return stooqRows;
+  } catch {
+    // Yahoo Chart is the no-key fallback when Stooq blocks CSV downloads.
+  }
+  return fetchYahooHistoricalPrices(target, { startDate, endDate, fetchImpl });
 }

@@ -34,6 +34,8 @@ function formatAiError(message) {
 }
 
 export default function InterpretationPanel({ checks, aiText, aiError, aiLoading, onRequestAI }) {
+  const hasAnthropicApiKey = Boolean(import.meta.env.VITE_ANTHROPIC_API_KEY);
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "minmax(260px, 0.9fr) minmax(280px, 1.1fr)", gap: 14 }}>
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 14, background: SURFACE.panel }}>
@@ -72,6 +74,11 @@ export default function InterpretationPanel({ checks, aiText, aiError, aiLoading
             {aiLoading ? <><Spinner />Generando...</> : "Generar IA"}
           </button>
         </div>
+        {!hasAnthropicApiKey ? (
+          <div style={{ display: "inline-block", color: AC.yellow, border: `1px solid ${AC.yellow}`, background: "rgba(245, 158, 11, 0.08)", borderRadius: 6, padding: "4px 7px", fontSize: 11, marginBottom: 10 }}>
+            VITE_ANTHROPIC_API_KEY no configurada — ver .env.example
+          </div>
+        ) : null}
         {aiError ? (
           <div style={{ color: AC.redText, marginBottom: 10, fontSize: 13, lineHeight: 1.5 }}>
             {formatAiError(aiError)}

@@ -10,7 +10,7 @@
 
 | Fuente | Datos | Modo | Automatización |
 |--------|-------|------|---------------|
-| **Yahoo Finance** | Fundamentales, Balance Sheet, Income Statement, Cash Flow, EPS histórico, ADR ratio | **MANUAL** — el usuario los captura a mano | No existe |
+| **Yahoo Finance** | Fundamentales, Balance Sheet, Income Statement, Cash Flow, EPS histórico, ADR ratio | **Manual + parcial automático** | `npm run fundamentals:ingest -- --all-unsupported` |
 | **Stooq CSV** | Precios spot (OHLCV) | **Automático** vía `scripts/weekly-screen.js` | Sí — `npm run weekly:screen` |
 | **candidates.js** | Snapshots de 10 empresas con fundamentales | **Hardcodeado** en código fuente | N/A |
 | **tests/fixtures/tsm.json** | Datos TSM para tests unitarios | Solo para tests | N/A |
@@ -18,7 +18,15 @@
 
 ### Limitación crítica actual
 
-**Todos los datos fundamentales se capturan manualmente.** Esto implica:
+Los datos fundamentales completos se capturan manualmente cuando se necesita una decision Graham defensiva completa. Desde 2026-06-08 existe una ingesta automatica complementaria para snapshots parciales Yahoo:
+
+- Usa `yahoo-finance2` con Node 22 y valida `price.currency` + `financialData.financialCurrency`.
+- Convierte a `USD` por default con pares Yahoo como `CNYUSD=X` o `KRWUSD=X`.
+- Intenta primero `fundamentalsTimeSeries` anual con `module: "all"` para obtener estados financieros e historial EPS.
+- Guarda `yahoo_full_fx` cuando el snapshot queda completo y `yahoo_model_rejected` cuando la fuente permite descartar por modelo Graham.
+- Para ADR/listados con escala distinta, infiere una escala por accion desde P/E Yahoo para alinear precio, EPS y estados financieros.
+
+Esto implica:
 - Dependencia total de la disponibilidad del usuario
 - Riesgo de errores de captura (magnitudes, monedas, unidades)
 - Sin historial de cuándo se capturó cada dato
@@ -211,7 +219,7 @@ interface DataRecord {
 
 **Fundamentales (Yahoo Finance)**:
 - Yahoo devuelve `financialCurrency` en el objeto de datos
-- Si `financialCurrency !== 'USD'`: aplicar tipo de cambio
+- Si `financialCurrency !== 'USD'`: se obtiene FX desde Yahoo y se convierte antes de calcular ratios
 - Para ADRs: Los estados financieros pueden estar en moneda local (ej. TWD para TSM)
   - **Solución implementada**: El campo `adrRatio` normaliza EPS, BVPS, TBVPS y NCAV
   - El `adrRatio` convierte unidades de participación, no monedas — el EPS ya debe estar en USD antes de aplicar el ratio

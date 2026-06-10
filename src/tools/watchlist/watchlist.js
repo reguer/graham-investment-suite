@@ -1,6 +1,5 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
-import publicCompaniesJson from "../../../data/public/companies.json" with { type: "json" };
 
 export const DEFAULT_ALERT_POLICY = {
   nearPePb: 28,
@@ -11,18 +10,25 @@ export const DEFAULT_ALERT_POLICY = {
   grahamDistancePct: 0.15,
 };
 
+function buildCandidateTags(candidate) {
+  const tags = ["manual-candidate"];
+  if (candidate.pePb <= 22.5 && candidate.pe <= 20 && candidate.pb <= 2) tags.push("graham-watch");
+  if (candidate.sector) tags.push(String(candidate.sector).split("/")[0].trim().toLowerCase().replace(/\s+/g, "-"));
+  return tags;
+}
+
 export const analyzedWatchlist = grahamCandidates.map((candidate) => ({
   ...candidate,
   analysisStatus: "analyzed",
   yahooSymbol: candidate.yahooSymbol || candidate.ticker,
   market: candidate.market || "US",
   watchReason: candidate.note,
-  tags: candidate.sector === "Residential Construction" ? ["graham-approved", "homebuilder", "cyclical"] : ["graham-approved"],
+  tags: buildCandidateTags(candidate),
 }));
 
 const analyzedByTicker = new Map(analyzedWatchlist.map((candidate) => [candidate.ticker.toUpperCase(), candidate]));
 
-function normalizeExportedCompany(company) {
+export function normalizeExportedCompany(company) {
   return {
     ...company,
     yahooSymbol: company.yahooSymbol || company.yahoo_symbol || company.ticker,
@@ -35,7 +41,16 @@ function normalizeExportedCompany(company) {
   };
 }
 
-export const publicCompanies = publicCompaniesJson.map(normalizeExportedCompany);
+export async function fetchPublicCompanies(fetchImpl = fetch, baseUrl = "/") {
+  try {
+    const response = await fetchImpl(`${baseUrl.replace(/\/?$/, "/")}data/companies.json`);
+    if (!response.ok) throw new Error(`No se pudo cargar companies.json: ${response.status}`);
+    const payload = await response.json();
+    return Array.isArray(payload) ? payload.map(normalizeExportedCompany) : [];
+  } catch {
+    return [];
+  }
+}
 
 function mergeByTicker(sources) {
   const byTicker = new Map();
@@ -48,9 +63,9 @@ function mergeByTicker(sources) {
   return [...byTicker.values()];
 }
 
-const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
-
-const universeWatchlist = persistedUniverse.map((item) => {
+export function buildWatchlist(publicCompanies = []) {
+  const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
+  const universeWatchlist = persistedUniverse.map((item) => {
   const analyzed = analyzedByTicker.get(item.ticker.toUpperCase());
   if (analyzed) {
     return {
@@ -81,6 +96,23 @@ const universeWatchlist = persistedUniverse.map((item) => {
     };
   }
 
+  if (
+    item.analysisStatus === "index_reference" ||
+    item.analysisStatus === "market_reference" ||
+    item.validationStatus === "index_reference" ||
+    item.validationStatus === "market_reference" ||
+    item.tags?.includes("index_reference") ||
+    item.tags?.includes("market_reference") ||
+    ["INDEX", "ETF", "FUTURE"].includes(String(item.quoteType || "").toUpperCase())
+  ) {
+    return {
+      ...item,
+      yahooSymbol: item.yahooSymbol || item.ticker,
+      watchReason: item.watchReason || item.notes || "Referencia de mercado. No requiere analisis Graham.",
+      tags: item.tags?.length ? item.tags : ["market_reference"],
+    };
+  }
+
   return {
     ...item,
     analysisStatus: "pending_fundamentals",
@@ -89,15 +121,36 @@ const universeWatchlist = persistedUniverse.map((item) => {
   };
 });
 
-const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
-const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
+  const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
+  const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
 
-export const watchlist = [...universeWatchlist, ...analyzedOutsideUniverse];
+  return [...universeWatchlist, ...analyzedOutsideUniverse];
+}
 
-export const watchlistMeta = {
-  ...universeMeta,
-  publicExportCount: publicCompanies.length,
-  analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
-  pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed").length,
-  totalCount: watchlist.length,
-};
+export function buildWatchlistMeta(watchlist, publicCompanies = []) {
+  return {
+    ...universeMeta,
+    publicExportCount: publicCompanies.length,
+    analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
+    referenceCount: watchlist.filter((item) => item.analysisStatus === "index_reference" || item.validationStatus === "index_reference").length,
+    pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed" && item.analysisStatus !== "index_reference").length,
+    totalCount: watchlist.length,
+  };
+}
+
+export function normalizeTags(tags) {
+  if (Array.isArray(tags)) return tags.map((tag) => String(tag).trim()).filter(Boolean);
+  return String(tags || "").split(",").map((tag) => tag.trim()).filter(Boolean);
+}
+
+export function collectTags(items) {
+  const tags = new Set();
+  for (const item of items) {
+    for (const tag of normalizeTags(item.tags)) tags.add(tag);
+  }
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
+export const publicCompanies = [];
+export const watchlist = buildWatchlist(publicCompanies);
+export const watchlistMeta = buildWatchlistMeta(watchlist, publicCompanies);

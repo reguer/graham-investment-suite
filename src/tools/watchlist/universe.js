@@ -1,8 +1,8 @@
-const SOURCE_DATE = "2026-06-04";
+const SOURCE_DATE = "2026-06-09";
 
 export const requestedTickers = [
-  { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", validationStatus: "validated_yahoo" },
-  { rawTicker: "SP500", ticker: "SP500", yahooSymbol: "^GSPC", companyName: "S&P 500", quoteType: "INDEX", market: "US", validationStatus: "validated_yahoo" },
+  { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "nasdaq-100"], notes: "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "SP500", ticker: "SP500", yahooSymbol: "^GSPC", companyName: "S&P 500", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "sp500"], notes: "Indice S&P 500 de referencia. No se analiza con reglas Graham defensivas." },
   { rawTicker: "MU", ticker: "MU", yahooSymbol: "MU.MX", companyName: "Micron Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "MRVL", ticker: "MRVL", yahooSymbol: "MRVL1.MX", companyName: "Marvell Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
   { rawTicker: "SNDK", ticker: "SNDK", yahooSymbol: "SNDK1.MX", companyName: "Sandisk Corporation", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
@@ -11,12 +11,12 @@ export const requestedTickers = [
   { rawTicker: "SKHYNIX", ticker: "SKHYNIX", yahooSymbol: "000660.KS", companyName: "SK hynix Inc.", quoteType: "EQUITY", market: "Korea Exchange", validationStatus: "validated_yahoo_not_mx" },
   { rawTicker: "BB", ticker: "BB", yahooSymbol: "BB", companyName: "BlackBerry Limited", quoteType: "EQUITY", market: "NYSE", validationStatus: "validated_yahoo_not_mx" },
   { rawTicker: "MSTR", ticker: "MSTR", yahooSymbol: "MSTR.MX", companyName: "Strategy Inc", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "BAIDU", ticker: "BAIDU", yahooSymbol: "BIDUN.MX", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
+  { rawTicker: "BIDU", ticker: "BIDU", yahooSymbol: "BIDU", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "NASDAQ", validationStatus: "validated_yahoo" },
   { rawTicker: "TSLA", ticker: "TSLA", yahooSymbol: "TSLA.MX", companyName: "Tesla, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "AMD", ticker: "AMD", yahooSymbol: "AMD.MX", companyName: "Advanced Micro Devices, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
-  { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
-  { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", validationStatus: "validated_yahoo_commodity" },
+  { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "gold"], notes: "Futuro de oro para contexto macro. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "silver"], notes: "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas." },
+  { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "copper"], notes: "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas." },
   { rawTicker: "META", ticker: "META", yahooSymbol: "META.MX", companyName: "Meta Platforms, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
 ];
 
@@ -134,6 +134,75 @@ PNC|PNC.MX|The PNC Financial Services Group, Inc.|Financial Services|Banks Regio
 ORLY|ORLY.MX|O'Reilly Automotive, Inc.|Consumer Cyclical|Auto Parts
 GD|GD.MX|General Dynamics Corporation|Industrials|Aerospace & Defense
 CEG|CEG.MX|Constellation Energy Corporation|Utilities|Utilities Independent Power Producers
+ETR|ETR.MX|Entergy Corporation|Utilities|Utilities Regulated Electric
+HUBB|HUBB.MX|Hubbell Incorporated|Industrials|Electrical Equipment & Parts
+ETN|ETN.MX|Eaton Corporation plc|Industrials|Specialty Industrial Machinery
+GEV|GEV.MX|GE Vernova Inc.|Industrials|Electrical Equipment & Parts
+NEE|NEE.MX|NextEra Energy, Inc.|Utilities|Utilities Regulated Electric
+XEL|XEL.MX|Xcel Energy Inc.|Utilities|Utilities Regulated Electric
+EXC|EXC.MX|Exelon Corporation|Utilities|Utilities Regulated Electric
+WEC|WEC.MX|WEC Energy Group, Inc.|Utilities|Utilities Regulated Electric
+ED|ED.MX|Consolidated Edison, Inc.|Utilities|Utilities Regulated Electric
+FE|FE.MX|FirstEnergy Corp.|Utilities|Utilities Regulated Electric
+NRG|NRG.MX|NRG Energy, Inc.|Utilities|Utilities Independent Power Producers
+CMS|CMS.MX|CMS Energy Corporation|Utilities|Utilities Regulated Electric
+AWK|AWK.MX|American Water Works Company, Inc.|Utilities|Utilities Regulated Water
+DTE|DTE.MX|DTE Energy Company|Utilities|Utilities Regulated Electric
+ATO|ATO.MX|Atmos Energy Corporation|Utilities|Utilities Regulated Gas
+AES|AES.MX|The AES Corporation|Utilities|Utilities Diversified
+AEE|AEE.MX|Ameren Corporation|Utilities|Utilities Regulated Electric
+CNP|CNP.MX|CenterPoint Energy, Inc.|Utilities|Utilities Regulated Electric
+EIX|EIX.MX|Edison International|Utilities|Utilities Regulated Electric
+ES|ES.MX|Eversource Energy|Utilities|Utilities Regulated Electric
+EVRG|EVRG.MX|Evergy, Inc.|Utilities|Utilities Regulated Electric
+LNT|LNT.MX|Alliant Energy Corporation|Utilities|Utilities Regulated Electric
+NI|NI.MX|NiSource Inc.|Utilities|Utilities Regulated Gas
+OGE|OGE.MX|OGE Energy Corp.|Utilities|Utilities Regulated Electric
+PNW|PNW.MX|Pinnacle West Capital Corporation|Utilities|Utilities Regulated Electric
+POR|POR.MX|Portland General Electric Company|Utilities|Utilities Regulated Electric
+PPL|PPL.MX|PPL Corporation|Utilities|Utilities Regulated Electric
+WTRG|WTRG.MX|Essential Utilities, Inc.|Utilities|Utilities Regulated Water
+ADM|ADM.MX|Archer-Daniels-Midland Company|Consumer Defensive|Farm Products
+BF-B|BF-B.MX|Brown-Forman Corporation|Consumer Defensive|Beverages Wineries & Distilleries
+CAG|CAG.MX|Conagra Brands, Inc.|Consumer Defensive|Packaged Foods
+CHD|CHD.MX|Church & Dwight Co., Inc.|Consumer Defensive|Household & Personal Products
+CLX|CLX.MX|The Clorox Company|Consumer Defensive|Household & Personal Products
+CPB|CPB.MX|The Campbell's Company|Consumer Defensive|Packaged Foods
+HRL|HRL.MX|Hormel Foods Corporation|Consumer Defensive|Packaged Foods
+LW|LW.MX|Lamb Weston Holdings, Inc.|Consumer Defensive|Packaged Foods
+MKC|MKC.MX|McCormick & Company, Incorporated|Consumer Defensive|Packaged Foods
+SJM|SJM.MX|The J. M. Smucker Company|Consumer Defensive|Packaged Foods
+TAP|TAP.MX|Molson Coors Beverage Company|Consumer Defensive|Beverages Brewers
+TSN|TSN.MX|Tyson Foods, Inc.|Consumer Defensive|Farm Products
+BAX|BAX.MX|Baxter International Inc.|Healthcare|Medical Instruments & Supplies
+BDX|BDX.MX|Becton, Dickinson and Company|Healthcare|Medical Instruments & Supplies
+CAH|CAH.MX|Cardinal Health, Inc.|Healthcare|Medical Distribution
+COO|COO.MX|The Cooper Companies, Inc.|Healthcare|Medical Instruments & Supplies
+DGX|DGX.MX|Quest Diagnostics Incorporated|Healthcare|Diagnostics & Research
+DVA|DVA.MX|DaVita Inc.|Healthcare|Medical Care Facilities
+HOLX|HOLX.MX|Hologic, Inc.|Healthcare|Medical Instruments & Supplies
+HUM|HUM.MX|Humana Inc.|Healthcare|Healthcare Plans
+TECH|TECH.MX|Bio-Techne Corporation|Healthcare|Biotechnology
+VTRS|VTRS.MX|Viatris Inc.|Healthcare|Drug Manufacturers Specialty & Generic
+CFG|CFG.MX|Citizens Financial Group, Inc.|Financial Services|Banks Regional
+CINF|CINF.MX|Cincinnati Financial Corporation|Financial Services|Insurance Property & Casualty
+CMA|CMA.MX|Comerica Incorporated|Financial Services|Banks Regional
+FITB|FITB.MX|Fifth Third Bancorp|Financial Services|Banks Regional
+HBAN|HBAN.MX|Huntington Bancshares Incorporated|Financial Services|Banks Regional
+KEY|KEY.MX|KeyCorp|Financial Services|Banks Regional
+MTB|MTB.MX|M&T Bank Corporation|Financial Services|Banks Regional
+PRU|PRU.MX|Prudential Financial, Inc.|Financial Services|Insurance Life
+RF|RF.MX|Regions Financial Corporation|Financial Services|Banks Regional
+RJF|RJF.MX|Raymond James Financial, Inc.|Financial Services|Capital Markets
+TFC|TFC.MX|Truist Financial Corporation|Financial Services|Banks Regional
+AKAM|AKAM.MX|Akamai Technologies, Inc.|Technology|Software Infrastructure
+FFIV|FFIV.MX|F5, Inc.|Technology|Software Infrastructure
+GEN|GEN.MX|Gen Digital Inc.|Technology|Software Infrastructure
+GLW|GLW.MX|Corning Incorporated|Technology|Electronic Components
+JNPR|JNPR.MX|Juniper Networks, Inc.|Technology|Communication Equipment
+NTAP|NTAP.MX|NetApp, Inc.|Technology|Computer Hardware
+SWKS|SWKS.MX|Skyworks Solutions, Inc.|Technology|Semiconductors
+TER|TER.MX|Teradyne, Inc.|Technology|Semiconductor Equipment & Materials
 COF|COF.MX|Capital One Financial Corporation|Financial Services|Credit Services
 AJG|AJG.MX|Arthur J. Gallagher & Co.|Financial Services|Insurance Brokers
 CI|CI.MX|The Cigna Group|Healthcare|Healthcare Plans

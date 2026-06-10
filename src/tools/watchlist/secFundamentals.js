@@ -3,11 +3,16 @@ const SEC_FACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK";
 const SEC_HEADERS = { "user-agent": "GrahamInvestmentSuite/1.0 local" };
 
 function factList(companyFacts, concepts, preferredUnits = ["USD"]) {
-  const usGaap = companyFacts?.facts?.["us-gaap"] || {};
+  const namespaces = [
+    companyFacts?.facts?.["us-gaap"] || {},
+    companyFacts?.facts?.dei || {},
+  ];
   for (const concept of concepts) {
-    const units = usGaap[concept]?.units || {};
-    for (const unit of preferredUnits) {
-      if (Array.isArray(units[unit])) return units[unit];
+    for (const namespace of namespaces) {
+      const units = namespace[concept]?.units || {};
+      for (const unit of preferredUnits) {
+        if (Array.isArray(units[unit])) return units[unit];
+      }
     }
   }
   return [];

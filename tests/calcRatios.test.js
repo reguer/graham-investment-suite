@@ -86,7 +86,6 @@ describe("calcRatios", () => {
   });
 
   it("uses real year span for CAGR when year labels are provided", () => {
-    // Two entries separated by 4 years (not 1 interval)
     const sparse = {
       ...tsm,
       eps1: "20",
@@ -120,10 +119,36 @@ describe("calcRatios", () => {
     expect(ratios.epsCagr).toBeCloseTo(1.0, 4);
   });
 
-  it("returns null CAGR and null epsGrowing when only one EPS value exists", () => {
-    const oneEps = { ...tsm, eps1: "5.00", epsYear1: "2025", eps2: "", eps3: "", eps4: "" };
-    const ratios = calcRatios(oneEps);
+  it("calculates quick ratio without inventing inventory when inventory is empty", () => {
+    const ratios = calcRatios({ ...tsm, inventory: "" });
 
+    expect(ratios.quickRatio).toBeCloseTo(ratios.currentRatio, 6);
+  });
+
+  it("nulls EPS-dependent ratios when EPS is zero", () => {
+    const ratios = calcRatios({ ...tsm, epsTTM: "0" });
+
+    expect(ratios.epsAdj).toBe(0);
+    expect(ratios.pe).toBeNull();
+    expect(ratios.pricePE15).toBeNull();
+    expect(ratios.grahamFormula).toBeNull();
+    expect(ratios.grahamFormulaTangible).toBeNull();
+  });
+
+  it("returns null CAGR and null epsGrowing when only one EPS value exists", () => {
+    const ratios = calcRatios({
+      ...tsm,
+      eps1: "5.00",
+      epsYear1: "2025",
+      eps2: "",
+      epsYear2: "",
+      eps3: "",
+      epsYear3: "",
+      eps4: "",
+      epsYear4: "",
+    });
+
+    expect(ratios.epsHistory).toHaveLength(1);
     expect(ratios.epsCagr).toBeNull();
     // null = trend unknown (not enough data), consistent with secFundamentals.js
     expect(ratios.epsGrowing).toBeNull();

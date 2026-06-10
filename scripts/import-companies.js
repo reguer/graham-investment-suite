@@ -37,12 +37,27 @@ export function parseImportFile(path) {
   });
 }
 
+export function dedupeCompanies(companies) {
+  const byTicker = new Map();
+  const duplicateTickers = [];
+  for (const company of companies) {
+    const ticker = company.ticker.toUpperCase();
+    if (byTicker.has(ticker)) {
+      duplicateTickers.push(ticker);
+      continue;
+    }
+    byTicker.set(ticker, company);
+  }
+  return { companies: [...byTicker.values()], duplicateTickers };
+}
+
 export function importCompanies(path, { dryRun = false } = {}) {
-  const companies = parseImportFile(path);
+  const parsedCompanies = parseImportFile(path);
+  const { companies, duplicateTickers } = dedupeCompanies(parsedCompanies);
   const sql = companies.map(upsertCompanySql).join("\n");
   const dbResult = runPsql(sql, { dryRun });
   const publicCompanies = dryRun ? [] : upsertPublicCompanies(companies);
-  return { companies, dbResult, publicCount: publicCompanies.length };
+  return { companies, duplicateTickers, skippedCount: duplicateTickers.length, dbResult, publicCount: publicCompanies.length };
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("import-companies.js");
@@ -52,6 +67,7 @@ if (isCli) {
     if (!args.file) throw new Error("Falta --file");
     const result = importCompanies(args.file, { dryRun: args.dryRun });
     console.log(`Empresas importadas: ${result.companies.length}`);
+    if (result.skippedCount) console.log(`Duplicados omitidos: ${result.skippedCount} (${result.duplicateTickers.join(", ")})`);
     if (result.dbResult.skipped) console.log(result.dbResult.reason);
   } catch (error) {
     console.error(`No se pudo importar: ${error.message}`);

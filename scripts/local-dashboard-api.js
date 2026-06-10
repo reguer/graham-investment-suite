@@ -1,5 +1,8 @@
 import { spawn } from "node:child_process";
+import { dirname } from "node:path";
+import { addCompany } from "./add-company.js";
 import { loadEnvLocal } from "./db-client.js";
+import { findPreferredNode } from "./node-runtime.js";
 
 const DEFAULT_CAPTURE_TIME = "18:00";
 
@@ -41,11 +44,12 @@ export function loadLocalDashboardConfig(env = process.env) {
   };
 }
 
-export function runCompanyCapture({ cwd = process.cwd(), env = process.env } = {}) {
+function runLocalScript(script, args = [], { cwd = process.cwd(), env = process.env } = {}) {
   return new Promise((resolve) => {
-    const child = spawn(process.execPath, ["scripts/analyze-watchlist.js"], {
+    const nodePath = findPreferredNode(env);
+    const child = spawn(nodePath, [script, ...args], {
       cwd,
-      env,
+      env: { ...env, PATH: `${dirname(nodePath)};${env.PATH || ""}` },
       shell: false,
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -62,42 +66,61 @@ export function runCompanyCapture({ cwd = process.cwd(), env = process.env } = {
       resolve({ ok: false, error: error.message, stdout, stderr });
     });
     child.on("exit", (code) => {
-      if (code !== 0) {
-        resolve({ ok: false, code, stdout, stderr, reportPath: "", capturePath: "" });
-        return;
-      }
-      const reportChild = spawn(process.execPath, ["scripts/weekly-screen.js"], {
-        cwd,
-        env,
-        shell: false,
-        stdio: ["ignore", "pipe", "pipe"],
-      });
-      let reportStdout = "";
-      let reportStderr = "";
-      reportChild.stdout.on("data", (chunk) => {
-        reportStdout += chunk.toString();
-      });
-      reportChild.stderr.on("data", (chunk) => {
-        reportStderr += chunk.toString();
-      });
-      reportChild.on("error", (error) => {
-        resolve({ ok: false, code: 1, stdout: stdout + reportStdout, stderr: `${stderr}${reportStderr}${error.message}`, reportPath: "", capturePath: "" });
-      });
-      reportChild.on("exit", (reportCode) => {
-        const combinedStdout = `${stdout}\n${reportStdout}`;
-        resolve({
-          ok: reportCode === 0,
-          code: reportCode,
-          stdout: combinedStdout,
-          stderr: `${stderr}\n${reportStderr}`,
-          reportPath: combinedStdout.match(/Reporte guardado: (.+)/)?.[1]?.trim() || "",
-          capturePath: combinedStdout.match(/Captura guardada: (.+)/)?.[1]?.trim() || "",
-          analyzed: Number(combinedStdout.match(/Analizadas: (\d+)/)?.[1] || 0),
-          unsupported: Number(combinedStdout.match(/No soportadas\/fallidas: (\d+)/)?.[1] || 0),
-        });
-      });
+      resolve({ ok: code === 0, code, stdout, stderr });
     });
   });
+}
+
+function enrichRunResult(result) {
+  return {
+    ...result,
+    reportPath: result.stdout.match(/Reporte guardado: (.+)/)?.[1]?.trim() || "",
+    capturePath: result.stdout.match(/Captura guardada: (.+)/)?.[1]?.trim() || "",
+    analyzed: Number(result.stdout.match(/Analizadas: (\d+)/)?.[1] || 0),
+    unsupported: Number(result.stdout.match(/No soportadas\/fallidas: (\d+)/)?.[1] || 0),
+  };
+}
+
+export async function runCompanyCapture(options = {}) {
+  const analysis = await runLocalScript("scripts/analyze-watchlist.js", ["--all"], options);
+  if (!analysis.ok) return enrichRunResult(analysis);
+  const report = await runLocalScript("scripts/weekly-screen.js", [], options);
+  return enrichRunResult({
+    ok: report.ok,
+    code: report.code,
+    stdout: `${analysis.stdout}\n${report.stdout}`,
+    stderr: `${analysis.stderr}\n${report.stderr}`,
+  });
+}
+
+export async function runPriceRefresh(options = {}) {
+  const prices = await runLocalScript("scripts/refresh-universe.js", [], options);
+  if (!prices.ok) return enrichRunResult(prices);
+  const report = await runLocalScript("scripts/weekly-screen.js", [], options);
+  return enrichRunResult({
+    ok: report.ok,
+    code: report.code,
+    stdout: `${prices.stdout}\n${report.stdout}`,
+    stderr: `${prices.stderr}\n${report.stderr}`,
+  });
+}
+
+export async function runYahooSupplemental(options = {}) {
+  const yahoo = await runLocalScript("scripts/data-ingestion.js", ["--all-unsupported"], options);
+  if (!yahoo.ok) return enrichRunResult(yahoo);
+  const report = await runLocalScript("scripts/weekly-screen.js", [], options);
+  const enriched = enrichRunResult({
+    ok: report.ok,
+    code: report.code,
+    stdout: `${yahoo.stdout}\n${report.stdout}`,
+    stderr: `${yahoo.stderr}\n${report.stderr}`,
+  });
+  return {
+    ...enriched,
+    partial: Number(yahoo.stdout.match(/Snapshots Yahoo USD\/FX: (\d+)/)?.[1] || 0),
+    skipped: Number(yahoo.stdout.match(/Omitidas por datos\/moneda: (\d+)/)?.[1] || 0),
+    failed: Number(yahoo.stdout.match(/Fallidas: (\d+)/)?.[1] || 0),
+  };
 }
 
 export function createLocalDashboardApiPlugin() {
@@ -163,6 +186,80 @@ export function createLocalDashboardApiPlugin() {
         }
         const result = await executeCapture("manual");
         sendJson(response, result.ok ? 200 : result.busy ? 409 : 500, result);
+      });
+
+      server.middlewares.use("/api/local/process-companies", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        const result = await executeCapture("manual-process");
+        sendJson(response, result.ok ? 200 : result.busy ? 409 : 500, result);
+      });
+
+      server.middlewares.use("/api/local/update-prices", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        if (captureInProgress) {
+          sendJson(response, 409, { ok: false, busy: true, error: "Ya hay una captura en proceso." });
+          return;
+        }
+        captureInProgress = true;
+        const startedAt = new Date().toISOString();
+        const result = await runPriceRefresh();
+        lastCapture = { ...result, trigger: "manual-price-refresh", startedAt, finishedAt: new Date().toISOString() };
+        captureInProgress = false;
+        sendJson(response, result.ok ? 200 : 500, lastCapture);
+      });
+
+      server.middlewares.use("/api/local/yahoo-supplemental", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        if (captureInProgress) {
+          sendJson(response, 409, { ok: false, busy: true, error: "Ya hay una captura en proceso." });
+          return;
+        }
+        captureInProgress = true;
+        const startedAt = new Date().toISOString();
+        const result = await runYahooSupplemental();
+        lastCapture = { ...result, trigger: "manual-yahoo-supplemental", startedAt, finishedAt: new Date().toISOString() };
+        captureInProgress = false;
+        sendJson(response, result.ok ? 200 : 500, lastCapture);
+      });
+
+      server.middlewares.use("/api/local/add-company", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        let body = "";
+        request.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+        request.on("end", () => {
+          try {
+            const payload = JSON.parse(body || "{}");
+            const ticker = String(payload.ticker || "").trim().toUpperCase();
+            if (!ticker) throw new Error("Falta ticker.");
+            const result = addCompany({
+              ticker,
+              yahooSymbol: String(payload.yahooSymbol || ticker).trim(),
+              companyName: payload.companyName || ticker,
+              market: payload.market || "US",
+              quoteType: payload.quoteType || "EQUITY",
+              source: "dashboard-local",
+              tags: ["manual-add", "pending-analysis"],
+              notes: "Agregada desde dashboard local; pendiente de procesar fundamentales.",
+            });
+            sendJson(response, 200, { ok: true, company: result.company, publicCount: result.publicCount });
+          } catch (error) {
+            sendJson(response, 400, { ok: false, error: error.message });
+          }
+        });
       });
     },
   };
