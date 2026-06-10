@@ -6,7 +6,7 @@ export default function AnalysisHistory({ history, onLoad, onClear }) {
     <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "rgba(15, 23, 42, 0.35)", padding: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", marginBottom: 14 }}>
         <h2 style={{ margin: 0, fontSize: 20 }}>Historial</h2>
-        <button type="button" onClick={onClear} style={{ border: `1px solid ${SURFACE.border}`, background: "#0b1020", color: SURFACE.text, borderRadius: 8, padding: "9px 12px" }}>
+        <button type="button" onClick={onClear} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "9px 12px" }}>
           Vaciar historial
         </button>
       </div>
@@ -19,7 +19,7 @@ export default function AnalysisHistory({ history, onLoad, onClear }) {
               key={item.id}
               type="button"
               onClick={() => onLoad(item)}
-              style={{ textAlign: "left", border: `1px solid ${SURFACE.border}`, background: "#0b1020", color: SURFACE.text, borderRadius: 8, padding: 12 }}
+              style={{ textAlign: "left", border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: 12 }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
                 <strong>{item.form.ticker || "SIN TICKER"} · {item.form.companyName || "Empresa"}</strong>

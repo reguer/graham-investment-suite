@@ -18,7 +18,7 @@ export default function NumericInput({ label, value, onChange, placeholder = "",
         onChange={handleChange}
         style={{
           width: "100%",
-          background: "#0b1020",
+          background: SURFACE.panel,
           color: SURFACE.text,
           border: `1px solid ${SURFACE.border}`,
           borderRadius: 8,

@@ -189,7 +189,7 @@ export default function Watchlist({ onManualCapture }) {
   return (
     <section>
       <style>{`
-        .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: #0b1020; margin-bottom: 12px; }
+        .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: SURFACE.panel; margin-bottom: 12px; }
         .watchlist-card-list { display: none; }
         @media (max-width: 999px) {
           .watchlist-table-shell { display: none; }
@@ -241,7 +241,7 @@ export default function Watchlist({ onManualCapture }) {
                 </button>
               ))
             ) : (
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: SURFACE.muted, border: `1px solid ${SURFACE.border}`, background: "#111827", borderRadius: 6, padding: "9px 12px", fontSize: 13 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: SURFACE.muted, border: `1px solid ${SURFACE.border}`, background: SURFACE.navInactive, borderRadius: 6, padding: "9px 12px", fontSize: 13 }}>
                 <span aria-hidden="true" style={{ color: AC.blue }}>ⓘ</span>
                 Solo disponible en dashboard local
               </span>
@@ -249,14 +249,14 @@ export default function Watchlist({ onManualCapture }) {
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "minmax(120px, 180px) minmax(180px, 1fr) auto", gap: 8, marginTop: 12 }}>
-          <input value={newTicker} onChange={(event) => setNewTicker(event.target.value)} placeholder="Ticker Yahoo base" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <input value={newCompanyName} onChange={(event) => setNewCompanyName(event.target.value)} placeholder="Nombre opcional" style={{ border: `1px solid ${SURFACE.border}`, background: "#060911", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={newTicker} onChange={(event) => setNewTicker(event.target.value)} placeholder="Ticker Yahoo base" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={newCompanyName} onChange={(event) => setNewCompanyName(event.target.value)} placeholder="Nombre opcional" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
           {captureStatus.localApi ? (
-            <button type="button" onClick={handleAddCompany} style={{ border: `1px solid ${AC.green}`, background: "#12351f", color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }}>
+            <button type="button" onClick={handleAddCompany} style={{ border: `1px solid ${AC.green}`, background: SURFACE.activeGreen, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }}>
               Importar ticker
             </button>
           ) : (
-            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, border: `1px solid ${SURFACE.border}`, background: "#111827", color: SURFACE.muted, borderRadius: 6, padding: "8px 10px", fontSize: 12 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, border: `1px solid ${SURFACE.border}`, background: SURFACE.navInactive, color: SURFACE.muted, borderRadius: 6, padding: "8px 10px", fontSize: 12 }}>
               <span aria-hidden="true" style={{ color: AC.blue }}>ⓘ</span>
               Solo disponible en dashboard local
             </span>
@@ -270,7 +270,7 @@ export default function Watchlist({ onManualCapture }) {
         ) : null}
       </div>
 
-      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#08111f", padding: 14, marginBottom: 16 }}>
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panelDark, padding: 14, marginBottom: 16 }}>
         <strong>Estado de datos</strong>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10, marginTop: 10, color: SURFACE.muted, fontSize: 13 }}>
           <span>Export publico: {watchlistMeta.publicExportCount} empresas</span>
@@ -284,7 +284,7 @@ export default function Watchlist({ onManualCapture }) {
       </div>
 
       {dataIssues.length ? (
-        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14, marginBottom: 16 }}>
+        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14, marginBottom: 16 }}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center", marginBottom: 10 }}>
             <strong>Fuentes pendientes</strong>
             <span style={{ color: SURFACE.muted, fontSize: 12 }}>{dataIssues.length} tickers requieren fuente o captura</span>
@@ -327,7 +327,7 @@ export default function Watchlist({ onManualCapture }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8, marginBottom: 16 }}>
         {listSystemStatuses().map((status) => (
-          <div key={status.id} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, background: "#08111f", padding: "8px 10px", color: SURFACE.muted, fontSize: 12 }}>
+          <div key={status.id} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, background: SURFACE.panelDark, padding: "8px 10px", color: SURFACE.muted, fontSize: 12 }}>
             <span style={{ color: status.color }}>●</span> {status.label}: <strong style={{ color: SURFACE.text }}>{statusCounts[status.id] || 0}</strong>
           </div>
         ))}
@@ -352,7 +352,7 @@ export default function Watchlist({ onManualCapture }) {
             onClick={() => setView(id)}
             style={{
               border: `1px solid ${view === id ? AC.blue : SURFACE.border}`,
-              background: view === id ? SURFACE.activeBlue : "#111827",
+              background: view === id ? SURFACE.activeBlue : SURFACE.navInactive,
               color: SURFACE.text,
               borderRadius: 6,
               padding: "8px 10px",
@@ -382,7 +382,7 @@ export default function Watchlist({ onManualCapture }) {
           style={{
             minWidth: 190,
             border: `1px solid ${SURFACE.border}`,
-            background: "#0b1020",
+            background: SURFACE.panel,
             color: SURFACE.text,
             borderRadius: 6,
             padding: "8px 10px",
@@ -397,7 +397,7 @@ export default function Watchlist({ onManualCapture }) {
           style={{
             minWidth: 210,
             border: `1px solid ${SURFACE.border}`,
-            background: "#0b1020",
+            background: SURFACE.panel,
             color: SURFACE.text,
             borderRadius: 6,
             padding: "8px 10px",
@@ -412,7 +412,7 @@ export default function Watchlist({ onManualCapture }) {
           style={{
             minWidth: 190,
             border: `1px solid ${SURFACE.border}`,
-            background: "#0b1020",
+            background: SURFACE.panel,
             color: SURFACE.text,
             borderRadius: 6,
             padding: "8px 10px",
@@ -431,7 +431,7 @@ export default function Watchlist({ onManualCapture }) {
           <thead>
             <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
               {WATCHLIST_TABLE_COLUMNS.map((column) => (
-                <th key={column.id} style={{ padding: "9px 8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap", position: "sticky", top: 0, background: "#0b1020" }}>
+                <th key={column.id} style={{ padding: "9px 8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap", position: "sticky", top: 0, background: SURFACE.panel }}>
                   {column.label}
                 </th>
               ))}
@@ -480,7 +480,7 @@ export default function Watchlist({ onManualCapture }) {
                       height: 30,
                       borderRadius: 6,
                       border: `1px solid ${favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.border}`,
-                      background: favoriteSet.has(result.ticker.toUpperCase()) ? "#3f3412" : "#111827",
+                      background: favoriteSet.has(result.ticker.toUpperCase()) ? SURFACE.activeFavorite : SURFACE.navInactive,
                       color: favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.muted,
                       cursor: "pointer",
                       fontSize: 17,
@@ -520,7 +520,7 @@ export default function Watchlist({ onManualCapture }) {
             {normalizeTags(result.tags).length ? (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
                 {normalizeTags(result.tags).slice(0, 8).map((tag) => (
-                  <span key={tag} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 999, color: SURFACE.muted, fontSize: 11, padding: "3px 7px", background: "#060911" }}>
+                  <span key={tag} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 999, color: SURFACE.muted, fontSize: 11, padding: "3px 7px", background: SURFACE.page }}>
                     {tag}
                   </span>
                 ))}
@@ -536,7 +536,7 @@ export default function Watchlist({ onManualCapture }) {
                   onClick={() => onManualCapture?.(result)}
                   style={{
                     border: `1px solid ${AC.yellow}`,
-                    background: "#3f3412",
+                    background: SURFACE.activeFavorite,
                     color: AC.yellow,
                     borderRadius: 6,
                     padding: "8px 10px",

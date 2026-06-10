@@ -22,7 +22,7 @@ export default function MacroRadar() {
         {indicators.map((indicator) => {
           const color = alertForIndicator(indicator);
           return (
-            <article key={indicator.id} style={{ border: `1px solid ${SURFACE.border}`, background: "#0b1020", borderRadius: 8, padding: 14 }}>
+            <article key={indicator.id} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, borderRadius: 8, padding: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
                 <Dot color={color} />
                 <strong>{indicator.label}</strong>
@@ -33,7 +33,7 @@ export default function MacroRadar() {
                 <select
                   value={indicator.trend}
                   onChange={(event) => updateIndicator(indicator.id, "trend", event.target.value)}
-                  style={{ background: "#060911", color: SURFACE.text, border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 10 }}
+                  style={{ background: SURFACE.page, color: SURFACE.text, border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 10 }}
                 >
                   <option value="up">Subiendo</option>
                   <option value="neutral">Neutral</option>

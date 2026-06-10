@@ -25,7 +25,7 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
           <h2 style={{ margin: "6px 0", color: classification.color, fontSize: 24 }}>{classification.label}</h2>
           <p style={{ margin: 0, color: SURFACE.text }}>{classification.reason}</p>
         </div>
-        <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: "#0b1020", color: SURFACE.text, borderRadius: 8, padding: "10px 13px", alignSelf: "center" }}>
+        <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px", alignSelf: "center" }}>
           Guardar analisis
         </button>
       </div>
@@ -68,7 +68,7 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
       <SectionTitle number="4" title="Consistencia EPS" />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
         {ratios.epsHistory.map((entry) => (
-          <div key={entry.year} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 12, background: "#0b1020" }}>
+          <div key={entry.year} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 12, background: SURFACE.panel }}>
             <div style={{ color: SURFACE.muted, fontSize: 12 }}>{entry.year}</div>
             <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 20 }}>{fmt(entry.value)}</div>
           </div>

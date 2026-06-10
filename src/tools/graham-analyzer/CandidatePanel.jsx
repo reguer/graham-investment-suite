@@ -55,7 +55,7 @@ export default function CandidatePanel({ candidates }) {
       </div>
       <div className="candidate-panel-cards">
         {candidates.map((candidate) => (
-          <article key={candidate.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 12 }}>
+          <article key={candidate.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "start" }}>
               <div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700 }}>
@@ -74,7 +74,7 @@ export default function CandidatePanel({ candidates }) {
                 ["Debt", candidate.debtRatio],
                 ["Current", candidate.currentRatio],
               ].map(([label, value]) => (
-                <div key={label} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, padding: "7px 8px", background: "#060911" }}>
+                <div key={label} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, padding: "7px 8px", background: SURFACE.page }}>
                   <div style={{ color: SURFACE.muted, fontSize: 11 }}>{label}</div>
                   <div style={{ fontFamily: "IBM Plex Mono, monospace", marginTop: 2 }}>{Number(value).toFixed(2)}</div>
                 </div>

@@ -178,7 +178,7 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
       ) : null}
 
       {view === "results" && !hasInputData ? (
-        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 18 }}>
+        <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 18 }}>
           <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>Sin datos para mostrar resultados</h2>
           <p style={{ margin: 0, color: SURFACE.muted }}>
             Captura una empresa en Input o usa un prefill antes de abrir Results. No se calculan ratios Graham con campos vacios.

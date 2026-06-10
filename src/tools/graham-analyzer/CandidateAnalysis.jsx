@@ -51,7 +51,7 @@ export default function CandidateAnalysis({ candidates }) {
 
   if (!selected || !ratios) {
     return (
-      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 16, color: SURFACE.muted }}>
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 16, color: SURFACE.muted }}>
         No hay candidatas Graham con datos completos en este momento.
       </div>
     );
@@ -72,7 +72,7 @@ export default function CandidateAnalysis({ candidates }) {
                 style={{
                   textAlign: "left",
                   border: `1px solid ${active ? "rgba(34, 197, 94, 0.45)" : SURFACE.border}`,
-                  background: active ? "rgba(34, 197, 94, 0.12)" : "#0b1020",
+                  background: active ? "rgba(34, 197, 94, 0.12)" : SURFACE.panel,
                   color: SURFACE.text,
                   borderRadius: 8,
                   padding: 10,
@@ -113,7 +113,7 @@ export default function CandidateAnalysis({ candidates }) {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(260px, 0.9fr) minmax(280px, 1.1fr)", gap: 14 }}>
-          <article style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14 }}>
+          <article style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14 }}>
             <h3 style={{ margin: "0 0 12px", fontSize: 16 }}>Checklist en tiempo real</h3>
             <div style={{ display: "grid", gap: 10 }}>
               {checks.map((check) => (
@@ -128,7 +128,7 @@ export default function CandidateAnalysis({ candidates }) {
             </div>
           </article>
 
-          <article style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: "#0b1020", padding: 14 }}>
+          <article style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14 }}>
             <h3 style={{ margin: "0 0 10px", fontSize: 16 }}>Notas de investigacion</h3>
             <p style={{ margin: 0, color: SURFACE.text, lineHeight: 1.55 }}>{selected.note || selected.watchReason || selected.notes}</p>
             <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 12 }}>
