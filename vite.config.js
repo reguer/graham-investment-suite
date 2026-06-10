@@ -61,10 +61,8 @@ export default defineConfig(async ({ command }) => ({
   },
   test: {
     environment: "node",
-    server: {
-      deps: {
-        external: ["yahoo-finance2"],
-      },
+    alias: {
+      "yahoo-finance2": new URL("./src/__stubs__/yahoo-finance2.js", import.meta.url).pathname,
     },
   },
 }));
