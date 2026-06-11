@@ -39,11 +39,15 @@ export function runBacktest({
   slippagePct = 0.001,
   stopLossPct = -0.2,
   exitPePb = 28,
+  startDate = null,
   strategy = GRAHAM_DEFENSIVE_STRATEGY,
   benchmark = null,
 } = {}) {
   const companies = universe || [];
-  const dates = uniqueDates(companies);
+  const allDates = uniqueDates(companies);
+  // Limitar entradas a partir de startDate — evita usar precios pre-COVID con fundamentales actuales
+  const entryFromDate = startDate || allDates[0];
+  const dates = allDates;
   const priceMaps = new Map(companies.map((company) => [company.ticker, toPriceMap(company)]));
   const positions = new Map();
   const completedTickers = new Set();
@@ -80,6 +84,7 @@ export function runBacktest({
 
     for (const company of companies) {
       if (positions.has(company.ticker) || completedTickers.has(company.ticker)) continue;
+      if (date < entryFromDate) continue;
       const price = priceMaps.get(company.ticker).get(date);
       if (!Number.isFinite(price)) continue;
       const entry = shouldEnterGrahamDefensive(company, price);

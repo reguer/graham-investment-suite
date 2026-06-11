@@ -46,7 +46,10 @@ export function parseBacktestArgs(argv) {
     if (argv[index] === "--max-position-pct") args.maxPositionPct = Number(argv[index + 1] || args.maxPositionPct);
     if (argv[index] === "--stop-loss-pct") args.stopLossPct = Number(argv[index + 1] || args.stopLossPct);
     if (argv[index] === "--exit-pe-pb") args.exitPePb = Number(argv[index + 1] || args.exitPePb);
+    if (argv[index] === "--start-date") args.startDate = String(argv[index + 1] || "");
   }
+  // Default: no entrar antes de 2022 — los fundamentales snapshot 2026 no son representativos de 2020-2021
+  if (!args.startDate) args.startDate = "2022-01-01";
   return args;
 }
 
@@ -84,6 +87,7 @@ export function runBacktestFromFile(args) {
       maxPositionPct: scenario.maxPositionPct,
       stopLossPct: scenario.stopLossPct,
       exitPePb: scenario.exitPePb,
+      startDate: args.startDate,
     });
     return summarizeResult(result, scenario);
   });
@@ -92,6 +96,7 @@ export function runBacktestFromFile(args) {
       universe,
       benchmark,
       initialCapital: args.initialCapital,
+      startDate: args.startDate,
       maxPositionPct: args.maxPositionPct,
       stopLossPct: args.stopLossPct,
       exitPePb: args.exitPePb,
