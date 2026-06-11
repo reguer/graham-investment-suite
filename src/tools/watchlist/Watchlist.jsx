@@ -160,7 +160,7 @@ export default function Watchlist({ onManualCapture }) {
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
         (view === "reference" && result.alertLevel === "reference") ||
         (view === "statuses" && result.systemStatus) ||
-        (view === "discarded" && ["watch", "pending"].includes(result.alertLevel)) ||
+        (view === "discarded" && result.alertLevel === "watch") ||
         (view === "requested" && result.priority === "requested") ||
         (view === "pending" && result.alertLevel === "pending") ||
         (view === "bmv" && result.market === "BMV SIC");
@@ -316,20 +316,45 @@ export default function Watchlist({ onManualCapture }) {
       ) : null}
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
-        <MetricCard label="Aprobadas" value={String(summary.approved.length)} color={AC.green} />
-        <MetricCard label="Cerca" value={String(summary.near.length)} color={AC.yellow} />
-        <MetricCard label="Observacion" value={String(summary.watch.length)} color={AC.gray} />
-        <MetricCard label="Referencias" value={String(summary.reference.length)} color={AC.blue} />
-        <MetricCard label="Pendientes" value={String(summary.pending.length)} color={AC.blue} />
-        <MetricCard label="Favoritos" value={String(favorites.length)} color={AC.yellow} />
-        <MetricCard label="Universo activo" value={String(activeCount)} color={AC.green} />
+        {[
+          { label: "Aprobadas", value: summary.approved.length, color: AC.green, targetView: "opportunities" },
+          { label: "Cerca", value: summary.near.length, color: AC.yellow, targetView: "opportunities" },
+          { label: "Observacion", value: summary.watch.length, color: AC.gray, targetView: "discarded" },
+          { label: "Referencias", value: summary.reference.length, color: AC.blue, targetView: "reference" },
+          { label: "Pendientes", value: summary.pending.length, color: AC.blue, targetView: "pending" },
+          { label: "Favoritos", value: favorites.length, color: AC.yellow, targetView: "favorites" },
+          { label: "Universo activo", value: activeCount, color: AC.green, targetView: "all" },
+        ].map(({ label, value, color, targetView }) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => setView(targetView)}
+            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left", borderRadius: 8 }}
+          >
+            <MetricCard label={label} value={String(value)} color={color} style={{ outline: view === targetView ? `2px solid ${color}` : undefined }} />
+          </button>
+        ))}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8, marginBottom: 16 }}>
         {listSystemStatuses().map((status) => (
-          <div key={status.id} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 6, background: SURFACE.panelDark, padding: "8px 10px", color: SURFACE.muted, fontSize: 12 }}>
+          <button
+            key={status.id}
+            type="button"
+            onClick={() => { setView("statuses"); setSelectedStatus(selectedStatus === status.id ? "" : status.id); }}
+            style={{
+              border: `1px solid ${selectedStatus === status.id ? status.color : SURFACE.border}`,
+              borderRadius: 6,
+              background: selectedStatus === status.id ? `${status.color}18` : SURFACE.panelDark,
+              padding: "8px 10px",
+              color: SURFACE.muted,
+              fontSize: 12,
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
             <span style={{ color: status.color }}>●</span> {status.label}: <strong style={{ color: SURFACE.text }}>{statusCounts[status.id] || 0}</strong>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -339,7 +364,7 @@ export default function Watchlist({ onManualCapture }) {
           ["all", "Todo auditado"],
           ["favorites", "Favoritos"],
           ["analyzed", "Analizadas"],
-          ["discarded", "Descartadas"],
+          ["discarded", `En observacion (${summary.watch.length})`],
           ["statuses", "Estados"],
           ["reference", "Referencias"],
           ["requested", "Lote solicitado"],

@@ -1,46 +1,68 @@
 param(
-  [string]$TaskName = "GrahamInvestmentSuite-MondayFriday",
-  [string]$Time = "18:00"
+  [string]$PipelineTaskName = "GrahamInvestmentSuite-MondayFriday",
+  [string]$StartupTaskName  = "GrahamInvestmentSuite-Startup",
+  [string]$Time = "18:00",
+  [switch]$Force
 )
 
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$existing = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
-
-if ($existing) {
-  Write-Host "La tarea '$TaskName' ya existe. No se sobrescribio."
-  exit 0
-}
 
 $npmCommand = Get-Command npm.cmd -ErrorAction SilentlyContinue
-if (-not $npmCommand) {
-  $npmCommand = Get-Command npm -ErrorAction SilentlyContinue
-}
+if (-not $npmCommand) { $npmCommand = Get-Command npm -ErrorAction SilentlyContinue }
 $npm = if ($npmCommand) { $npmCommand.Source } else { $null }
-if (-not $npm) {
-  throw "No se encontro npm en PATH."
+if (-not $npm) { throw "No se encontro npm en PATH." }
+
+# Eliminar tarea anterior si existe (para actualizar WorkingDirectory al repo actual)
+$existing = Get-ScheduledTask -TaskName $PipelineTaskName -ErrorAction SilentlyContinue
+if ($existing) {
+  if ($Force) {
+    Unregister-ScheduledTask -TaskName $PipelineTaskName -Confirm:$false
+    Write-Host "Tarea '$PipelineTaskName' eliminada para recrear con ruta actualizada."
+  } else {
+    # Verificar si el WorkingDirectory es el repo correcto
+    $currentDir = $existing.Actions[0].WorkingDirectory
+    if ($currentDir -ne $repo) {
+      Write-Host "Actualizando WorkingDirectory de '$currentDir' a '$repo'..."
+      Unregister-ScheduledTask -TaskName $PipelineTaskName -Confirm:$false
+    } else {
+      Write-Host "La tarea '$PipelineTaskName' ya apunta a '$repo'. Sin cambios."
+    }
+  }
 }
 
-$action = New-ScheduledTaskAction `
-  -Execute $npm `
-  -Argument "run weekly:pipeline" `
-  -WorkingDirectory $repo
+$existing = Get-ScheduledTask -TaskName $PipelineTaskName -ErrorAction SilentlyContinue
+if (-not $existing) {
+  $action   = New-ScheduledTaskAction -Execute $npm -Argument "run weekly:pipeline" -WorkingDirectory $repo
+  $trigger  = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday,Friday -At $Time
+  $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 2)
+  Register-ScheduledTask -TaskName $PipelineTaskName -Action $action -Trigger $trigger -Settings $settings `
+    -Description "Graham Investment Suite: pipeline semanal lunes y viernes a las $Time."
+  Write-Host "Tarea creada: $PipelineTaskName ($Time lunes y viernes) -> $repo"
+}
 
-$trigger = New-ScheduledTaskTrigger `
-  -Weekly `
-  -DaysOfWeek Monday, Friday `
-  -At $Time
+# Tarea de arranque: iniciar dashboard al encender el equipo
+$existingStartup = Get-ScheduledTask -TaskName $StartupTaskName -ErrorAction SilentlyContinue
+if ($existingStartup) {
+  $currentDir = $existingStartup.Actions[0].WorkingDirectory
+  if ($currentDir -ne $repo -or $Force) {
+    Unregister-ScheduledTask -TaskName $StartupTaskName -Confirm:$false
+    Write-Host "Tarea startup eliminada para recrear con ruta actualizada."
+    $existingStartup = $null
+  } else {
+    Write-Host "La tarea '$StartupTaskName' ya existe y apunta a '$repo'. Sin cambios."
+  }
+}
 
-$settings = New-ScheduledTaskSettingsSet `
-  -AllowStartIfOnBatteries `
-  -DontStopIfGoingOnBatteries `
-  -StartWhenAvailable
+if (-not $existingStartup) {
+  $actionStartup  = New-ScheduledTaskAction -Execute $npm -Argument "run dev:safe" -WorkingDirectory $repo
+  $triggerStartup = New-ScheduledTaskTrigger -AtLogOn
+  $settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 0)
+  Register-ScheduledTask -TaskName $StartupTaskName -Action $actionStartup -Trigger $triggerStartup -Settings $settingsStartup `
+    -Description "Graham Investment Suite: arranca dashboard local al iniciar sesion."
+  Write-Host "Tarea creada: $StartupTaskName (arranque al iniciar sesion) -> $repo"
+}
 
-Register-ScheduledTask `
-  -TaskName $TaskName `
-  -Action $action `
-  -Trigger $trigger `
-  -Settings $settings `
-  -Description "Graham Investment Suite: genera alertas Graham lunes y viernes."
-
-Write-Host "Tarea creada: $TaskName ($Time lunes y viernes)."
+Write-Host ""
+Write-Host "Tareas registradas:"
+Get-ScheduledTask -TaskName $PipelineTaskName,$StartupTaskName | Select-Object TaskName,State | Format-Table -AutoSize
