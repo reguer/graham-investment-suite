@@ -2,6 +2,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { classify } from "../src/tools/graham-analyzer/classify.js";
 import { fetchYahooFundamentals, fetchYahooDeepFundamentals, buildYahooSupplementalSnapshot, buildYahooDeepSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
+import { fetchSecTickerMap, fetchSecCompanyFacts, buildSecGrahamSnapshot, hasMinimumGrahamSnapshot } from "../src/tools/watchlist/secFundamentals.js";
+import { fetchYahooChartQuote } from "../src/tools/watchlist/priceSources.js";
 import { PUBLIC_COMPANIES_PATH, normalizeCompany, runPsql, upsertCompanySql, upsertFinancialSnapshotSql } from "./db-client.js";
 
 export function parseArgs(argv) {
@@ -88,6 +90,31 @@ function persist(result) {
   return runPsql(statements.join("\n"));
 }
 
+// Intenta obtener fundamentales desde SEC EDGAR + precio Yahoo Chart cuando Yahoo falló o entregó datos incompletos.
+// Devuelve { snapshot, notes } si tuvo éxito, o null si SEC tampoco tiene datos suficientes.
+async function trySecFallback(ticker, yahooSymbol) {
+  try {
+    const secTickerMap = await fetchSecTickerMap();
+    const secEntry = secTickerMap.get(ticker.toUpperCase());
+    if (!secEntry) return null;
+
+    const priceResult = await fetchYahooChartQuote({ ticker, yahooSymbol: yahooSymbol || ticker });
+    const price = priceResult?.price;
+    if (!price || !Number.isFinite(price)) return null;
+
+    const companyFacts = await fetchSecCompanyFacts(secEntry.cik);
+    const snapshot = buildSecGrahamSnapshot(companyFacts, price);
+    if (!hasMinimumGrahamSnapshot(snapshot) && !snapshot.pe && !snapshot.pb) return null;
+
+    return {
+      snapshot,
+      notes: `Fundamentales SEC EDGAR (${secEntry.cik}); precio Yahoo Chart. ${snapshot.source}`,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function ingestYahooSupplemental({ argv = process.argv, fetcher = fetchYahooFundamentals, deepFetcher = fetchYahooDeepFundamentals } = {}) {
   const args = parseArgs(argv);
   const records = loadPublicRecords();
@@ -116,11 +143,55 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
           snapshot.debtRatio === null
         );
         if (hasDisqualifyingSnapshot) {
+          // Intentar completar los datos faltantes con SEC EDGAR antes de rechazar
+          const secResult = await trySecFallback(ticker, item.yahooSymbol || item.yahoo_symbol);
+          if (secResult) {
+            const merged = {
+              ...snapshot,
+              debtRatio: snapshot.debtRatio ?? secResult.snapshot.debtRatio,
+              currentRatio: snapshot.currentRatio ?? secResult.snapshot.currentRatio,
+              quickRatio: snapshot.quickRatio ?? secResult.snapshot.quickRatio,
+              fcf: snapshot.fcf ?? secResult.snapshot.fcf,
+              epsAllPositive: snapshot.epsAllPositive ?? secResult.snapshot.epsAllPositive,
+              epsGrowing: snapshot.epsGrowing ?? secResult.snapshot.epsGrowing,
+              epsHistory: (snapshot.epsHistory?.length > 0 ? snapshot.epsHistory : secResult.snapshot.epsHistory) || [],
+              source: `${snapshot.source || "Yahoo"} + ${secResult.snapshot.source}`,
+            };
+            const classification = classify(merged);
+            const notes = [built.reason, secResult.notes, classification.reason].filter(Boolean).join(" ");
+            const publicRecord = {
+              ...item,
+              source: merged.source,
+              sourceDate: merged.sourceDate || new Date().toISOString().slice(0, 10),
+              analysisStatus: "analyzed",
+              validationStatus: "yahoo_sec_merged",
+              price: merged.price,
+              pe: merged.pe,
+              pb: merged.pb,
+              pePb: merged.pePb,
+              debtRatio: merged.debtRatio,
+              currentRatio: merged.currentRatio,
+              quickRatio: merged.quickRatio,
+              fcf: merged.fcf,
+              epsAllPositive: merged.epsAllPositive,
+              epsGrowing: merged.epsGrowing,
+              epsHistory: merged.epsHistory,
+              classificationId: classification.id,
+              classificationLabel: classification.label,
+              notes,
+              watchReason: notes,
+            };
+            byTicker.set(ticker, publicRecord);
+            const dbResult = persist({ ticker, snapshot: merged, classification, publicRecord });
+            if (dbResult.skipped) dbSkipped = true;
+            results.push({ ticker, status: "sec_merged", classification: classification.id });
+            continue;
+          }
           const classification = classify(snapshot);
           const notes = [
             built.reason,
             ...(built.warnings || []),
-            "Rechazada por modelo Graham defensivo: faltan o no aplican ratios minimos.",
+            "Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva.",
             classification.reason,
           ].filter(Boolean).join(" ");
           const publicRecord = {
@@ -202,12 +273,46 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
       if (dbResult.skipped) dbSkipped = true;
       results.push({ ticker, status: "partial", classification: classification.id });
     } catch (error) {
+      // Yahoo falló completamente — intentar SEC EDGAR como fuente alternativa
+      const secResult = await trySecFallback(ticker, item.yahooSymbol || item.yahoo_symbol);
+      if (secResult) {
+        const classification = classify(secResult.snapshot);
+        const notes = [`Yahoo fallo: ${error.message}.`, secResult.notes, classification.reason].filter(Boolean).join(" ");
+        const publicRecord = {
+          ...item,
+          source: secResult.snapshot.source,
+          sourceDate: secResult.snapshot.sourceDate,
+          analysisStatus: secResult.snapshot.epsHistory?.length >= 2 ? "analyzed" : "analysis_partial_sec",
+          validationStatus: "sec_edgar_fallback",
+          price: secResult.snapshot.price,
+          pe: secResult.snapshot.pe,
+          pb: secResult.snapshot.pb,
+          pePb: secResult.snapshot.pePb,
+          debtRatio: secResult.snapshot.debtRatio,
+          currentRatio: secResult.snapshot.currentRatio,
+          quickRatio: secResult.snapshot.quickRatio,
+          fcf: secResult.snapshot.fcf,
+          epsAllPositive: secResult.snapshot.epsAllPositive,
+          epsGrowing: secResult.snapshot.epsGrowing,
+          epsHistory: secResult.snapshot.epsHistory || [],
+          classificationId: classification.id,
+          classificationLabel: classification.label,
+          secSnapshot: secResult.snapshot.sec,
+          notes,
+          watchReason: notes,
+        };
+        byTicker.set(ticker, publicRecord);
+        results.push({ ticker, status: "sec_fallback", classification: classification.id });
+        const dbResult = persist({ ticker, snapshot: secResult.snapshot, classification, publicRecord });
+        if (dbResult.skipped) dbSkipped = true;
+        continue;
+      }
       const next = {
         ...item,
         sourceDate: new Date().toISOString().slice(0, 10),
         validationStatus: "yahoo_fetch_failed",
-        notes: `Yahoo complementario fallo: ${error.message}`,
-        watchReason: `Yahoo complementario fallo: ${error.message}`,
+        notes: `Yahoo y SEC EDGAR sin datos suficientes: ${error.message}`,
+        watchReason: `Yahoo y SEC EDGAR sin datos suficientes: ${error.message}`,
       };
       byTicker.set(ticker, next);
       results.push({ ticker, status: "failed", reason: error.message });
@@ -219,8 +324,10 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
   savePublicRecords([...byTicker.values()]);
   return {
     total: targets.length,
-    analyzed: results.filter((item) => item.status === "partial").length,
+    analyzed: results.filter((item) => item.status === "partial" || item.status === "sec_fallback" || item.status === "sec_merged").length,
     partial: results.filter((item) => item.status === "partial").length,
+    secFallback: results.filter((item) => item.status === "sec_fallback").length,
+    secMerged: results.filter((item) => item.status === "sec_merged").length,
     rejected: results.filter((item) => item.status === "rejected").length,
     skipped: results.filter((item) => item.status === "skipped").length,
     failed: results.filter((item) => item.status === "failed").length,
@@ -234,7 +341,9 @@ if (isCli) {
   ingestYahooSupplemental().then((summary) => {
     console.log(`Yahoo complementario procesado: ${summary.total}`);
     console.log(`Snapshots Yahoo USD/FX: ${summary.partial}`);
-    console.log(`Rechazadas por modelo: ${summary.rejected}`);
+    if (summary.secFallback) console.log(`Recuperadas via SEC EDGAR (fallback): ${summary.secFallback}`);
+    if (summary.secMerged) console.log(`Completadas Yahoo+SEC EDGAR (merge): ${summary.secMerged}`);
+    console.log(`Rechazadas por modelo (ambas fuentes): ${summary.rejected}`);
     console.log(`Omitidas por datos/moneda: ${summary.skipped}`);
     console.log(`Fallidas: ${summary.failed}`);
     if (summary.dbSkipped) console.log("PostgreSQL omitido: DATABASE_URL no configurado.");

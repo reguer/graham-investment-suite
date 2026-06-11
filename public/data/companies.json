@@ -182,6 +182,28 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "AA",
+    "yahooSymbol": "AA.MX",
+    "companyName": "Alcoa Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Aluminum",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+  },
+  {
     "ticker": "AAPL",
     "yahooSymbol": "AAPL.MX",
     "companyName": "Apple Inc.",
@@ -1004,6 +1026,58 @@
     "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
+    "ticker": "ALB",
+    "yahooSymbol": "ALB.MX",
+    "companyName": "Albemarle Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000915913); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 151.99140715000001,
+    "pe": null,
+    "pb": 2.3413024,
+    "pePb": null,
+    "debtRatio": 0.6915449057074811,
+    "currentRatio": 2.2291662495467297,
+    "quickRatio": 1.5733029892483166,
+    "fcf": 1136260000,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": -5.76
+      },
+      {
+        "year": 2024,
+        "eps": -11.2
+      },
+      {
+        "year": 2023,
+        "eps": 13.36
+      },
+      {
+        "year": 2022,
+        "eps": 22.84
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000915913); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "ALL",
     "yahooSymbol": "ALL",
     "companyName": "ALLSTATE CORP",
@@ -1076,6 +1150,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "ALLY",
+    "yahooSymbol": "ALLY.MX",
+    "companyName": "Ally Financial Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Credit Services",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_model_rejected",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 41.88,
+    "pe": 10.16505,
+    "pb": 0.9690856,
+    "pePb": 9.85080357828,
+    "debtRatio": 11.646922183507549,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": -1535000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "AMAT",
@@ -1225,6 +1333,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "AME",
+    "yahooSymbol": "AME.MX",
+    "companyName": "AMETEK Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 225.75416053520001,
+    "pe": 34.01247,
+    "pb": 4.7657485,
+    "pePb": 162.094877883795,
+    "debtRatio": 0.5117006777631989,
+    "currentRatio": 1.0622952688099419,
+    "quickRatio": 0.673093185758026,
+    "fcf": 738993000,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "AMGN",
@@ -1597,6 +1739,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "APD",
+    "yahooSymbol": "APD.MX",
+    "companyName": "Air Products and Chemicals Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-09-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 297.9997345996,
+    "pe": 31.250197999999997,
+    "pb": 4.2193193,
+    "pePb": 131.8545635502214,
+    "debtRatio": 1.5780271416115914,
+    "currentRatio": 1.3809794718627033,
+    "quickRatio": 1.1969136680415304,
+    "fcf": -3911900000,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "APH",
     "yahooSymbol": "APH.MX",
     "companyName": "Amphenol Corporation",
@@ -1705,6 +1881,40 @@
     "fcf": -1511826000,
     "epsAllPositive": true,
     "epsGrowing": true,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "AVB",
+    "yahooSymbol": "AVB.MX",
+    "companyName": "AvalonBay Communities Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Residential",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 216.2671170748,
+    "pe": 25.188127999999995,
+    "pb": 2.6040328,
+    "pePb": 65.5907114825984,
+    "debtRatio": 0.8920434678512558,
+    "currentRatio": 0.2288308326641767,
+    "quickRatio": 0.2288308326641767,
+    "fcf": 278738000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
     "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
@@ -2931,6 +3141,80 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "CB",
+    "yahooSymbol": "CB.MX",
+    "companyName": "Chubb Limited",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Insurance Property & Casualty",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000896159); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 265.42372705379995,
+    "pe": 179.9039320713408,
+    "pb": 25.14757311170465,
+    "pePb": 4524.147284847189,
+    "debtRatio": 2.6105725558252098,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": 89399597.22399998,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 1.47536367881357
+      },
+      {
+        "year": 2024,
+        "eps": 1.29330651254
+      },
+      {
+        "year": 2023,
+        "eps": 1.2525136371999999
+      },
+      {
+        "year": 2022,
+        "eps": 0.7210571627
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000896159); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "CCI",
+    "yahooSymbol": "CCI.MX",
+    "companyName": "Crown Castle Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Specialty",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+  },
+  {
     "ticker": "CDNS",
     "yahooSymbol": "CDNS.MX",
     "companyName": "Cadence Design Systems, Inc.",
@@ -3073,6 +3357,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "CF",
+    "yahooSymbol": "CF.MX",
+    "companyName": "CF Industries Holdings Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Agricultural Inputs",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
+    "price": 113.9618861887,
+    "pe": 10.227889,
+    "pb": 3.2639083999999996,
+    "pePb": 33.38289282136759,
+    "debtRatio": 1.3048780487804879,
+    "currentRatio": 3.3652762119503947,
+    "quickRatio": 2.9334836527621193,
+    "fcf": 1819000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5."
   },
   {
     "ticker": "CFG",
@@ -3409,6 +3727,58 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "CLF",
+    "yahooSymbol": "CLF.MX",
+    "companyName": "Cleveland-Cliffs Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000764065); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 12.440312995000001,
+    "pe": null,
+    "pb": 1.213923,
+    "pePb": null,
+    "debtRatio": 2.238227599738391,
+    "currentRatio": 1.9488188976377954,
+    "quickRatio": 0.5036341611144761,
+    "fcf": -941000000,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": -2.91
+      },
+      {
+        "year": 2024,
+        "eps": -1.57
+      },
+      {
+        "year": 2023,
+        "eps": 0.78
+      },
+      {
+        "year": 2022,
+        "eps": 2.55
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000764065); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "CLX",
     "yahooSymbol": "CLX.MX",
     "companyName": "The Clorox Company",
@@ -3459,16 +3829,16 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-09",
+    "sourceDate": "2026-06-11",
     "analysisStatus": "analysis_external_pending",
-    "validationStatus": "source_required",
+    "validationStatus": "yahoo_fetch_failed",
     "tags": [
       "bmv-sic",
       "pending-analysis",
       "source-required"
     ],
-    "notes": "Yahoo Finance no devolvio quote fundamental para CMA/CMA.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
-    "watchReason": "Yahoo Finance no devolvio quote fundamental para CMA/CMA.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
+    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: CMA",
+    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: CMA"
   },
   {
     "ticker": "CMCSA",
@@ -5344,6 +5714,28 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "DFS",
+    "yahooSymbol": "DFS.MX",
+    "companyName": "Discover Financial Services",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Credit Services",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+  },
+  {
     "ticker": "DGX",
     "yahooSymbol": "DGX.MX",
     "companyName": "Quest Diagnostics Incorporated",
@@ -5755,6 +6147,40 @@
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
     "watchReason": "Yahoo time series no entrego todos los ratios minimos. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Rechazada por modelo Graham defensivo: faltan o no aplican ratios minimos. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "DVN",
+    "yahooSymbol": "DVN.MX",
+    "companyName": "Devon Energy Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Energy",
+    "industry": "Oil & Gas E&P",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 45.222866302,
+    "pe": 12.547832,
+    "pb": 1.8129447,
+    "pePb": 22.7485255208904,
+    "debtRatio": 1.0349690880989182,
+    "currentRatio": 0.9804209495839452,
+    "quickRatio": 0.8981889378365149,
+    "fcf": 3318000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "DXCM",
@@ -6269,6 +6695,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "EMR",
+    "yahooSymbol": "EMR.MX",
+    "companyName": "Emerson Electric Co.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-09-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 140.150661894,
+    "pe": 32.360355,
+    "pb": 3.850766,
+    "pePb": 124.61215478193,
+    "debtRatio": 1.068237846366236,
+    "currentRatio": 0.8760845156680617,
+    "quickRatio": 0.6501990405226089,
+    "fcf": 2505000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "EOG",
     "yahooSymbol": "EOG",
     "companyName": "EOG Resources, Inc.",
@@ -6528,6 +6988,40 @@
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
     "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "ESS",
+    "yahooSymbol": "ESS.MX",
+    "companyName": "Essex Property Trust Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Residential",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de MXN a USD. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 0,
+    "pe": 0,
+    "pb": 0,
+    "pePb": 0,
+    "debtRatio": 1.3394000619341204,
+    "currentRatio": 0.7747813202728969,
+    "quickRatio": 0.7747813202728969,
+    "fcf": 29991382.2384,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de MXN a USD. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "ETN",
@@ -7066,7 +7560,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-09",
+    "sourceDate": "2026-06-11",
     "analysisStatus": "analysis_external_pending",
     "validationStatus": "yahoo_partial_incomplete",
     "tags": [
@@ -7074,13 +7568,35 @@
       "pending-analysis",
       "source-required"
     ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual.",
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
     "lastPrice": 906.46,
     "lastPriceDate": "2026-05-20",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual."
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+  },
+  {
+    "ticker": "FNF",
+    "yahooSymbol": "FNF.MX",
+    "companyName": "Fidelity National Financial Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Insurance Specialty",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
   },
   {
     "ticker": "FTNT",
@@ -7950,6 +8466,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "GPC",
+    "yahooSymbol": "GPC.MX",
+    "companyName": "Genuine Parts Company",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Consumer Defensive",
+    "industry": "Specialty Retail",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 146.5289823,
+    "pe": 23.865232,
+    "pb": 4.4878087,
+    "pePb": 107.10259579711841,
+    "debtRatio": 3.6977640243898304,
+    "currentRatio": 1.0793882733490638,
+    "quickRatio": 0.4590185339668492,
+    "fcf": 179175000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "GRBK",
     "yahooSymbol": "GRBK",
     "companyName": "Green Brick Partners",
@@ -7959,7 +8509,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -8169,6 +8719,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "HAL",
+    "yahooSymbol": "HAL.MX",
+    "companyName": "Halliburton Company",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
+    "price": 39.605347357039996,
+    "pe": 21.783817,
+    "pb": 3.0579085,
+    "pePb": 66.61291916674449,
+    "debtRatio": 1.386578720963579,
+    "currentRatio": 2.039727988546886,
+    "quickRatio": 1.5071581961345741,
+    "fcf": 1601000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5."
   },
   {
     "ticker": "HBAN",
@@ -8591,16 +9175,16 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments & Supplies",
     "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-09",
+    "sourceDate": "2026-06-11",
     "analysisStatus": "analysis_external_pending",
-    "validationStatus": "source_required",
+    "validationStatus": "yahoo_fetch_failed",
     "tags": [
       "bmv-sic",
       "pending-analysis",
       "source-required"
     ],
-    "notes": "Yahoo Finance no devolvio quote fundamental estable para HOLX/HOLX.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
-    "watchReason": "Yahoo Finance no devolvio quote fundamental estable para HOLX/HOLX.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
+    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: HOLX",
+    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: HOLX"
   },
   {
     "ticker": "HON",
@@ -9691,6 +10275,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "ITW",
+    "yahooSymbol": "ITW.MX",
+    "companyName": "Illinois Tool Works Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base ITW.",
+    "price": 250.17,
+    "pe": 23.206865,
+    "pb": 22.290833,
+    "pePb": 517.300352168545,
+    "debtRatio": 4.006821705426357,
+    "currentRatio": 1.2095200936402652,
+    "quickRatio": 0.8858759266484588,
+    "fcf": 2605000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base ITW."
+  },
+  {
     "ticker": "JNJ",
     "yahooSymbol": "JNJ",
     "companyName": "Johnson & Johnson",
@@ -9776,16 +10394,16 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-09",
+    "sourceDate": "2026-06-11",
     "analysisStatus": "analysis_external_pending",
-    "validationStatus": "source_required",
+    "validationStatus": "yahoo_partial_incomplete",
     "tags": [
       "bmv-sic",
       "pending-analysis",
       "source-required"
     ],
-    "notes": "Yahoo Finance no devolvio quote fundamental estable para JNPR/JNPR.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC.",
-    "watchReason": "Yahoo Finance no devolvio quote fundamental estable para JNPR/JNPR.MX en la corrida local. Requiere validar alias Yahoo o captura manual asistida desde Yahoo Finance/SEC."
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
   },
   {
     "ticker": "JPM",
@@ -9862,6 +10480,28 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "K",
+    "yahooSymbol": "K.MX",
+    "companyName": "Kellanova",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_fetch_failed",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: K",
+    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: K"
+  },
+  {
     "ticker": "KBH",
     "yahooSymbol": "KBH",
     "companyName": "KB Home",
@@ -9871,7 +10511,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -10708,6 +11348,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "LIN",
+    "yahooSymbol": "LIN.MX",
+    "companyName": "Linde plc",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de EUR a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 40.6515046341,
+    "pe": 5.094333,
+    "pb": 1.0802575,
+    "pePb": 5.5031914307475,
+    "debtRatio": 1.2309060007844161,
+    "currentRatio": 0.8767601000131597,
+    "quickRatio": 0.7415449401237005,
+    "fcf": 5344031446.200001,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de EUR a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "LLY",
     "yahooSymbol": "LLY",
     "companyName": "Eli Lilly and Company",
@@ -11075,6 +11749,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "MAA",
+    "yahooSymbol": "MAA.MX",
+    "companyName": "Mid-America Apartment Communities",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Residential",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de MXN a USD. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 0,
+    "pe": 0,
+    "pb": 0,
+    "pePb": 0,
+    "debtRatio": 1.0796172544139775,
+    "currentRatio": 0.09020111215267708,
+    "quickRatio": 0.09020111215267708,
+    "fcf": 22292792.117225997,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Fundamentales convertidos de MXN a USD. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "MAR",
@@ -11521,6 +12229,28 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "MDT",
+    "yahooSymbol": "MDT.MX",
+    "companyName": "Medtronic plc",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Healthcare",
+    "industry": "Medical Devices",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
+  },
+  {
     "ticker": "MET",
     "yahooSymbol": "MET",
     "companyName": "MetLife, Inc.",
@@ -11679,7 +12409,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -12063,6 +12793,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "MOS",
+    "yahooSymbol": "MOS.MX",
+    "companyName": "The Mosaic Company",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Agricultural Inputs",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 21.375992712,
+    "pe": 152.45901,
+    "pb": 0.57954144,
+    "pePb": 88.3563141963744,
+    "debtRatio": 1.0133224106115897,
+    "currentRatio": 1.3150296273978106,
+    "quickRatio": 0.47064878979612335,
+    "fcf": -484700000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "MPC",
     "yahooSymbol": "MPC",
     "companyName": "Marathon Petroleum Corporation",
@@ -12283,6 +13047,28 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "MRO",
+    "yahooSymbol": "MRO.MX",
+    "companyName": "Marathon Oil Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Energy",
+    "industry": "Oil & Gas E&P",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
   },
   {
     "ticker": "MRVL",
@@ -12779,7 +13565,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -13026,6 +13812,40 @@
     "quickRatio": 0.48928430556164265,
     "fcf": -11380000000,
     "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "NEM",
+    "yahooSymbol": "NEM.MX",
+    "companyName": "Newmont Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 93.6620168,
+    "pe": 12.096475,
+    "pb": 2.8682492000000006,
+    "pePb": 34.695704741570005,
+    "debtRatio": 0.6814598281512977,
+    "currentRatio": 2.2874649859943976,
+    "quickRatio": 1.816701680672269,
+    "fcf": 10940000000,
+    "epsAllPositive": false,
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
@@ -13364,6 +14184,58 @@
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
     "watchReason": "Yahoo time series no entrego todos los ratios minimos. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Rechazada por modelo Graham defensivo: faltan o no aplican ratios minimos. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
+    "ticker": "NTRS",
+    "yahooSymbol": "NTRS.MX",
+    "companyName": "Northern Trust Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Asset Management",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000073124); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 144.2280136,
+    "pe": 15.174415,
+    "pb": 2.214374,
+    "pePb": 33.60183004121,
+    "debtRatio": 12.669861628813312,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": -14636400000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 9.504683613832889
+      },
+      {
+        "year": 2024,
+        "eps": 10.624800790291454
+      },
+      {
+        "year": 2023,
+        "eps": 5.524461413989825
+      },
+      {
+        "year": 2022,
+        "eps": 6.677203362578253
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000073124); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "NUE",
@@ -14668,7 +15540,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -14731,6 +15603,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "USD"
+  },
+  {
+    "ticker": "PLD",
+    "yahooSymbol": "PLD.MX",
+    "companyName": "Prologis Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Industrial",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 147.906379764,
+    "pe": 37.035973,
+    "pb": 2.572024,
+    "pePb": 95.257411419352,
+    "debtRatio": 0.7702162108080852,
+    "currentRatio": 0.9085606225907339,
+    "quickRatio": 0.9085606225907339,
+    "fcf": 1377987000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "PLTR",
@@ -14953,6 +15859,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "PNR",
+    "yahooSymbol": "PNR.MX",
+    "companyName": "Pentair plc",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base PNR.",
+    "price": 71.4,
+    "pe": 17.9397,
+    "pb": 3.0283751,
+    "pePb": 54.32814078146999,
+    "debtRatio": 0.7752506978186705,
+    "currentRatio": 1.6072135932450746,
+    "quickRatio": 0.947774418847076,
+    "fcf": 410300000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base PNR."
   },
   {
     "ticker": "PNW",
@@ -15724,6 +16664,40 @@
     "watchReason": "Yahoo time series no entrego todos los ratios minimos. Precio convertido de MXN a USD. Rechazada por modelo Graham defensivo: faltan o no aplican ratios minimos. No cumple los criterios mínimos defensivos de Graham."
   },
   {
+    "ticker": "ROK",
+    "yahooSymbol": "ROK.MX",
+    "companyName": "Rockwell Automation Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-09-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 393.78720935399997,
+    "pe": 41.151745000000005,
+    "pb": 12.39113,
+    "pePb": 509.91662202185006,
+    "debtRatio": 2.0547345374931583,
+    "currentRatio": 1.135268505079826,
+    "quickRatio": 0.7732946298984035,
+    "fcf": 1328000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "ROST",
     "yahooSymbol": "ROST",
     "companyName": "Ross Stores, Inc.",
@@ -16202,6 +17176,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "KRW"
+  },
+  {
+    "ticker": "SLB",
+    "yahooSymbol": "SLB.MX",
+    "companyName": "SLB (Schlumberger)",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base SLB.",
+    "price": 55.51,
+    "pe": 24.453745,
+    "pb": 3.1703694000000002,
+    "pePb": 77.527404863403,
+    "debtRatio": 1.0562258225133097,
+    "currentRatio": 1.3255213640377692,
+    "quickRatio": 0.9836967597309966,
+    "fcf": 5077000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base SLB."
   },
   {
     "ticker": "SNDK",
@@ -16690,6 +17698,40 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "STLD",
+    "yahooSymbol": "STLD.MX",
+    "companyName": "Steel Dynamics Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
+    "price": 273.923003382,
+    "pe": 29.247192,
+    "pb": 4.43855,
+    "pePb": 129.8151240516,
+    "debtRatio": 0.836130046257852,
+    "currentRatio": 3.055322784171923,
+    "quickRatio": 1.293744763821861,
+    "fcf": 474577000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5."
+  },
+  {
     "ticker": "STT",
     "yahooSymbol": "STT",
     "companyName": "State Street Corporation",
@@ -16856,6 +17898,58 @@
     "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
+    "ticker": "SYF",
+    "yahooSymbol": "SYF.MX",
+    "companyName": "Synchrony Financial",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Credit Services",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0001601712); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 70.4315974922,
+    "pe": 7.262116,
+    "pb": 1.5496505,
+    "pePb": 11.253741690458,
+    "debtRatio": 6.103363950852916,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": 4997000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 9.698495244664228
+      },
+      {
+        "year": 2024,
+        "eps": 8.935574821323186
+      },
+      {
+        "year": 2023,
+        "eps": 5.424050681013723
+      },
+      {
+        "year": 2022,
+        "eps": 6.427343292530712
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0001601712); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "SYK",
     "yahooSymbol": "SYK",
     "companyName": "Stryker Corporation",
@@ -16928,6 +18022,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "SYY",
+    "yahooSymbol": "SYY.MX",
+    "companyName": "Sysco Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Consumer Defensive",
+    "industry": "Food Distribution",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-06-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 74.41288337,
+    "pe": 20.575151,
+    "pb": 15.618713,
+    "pePb": 321.35737840066304,
+    "debtRatio": 13.615846994535518,
+    "currentRatio": 1.2069382815651473,
+    "quickRatio": 0.6973578055667607,
+    "fcf": 1793000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "TAP",
@@ -17303,7 +18431,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -17451,7 +18579,7 @@
     "currency": "USD",
     "quoteType": "EQUITY",
     "sector": "Residential Construction",
-    "industry": "",
+    "industry": "Residential Construction",
     "source": "Finviz + StockAnalysis",
     "sourceDate": "2026-06-03",
     "analysisStatus": "analyzed",
@@ -17850,6 +18978,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "UDR",
+    "yahooSymbol": "UDR.MX",
+    "companyName": "UDR Inc.",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Real Estate",
+    "industry": "REIT Residential",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 39.648563339999995,
+    "pe": 86.901764,
+    "pb": 3.9835536,
+    "pePb": 346.17783482855043,
+    "debtRatio": 1.9635048238355803,
+    "currentRatio": 0.20229338932421317,
+    "quickRatio": 0.20229338932421317,
+    "fcf": 751897000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "UNH",
@@ -18508,7 +19670,7 @@
     "sector": "Healthcare",
     "industry": "Drug Manufacturers Specialty & Generic",
     "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-09",
+    "sourceDate": "2026-06-11",
     "analysisStatus": "analysis_external_pending",
     "validationStatus": "yahoo_partial_incomplete",
     "tags": [
@@ -18516,13 +19678,13 @@
       "pending-analysis",
       "source-required"
     ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual.",
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
     "lastPrice": 278.43,
     "lastPriceDate": "2026-06-09",
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales suficientes. Requiere reintento posterior o captura EPS/history manual."
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
   },
   {
     "ticker": "VZ",
@@ -19003,6 +20165,58 @@
     "quoteCurrency": "MXN"
   },
   {
+    "ticker": "WRB",
+    "yahooSymbol": "WRB.MX",
+    "companyName": "W.R. Berkley Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Insurance Property & Casualty",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000011544); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
+    "price": 73.37773531,
+    "pe": 15.747934999999998,
+    "pb": 2.7745867,
+    "pePb": 43.694011003464496,
+    "debtRatio": 3.541884509120777,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": 1553281000,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 4.659514743361591
+      },
+      {
+        "year": 2024,
+        "eps": 4.565277366529558
+      },
+      {
+        "year": 2023,
+        "eps": 3.5251762971885245
+      },
+      {
+        "year": 2022,
+        "eps": 3.4483895883818554
+      }
+    ],
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000011544); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham."
+  },
+  {
     "ticker": "WTRG",
     "yahooSymbol": "WTRG.MX",
     "companyName": "Essential Utilities, Inc.",
@@ -19035,6 +20249,28 @@
     "epsGrowing": true,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA"
+  },
+  {
+    "ticker": "X",
+    "yahooSymbol": "X.MX",
+    "companyName": "United States Steel Corporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "source": "Yahoo Finance Search",
+    "sourceDate": "2026-06-11",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "yahoo_partial_incomplete",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
+    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales."
   },
   {
     "ticker": "XEL",
@@ -19296,6 +20532,40 @@
     "lastPriceUpdatedAt": "2026-06-09T22:06:11.336Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN"
+  },
+  {
+    "ticker": "ZION",
+    "yahooSymbol": "ZION.MX",
+    "companyName": "Zions Bancorporation",
+    "exchange": "",
+    "market": "BMV SIC",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Financial Services",
+    "industry": "Banks Regional",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_model_rejected",
+    "tags": [
+      "bmv-sic",
+      "pending-analysis"
+    ],
+    "notes": "Yahoo time series no entrego todos los ratios minimos. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva. No cumple los criterios mínimos defensivos de Graham.",
+    "price": 65.82,
+    "pe": 10.220497,
+    "pb": 1.3660986,
+    "pePb": 13.9622066430042,
+    "debtRatio": 11.394150417827298,
+    "currentRatio": null,
+    "quickRatio": null,
+    "fcf": 1811000000,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Yahoo time series no entrego todos los ratios minimos. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva. No cumple los criterios mínimos defensivos de Graham."
   },
   {
     "ticker": "ZTS",

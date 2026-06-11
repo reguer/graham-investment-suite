@@ -4,6 +4,12 @@ import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
 
+const FINANCIAL_SECTORS = new Set(["Financial Services", "Real Estate", "Insurance"]);
+
+function isFinancialSector(candidate) {
+  return FINANCIAL_SECTORS.has(candidate.sector);
+}
+
 function isAvailableRatio(value) {
   return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 }
@@ -49,7 +55,11 @@ export function deriveSnapshot(candidate, price = candidate.price) {
 }
 
 export function hasFinancialSnapshot(candidate) {
-  return [candidate.price, candidate.pe, candidate.pb, candidate.debtRatio, candidate.currentRatio].every(isAvailableRatio);
+  const base = [candidate.price, candidate.pe, candidate.pb].every(isAvailableRatio);
+  if (!base) return false;
+  // Bancos, seguros y REITs no reportan currentRatio/debtRatio en formato industrial
+  if (isFinancialSector(candidate)) return true;
+  return isAvailableRatio(candidate.debtRatio) && isAvailableRatio(candidate.currentRatio);
 }
 
 export function countAvailableCriticalRatios(candidate) {
@@ -78,7 +88,9 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
   }
 
   const criticalRatioCount = countAvailableCriticalRatios(candidate);
-  if (criticalRatioCount < 3) {
+  // Financieras solo necesitan pe+pb+precio para un análisis válido; fcf/debtRatio/currentRatio no aplican igual
+  const minRatios = isFinancialSector(candidate) ? 2 : 3;
+  if (criticalRatioCount < minRatios) {
     if (candidate.validationStatus === "yahoo_model_rejected") {
       return withSystemStatus({
         ...candidate,
@@ -176,13 +188,18 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
   }
 
   const classification = classify(ratios);
-  const near =
-    ratios.pePb <= policy.nearPePb &&
-    ratios.pe <= policy.nearPe &&
-    ratios.pb <= policy.nearPb &&
-    ratios.debtRatio < policy.nearDebtRatio &&
-    ratios.currentRatio >= policy.nearCurrentRatio &&
-    ratios.epsAllPositive === true;
+  const financial = isFinancialSector(candidate);
+  const near = financial
+    ? ratios.pePb <= policy.nearPePb &&
+      ratios.pe <= policy.nearPe &&
+      ratios.pb <= policy.nearPb &&
+      ratios.epsAllPositive === true
+    : ratios.pePb <= policy.nearPePb &&
+      ratios.pe <= policy.nearPe &&
+      ratios.pb <= policy.nearPb &&
+      ratios.debtRatio < policy.nearDebtRatio &&
+      ratios.currentRatio >= policy.nearCurrentRatio &&
+      ratios.epsAllPositive === true;
   const closeToDefensive =
     ratios.distanceToDefensive !== null && ratios.distanceToDefensive <= policy.grahamDistancePct;
 

@@ -1,4 +1,4 @@
-const SOURCE_DATE = "2026-06-09";
+const SOURCE_DATE = "2026-06-10";
 
 export const requestedTickers = [
   { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "nasdaq-100"], notes: "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas." },
@@ -300,6 +300,50 @@ HPE|HPE.MX|Hewlett Packard Enterprise Company|Technology|Communication Equipment
 BR|BR.MX|BROADRIDGE FINANCIAL SOLUTION I||
 GDDY|GDDY.MX|GoDaddy Inc.|Technology|Software Infrastructure
 DXCM|DXCM.MX|DexCom, Inc.|Healthcare|Medical Devices
+SLB|SLB.MX|SLB (Schlumberger)|Energy|Oil & Gas Equipment & Services
+MRO|MRO.MX|Marathon Oil Corporation|Energy|Oil & Gas E&P
+DVN|DVN.MX|Devon Energy Corporation|Energy|Oil & Gas E&P
+HAL|HAL.MX|Halliburton Company|Energy|Oil & Gas Equipment & Services
+ITW|ITW.MX|Illinois Tool Works Inc.|Industrials|Specialty Industrial Machinery
+EMR|EMR.MX|Emerson Electric Co.|Industrials|Specialty Industrial Machinery
+ROK|ROK.MX|Rockwell Automation Inc.|Industrials|Specialty Industrial Machinery
+PNR|PNR.MX|Pentair plc|Industrials|Specialty Industrial Machinery
+AME|AME.MX|AMETEK Inc.|Industrials|Specialty Industrial Machinery
+SYY|SYY.MX|Sysco Corporation|Consumer Defensive|Food Distribution
+K|K.MX|Kellanova|Consumer Defensive|Packaged Foods
+GPC|GPC.MX|Genuine Parts Company|Consumer Defensive|Specialty Retail
+MDT|MDT.MX|Medtronic plc|Healthcare|Medical Devices
+DFS|DFS.MX|Discover Financial Services|Financial Services|Credit Services
+SYF|SYF.MX|Synchrony Financial|Financial Services|Credit Services
+ALLY|ALLY.MX|Ally Financial Inc.|Financial Services|Credit Services
+ZION|ZION.MX|Zions Bancorporation|Financial Services|Banks Regional
+NTRS|NTRS.MX|Northern Trust Corporation|Financial Services|Asset Management
+FNF|FNF.MX|Fidelity National Financial Inc.|Financial Services|Insurance Specialty
+WRB|WRB.MX|W.R. Berkley Corporation|Financial Services|Insurance Property & Casualty
+CB|CB.MX|Chubb Limited|Financial Services|Insurance Property & Casualty
+APD|APD.MX|Air Products and Chemicals Inc.|Basic Materials|Specialty Chemicals
+LIN|LIN.MX|Linde plc|Basic Materials|Specialty Chemicals
+NEM|NEM.MX|Newmont Corporation|Basic Materials|Gold
+STLD|STLD.MX|Steel Dynamics Inc.|Basic Materials|Steel
+CLF|CLF.MX|Cleveland-Cliffs Inc.|Basic Materials|Steel
+X|X.MX|United States Steel Corporation|Basic Materials|Steel
+AA|AA.MX|Alcoa Corporation|Basic Materials|Aluminum
+ALB|ALB.MX|Albemarle Corporation|Basic Materials|Specialty Chemicals
+CF|CF.MX|CF Industries Holdings Inc.|Basic Materials|Agricultural Inputs
+MOS|MOS.MX|The Mosaic Company|Basic Materials|Agricultural Inputs
+AVB|AVB.MX|AvalonBay Communities Inc.|Real Estate|REIT Residential
+ESS|ESS.MX|Essex Property Trust Inc.|Real Estate|REIT Residential
+MAA|MAA.MX|Mid-America Apartment Communities|Real Estate|REIT Residential
+UDR|UDR.MX|UDR Inc.|Real Estate|REIT Residential
+PLD|PLD.MX|Prologis Inc.|Real Estate|REIT Industrial
+CCI|CCI.MX|Crown Castle Inc.|Real Estate|REIT Specialty
+TOL|TOL.MX|Toll Brothers Inc.|Residential Construction|Residential Construction
+MTH|MTH.MX|Meritage Homes Corporation|Residential Construction|Residential Construction
+MHO|MHO.MX|M/I Homes Inc.|Residential Construction|Residential Construction
+TMHC|TMHC.MX|Taylor Morrison Home Corporation|Residential Construction|Residential Construction
+GRBK|GRBK.MX|Green Brick Partners Inc.|Residential Construction|Residential Construction
+PHM|PHM.MX|PulteGroup Inc.|Residential Construction|Residential Construction
+KBH|KBH.MX|KB Home|Residential Construction|Residential Construction
 `.trim();
 
 function parseBmvSicRows(rows) {

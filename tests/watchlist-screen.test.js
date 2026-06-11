@@ -114,6 +114,64 @@ describe("watchlist screening", () => {
     expect(result.ratios).toBeNull();
   });
 
+  it("evaluates financial sector companies without currentRatio/debtRatio", () => {
+    const bank = {
+      ticker: "USB",
+      companyName: "U.S. Bancorp",
+      sector: "Financial Services",
+      price: 55.52,
+      pe: 12.05,
+      pb: 1.48,
+      pePb: 17.83,
+      debtRatio: null,
+      currentRatio: null,
+      quickRatio: null,
+      fcf: null,
+      epsAllPositive: true,
+    };
+    const result = evaluateCandidate(bank, { price: 55.52, source: "test" });
+    expect(result.ratios).not.toBeNull();
+    expect(result.alertLevel).toBe("near");
+    expect(result.ratios.pePb).toBeCloseTo(17.83, 1);
+  });
+
+  it("marks financial sector company as near even with high debtRatio structure", () => {
+    const insurer = {
+      ticker: "TRV",
+      companyName: "The Travelers Companies",
+      sector: "Financial Services",
+      price: 299.6,
+      pe: 8.58,
+      pb: 1.99,
+      pePb: 17.07,
+      debtRatio: 3.37,
+      currentRatio: null,
+      quickRatio: null,
+      fcf: null,
+      epsAllPositive: true,
+    };
+    const result = evaluateCandidate(insurer, { price: 299.6, source: "test" });
+    expect(result.alertLevel).toBe("near");
+  });
+
+  it("does not promote financial sector to near when pePb exceeds nearPePb", () => {
+    const expensive = {
+      ticker: "GS",
+      companyName: "Goldman Sachs",
+      sector: "Financial Services",
+      price: 600,
+      pe: 15,
+      pb: 1.8,
+      pePb: 27,
+      debtRatio: null,
+      currentRatio: null,
+      fcf: 5000,
+      epsAllPositive: true,
+    };
+    const result = evaluateCandidate(expensive, { price: 660, source: "test" });
+    expect(result.alertLevel).toBe("watch");
+  });
+
   it("classifies indexes and ETFs as market references", () => {
     const result = evaluateCandidate({
       ticker: "^GSPC",
