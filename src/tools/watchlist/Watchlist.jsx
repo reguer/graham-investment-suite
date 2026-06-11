@@ -18,7 +18,7 @@ function colorFor(level) {
   return AC.gray;
 }
 
-const PROCESS_NOTE_PREFIXES = ["snapshot", "sec", "analisis", "análisis", "pendiente", "datos incompletos"];
+const PROCESS_NOTE_PREFIXES = ["snapshot", "sec ", "analisis", "análisis", "pendiente", "datos incompletos", "yahoo", "fundamentales"];
 
 function normalizeReasonPrefix(reason) {
   return String(reason || "")

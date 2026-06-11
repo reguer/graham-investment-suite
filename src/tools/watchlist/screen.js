@@ -4,10 +4,11 @@ import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
 
-const FINANCIAL_SECTORS = new Set(["Financial Services", "Real Estate", "Insurance"]);
+const FINANCIAL_SECTOR_PREFIXES = ["Financial Services", "Real Estate", "Insurance"];
 
 function isFinancialSector(candidate) {
-  return FINANCIAL_SECTORS.has(candidate.sector);
+  const sector = String(candidate.sector || "");
+  return FINANCIAL_SECTOR_PREFIXES.some((prefix) => sector === prefix || sector.startsWith(prefix + " /") || sector.startsWith(prefix + "/"));
 }
 
 function isAvailableRatio(value) {

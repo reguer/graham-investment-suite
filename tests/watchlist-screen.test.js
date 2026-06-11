@@ -135,6 +135,26 @@ describe("watchlist screening", () => {
     expect(result.ratios.pePb).toBeCloseTo(17.83, 1);
   });
 
+  it("treats compound sector strings like 'Financial Services / Banking' as financial sector", () => {
+    const bank = {
+      ticker: "USB",
+      companyName: "U.S. Bancorp",
+      sector: "Financial Services / Banking",
+      price: 55.52,
+      pe: 12.05,
+      pb: 1.48,
+      pePb: 17.83,
+      debtRatio: null,
+      currentRatio: null,
+      quickRatio: null,
+      fcf: null,
+      epsAllPositive: true,
+    };
+    const result = evaluateCandidate(bank, { price: 55.52, source: "test" });
+    expect(result.ratios).not.toBeNull();
+    expect(result.alertLevel).toBe("near");
+  });
+
   it("marks financial sector company as near even with high debtRatio structure", () => {
     const insurer = {
       ticker: "TRV",
