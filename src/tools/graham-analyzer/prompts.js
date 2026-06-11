@@ -1,8 +1,18 @@
 import { fmt, pct } from "../../lib/formatters.js";
 
+function isBlank(value) {
+  if (value === null || value === undefined) return true;
+  const str = String(value).trim();
+  return str === "" || str === "—" || str === "null" || str === "undefined";
+}
+
 function optLine(label, value) {
-  if (value === null || value === undefined || value === "—") return null;
+  if (isBlank(value)) return null;
   return `- ${label}: ${value}`;
+}
+
+function textField(value, fallback = "N/D") {
+  return isBlank(value) ? fallback : String(value).trim();
 }
 
 export function buildPrompt(company, ratios, classification) {
@@ -36,8 +46,8 @@ export function buildPrompt(company, ratios, classification) {
 
 Analiza esta empresa en espanol, directo y con criterio Graham. No inventes datos.
 
-Empresa: ${company.ticker || "N/D"} - ${company.companyName || "N/D"}
-Fecha: ${company.date || "N/D"}
+Empresa: ${textField(company.ticker)} - ${textField(company.companyName)}
+Fecha: ${textField(company.date)}
 Precio: ${fmt(ratios.price)}
 Clasificacion calculada: ${classification.label}
 Razon: ${classification.reason}

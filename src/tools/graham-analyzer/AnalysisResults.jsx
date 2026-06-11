@@ -31,10 +31,15 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
       </div>
 
       <SectionTitle number="1" title="Valuacion" />
+      {ratios.hasNegativeEquity ? (
+        <div style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.45)", borderRadius: 8, padding: "10px 14px", marginBottom: 12, color: AC.redText, fontSize: 13 }}>
+          Patrimonio neto negativo — P/B no interpretable como Graham. La empresa debe más de lo que vale en libros.
+        </div>
+      ) : null}
       {metricGrid(
         <>
           <MetricCard label="P/E" value={peValue(ratios)} sublabel="P/E se anula con EPS <= 0" color={alertFor("pe", ratios.pe)} ref="Graham: ideal <= 15" />
-          <MetricCard label="P/B" value={fmt(ratios.pb)} sublabel={`BVPS ${fmt(ratios.bvps)}`} color={alertFor("pb", ratios.pb)} ref="Defensivo <= 2" />
+          <MetricCard label="P/B" value={ratios.hasNegativeEquity ? "N/A (equity neg.)" : fmt(ratios.pb)} sublabel={`BVPS ${fmt(ratios.bvps)}`} color={ratios.hasNegativeEquity ? AC.red : alertFor("pb", ratios.pb)} ref="Defensivo <= 2" />
           <MetricCard label="P/E x P/B" value={fmt(ratios.pePb)} sublabel="Regla 22.5" color={alertFor("pePb", ratios.pePb)} ref="15 x 1.5" />
           <MetricCard label="Margen seguridad" value={pct(ratios.mosGraham)} sublabel={`Formula ${fmt(ratios.grahamFormula)}`} color={alertFor("mos", ratios.mosGraham)} ref="Cap. 20" />
           <MetricCard label="P/B tangible" value={fmt(ratios.pbTangible)} sublabel={`TBVPS ${fmt(ratios.tangibleBvps)}`} color={alertFor("pb", ratios.pbTangible)} ref="Activos tangibles" />

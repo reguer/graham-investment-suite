@@ -21,7 +21,7 @@ export default function CandidatePanel({ candidates }) {
         </div>
         <span style={{ color: AC.greenText, fontSize: 12 }}>{candidates.length} oportunidades</span>
       </div>
-      <div className="candidate-panel-table">
+      <div className="candidate-panel-table" style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 760 }}>
           <thead>
             <tr style={{ color: SURFACE.muted, fontSize: 12, textAlign: "left" }}>
