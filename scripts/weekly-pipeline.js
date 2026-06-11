@@ -26,12 +26,11 @@ export function buildPipelineSteps(args) {
 }
 
 function runStep(step) {
-  const command = process.platform === "win32" && step.command === "npm" ? "npm.cmd" : step.command;
-  const result = spawnSync(command, step.args, {
+  const result = spawnSync(step.command, step.args, {
     cwd: process.cwd(),
     encoding: "utf8",
     stdio: "pipe",
-    shell: false,
+    shell: true,
   });
   if (result.error) throw result.error;
   return {

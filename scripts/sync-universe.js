@@ -50,13 +50,16 @@ export function mergeUniverseWithPublic(companies, existingCompanies = loadPubli
   for (const company of companies) {
     const existing = byTicker.get(company.ticker.toUpperCase());
     if (shouldPreserveSnapshot(existing)) {
+      const PLACEHOLDER_SECTORS = ["Solicitados", "Sin sector", ""];
+      const sectorFromUniverse = !PLACEHOLDER_SECTORS.includes(company.sector) ? company.sector : existing.sector;
+      const industryFromUniverse = !PLACEHOLDER_SECTORS.includes(company.industry) && company.industry !== "Sin industria" ? company.industry : existing.industry;
       byTicker.set(company.ticker, {
         ...company,
         ...existing,
         yahooSymbol: existing.yahooSymbol || company.yahooSymbol,
         market: existing.market || company.market,
-        sector: existing.sector || company.sector,
-        industry: existing.industry || company.industry,
+        sector: sectorFromUniverse || existing.sector || company.sector,
+        industry: industryFromUniverse || existing.industry || company.industry,
       });
     } else {
       byTicker.set(company.ticker, { ...(existing || {}), ...company });

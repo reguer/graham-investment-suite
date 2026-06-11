@@ -3,21 +3,21 @@ const SOURCE_DATE = "2026-06-10";
 export const requestedTickers = [
   { rawTicker: "Index100", ticker: "INDEX100", yahooSymbol: "^NDX", companyName: "Nasdaq-100 Index", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "nasdaq-100"], notes: "Indice Nasdaq-100 de referencia. No se analiza con reglas Graham defensivas." },
   { rawTicker: "SP500", ticker: "SP500", yahooSymbol: "^GSPC", companyName: "S&P 500", quoteType: "INDEX", market: "US", analysisStatus: "index_reference", validationStatus: "index_reference", tags: ["index_reference", "benchmark", "sp500"], notes: "Indice S&P 500 de referencia. No se analiza con reglas Graham defensivas." },
-  { rawTicker: "MU", ticker: "MU", yahooSymbol: "MU.MX", companyName: "Micron Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "MRVL", ticker: "MRVL", yahooSymbol: "MRVL1.MX", companyName: "Marvell Technology, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
-  { rawTicker: "SNDK", ticker: "SNDK", yahooSymbol: "SNDK1.MX", companyName: "Sandisk Corporation", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
-  { rawTicker: "NVDA", ticker: "NVDA", yahooSymbol: "NVDA.MX", companyName: "NVIDIA Corporation", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "INTC", ticker: "INTC", yahooSymbol: "INTC.MX", companyName: "Intel Corporation", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "SKHYNIX", ticker: "SKHYNIX", yahooSymbol: "000660.KS", companyName: "SK hynix Inc.", quoteType: "EQUITY", market: "Korea Exchange", validationStatus: "validated_yahoo_not_mx" },
-  { rawTicker: "BB", ticker: "BB", yahooSymbol: "BB", companyName: "BlackBerry Limited", quoteType: "EQUITY", market: "NYSE", validationStatus: "validated_yahoo_not_mx" },
-  { rawTicker: "MSTR", ticker: "MSTR", yahooSymbol: "MSTR.MX", companyName: "Strategy Inc", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "BIDU", ticker: "BIDU", yahooSymbol: "BIDU", companyName: "Baidu, Inc.", quoteType: "EQUITY", market: "NASDAQ", validationStatus: "validated_yahoo" },
-  { rawTicker: "TSLA", ticker: "TSLA", yahooSymbol: "TSLA.MX", companyName: "Tesla, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
-  { rawTicker: "AMD", ticker: "AMD", yahooSymbol: "AMD.MX", companyName: "Advanced Micro Devices, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "MU", ticker: "MU", yahooSymbol: "MU.MX", companyName: "Micron Technology, Inc.", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "MRVL", ticker: "MRVL", yahooSymbol: "MRVL1.MX", companyName: "Marvell Technology, Inc.", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
+  { rawTicker: "SNDK", ticker: "SNDK", yahooSymbol: "SNDK1.MX", companyName: "Sandisk Corporation", sector: "Technology", industry: "Data Storage", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx_alias" },
+  { rawTicker: "NVDA", ticker: "NVDA", yahooSymbol: "NVDA.MX", companyName: "NVIDIA Corporation", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "INTC", ticker: "INTC", yahooSymbol: "INTC.MX", companyName: "Intel Corporation", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "SKHYNIX", ticker: "SKHYNIX", yahooSymbol: "000660.KS", companyName: "SK hynix Inc.", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "Korea Exchange", validationStatus: "validated_yahoo_not_mx" },
+  { rawTicker: "BB", ticker: "BB", yahooSymbol: "BB", companyName: "BlackBerry Limited", sector: "Technology", industry: "Software Infrastructure", quoteType: "EQUITY", market: "NYSE", validationStatus: "validated_yahoo_not_mx" },
+  { rawTicker: "MSTR", ticker: "MSTR", yahooSymbol: "MSTR.MX", companyName: "Strategy Inc", sector: "Financial Services", industry: "Asset Management", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "BIDU", ticker: "BIDU", yahooSymbol: "BIDU", companyName: "Baidu, Inc.", sector: "Communication Services", industry: "Internet Content & Information", quoteType: "EQUITY", market: "NASDAQ", validationStatus: "validated_yahoo" },
+  { rawTicker: "TSLA", ticker: "TSLA", yahooSymbol: "TSLA.MX", companyName: "Tesla, Inc.", sector: "Consumer Cyclical", industry: "Auto Manufacturers", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "AMD", ticker: "AMD", yahooSymbol: "AMD.MX", companyName: "Advanced Micro Devices, Inc.", sector: "Technology", industry: "Semiconductors", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
   { rawTicker: "GOLD", ticker: "GOLD", yahooSymbol: "GC=F", companyName: "Gold Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "gold"], notes: "Futuro de oro para contexto macro. No se analiza con reglas Graham defensivas." },
   { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "silver"], notes: "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas." },
   { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "copper"], notes: "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas." },
-  { rawTicker: "META", ticker: "META", yahooSymbol: "META.MX", companyName: "Meta Platforms, Inc.", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  { rawTicker: "META", ticker: "META", yahooSymbol: "META.MX", companyName: "Meta Platforms, Inc.", sector: "Communication Services", industry: "Internet Content & Information", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
 ];
 
 const bmvSicRows = `
@@ -45,7 +45,7 @@ JNJ|JNJ.MX|Johnson & Johnson|Healthcare|Drug Manufacturers General
 ABBV|ABBV.MX|AbbVie Inc.|Healthcare|Drug Manufacturers General
 BAC|BAC.MX|Bank of America Corporation|Financial Services|Banks Diversified
 KO|KO.MX|The Coca-Cola Company|Consumer Defensive|Beverages Non-Alcoholic
-PLTR|PLTR.MX|Palantir Technologies Inc.||
+PLTR|PLTR.MX|Palantir Technologies Inc.|Technology|Software Application
 PM|PM.MX|Philip Morris International Inc.|Consumer Defensive|Tobacco
 CSCO|CSCO.MX|Cisco Systems, Inc.|Technology|Communication Equipment
 IBM|IBM.MX|International Business Machines Corporation|Technology|Information Technology Services
@@ -229,7 +229,7 @@ KMB|KMB.MX|Kimberly-Clark Corporation|Consumer Defensive|Household & Personal Pr
 SPG|SPG.MX|Simon Property Group, Inc.|Real Estate|REIT Retail
 MNST|MNST.MX|Monster Beverage Corporation|Consumer Defensive|Beverages Non-Alcoholic
 MPC|MPC.MX|Marathon Petroleum Corporation|Energy|Oil & Gas Refining & Marketing
-ALL|ALL.MX|ALLSTATE CORP||
+ALL|ALL.MX|Allstate Corporation|Financial Services|Insurance Property & Casualty
 O|O.MX|Realty Income Corporation|Real Estate|REIT Retail
 OKE|OKE.MX|ONEOK INC|Energy|Oil & Gas Midstream
 RCL|RCL.MX|Royal Caribbean Cruises Ltd.|Consumer Cyclical|Travel Services
@@ -239,7 +239,7 @@ FDX|FDX.MX|FedEx Corporation|Industrials|Integrated Freight & Logistics
 PSA|PSA.MX|Public Storage|Real Estate|REIT Industrial
 MET|MET.MX|MetLife, Inc.|Financial Services|Insurance Life
 SRE|SRE.MX|Sempra|Utilities|Utilities Diversified
-PCAR|PCAR.MX|PACCAR INC||
+PCAR|PCAR.MX|PACCAR Inc.|Industrials|Farm & Heavy Construction Machinery
 AMP|AMP.MX|Ameriprise Financial, Inc.|Financial Services|Asset Management
 NDAQ|NDAQ.MX|Nasdaq, Inc.|Financial Services|Financial Data & Stock Exchanges
 AFL|AFL.MX|Aflac Incorporated|Financial Services|Insurance Life
@@ -255,7 +255,7 @@ LHX|LHX.MX|L3Harris Technologies, Inc.|Industrials|Aerospace & Defense
 D|D.MX|Dominion Energy, Inc.|Utilities|Utilities Regulated Electric
 MSCI|MSCI.MX|MSCI Inc.|Financial Services|Financial Data & Stock Exchanges
 FANG|FANG.MX|Diamondback Energy, Inc.|Energy|Oil & Gas E&P
-KDP|KDP.MX|KEURIG DR PEPPER INC||
+KDP|KDP.MX|Keurig Dr Pepper Inc.|Consumer Defensive|Beverages Non-Alcoholic
 KMI|KMI.MX|Kinder Morgan, Inc.|Energy|Oil & Gas Midstream
 CTVA|CTVA.MX|Corteva, Inc.|Basic Materials|Agricultural Inputs
 CMI|CMI.MX|Cummins Inc.|Industrials|Specialty Industrial Machinery
@@ -268,7 +268,7 @@ VRSK|VRSK.MX|Verisk Analytics, Inc.|Industrials|Consulting Services
 LEN|LEN.MX|Lennar Corporation|Consumer Cyclical|Residential Construction
 FIS|FIS.MX|Fidelity National Information Services, Inc.|Technology|Information Technology Services
 STZ|STZ.MX|Constellation Brands, Inc.|Consumer Defensive|Beverages Brewers
-CSGP|CSGP.MX|COSTAR GROUP INC||
+CSGP|CSGP.MX|CoStar Group Inc.|Real Estate|Real Estate Services
 EA|EA.MX|Electronic Arts Inc.|Communication Services|Electronic Gaming & Multimedia
 PCG|PCG.MX|PG&E Corporation|Utilities|Utilities Regulated Electric
 MLM|MLM.MX|Martin Marietta Materials, Inc.|Basic Materials|Building Materials
@@ -297,7 +297,7 @@ HWM|HWM.MX|Howmet Aerospace Inc.|Industrials|Aerospace & Defense
 EBAY|EBAY.MX|eBay Inc.|Consumer Cyclical|Internet Retail
 WAB|WAB.MX|Westinghouse Air Brake Technologies Corporation|Industrials|Railroads
 HPE|HPE.MX|Hewlett Packard Enterprise Company|Technology|Communication Equipment
-BR|BR.MX|BROADRIDGE FINANCIAL SOLUTION I||
+BR|BR.MX|Broadridge Financial Solutions Inc.|Technology|Information Technology Services
 GDDY|GDDY.MX|GoDaddy Inc.|Technology|Software Infrastructure
 DXCM|DXCM.MX|DexCom, Inc.|Healthcare|Medical Devices
 SLB|SLB.MX|SLB (Schlumberger)|Energy|Oil & Gas Equipment & Services

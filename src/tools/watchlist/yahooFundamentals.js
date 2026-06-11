@@ -230,15 +230,19 @@ export function buildYahooDeepSnapshot(data) {
     .filter((item) => item.eps !== null)
     .slice(0, 5);
 
+  const hasNegativeEquity = equity !== null && equity < 0;
+  const rawDebtRatio = ratio(totalLiabilities, equity);
+
   const snapshot = {
     price,
     pe,
     pb,
     pePb: pe !== null && pb !== null ? pe * pb : null,
-    debtRatio: ratio(totalLiabilities, equity),
+    debtRatio: hasNegativeEquity ? null : rawDebtRatio,
     currentRatio: ratio(currentAssets, currentLiabilities),
     quickRatio: currentAssets !== null && currentLiabilities ? ratio(currentAssets - inventory, currentLiabilities) : null,
     fcf,
+    hasNegativeEquity: hasNegativeEquity || null,
     epsAllPositive: epsHistory.length > 0 ? epsHistory.every((item) => item.eps > 0) : null,
     epsGrowing: epsHistory.length > 1 ? epsHistory.every((item, index, arr) => index === arr.length - 1 || item.eps >= arr[index + 1].eps) : null,
     roe: ratio(netIncome, equity),
@@ -260,7 +264,10 @@ export function buildYahooDeepSnapshot(data) {
     },
   };
 
-  const required = [snapshot.price, snapshot.pe, snapshot.pb, snapshot.debtRatio, snapshot.currentRatio];
+  // Empresas con equity negativo tienen P/E válido pero P/B no aplica — se consideran completas si tienen pe+currentRatio
+  const required = hasNegativeEquity
+    ? [snapshot.price, snapshot.pe, snapshot.currentRatio]
+    : [snapshot.price, snapshot.pe, snapshot.pb, snapshot.debtRatio, snapshot.currentRatio];
   const ok = required.every((value) => value !== null && value !== undefined && Number.isFinite(Number(value)));
   const warnings = [];
   if (data.priceCurrency !== data.expectedCurrency) warnings.push(`Precio convertido de ${data.priceCurrency} a ${data.expectedCurrency}.`);

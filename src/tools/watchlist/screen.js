@@ -19,19 +19,23 @@ export function deriveSnapshot(candidate, price = candidate.price) {
   if (!hasFinancialSnapshot(candidate)) return null;
 
   const epsAdj = candidate.price / candidate.pe;
-  const bvps = candidate.price / candidate.pb;
+  const hasNegativeEquity = candidate.hasNegativeEquity === true;
+  const bvps = hasNegativeEquity ? null : (candidate.pb ? candidate.price / candidate.pb : null);
   const pe = price / epsAdj;
-  const pb = price / bvps;
-  const pePb = pe * pb;
-  const grahamFormula = epsAdj > 0 && bvps > 0 ? Math.sqrt(22.5 * epsAdj * bvps) : null;
+  const pb = bvps !== null && bvps > 0 ? price / bvps : null;
+  const pePb = pe !== null && pb !== null ? pe * pb : null;
+  const grahamFormula = epsAdj > 0 && bvps !== null && bvps > 0 ? Math.sqrt(22.5 * epsAdj * bvps) : null;
   const pricePe20 = epsAdj * 20;
-  const pricePb2 = bvps * 2;
-  const maxDefensivePrice = Math.min(grahamFormula, pricePe20, pricePb2);
+  const pricePb2 = bvps !== null && bvps > 0 ? bvps * 2 : null;
+  const maxDefensivePrice = grahamFormula !== null && pricePb2 !== null
+    ? Math.min(grahamFormula, pricePe20, pricePb2)
+    : pricePe20;
 
   const ratios = {
     pe,
     pb,
     pePb,
+    hasNegativeEquity: hasNegativeEquity || null,
     debtRatio: candidate.debtRatio,
     currentRatio: candidate.currentRatio,
     quickRatio: candidate.quickRatio,
@@ -49,13 +53,17 @@ export function deriveSnapshot(candidate, price = candidate.price) {
     pricePb2,
     maxDefensivePrice,
     distanceToDefensive: maxDefensivePrice > 0 ? (price - maxDefensivePrice) / maxDefensivePrice : null,
-    marginOfSafety: price > 0 ? (grahamFormula - price) / price : null,
+    marginOfSafety: price > 0 && grahamFormula !== null ? (grahamFormula - price) / price : null,
   };
 
   return ratios;
 }
 
 export function hasFinancialSnapshot(candidate) {
+  // Equity negativo: P/B no aplica, evaluamos solo por P/E + currentRatio
+  if (candidate.hasNegativeEquity) {
+    return isAvailableRatio(candidate.price) && isAvailableRatio(candidate.pe) && isAvailableRatio(candidate.currentRatio);
+  }
   const base = [candidate.price, candidate.pe, candidate.pb].every(isAvailableRatio);
   if (!base) return false;
   // Bancos, seguros y REITs no reportan currentRatio/debtRatio en formato industrial
@@ -64,6 +72,10 @@ export function hasFinancialSnapshot(candidate) {
 }
 
 export function countAvailableCriticalRatios(candidate) {
+  // Equity negativo: pb y debtRatio no son ratios disponibles en sentido Graham
+  if (candidate.hasNegativeEquity) {
+    return ["pe", "currentRatio", "fcf"].filter((key) => isAvailableRatio(candidate[key])).length;
+  }
   return CRITICAL_RATIO_KEYS.filter((key) => isAvailableRatio(candidate[key])).length;
 }
 
@@ -190,7 +202,10 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
 
   const classification = classify(ratios);
   const financial = isFinancialSector(candidate);
-  const near = financial
+  // Equity negativo: P/B no aplica, nunca puede aprobar Graham defensivo pero puede estar en "watch" con P/E bajo
+  const near = ratios.hasNegativeEquity
+    ? false
+    : financial
     ? ratios.pePb <= policy.nearPePb &&
       ratios.pe <= policy.nearPe &&
       ratios.pb <= policy.nearPb &&
@@ -201,7 +216,9 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
       ratios.debtRatio < policy.nearDebtRatio &&
       ratios.currentRatio >= policy.nearCurrentRatio &&
       ratios.epsAllPositive === true;
+  // Equity negativo: sin P/B no hay precio defensivo Graham completo — no puede ser "cerca de aprobar"
   const closeToDefensive =
+    !ratios.hasNegativeEquity &&
     ratios.distanceToDefensive !== null && ratios.distanceToDefensive <= policy.grahamDistancePct;
 
   let alertLevel = "watch";

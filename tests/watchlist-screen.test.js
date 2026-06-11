@@ -216,4 +216,29 @@ describe("watchlist screening", () => {
     expect(result.ratios.pb).toBeCloseTo(1.8);
     expect(result.ratios.pePb).toBeCloseTo(32.4);
   });
+
+  it("evaluates company with negative equity as watch (not pending/unsupported)", () => {
+    const negEquity = {
+      ticker: "MCD",
+      companyName: "McDonald's Corporation",
+      sector: "Consumer Cyclical",
+      price: 315.0,
+      pe: 23.0,
+      pb: null,
+      pePb: null,
+      debtRatio: null,
+      currentRatio: 0.95,
+      quickRatio: null,
+      fcf: 8500,
+      hasNegativeEquity: true,
+      epsAllPositive: true,
+      analysisStatus: "analyzed",
+    };
+    const result = evaluateCandidate(negEquity, { price: 315.0, source: "test" });
+    expect(result.alertLevel).toBe("watch");
+    expect(result.ratios).not.toBeNull();
+    expect(result.ratios.pe).toBeCloseTo(23.0, 1);
+    expect(result.ratios.pb).toBeNull();
+    expect(result.ratios.hasNegativeEquity).toBe(true);
+  });
 });

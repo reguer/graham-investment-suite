@@ -35,7 +35,7 @@
 | **E12 Alertas Lunes/Viernes** | S24 Sistema de alertas Markdown | Generar reporte con alertas | Extender weekly-screen.js para generar alertas accionables por tipo | 🟠 Alta | ✅ Completado | — | `scripts/weekly-screen.js`, `reports/weekly/`, `tests/weeklyScreen.test.js` | Reporte incluye `Alertas Accionables` con aprobadas, cercanas y pendientes relevantes | Duplicados historicos requieren tabla de alertas futura | Auto | v1.1 |
 | **E12 Alertas Lunes/Viernes** | S25 Task Scheduler Windows | Automatizar ejecución al cierre | Crear tarea en Windows Task Scheduler para 18:00 CDMX | 🔴 Crítica | ✅ Script listo | — | `scripts/setup-weekly-alerts.ps1`, `package.json` | `npm run scheduler:install` crea tarea lunes/viernes sin sobrescribir | Puede requerir permisos de Windows | Auto | v1.1 |
 | **E12 Alertas Lunes/Viernes** | S26 Alertas especiales lunes y viernes | Reporte formal los días clave | Detectar si es lunes/viernes y generar reporte con formato especial | 🟡 Media | ✅ Completado | S25 | `scripts/weekly-screen.js`, `src/lib/telegram.js`, `tests/weeklyScreen.test.js`, `tests/telegram.test.js` | Reporte lunes/viernes tiene resumen semanal y Telegram incluye tipo de alerta formal | El envio real depende de `.env.local` y Task Scheduler | Auto | v1.1 |
-| **E13 Telegram** | S27 Configurar bot Telegram | Canal de alertas en tiempo real | Crear bot con BotFather, configurar token y chat_id | 🟡 Media | 📋 Pendiente | — | `.env.local` | Bot responde a mensaje de prueba | Token expuesto accidentalmente | Manual | v1.5 |
+| **E13 Telegram** | S27 Configurar bot Telegram | Canal de alertas en tiempo real | Crear bot con BotFather, configurar token y chat_id | 🟡 Media | ✅ Completado | — | `.env.local`, `scripts/db-client.js`, `.local_runtime/device.json` | `loadEnvLocal()` busca `.env.local` en múltiples rutas (C: y G:); `device_role: "primary"` configurado | Token expuesto accidentalmente | Manual | v1.5 |
 | **E13 Telegram** | S28 Enviar alertas por Telegram | Notificaciones automáticas | Crear src/lib/telegram.js para despachar mensajes formateados | 🟡 Media | ✅ Completado técnico | S27 | `src/lib/telegram.js`, `scripts/alert-dispatcher.js`, `tests/telegram.test.js`, `tests/alertDispatcher.test.js` | Mensajes Telegram se formatean y despachan con mock; envio real queda sujeto a S27 | Red no disponible, rate limit de Telegram | Auto | v1.5 |
 | **E14 Modo Watch** | S29 Crear scripts/run-mode.js | Script maestro de modos de operación | Script que acepta --mode y activa los procesos correspondientes | 🟡 Media | ✅ Completado | S03 | `scripts/run-mode.js`, `tests/runMode.test.js`, `package.json` | `npm run run:mode -- --mode watch --dry-run` prepara heartbeat y comando | Complejidad de gestión de procesos persistentes | Auto | v1.5 |
 | **E14 Modo Watch** | S30 Modo watch con poll | Actualización continua de precios | setInterval de 15 min para actualizar precios mientras el equipo está encendido | 🟡 Media | ✅ Completado | S18, S29 | `scripts/run-mode.js` | Modo watch ejecuta `weekly:screen` al iniciar y cada intervalo configurado | Consumo de CPU/red continuo | Auto | v1.5 |
@@ -95,6 +95,28 @@
 | **E22 UX Dashboard** | S64 Fecha de snapshot visible en Watchlist | Saber antigüedad de los datos | No se muestra cuándo se actualizaron los precios mostrados | 🟢 Baja | ✅ Completado | — | `src/tools/watchlist/Watchlist.jsx` | Header o footer del Watchlist muestra "Datos al YYYY-MM-DD" | — | Manual | v1.5 |
 | **E22 UX Dashboard** | S65 Tabla candidatos responsive | Tabla usable en < 1000px | minWidth: 760 fuerza scroll horizontal | 🟢 Baja | ✅ Completado | — | `src/tools/graham-analyzer/CandidatePanel.jsx` | Wrapper con overflowX:"auto" y WebkitOverflowScrolling:"touch"; tabla hace scroll horizontal en móvil sin romper layout | — | Manual | v2.0 |
 | **E22 UX Dashboard** | S66 Centralizar colores secundarios | Todos los hex en lib/colors.js | 6+ valores hex hardcodeados fuera del sistema de design tokens | 🟢 Baja | ✅ Completado | — | `src/lib/colors.js`, múltiples componentes | Ningún valor hex hardcodeado fuera de colors.js | — | Manual | v2.0 |
+
+---
+
+## Actualización operativa 2026-06-11
+
+| Area | Estado | Evidencia | Pendiente |
+|------|--------|-----------|-----------|
+| Sectores universo | ✅ Completado | Todos los tickers en `requestedTickers` y `bmvSicRows` tienen sector real; no más "Solicitados"/"Sin sector" para empresas reales | Solo índices/futuros conservan "Solicitados" correctamente |
+| Equity negativo E21 | ✅ Completado | 20 empresas (MCD, ABBV, HPQ, LOW, PM...) marcadas `hasNegativeEquity: true`; visibles en watchlist como "watch" evaluables por P/E | Próximo pipeline de ingesta respetará el flag permanentemente |
+| Datos watchlist | ✅ Completado | 320 analizadas (+56), 278 en observación (+28), 11 fuente pendiente (-29) | Ejecutar `npm run fundamentals:ingest` para capturar las 11 pendientes reales |
+| sync-universe sector fix | ✅ Completado | `mergeUniverseWithPublic()` ya no sobreescribe sectores válidos con placeholders | — |
+| S27 Telegram | ✅ Completado | `.env.local` encontrado en G:; `device_role: "primary"` activo; scheduler instalado | Solo envía lunes y viernes (comportamiento correcto) |
+| Tests | ✅ Verde | 39 suites, 159 tests, 0 fallos | — |
+
+### Stories pendientes prioritarias
+
+| Story | Descripción | Prioridad |
+|-------|-------------|-----------|
+| **Backtesting re-run** | Re-ejecutar con universo diversificado actual (320 analizadas); actualizar `public/data/backtesting-summary.json` | 🟠 Alta |
+| **Captura automática local** | `npm run weekly:pipeline` falla con `EINVAL` en Windows por `spawnSync shell:false`; necesita fix para que el scheduler ejecute el pipeline completo sin intervención manual | 🔴 Crítica |
+| **Pipeline semanal robusto** | `weekly-pipeline.js` invoca `npm.cmd` con `spawnSync shell:false`; falla en Windows. Fix: usar `shell: true` o reemplazar con llamada directa a scripts | 🔴 Crítica |
+| **Ingest 11 pendientes** | AA, CMA, DFS, FITB, FNF, HOLX, JNPR, K, MRO, VTRS, X — ejecutar `npm run fundamentals:ingest` manualmente o vía API local | 🟠 Alta |
 
 ---
 

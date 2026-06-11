@@ -6,6 +6,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ---
 
+## [Unreleased] — 2026-06-11 Datos completos y equity negativo
+
+### Fixed
+- `src/tools/watchlist/yahooFundamentals.js` — detecta equity negativo antes de calcular snapshot; `debtRatio` se guarda como `null` (no como negativo sin sentido), y se añade `hasNegativeEquity: true` al snapshot
+- `src/tools/watchlist/screen.js` — `hasFinancialSnapshot()` acepta empresas con `hasNegativeEquity` si tienen `pe + currentRatio`; `countAvailableCriticalRatios()` usa solo `pe/currentRatio/fcf` para estas empresas
+- `src/tools/watchlist/screen.js` — `deriveSnapshot()` maneja `pb=null` y `bvps=null` cuando equity es negativo; `maxDefensivePrice` cae a `pricePe20` cuando no hay P/B
+- `src/tools/watchlist/screen.js` — `near` y `closeToDefensive` siempre `false` para `hasNegativeEquity`; estas empresas aparecen en "watch" pero nunca como "cerca de aprobar"
+- `src/tools/watchlist/universe.js` — sectores completados para todos los `requestedTickers` (AMD, BB, BIDU, INTC, META, MU, MRVL, NVDA, SNDK, SKHYNIX, TSLA) y para `bmvSicRows` con sector vacío (PLTR, ALL, PCAR, KDP, CSGP, BR)
+- `scripts/sync-universe.js` — `mergeUniverseWithPublic()` ya no sobreescribe sectores válidos con "Solicitados" o "Sin sector"; solo usa el placeholder si el universo no tiene sector real
+- `public/data/companies.json` + `data/public/companies.json` — 20 snapshots de empresas con equity negativo corregidos (`debtRatio: null`, `hasNegativeEquity: true`); `ESS` y `MAA` corregidos de `pe=0/pb=0` a `null`
+- `src/tools/watchlist/screen.js` — `deriveSnapshot()` ahora propaga `roe`, `roa`, `tie` del candidato (fix anterior ya existía; mantenido en refactor)
+
+### Changed
+- Empresas con equity negativo (MCD, ABBV, HPQ, LOW, PM, SBUX, AZO, YUM, MO, TDG, OTIS, HCA, HLT, MAR, BKNG, ORLY, DVA, MCK, MSCI, CA) pasan de `analysis_unsupported` (invisibles) a `analyzed` con `alertLevel: "watch"` — ahora visibles y evaluables por P/E
+- "En observación" sube de ~250 a **278 empresas**; "Analizadas" de 264 a **320**; "Fuente/captura requerida" baja de 40 a **11**
+
+### Tests
+- `tests/watchlist-screen.test.js` — nuevo caso: empresa con `hasNegativeEquity` aparece como `"watch"` con `ratios.pb === null` y `ratios.pe` válido
+
+---
+
 ## [Unreleased] — 2026-06-08 Bloque Lógica de Negocio
 
 ### Fixed
