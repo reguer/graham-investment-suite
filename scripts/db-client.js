@@ -6,9 +6,16 @@ export const PUBLIC_COMPANIES_PATH = join(process.cwd(), "data", "public", "comp
 export const PUBLIC_BROWSER_COMPANIES_PATH = join(process.cwd(), "public", "data", "companies.json");
 
 export function loadEnvLocal(path = ".env.local") {
-  if (!existsSync(path)) return {};
+  // Buscar en múltiples ubicaciones: path dado, cwd, y directorio del repo en G:
+  const candidates = [
+    path,
+    join(process.cwd(), ".env.local"),
+    "G:\\Mi unidad\\00. APPS\\GrahamAnalizer\\.env.local",
+  ];
+  const found = candidates.find((p) => existsSync(p));
+  if (!found) return {};
   const env = {};
-  for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
+  for (const line of readFileSync(found, "utf8").split(/\r?\n/)) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#") || !trimmed.includes("=")) continue;
     const [key, ...rest] = trimmed.split("=");
