@@ -293,6 +293,24 @@ const candidateSnapshots = [
     sourceDate: SOURCE_DATE,
     note: "Tecnologia no especulativa: P/E bajo, liquidez fuerte, deuda minima y FCF positivo. Cumple gran parte del perfil defensivo.",
   },
+  {
+    ticker: "ORCL",
+    companyName: "Oracle Corporation",
+    sector: "Technology / Software Infrastructure",
+    price: 212.08,
+    pe: 38.01,
+    pb: 18.18,
+    pePb: 690.91,
+    debtRatio: 7.21,
+    currentRatio: 0.75,
+    quickRatio: 0.75,
+    fcf: -890,
+    epsAllPositive: true,
+    epsGrowing: true,
+    source: "Yahoo Finance fundamentalsTimeSeries + FX",
+    sourceDate: "2025-05-31",
+    note: "Software de base de datos y nube empresarial. EPS creciente y positivo, pero rechazada Graham: P/E 38, P/B 18 (P/E x P/B ~691), deuda elevada (7.2x patrimonio), liquidez inferior a 1 y FCF negativo. Perfil de crecimiento, no defensivo.",
+  },
 ];
 
 export const grahamCandidates = candidateSnapshots.map((candidate) => ({
