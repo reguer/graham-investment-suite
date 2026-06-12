@@ -1,15 +1,5 @@
 import { p } from "../../lib/formatters.js";
-
-function div(numerator, denominator) {
-  if (numerator === null || denominator === null || denominator === 0) return null;
-  const result = numerator / denominator;
-  return Number.isFinite(result) ? result : null;
-}
-
-function grahamPrice(eps, bvps) {
-  if (eps === null || bvps === null || eps <= 0 || bvps <= 0) return null;
-  return Math.sqrt(22.5 * eps * bvps);
-}
+import { safeDiv as div, grahamNumber as grahamPrice } from "../../lib/grahamFormulas.js";
 
 export function calcRatios(form) {
   const price = p(form.price);

@@ -1,5 +1,6 @@
 import { classify } from "../graham-analyzer/classify.js";
 import { detectSector } from "../graham-analyzer/detectSector.js";
+import { grahamNumber, maxDefensivePrice as defensiveCeiling, marginOfSafety } from "../../lib/grahamFormulas.js";
 import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
@@ -27,12 +28,10 @@ export function deriveSnapshot(candidate, price = candidate.price) {
   const pe = price / epsAdj;
   const pb = bvps !== null && bvps > 0 ? price / bvps : null;
   const pePb = pe !== null && pb !== null ? pe * pb : null;
-  const grahamFormula = epsAdj > 0 && bvps !== null && bvps > 0 ? Math.sqrt(22.5 * epsAdj * bvps) : null;
+  const grahamFormula = grahamNumber(epsAdj, bvps);
   const pricePe20 = epsAdj * 20;
   const pricePb2 = bvps !== null && bvps > 0 ? bvps * 2 : null;
-  const maxDefensivePrice = grahamFormula !== null && pricePb2 !== null
-    ? Math.min(grahamFormula, pricePe20, pricePb2)
-    : pricePe20;
+  const maxDefensivePrice = defensiveCeiling({ grahamFormula, pricePe20, pricePb2 });
 
   const ratios = {
     pe,
@@ -56,7 +55,7 @@ export function deriveSnapshot(candidate, price = candidate.price) {
     pricePb2,
     maxDefensivePrice,
     distanceToDefensive: maxDefensivePrice > 0 ? (price - maxDefensivePrice) / maxDefensivePrice : null,
-    marginOfSafety: price > 0 && grahamFormula !== null ? (grahamFormula - price) / price : null,
+    marginOfSafety: marginOfSafety(grahamFormula, price),
   };
 
   return ratios;
