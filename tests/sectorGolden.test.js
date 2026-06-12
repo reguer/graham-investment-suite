@@ -112,6 +112,27 @@ describe("MSFT (tech) — judged on tangible book value", () => {
   });
 });
 
+describe("REIT — strong-but-pricey judged by P/E, not silently rejected", () => {
+  // A REIT omits pePb/pb/current/quick/debt; it's strong (good ROE/ROA/TIE/FCF) but
+  // trades at P/E 28 (above the 20 ceiling) with growing EPS -> "excellent_expensive".
+  const ratios = {
+    pe: 28, pb: null, pePb: null, pbTangible: null, pePbTangible: null,
+    debtRatio: null, currentRatio: null, quickRatio: 2,
+    roe: 0.2, roa: 0.08, tie: 12, fcf: 500,
+    epsAllPositive: true, epsGrowing: true,
+  };
+
+  it("does not fall through to rejected", () => {
+    const profile = getSectorProfile("reit");
+    expect(classify(ratios, profile).id).toBe("excellent_expensive");
+  });
+
+  it("a cheap strong REIT (P/E 12) is approved", () => {
+    const profile = getSectorProfile("reit");
+    expect(classify({ ...ratios, pe: 12 }, profile).id).toBe("graham_approved");
+  });
+});
+
 describe("TSM regression — default profile unchanged", () => {
   it("classify with no profile still behaves like the classic defensive rules", () => {
     const ratios = { pe: 12, pb: 1.2, pePb: 14.4, debtRatio: 0.5, currentRatio: 2.5, epsAllPositive: true, epsGrowing: true };

@@ -1,7 +1,48 @@
+import { useState } from "react";
 import InputField from "../../components/ui/InputField.jsx";
 import NumericInput from "../../components/ui/NumericInput.jsx";
 import SectionTitle from "../../components/ui/SectionTitle.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
+import { fetchCompanyByTicker } from "./fetchCompany.js";
+
+// "Buscar por ticker" auto-fills the form from SEC EDGAR so the user verifies/edits
+// ~25 fields instead of typing them. Reuses onPrefill (setForm) as the fill channel.
+function TickerSearch({ onPrefill }) {
+  const [symbol, setSymbol] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function search() {
+    const ticker = symbol.trim().toUpperCase();
+    if (!ticker) return;
+    setLoading(true);
+    setError("");
+    try {
+      const filled = await fetchCompanyByTicker(ticker);
+      onPrefill(filled);
+    } catch (err) {
+      setError(err.message || "No se pudo autollenar el ticker.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
+      <input
+        value={symbol}
+        onChange={(event) => setSymbol(event.target.value.toUpperCase())}
+        onKeyDown={(event) => event.key === "Enter" && search()}
+        placeholder="Autollenar desde SEC (ej. MSFT)"
+        style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "9px 12px", minWidth: 220 }}
+      />
+      <button type="button" onClick={search} disabled={loading} style={{ ...buttonStyle("secondary"), opacity: loading ? 0.6 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+        {loading ? "Buscando..." : "Buscar por ticker"}
+      </button>
+      {error ? <span style={{ color: AC.redText, fontSize: 12 }}>{error}</span> : null}
+    </div>
+  );
+}
 
 function Grid({ children }) {
   return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 12 }}>{children}</div>;
@@ -56,6 +97,8 @@ export default function AnalysisForm({ form, onChange, prefillOptions = [], onPr
   return (
     <div style={{ background: "rgba(15, 23, 42, 0.35)", border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 16 }}>
       <Toolbar prefillOptions={prefillOptions} onPrefill={onPrefill} onReset={onReset} onAnalyze={onAnalyze} />
+
+      <TickerSearch onPrefill={onPrefill} />
 
       <SectionTitle number="0" title="Identificacion" />
       <Grid>

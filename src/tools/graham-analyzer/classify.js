@@ -43,7 +43,13 @@ export function classify(ratios, profile = DEFAULT_PROFILE) {
     };
   }
 
-  const strong = isFiniteNumber(pePbValue) && isStrongCompany(ratios) && pePbValue > t.pePbMax && ratios.epsAllPositive === true;
+  // "Out of the defensive range" — measured by P/E x P/B when the sector uses it,
+  // otherwise by P/E (e.g. REITs omit pePb, so a strong-but-pricey REIT is judged
+  // expensive by its P/E rather than silently falling through to "rejected").
+  const outOfRange = omit.has("pePb")
+    ? isFiniteNumber(ratios.pe) && isFiniteNumber(t.peMax) && ratios.pe > t.peMax
+    : isFiniteNumber(pePbValue) && pePbValue > t.pePbMax;
+  const strong = outOfRange && isStrongCompany(ratios) && ratios.epsAllPositive === true;
 
   if (strong && ratios.epsGrowing === true) {
     return {
