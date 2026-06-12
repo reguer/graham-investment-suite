@@ -6,6 +6,7 @@ import { colorForState, boolState, NA_PLACEHOLDER } from "../../lib/metricState.
 import { alertFor } from "./constants.js";
 import EntryPrices from "./EntryPrices.jsx";
 import InterpretationPanel from "./InterpretationPanel.jsx";
+import FreshnessBadge from "../../components/ui/FreshnessBadge.jsx";
 
 // Renders SI / NO / N/D for a tri-state boolean (true / false / null = missing data).
 function boolLabel(value) {
@@ -71,7 +72,8 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
         <div>
           <div style={{ color: SURFACE.muted, fontSize: 12 }}>{form.ticker || "SIN TICKER"} · {form.companyName || "Empresa sin nombre"}</div>
           <h2 style={{ margin: "6px 0", color: classification.color, fontSize: 24 }}>{classification.label}</h2>
-          <p style={{ margin: 0, color: SURFACE.text }}>{classification.reason}</p>
+          <p style={{ margin: "0 0 8px", color: SURFACE.text }}>{classification.reason}</p>
+          <FreshnessBadge asOf={form.date || null} source="Captura manual" />
         </div>
         <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px", alignSelf: "center" }}>
           Guardar analisis

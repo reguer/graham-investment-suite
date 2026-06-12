@@ -99,6 +99,16 @@ export function calcRatios(form) {
       ? Math.pow(newest / oldest, 1 / yearSpan) - 1
       : null;
 
+  // Graham's growth valuation: V = EPS * (8.5 + 2g), g as an integer percentage
+  // capped to a sane defensive band [0, 15] to avoid overpaying for momentum.
+  // EPS is ADR-adjusted; g comes from the historical CAGR.
+  const growthCapped = epsCagr === null ? null : Math.min(Math.max(epsCagr, 0), 0.15);
+  const grahamGrowthValue =
+    epsAdj !== null && epsAdj > 0 && growthCapped !== null
+      ? epsAdj * (8.5 + 2 * (growthCapped * 100))
+      : null;
+  const mosGrowth = grahamGrowthValue !== null && price ? (grahamGrowthValue - price) / price : null;
+
   return {
     pe,
     pb,
@@ -121,6 +131,8 @@ export function calcRatios(form) {
     pricePB15Tangible,
     grahamFormula,
     grahamFormulaTangible,
+    grahamGrowthValue,
+    mosGrowth,
     ncav,
     mosGraham,
     mosGrahamTangible,

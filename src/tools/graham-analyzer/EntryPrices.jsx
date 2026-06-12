@@ -16,6 +16,7 @@ export default function EntryPrices({ ratios }) {
       <MetricCard label="P/B 1.5" value={fmt(ratios.pricePB15)} sublabel="BVPS ajustado x 1.5" color={targetColor(ratios.pricePB15, ratios.price)} />
       <MetricCard label="Formula Graham" value={fmt(ratios.grahamFormula)} sublabel={`MoS ${pct(ratios.mosGraham)}`} color={colorForState(ratios.mosGraham, (v) => (v > 0 ? AC.green : AC.red))} />
       <MetricCard label="Formula tangible" value={fmt(ratios.grahamFormulaTangible)} sublabel={`MoS tangible ${pct(ratios.mosGrahamTangible)}`} color={colorForState(ratios.mosGrahamTangible, (v) => (v > 0 ? AC.green : AC.red))} />
+      <MetricCard label="Valor crecimiento" value={fmt(ratios.grahamGrowthValue)} sublabel={`V = EPS x (8.5 + 2g) · MoS ${pct(ratios.mosGrowth)}`} color={colorForState(ratios.mosGrowth, (v) => (v > 0 ? AC.green : AC.red))} />
       <MetricCard label="NCAV" value={fmt(ratios.ncav)} sublabel="Current Assets - Liabilities / shares x ADR" color={colorForState(ratios.ncav, (v) => (v > ratios.price ? AC.green : AC.yellow))} />
       <MetricCard label="P/B tangible 1.5" value={fmt(ratios.pricePB15Tangible)} sublabel="TBVPS ajustado x 1.5" color={targetColor(ratios.pricePB15Tangible, ratios.price)} />
     </div>
