@@ -2,9 +2,21 @@ import MetricCard from "../../components/ui/MetricCard.jsx";
 import SectionTitle from "../../components/ui/SectionTitle.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, fmtM, pct } from "../../lib/formatters.js";
+import { colorForState, boolState, NA_PLACEHOLDER } from "../../lib/metricState.js";
 import { alertFor } from "./constants.js";
 import EntryPrices from "./EntryPrices.jsx";
 import InterpretationPanel from "./InterpretationPanel.jsx";
+
+// Renders SI / NO / N/D for a tri-state boolean (true / false / null = missing data).
+function boolLabel(value) {
+  const state = boolState(value);
+  return state === "unknown" ? NA_PLACEHOLDER : state === "pass" ? "SI" : "NO";
+}
+
+function boolColor(value) {
+  const state = boolState(value);
+  return state === "unknown" ? AC.gray : state === "pass" ? AC.green : AC.red;
+}
 
 function metricGrid(children) {
   return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 12 }}>{children}</div>;
@@ -16,9 +28,21 @@ function peValue(ratios) {
   return "—";
 }
 
-export default function AnalysisResults({ form, ratios, classification, checks, aiText, aiError, aiLoading, onRequestAI, onSave }) {
+export default function AnalysisResults({ form, ratios, classification, checks, validation, aiText, aiError, aiLoading, onRequestAI, onSave }) {
+  const hasDataGaps = validation && (validation.missing.length > 0 || validation.warnings.length > 0);
   return (
     <div>
+      {hasDataGaps ? (
+        <div style={{ background: "rgba(234, 179, 8, 0.1)", border: "1px solid rgba(234, 179, 8, 0.45)", borderRadius: 8, padding: "12px 14px", marginBottom: 14, color: AC.yellow, fontSize: 13 }}>
+          <strong style={{ display: "block", marginBottom: 4 }}>Datos incompletos — el veredicto puede no ser concluyente</strong>
+          {validation.missing.length > 0 ? (
+            <div style={{ color: SURFACE.text }}>Faltan: {validation.missing.map((m) => m.label).join(", ")}.</div>
+          ) : null}
+          {validation.warnings.map((warning) => (
+            <div key={warning} style={{ color: SURFACE.text }}>{warning}</div>
+          ))}
+        </div>
+      ) : null}
       <div style={{ background: "rgba(15, 23, 42, 0.5)", border: `1px solid ${classification.color}`, borderRadius: 8, padding: 16, display: "flex", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <div style={{ color: SURFACE.muted, fontSize: 12 }}>{form.ticker || "SIN TICKER"} · {form.companyName || "Empresa sin nombre"}</div>
@@ -46,7 +70,7 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
           {ratios.pePbTangible !== null ? (
             <MetricCard label="P/E x P/B tangible" value={fmt(ratios.pePbTangible)} sublabel="Regla 22.5 sin intangibles" color={alertFor("pePb", ratios.pePbTangible)} ref="Sin goodwill/intangibles" />
           ) : null}
-          <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={ratios.intangibleWeight < 0.1 ? AC.green : ratios.intangibleWeight <= 0.3 ? AC.yellow : AC.red} />
+          <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={colorForState(ratios.intangibleWeight, (v) => (v < 0.1 ? AC.green : v <= 0.3 ? AC.yellow : AC.red))} />
         </>,
       )}
 
@@ -78,8 +102,8 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
             <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 20 }}>{fmt(entry.value)}</div>
           </div>
         ))}
-        <MetricCard label="EPS positivo" value={ratios.epsAllPositive ? "SI" : "NO"} color={ratios.epsAllPositive ? AC.green : AC.red} />
-        <MetricCard label="EPS creciente" value={ratios.epsGrowing ? "SI" : "NO"} sublabel={`CAGR ${pct(ratios.epsCagr)}`} color={ratios.epsGrowing ? AC.green : AC.red} />
+        <MetricCard label="EPS positivo" value={boolLabel(ratios.epsAllPositive)} color={boolColor(ratios.epsAllPositive)} />
+        <MetricCard label="EPS creciente" value={boolLabel(ratios.epsGrowing)} sublabel={`CAGR ${pct(ratios.epsCagr)}`} color={boolColor(ratios.epsGrowing)} />
       </div>
 
       <SectionTitle number="5" title="Precios de entrada Graham" />

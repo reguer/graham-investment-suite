@@ -192,6 +192,7 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
           ratios={analysis.ratios}
           classification={analysis.classification}
           checks={analysis.checks}
+          validation={analysis.validation}
           aiText={aiText}
           aiError={aiError}
           aiLoading={aiLoading}

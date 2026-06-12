@@ -43,9 +43,12 @@ export default function InterpretationPanel({ checks, aiText, aiError, aiLoading
         <div style={{ display: "grid", gap: 10 }}>
           {checks.map((check) => (
             <div key={check.id} style={{ display: "grid", gridTemplateColumns: "14px 1fr", gap: 8, alignItems: "start" }}>
-              <Dot color={check.pass ? AC.green : AC.red} />
+              <Dot color={check.status === "unknown" ? AC.gray : check.status === "pass" || check.pass ? AC.green : AC.red} />
               <div>
-                <div style={{ color: SURFACE.text, fontSize: 13 }}>{check.label}</div>
+                <div style={{ color: SURFACE.text, fontSize: 13 }}>
+                  {check.label}
+                  {check.status === "unknown" ? <span style={{ color: SURFACE.muted, fontSize: 11, marginLeft: 6 }}>(sin datos)</span> : null}
+                </div>
                 <div style={{ color: SURFACE.muted, fontSize: 11 }}>{check.ref}</div>
               </div>
             </div>
