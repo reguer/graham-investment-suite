@@ -1,5 +1,5 @@
 import { p } from "./formatters.js";
-import { detectMagnitudeWarning } from "../tools/watchlist/yahooFundamentals.js";
+import { detectMagnitudeWarning } from "./magnitude.js";
 
 // Fields required to compute a meaningful Graham analysis. Missing any of these
 // means the analyzer should warn (and show N/D), not silently compute over null.

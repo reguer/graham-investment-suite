@@ -28,10 +28,34 @@ function peValue(ratios) {
   return "—";
 }
 
-export default function AnalysisResults({ form, ratios, classification, checks, validation, aiText, aiError, aiLoading, onRequestAI, onSave }) {
+const THRESHOLD_LABELS = {
+  peMax: "P/E máx",
+  pbMax: "P/B máx",
+  pePbMax: "P/E×P/B máx",
+  debtMax: "Deuda/patrimonio máx",
+  currentMin: "Ratio corriente mín",
+  quickMin: "Quick ratio mín",
+};
+
+export default function AnalysisResults({ form, ratios, classification, checks, validation, profile, adjustments, aiText, aiError, aiLoading, onRequestAI, onSave }) {
   const hasDataGaps = validation && (validation.missing.length > 0 || validation.warnings.length > 0);
+  const adjustmentEntries = adjustments ? Object.entries(adjustments) : [];
+  const isAdjusted = profile && profile.id !== "default";
   return (
     <div>
+      {profile ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 }}>
+          <span style={{ fontSize: 12, color: SURFACE.muted }}>Perfil de sector:</span>
+          <span style={{ border: `1px solid ${isAdjusted ? "rgba(56, 189, 248, 0.45)" : SURFACE.border}`, background: isAdjusted ? "rgba(56, 189, 248, 0.12)" : SURFACE.panel, color: isAdjusted ? AC.blueText : SURFACE.text, borderRadius: 999, padding: "3px 10px", fontSize: 12 }}>
+            {profile.label}
+          </span>
+          {adjustmentEntries.length > 0 ? (
+            <span style={{ fontSize: 12, color: SURFACE.muted }}>
+              Ajustado: {adjustmentEntries.map(([key, { base, adjusted }]) => `${THRESHOLD_LABELS[key] || key} ${base ?? "n/a"}→${adjusted ?? "n/a"}`).join(" · ")}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
       {hasDataGaps ? (
         <div style={{ background: "rgba(234, 179, 8, 0.1)", border: "1px solid rgba(234, 179, 8, 0.45)", borderRadius: 8, padding: "12px 14px", marginBottom: 14, color: AC.yellow, fontSize: 13 }}>
           <strong style={{ display: "block", marginBottom: 4 }}>Datos incompletos — el veredicto puede no ser concluyente</strong>

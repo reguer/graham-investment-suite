@@ -61,6 +61,7 @@ export default function AnalysisForm({ form, onChange, prefillOptions = [], onPr
       <Grid>
         <InputField label="Ticker" value={form.ticker} onChange={(value) => onChange("ticker", value.toUpperCase())} placeholder="TSM" />
         <InputField label="Empresa" value={form.companyName} onChange={(value) => onChange("companyName", value)} placeholder="Taiwan Semiconductor" />
+        <InputField label="Sector" value={form.sector} onChange={(value) => onChange("sector", value)} placeholder="Technology / Semiconductors" />
         <InputField label="Fecha" value={form.date} onChange={(value) => onChange("date", value)} type="date" />
         <NumericInput label="Precio de mercado" value={form.price} onChange={(value) => onChange("price", value)} />
       </Grid>

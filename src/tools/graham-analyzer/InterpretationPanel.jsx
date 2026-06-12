@@ -41,18 +41,24 @@ export default function InterpretationPanel({ checks, aiText, aiError, aiLoading
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 14, background: SURFACE.panel }}>
         <h3 style={{ margin: "0 0 12px", fontSize: 16 }}>Checklist Graham</h3>
         <div style={{ display: "grid", gap: 10 }}>
-          {checks.map((check) => (
-            <div key={check.id} style={{ display: "grid", gridTemplateColumns: "14px 1fr", gap: 8, alignItems: "start" }}>
-              <Dot color={check.status === "unknown" ? AC.gray : check.status === "pass" || check.pass ? AC.green : AC.red} />
-              <div>
-                <div style={{ color: SURFACE.text, fontSize: 13 }}>
-                  {check.label}
-                  {check.status === "unknown" ? <span style={{ color: SURFACE.muted, fontSize: 11, marginLeft: 6 }}>(sin datos)</span> : null}
+          {checks.map((check) => {
+            const dotColor =
+              check.status === "omitted" ? AC.blue : check.status === "unknown" ? AC.gray : check.status === "pass" || check.pass ? AC.green : AC.red;
+            const tag =
+              check.status === "omitted" ? "(no aplica al sector)" : check.status === "unknown" ? "(sin datos)" : null;
+            return (
+              <div key={check.id} style={{ display: "grid", gridTemplateColumns: "14px 1fr", gap: 8, alignItems: "start", opacity: check.status === "omitted" ? 0.6 : 1 }}>
+                <Dot color={dotColor} />
+                <div>
+                  <div style={{ color: SURFACE.text, fontSize: 13 }}>
+                    {check.label}
+                    {tag ? <span style={{ color: SURFACE.muted, fontSize: 11, marginLeft: 6 }}>{tag}</span> : null}
+                  </div>
+                  <div style={{ color: SURFACE.muted, fontSize: 11 }}>{check.ref}</div>
                 </div>
-                <div style={{ color: SURFACE.muted, fontSize: 11 }}>{check.ref}</div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 14, background: SURFACE.panel }}>

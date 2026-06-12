@@ -1,4 +1,9 @@
 import YahooFinance from "yahoo-finance2";
+import { detectMagnitudeWarning } from "../../lib/magnitude.js";
+
+// Re-exported for existing consumers/tests; the implementation now lives in
+// lib/magnitude.js so browser-side code can import it without pulling yahoo-finance2.
+export { detectMagnitudeWarning };
 
 const YAHOO_QUOTE_SUMMARY = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/";
 
@@ -43,15 +48,6 @@ export function validateFundamentalCurrency({ priceCurrency, financialCurrency, 
   if (priceCurrency && priceCurrency !== expectedCurrency) return { ok: false, message: `Precio en ${priceCurrency}; esperado ${expectedCurrency}.` };
   if (financialCurrency && financialCurrency !== expectedCurrency) return { ok: false, message: `Fundamentales en ${financialCurrency}; esperado ${expectedCurrency}.` };
   return { ok: true, message: `Moneda validada: ${expectedCurrency}.` };
-}
-
-export function detectMagnitudeWarning(values) {
-  const numeric = Object.values(values).map(Number).filter(Number.isFinite);
-  if (!numeric.length) return null;
-  const max = Math.max(...numeric.map(Math.abs));
-  if (max > 1_000_000_000_000) return "Magnitud muy alta: revisar si Yahoo entrego unidades completas.";
-  if (max < 10_000 && numeric.length >= 4) return "Magnitud baja: revisar si los datos estan en millones/miles o faltan campos.";
-  return null;
 }
 
 export async function fetchYahooFundamentals(symbol, fetchImpl = fetch) {
