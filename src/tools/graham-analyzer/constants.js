@@ -3,6 +3,7 @@ import { AC } from "../../lib/colors.js";
 export const EMPTY_FORM = {
   ticker: "",
   companyName: "",
+  sector: "",
   date: "",
   price: "",
   totalAssets: "",

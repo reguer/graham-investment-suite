@@ -1,4 +1,10 @@
 import YahooFinance from "yahoo-finance2";
+import { detectMagnitudeWarning } from "../../lib/magnitude.js";
+import { withRetry } from "../../lib/withRetry.js";
+
+// Re-exported for existing consumers/tests; the implementation now lives in
+// lib/magnitude.js so browser-side code can import it without pulling yahoo-finance2.
+export { detectMagnitudeWarning };
 
 const YAHOO_QUOTE_SUMMARY = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/";
 
@@ -45,32 +51,27 @@ export function validateFundamentalCurrency({ priceCurrency, financialCurrency, 
   return { ok: true, message: `Moneda validada: ${expectedCurrency}.` };
 }
 
-export function detectMagnitudeWarning(values) {
-  const numeric = Object.values(values).map(Number).filter(Number.isFinite);
-  if (!numeric.length) return null;
-  const max = Math.max(...numeric.map(Math.abs));
-  if (max > 1_000_000_000_000) return "Magnitud muy alta: revisar si Yahoo entrego unidades completas.";
-  if (max < 10_000 && numeric.length >= 4) return "Magnitud baja: revisar si los datos estan en millones/miles o faltan campos.";
-  return null;
-}
-
 export async function fetchYahooFundamentals(symbol, fetchImpl = fetch) {
   if (!fetchImpl || fetchImpl === fetch) {
     const client = yahooClient();
-    return client.quoteSummary(symbol, {
-      modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"],
-    }, { validateResult: false });
+    return withRetry(() =>
+      client.quoteSummary(symbol, {
+        modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"],
+      }, { validateResult: false }),
+    );
   }
 
   const modules = "price,summaryDetail,defaultKeyStatistics,financialData";
-  const response = await fetchImpl(`${YAHOO_QUOTE_SUMMARY}${encodeURIComponent(symbol)}?modules=${modules}`, {
-    headers: { "user-agent": "Mozilla/5.0" },
+  return withRetry(async () => {
+    const response = await fetchImpl(`${YAHOO_QUOTE_SUMMARY}${encodeURIComponent(symbol)}?modules=${modules}`, {
+      headers: { "user-agent": "Mozilla/5.0" },
+    });
+    if (!response.ok) throw new Error(`Yahoo Finance fundamentals devolvio ${response.status}: ${response.statusText}`);
+    const payload = await response.json();
+    const result = payload?.quoteSummary?.result?.[0];
+    if (!result) throw new Error(`Yahoo Finance no devolvio fundamentales para ${symbol}`);
+    return result;
   });
-  if (!response.ok) throw new Error(`Yahoo Finance fundamentals devolvio ${response.status}: ${response.statusText}`);
-  const payload = await response.json();
-  const result = payload?.quoteSummary?.result?.[0];
-  if (!result) throw new Error(`Yahoo Finance no devolvio fundamentales para ${symbol}`);
-  return result;
 }
 
 export async function fetchYahooFxRate(currency, expectedCurrency = "USD", fetcher = null) {
