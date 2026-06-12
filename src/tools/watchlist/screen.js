@@ -1,14 +1,17 @@
 import { classify } from "../graham-analyzer/classify.js";
+import { detectSector } from "../graham-analyzer/detectSector.js";
 import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
 
-const FINANCIAL_SECTOR_PREFIXES = ["Financial Services", "Real Estate", "Insurance"];
+// Sectors whose balance sheets don't report current/quick/debt in an industrially
+// comparable way, so the screen judges them on valuation + EPS only. Resolved via
+// the shared detectSector taxonomy instead of a private prefix list.
+const RELAXED_SECTOR_IDS = new Set(["financial", "reit"]);
 
 function isFinancialSector(candidate) {
-  const sector = String(candidate.sector || "");
-  return FINANCIAL_SECTOR_PREFIXES.some((prefix) => sector === prefix || sector.startsWith(prefix + " /") || sector.startsWith(prefix + "/"));
+  return RELAXED_SECTOR_IDS.has(detectSector({ sector: candidate.sector, industry: candidate.industry, sicCode: candidate.sicCode }));
 }
 
 function isAvailableRatio(value) {
