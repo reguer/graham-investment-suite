@@ -14,6 +14,10 @@ export function parseArgs(argv) {
   for (let index = 2; index < argv.length; index += 1) {
     if (argv[index] === "--all-unsupported") args.mode = "incomplete";
     if (argv[index] === "--unsupported-only") args.mode = "unsupported";
+    // --all (alias --refresh-analyzed): re-procesa TODO el universo, incluidas las
+    // empresas ya "analyzed" — necesario para rellenar roe/roa/tie/sicCode que
+    // quedaron vacíos en registros analizados antes del fix de persistencia.
+    if (argv[index] === "--all" || argv[index] === "--refresh-analyzed") args.mode = "all";
     if (argv[index] === "--ticker") args.ticker = String(argv[index + 1] || "").toUpperCase();
     if (argv[index] === "--limit") args.limit = Number(argv[index + 1] || Infinity);
     if (argv[index] === "--expected-currency") args.expectedCurrency = String(argv[index + 1] || "USD").toUpperCase();
@@ -76,6 +80,7 @@ function selectTargets(records, args) {
   } else if (!args.ticker && args.mode === "incomplete") {
     targets = targets.filter((item) => item.analysisStatus !== "analyzed");
   }
+  // mode === "all": no status filter — re-procesa también las "analyzed".
   return targets
     .filter((item) => item.quoteType === "EQUITY")
     .slice(0, args.limit);

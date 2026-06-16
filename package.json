@@ -26,6 +26,7 @@
     "db:migrate-candidates": "node scripts/run-node22.js scripts/migrate-candidates.js",
     "fundamentals:update": "node scripts/run-node22.js scripts/update-fundamentals.js",
     "fundamentals:ingest": "node scripts/run-node22.js scripts/data-ingestion.js",
+    "fundamentals:ingest:all": "node scripts/run-node22.js scripts/data-ingestion.js --all",
     "historical:download": "node scripts/run-node22.js scripts/download-historical-prices.js",
     "backtest": "node scripts/run-node22.js scripts/run-backtest.js --universe public-10 --tickers CTSH,GRBK,INGR,KBH,LEN,MHO,MTH,PHM,TMHC,TOL,VICI,CAG,BAX,KHC,FIS,ALLY,PRU,GM,CPB,ZION,CINF,FANG,PCG,SYF,AIG",
     "backtest:mini": "node scripts/run-node22.js scripts/run-backtest.js",
