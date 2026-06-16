@@ -4,6 +4,36 @@ Guía de comandos para **actualizar datos** y **añadir lotes de empresas nuevas
 diversificadas por sector. Todo desde la terminal (el dashboard es estático y
 no puede escribir datos).
 
+## ⚡ Referencia rápida (los 4 casos)
+
+```bash
+# 1) EXTRAER TICKERS NUEVOS EN GRUPOS (desde un archivo de lote)
+npm run db:import -- --file data/import/MI-LOTE.json --dry-run   # previsualizar
+npm run db:import -- --file data/import/MI-LOTE.json             # importar al catálogo
+npm run fundamentals:ingest                                      # extraer fundamentales de las nuevas
+npm run deploy:pages                                             # publicar al sitio
+
+# 2) GRUPO DE TICKERS ESPECÍFICOS (sin archivo, uno por uno)
+npm run db:add-company -- --ticker NVDA --name "NVIDIA Corp" --type EQUITY --sector "Technology"
+npm run db:add-company -- --ticker JPM  --name "JPMorgan"    --type EQUITY --sector "Financial Services"
+npm run fundamentals:ingest                                      # extrae las recién añadidas
+
+# 3) APLICAR FUNDAMENTALES A EMPRESAS
+npm run fundamentals:ingest                  # solo las incompletas/nuevas (rápido)
+npm run fundamentals:ingest:all              # TODAS (refresco trimestral completo)
+npm run fundamentals:ingest -- --ticker AAPL # una sola empresa
+npm run fundamentals:ingest:all -- --limit 20 # un lote de N
+
+# 4) ACTUALIZAR PRECIOS DE LAS EXISTENTES
+npm run universe:refresh                     # solo precios (lo más rápido y frecuente)
+npm run weekly:pipeline                      # pipeline completo: sync+precios+fundamentales+reportes
+```
+
+Plantillas de lote ya creadas: `data/import/nuevas-por-sector.json`,
+`data/import/semis-ia-metales.json`. Cópialas para armar las tuyas.
+
+---
+
 ## Modelo de datos (importante)
 
 - **`data/public/companies.json`** y **`public/data/companies.json`** = el catálogo
