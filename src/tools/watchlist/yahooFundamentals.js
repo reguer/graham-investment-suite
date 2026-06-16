@@ -218,6 +218,11 @@ export function buildYahooDeepSnapshot(data) {
   const bvps = yahooPb && price ? price / yahooPb : equity !== null && shares ? (equity / shares) * shareScale : null;
   const pe = epsAdj !== null && epsAdj > 0 ? ratio(price, epsAdj) : null;
   const pb = bvps !== null && bvps > 0 ? ratio(price, bvps) : null;
+  // Tangible book per share (same share-scale handling as bvps), so intangible-heavy
+  // sectors (tech/healthcare) can be judged on P/B tangible. netTangibleAssets is
+  // already FX-converted above; null when Yahoo doesn't report it.
+  const tbvps = netTangibleAssets !== null && shares ? (netTangibleAssets / shares) * shareScale : null;
+  const pbTangible = tbvps !== null && tbvps > 0 ? ratio(price, tbvps) : null;
   const fcf = operatingCF !== null && investingCF !== null ? operatingCF + investingCF : null;
   const tie = interestExpense === 0 && ebit !== null && ebit > 0 ? Infinity : ratio(ebit, interestExpense);
   const epsHistory = sortedStatements(data.annual)
@@ -239,6 +244,9 @@ export function buildYahooDeepSnapshot(data) {
     pe,
     pb,
     pePb: pe !== null && pb !== null ? pe * pb : null,
+    pbTangible,
+    pePbTangible: pe !== null && pbTangible !== null ? pe * pbTangible : null,
+    tangibleBvps: tbvps,
     debtRatio: hasNegativeEquity ? null : rawDebtRatio,
     currentRatio: ratio(currentAssets, currentLiabilities),
     quickRatio: currentAssets !== null && currentLiabilities ? ratio(currentAssets - inventory, currentLiabilities) : null,

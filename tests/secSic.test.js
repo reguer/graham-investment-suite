@@ -32,3 +32,33 @@ describe("SEC snapshot carries sicCode for sector detection", () => {
     expect(detectSector({ sector: snap.sector, sicCode: snap.sicCode })).toBe("financial");
   });
 });
+
+describe("SEC snapshot tangible book", () => {
+  // Equity 1000, Goodwill 300, Intangibles 200 → tangible equity 500 over 100
+  // shares = tbvps 5; at price 50 → P/B tangible 10 (vs plain P/B 5 on bvps 10).
+  const usd = (val) => ({ end: "2025-12-31", filed: "2026-02-01", fp: "FY", fy: 2025, val });
+  const companyFacts = {
+    facts: {
+      "us-gaap": {
+        StockholdersEquity: { units: { USD: [usd(1000)] } },
+        Goodwill: { units: { USD: [usd(300)] } },
+        IntangibleAssetsNetExcludingGoodwill: { units: { USD: [usd(200)] } },
+      },
+      dei: {
+        EntityCommonStockSharesOutstanding: { units: { shares: [usd(100)] } },
+      },
+    },
+  };
+
+  it("computes pbTangible from equity minus goodwill and intangibles", () => {
+    const snap = buildSecGrahamSnapshot(companyFacts, 50);
+    expect(snap.tangibleBvps).toBeCloseTo(5, 5);
+    expect(snap.pbTangible).toBeCloseTo(10, 5);
+  });
+
+  it("treats missing goodwill/intangibles as zero (tangible = book)", () => {
+    const noIntangibles = { facts: { "us-gaap": { StockholdersEquity: { units: { USD: [usd(1000)] } } }, dei: { EntityCommonStockSharesOutstanding: { units: { shares: [usd(100)] } } } } };
+    const snap = buildSecGrahamSnapshot(noIntangibles, 50);
+    expect(snap.tangibleBvps).toBeCloseTo(snap.bvps, 5);
+  });
+});

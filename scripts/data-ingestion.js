@@ -1,8 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { classify } from "../src/tools/graham-analyzer/classify.js";
+import { detectSector } from "../src/tools/graham-analyzer/detectSector.js";
+import { getSectorProfile } from "../src/tools/graham-analyzer/sectorProfiles.js";
+import { actionableReason } from "../src/tools/graham-analyzer/failingCriteria.js";
 import { fetchYahooFundamentals, fetchYahooDeepFundamentals, buildYahooSupplementalSnapshot, buildYahooDeepSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
-import { fetchSecTickerMap, fetchSecCompanyFacts, buildSecGrahamSnapshot, hasMinimumGrahamSnapshot } from "../src/tools/watchlist/secFundamentals.js";
+import { fetchSecTickerMap, fetchSecCompanyFacts, buildSecGrahamSnapshot, hasMinimumGrahamSnapshot, fetchSecSicCode } from "../src/tools/watchlist/secFundamentals.js";
 import { fetchYahooChartQuote } from "../src/tools/watchlist/priceSources.js";
 import { PUBLIC_COMPANIES_PATH, normalizeCompany, runPsql, upsertCompanySql, upsertFinancialSnapshotSql } from "./db-client.js";
 
@@ -11,11 +14,53 @@ export function parseArgs(argv) {
   for (let index = 2; index < argv.length; index += 1) {
     if (argv[index] === "--all-unsupported") args.mode = "incomplete";
     if (argv[index] === "--unsupported-only") args.mode = "unsupported";
+    // --all (alias --refresh-analyzed): re-procesa TODO el universo, incluidas las
+    // empresas ya "analyzed" — necesario para rellenar roe/roa/tie/sicCode que
+    // quedaron vacíos en registros analizados antes del fix de persistencia.
+    if (argv[index] === "--all" || argv[index] === "--refresh-analyzed") args.mode = "all";
     if (argv[index] === "--ticker") args.ticker = String(argv[index + 1] || "").toUpperCase();
     if (argv[index] === "--limit") args.limit = Number(argv[index + 1] || Infinity);
     if (argv[index] === "--expected-currency") args.expectedCurrency = String(argv[index + 1] || "USD").toUpperCase();
   }
   return args;
+}
+
+// Resolve the sector profile and classify a snapshot the same way the manual
+// analyzer and the runtime screen do, so the persisted verdict is sector-aware
+// (not industrial defaults applied to banks/utilities/tech).
+function classifyWithSector(item, snapshot) {
+  const profile = getSectorProfile(
+    detectSector({ sector: item.sector, industry: item.industry, sicCode: snapshot.sicCode ?? item.sicCode }),
+  );
+  return { profile, classification: classify(snapshot, profile) };
+}
+
+// Single source of truth for the persisted financial fields, so every ingestion
+// branch writes the FULL set — including roe/roa/tie/sicCode, which were computed
+// upstream but never persisted (hence 100% empty in companies.json). Missing
+// numeric fields stay null (honest N/D) rather than being dropped from the record.
+function financialFields(snapshot) {
+  return {
+    price: snapshot.price ?? null,
+    pe: snapshot.pe ?? null,
+    pb: snapshot.pb ?? null,
+    pePb: snapshot.pePb ?? null,
+    pbTangible: snapshot.pbTangible ?? null,
+    pePbTangible: snapshot.pePbTangible ?? null,
+    tangibleBvps: snapshot.tangibleBvps ?? null,
+    debtRatio: snapshot.debtRatio ?? null,
+    currentRatio: snapshot.currentRatio ?? null,
+    quickRatio: snapshot.quickRatio ?? null,
+    fcf: snapshot.fcf ?? null,
+    roe: snapshot.roe ?? null,
+    roa: snapshot.roa ?? null,
+    tie: snapshot.tie === Infinity ? null : snapshot.tie ?? null,
+    epsAllPositive: snapshot.epsAllPositive ?? null,
+    epsGrowing: snapshot.epsGrowing ?? null,
+    epsHistory: snapshot.epsHistory ?? [],
+    sicCode: snapshot.sicCode ?? null,
+    hasNegativeEquity: snapshot.hasNegativeEquity ?? null,
+  };
 }
 
 function loadPublicRecords() {
@@ -38,6 +83,7 @@ function selectTargets(records, args) {
   } else if (!args.ticker && args.mode === "incomplete") {
     targets = targets.filter((item) => item.analysisStatus !== "analyzed");
   }
+  // mode === "all": no status filter — re-procesa también las "analyzed".
   return targets
     .filter((item) => item.quoteType === "EQUITY")
     .slice(0, args.limit);
@@ -103,7 +149,9 @@ async function trySecFallback(ticker, yahooSymbol) {
     if (!price || !Number.isFinite(price)) return null;
 
     const companyFacts = await fetchSecCompanyFacts(secEntry.cik);
-    const snapshot = buildSecGrahamSnapshot(companyFacts, price);
+    // Pull the real SIC code (sector signal) from SEC submissions; tolerate failure.
+    const sicCode = await fetchSecSicCode(secEntry.cik).catch(() => null);
+    const snapshot = buildSecGrahamSnapshot(companyFacts, price, { sicCode });
     if (!hasMinimumGrahamSnapshot(snapshot) && !snapshot.pe && !snapshot.pb) return null;
 
     return {
@@ -146,40 +194,38 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
           // Intentar completar los datos faltantes con SEC EDGAR antes de rechazar
           const secResult = await trySecFallback(ticker, item.yahooSymbol || item.yahoo_symbol);
           if (secResult) {
+            // Fill missing fields from SEC (alternate source): ratios AND the
+            // quality/sector signals (roe/roa/tie/sicCode) Yahoo may have left null.
             const merged = {
               ...snapshot,
               debtRatio: snapshot.debtRatio ?? secResult.snapshot.debtRatio,
               currentRatio: snapshot.currentRatio ?? secResult.snapshot.currentRatio,
               quickRatio: snapshot.quickRatio ?? secResult.snapshot.quickRatio,
               fcf: snapshot.fcf ?? secResult.snapshot.fcf,
+              roe: snapshot.roe ?? secResult.snapshot.roe,
+              roa: snapshot.roa ?? secResult.snapshot.roa,
+              tie: snapshot.tie ?? secResult.snapshot.tie,
+              pbTangible: snapshot.pbTangible ?? secResult.snapshot.pbTangible,
+              pePbTangible: snapshot.pePbTangible ?? secResult.snapshot.pePbTangible,
+              tangibleBvps: snapshot.tangibleBvps ?? secResult.snapshot.tangibleBvps,
+              sicCode: snapshot.sicCode ?? secResult.snapshot.sicCode,
               epsAllPositive: snapshot.epsAllPositive ?? secResult.snapshot.epsAllPositive,
               epsGrowing: snapshot.epsGrowing ?? secResult.snapshot.epsGrowing,
               epsHistory: (snapshot.epsHistory?.length > 0 ? snapshot.epsHistory : secResult.snapshot.epsHistory) || [],
               source: `${snapshot.source || "Yahoo"} + ${secResult.snapshot.source}`,
             };
-            const classification = classify(merged);
-            const notes = [built.reason, secResult.notes, classification.reason].filter(Boolean).join(" ");
+            const { profile, classification } = classifyWithSector(item, merged);
             const publicRecord = {
               ...item,
+              ...financialFields(merged),
               source: merged.source,
               sourceDate: merged.sourceDate || new Date().toISOString().slice(0, 10),
               analysisStatus: "analyzed",
               validationStatus: "yahoo_sec_merged",
-              price: merged.price,
-              pe: merged.pe,
-              pb: merged.pb,
-              pePb: merged.pePb,
-              debtRatio: merged.debtRatio,
-              currentRatio: merged.currentRatio,
-              quickRatio: merged.quickRatio,
-              fcf: merged.fcf,
-              epsAllPositive: merged.epsAllPositive,
-              epsGrowing: merged.epsGrowing,
-              epsHistory: merged.epsHistory,
+              sectorProfileId: profile.id,
               classificationId: classification.id,
               classificationLabel: classification.label,
-              notes,
-              watchReason: notes,
+              watchReason: actionableReason(merged, profile),
             };
             byTicker.set(ticker, publicRecord);
             const dbResult = persist({ ticker, snapshot: merged, classification, publicRecord });
@@ -187,38 +233,23 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
             results.push({ ticker, status: "sec_merged", classification: classification.id });
             continue;
           }
-          const classification = classify(snapshot);
-          const notes = [
-            built.reason,
-            ...(built.warnings || []),
-            "Yahoo y SEC EDGAR sin ratios completos para aprobacion Graham defensiva.",
-            classification.reason,
-          ].filter(Boolean).join(" ");
+          const { profile, classification } = classifyWithSector(item, snapshot);
           const publicRecord = {
             ...item,
+            ...financialFields(snapshot),
             source: snapshot.source,
             sourceDate: snapshot.sourceDate,
             analysisStatus: "analyzed",
             validationStatus: "yahoo_model_rejected",
-            price: snapshot.price,
-            pe: snapshot.pe,
-            pb: snapshot.pb,
-            pePb: snapshot.pePb,
-            debtRatio: snapshot.debtRatio,
-            currentRatio: snapshot.currentRatio,
-            quickRatio: snapshot.quickRatio,
-            fcf: snapshot.fcf,
-            epsAllPositive: snapshot.epsAllPositive,
-            epsGrowing: snapshot.epsGrowing,
+            sectorProfileId: profile.id,
             classificationId: classification.id,
             classificationLabel: classification.label,
-            notes,
-            watchReason: notes,
+            watchReason: actionableReason(snapshot, profile),
           };
           byTicker.set(ticker, publicRecord);
           const dbResult = persist({ ticker, snapshot, classification, publicRecord });
           if (dbResult.skipped) dbSkipped = true;
-          results.push({ ticker, status: "rejected", reason: built.reason });
+          results.push({ ticker, status: "rejected", reason: classification.reason });
           continue;
         }
         const next = {
@@ -234,13 +265,7 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
         continue;
       }
 
-      const classification = classify(built.snapshot);
-      const notes = [
-        built.reason,
-        ...built.warnings,
-        classification.reason,
-        symbol !== (item.yahooSymbol || item.yahoo_symbol || ticker) ? `Fundamentales obtenidos con simbolo Yahoo base ${symbol}.` : "",
-      ].filter(Boolean).join(" ");
+      const { profile, classification } = classifyWithSector(item, built.snapshot);
       const normalized = normalizeCompany({
         ...item,
         ticker,
@@ -253,20 +278,11 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
       const publicRecord = {
         ...item,
         ...normalized,
-        price: built.snapshot.price,
-        pe: built.snapshot.pe,
-        pb: built.snapshot.pb,
-        pePb: built.snapshot.pePb,
-        debtRatio: built.snapshot.debtRatio,
-        currentRatio: built.snapshot.currentRatio,
-        quickRatio: built.snapshot.quickRatio,
-        fcf: built.snapshot.fcf,
-        epsAllPositive: built.snapshot.epsAllPositive,
-        epsGrowing: built.snapshot.epsGrowing,
+        ...financialFields(built.snapshot),
+        sectorProfileId: profile.id,
         classificationId: classification.id,
         classificationLabel: classification.label,
-        notes,
-        watchReason: notes,
+        watchReason: actionableReason(built.snapshot, profile),
       };
       byTicker.set(ticker, publicRecord);
       const dbResult = persist({ ticker, snapshot: built.snapshot, classification, publicRecord });
@@ -276,30 +292,19 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
       // Yahoo falló completamente — intentar SEC EDGAR como fuente alternativa
       const secResult = await trySecFallback(ticker, item.yahooSymbol || item.yahoo_symbol);
       if (secResult) {
-        const classification = classify(secResult.snapshot);
-        const notes = [`Yahoo fallo: ${error.message}.`, secResult.notes, classification.reason].filter(Boolean).join(" ");
+        const { profile, classification } = classifyWithSector(item, secResult.snapshot);
         const publicRecord = {
           ...item,
+          ...financialFields(secResult.snapshot),
           source: secResult.snapshot.source,
           sourceDate: secResult.snapshot.sourceDate,
           analysisStatus: secResult.snapshot.epsHistory?.length >= 2 ? "analyzed" : "analysis_partial_sec",
           validationStatus: "sec_edgar_fallback",
-          price: secResult.snapshot.price,
-          pe: secResult.snapshot.pe,
-          pb: secResult.snapshot.pb,
-          pePb: secResult.snapshot.pePb,
-          debtRatio: secResult.snapshot.debtRatio,
-          currentRatio: secResult.snapshot.currentRatio,
-          quickRatio: secResult.snapshot.quickRatio,
-          fcf: secResult.snapshot.fcf,
-          epsAllPositive: secResult.snapshot.epsAllPositive,
-          epsGrowing: secResult.snapshot.epsGrowing,
-          epsHistory: secResult.snapshot.epsHistory || [],
+          sectorProfileId: profile.id,
           classificationId: classification.id,
           classificationLabel: classification.label,
           secSnapshot: secResult.snapshot.sec,
-          notes,
-          watchReason: notes,
+          watchReason: actionableReason(secResult.snapshot, profile),
         };
         byTicker.set(ticker, publicRecord);
         results.push({ ticker, status: "sec_fallback", classification: classification.id });

@@ -108,13 +108,13 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
       ) : null}
       {metricGrid(
         <>
-          <MetricCard label="P/E" value={peValue(ratios)} sublabel="P/E se anula con EPS <= 0" color={alertFor("pe", ratios.pe)} ref="Graham: ideal <= 15" />
-          <MetricCard label="P/B" value={ratios.hasNegativeEquity ? "N/A (equity neg.)" : fmt(ratios.pb)} sublabel={`BVPS ${fmt(ratios.bvps)}`} color={ratios.hasNegativeEquity ? AC.red : alertFor("pb", ratios.pb)} ref="Defensivo <= 2" />
-          <MetricCard label="P/E x P/B" value={fmt(ratios.pePb)} sublabel="Regla 22.5" color={alertFor("pePb", ratios.pePb)} ref="15 x 1.5" />
-          <MetricCard label="Margen seguridad" value={pct(ratios.mosGraham)} sublabel={`Formula ${fmt(ratios.grahamFormula)}`} color={alertFor("mos", ratios.mosGraham)} ref="Cap. 20" />
-          <MetricCard label="P/B tangible" value={fmt(ratios.pbTangible)} sublabel={`TBVPS ${fmt(ratios.tangibleBvps)}`} color={alertFor("pb", ratios.pbTangible)} ref="Activos tangibles" />
+          <MetricCard label="P/E" value={peValue(ratios)} sublabel="P/E se anula con EPS <= 0" color={alertFor("pe", ratios.pe)} note="Graham: ideal <= 15" />
+          <MetricCard label="P/B" value={ratios.hasNegativeEquity ? "N/A (equity neg.)" : fmt(ratios.pb)} sublabel={`BVPS ${fmt(ratios.bvps)}`} color={ratios.hasNegativeEquity ? AC.red : alertFor("pb", ratios.pb)} note="Defensivo <= 2" />
+          <MetricCard label="P/E x P/B" value={fmt(ratios.pePb)} sublabel="Regla 22.5" color={alertFor("pePb", ratios.pePb)} note="15 x 1.5" />
+          <MetricCard label="Margen seguridad" value={pct(ratios.mosGraham)} sublabel={`Formula ${fmt(ratios.grahamFormula)}`} color={alertFor("mos", ratios.mosGraham)} note="Cap. 20" />
+          <MetricCard label="P/B tangible" value={fmt(ratios.pbTangible)} sublabel={`TBVPS ${fmt(ratios.tangibleBvps)}`} color={alertFor("pb", ratios.pbTangible)} note="Activos tangibles" />
           {ratios.pePbTangible !== null ? (
-            <MetricCard label="P/E x P/B tangible" value={fmt(ratios.pePbTangible)} sublabel="Regla 22.5 sin intangibles" color={alertFor("pePb", ratios.pePbTangible)} ref="Sin goodwill/intangibles" />
+            <MetricCard label="P/E x P/B tangible" value={fmt(ratios.pePbTangible)} sublabel="Regla 22.5 sin intangibles" color={alertFor("pePb", ratios.pePbTangible)} note="Sin goodwill/intangibles" />
           ) : null}
           <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={colorForState(ratios.intangibleWeight, (v) => (v < 0.1 ? AC.green : v <= 0.3 ? AC.yellow : AC.red))} />
         </>,
@@ -123,10 +123,10 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
       <SectionTitle number="2" title="Fortaleza financiera" />
       {metricGrid(
         <>
-          <MetricCard label="Debt Ratio" value={fmt(ratios.debtRatio)} color={alertFor("debtRatio", ratios.debtRatio)} ref="Pasivos / patrimonio" />
-          <MetricCard label="Current Ratio" value={fmt(ratios.currentRatio)} color={alertFor("currentRatio", ratios.currentRatio)} ref="Minimo Graham 2" />
-          <MetricCard label="Quick Ratio" value={fmt(ratios.quickRatio)} color={alertFor("quickRatio", ratios.quickRatio)} ref="Liquidez sin inventario" />
-          <MetricCard label="TIE" value={ratios.tie === Infinity ? "∞" : fmt(ratios.tie)} color={alertFor("tie", ratios.tie)} ref="EBIT / intereses" />
+          <MetricCard label="Debt Ratio" value={fmt(ratios.debtRatio)} color={alertFor("debtRatio", ratios.debtRatio)} note="Pasivos / patrimonio" />
+          <MetricCard label="Current Ratio" value={fmt(ratios.currentRatio)} color={alertFor("currentRatio", ratios.currentRatio)} note="Minimo Graham 2" />
+          <MetricCard label="Quick Ratio" value={fmt(ratios.quickRatio)} color={alertFor("quickRatio", ratios.quickRatio)} note="Liquidez sin inventario" />
+          <MetricCard label="TIE" value={ratios.tie === Infinity ? "∞" : fmt(ratios.tie)} color={alertFor("tie", ratios.tie)} note="EBIT / intereses" />
         </>,
       )}
 
