@@ -12,6 +12,7 @@ import AnalysisHistory from "./AnalysisHistory.jsx";
 import CompareView from "./CompareView.jsx";
 import CandidatePanel from "./CandidatePanel.jsx";
 import CandidateAnalysis from "./CandidateAnalysis.jsx";
+import UniverseSearch from "./UniverseSearch.jsx";
 import { screenWatchlist, summarizeScreen } from "../watchlist/screen.js";
 import { buildWatchlist, fetchPublicCompanies } from "../watchlist/watchlist.js";
 
@@ -205,7 +206,12 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
         />
       ) : null}
 
-      {view === "candidates" ? <CandidateAnalysis candidates={candidateOpportunities} /> : null}
+      {view === "candidates" ? (
+        <>
+          <UniverseSearch universe={screened} />
+          <CandidateAnalysis candidates={candidateOpportunities} />
+        </>
+      ) : null}
 
       {view === "compare" ? <CompareView history={history} /> : null}
 
