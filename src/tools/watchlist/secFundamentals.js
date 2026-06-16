@@ -108,10 +108,18 @@ export function buildSecGrahamSnapshot(companyFacts, price, { sicCode = null } =
   const ebit = valueOf(annualFacts(companyFacts, ["OperatingIncomeLoss"], ["USD"])[0]);
   const interestExpense = valueOf(annualFacts(companyFacts, ["InterestExpense", "InterestAndDebtExpense"], ["USD"])[0]);
 
+  // Tangible book = equity minus goodwill and other intangibles, so intangible-heavy
+  // sectors are judged on tangible P/B. Missing goodwill/intangibles count as 0.
+  const goodwill = valueOf(latestFact(companyFacts, ["Goodwill"])) ?? 0;
+  const intangibles = valueOf(latestFact(companyFacts, ["IntangibleAssetsNetExcludingGoodwill", "FiniteLivedIntangibleAssetsNet"])) ?? 0;
+  const tangibleEquity = Number.isFinite(equity) ? equity - goodwill - intangibles : null;
+
   const eps = valueOf(epsAnnual[0]);
   const bvps = safeRatio(equity, shares);
+  const tangibleBvps = safeRatio(tangibleEquity, shares);
   const pe = eps && eps > 0 ? safeRatio(price, eps) : null;
   const pb = bvps && bvps > 0 ? safeRatio(price, bvps) : null;
+  const pbTangible = tangibleBvps && tangibleBvps > 0 ? safeRatio(price, tangibleBvps) : null;
   const debtRatio = safeRatio(liabilities, equity);
   const currentRatio = safeRatio(currentAssets, currentLiabilities);
   const quickRatio = safeRatio((currentAssets ?? 0) - (inventory ?? 0), currentLiabilities);
@@ -125,6 +133,9 @@ export function buildSecGrahamSnapshot(companyFacts, price, { sicCode = null } =
     pe,
     pb,
     pePb: Number.isFinite(pe) && Number.isFinite(pb) ? pe * pb : null,
+    pbTangible,
+    pePbTangible: Number.isFinite(pe) && Number.isFinite(pbTangible) ? pe * pbTangible : null,
+    tangibleBvps,
     debtRatio,
     currentRatio,
     quickRatio,
