@@ -1,0 +1,344 @@
+[
+  {
+    "ticker": "ASML",
+    "yahooSymbol": "ASML",
+    "companyName": "ASML Holding N.V.",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "LRCX",
+    "yahooSymbol": "LRCX",
+    "companyName": "Lam Research Corporation",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "NXPI",
+    "yahooSymbol": "NXPI",
+    "companyName": "NXP Semiconductors N.V.",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "ENTG",
+    "yahooSymbol": "ENTG",
+    "companyName": "Entegris Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "QRVO",
+    "yahooSymbol": "QRVO",
+    "companyName": "Qorvo Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "TSM",
+    "yahooSymbol": "TSM",
+    "companyName": "Taiwan Semiconductor Mfg",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "SMCI",
+    "yahooSymbol": "SMCI",
+    "companyName": "Super Micro Computer Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "VRT",
+    "yahooSymbol": "VRT",
+    "companyName": "Vertiv Holdings Co",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "DELL",
+    "yahooSymbol": "DELL",
+    "companyName": "Dell Technologies Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "SNOW",
+    "yahooSymbol": "SNOW",
+    "companyName": "Snowflake Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "DDOG",
+    "yahooSymbol": "DDOG",
+    "companyName": "Datadog Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "MDB",
+    "yahooSymbol": "MDB",
+    "companyName": "MongoDB Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Infrastructure",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "FNV",
+    "yahooSymbol": "FNV",
+    "companyName": "Franco-Nevada Corporation",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "WPM",
+    "yahooSymbol": "WPM",
+    "companyName": "Wheaton Precious Metals",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "AEM",
+    "yahooSymbol": "AEM",
+    "companyName": "Agnico Eagle Mines Limited",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "SCCO",
+    "yahooSymbol": "SCCO",
+    "companyName": "Southern Copper Corporation",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Copper",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "RIO",
+    "yahooSymbol": "RIO",
+    "companyName": "Rio Tinto Group",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  },
+  {
+    "ticker": "BHP",
+    "yahooSymbol": "BHP",
+    "companyName": "BHP Group Limited",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "source": "seed-import-themed",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales."
+  }
+]
