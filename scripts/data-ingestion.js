@@ -59,6 +59,8 @@ function financialFields(snapshot) {
     epsGrowing: snapshot.epsGrowing ?? null,
     epsHistory: snapshot.epsHistory ?? [],
     sicCode: snapshot.sicCode ?? null,
+    marketCap: snapshot.marketCap ?? null,
+    avgVolume: snapshot.avgVolume ?? null,
     hasNegativeEquity: snapshot.hasNegativeEquity ?? null,
   };
 }

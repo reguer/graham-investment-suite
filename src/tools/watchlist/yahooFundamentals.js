@@ -118,6 +118,13 @@ export function buildYahooSupplementalSnapshot(data, { symbol, expectedCurrency 
   if (!currency.ok) return { ok: false, symbol, currency, reason: currency.message };
 
   const price = raw(data?.price?.regularMarketPrice);
+  // Liquidity signals (already in the price/summaryDetail modules): market cap and
+  // average daily share volume, used to label how easily a stock can be sold.
+  const marketCap = raw(data?.price?.marketCap) ?? raw(data?.summaryDetail?.marketCap);
+  const avgVolume = raw(data?.summaryDetail?.averageVolume)
+    ?? raw(data?.price?.averageDailyVolume3Month)
+    ?? raw(data?.summaryDetail?.averageDailyVolume10Day)
+    ?? raw(data?.price?.regularMarketVolume);
   const pe = raw(data?.summaryDetail?.trailingPE) ?? raw(data?.defaultKeyStatistics?.trailingPE);
   const pb = raw(data?.defaultKeyStatistics?.priceToBook);
   const currentRatio = raw(data?.financialData?.currentRatio);
@@ -150,6 +157,8 @@ export function buildYahooSupplementalSnapshot(data, { symbol, expectedCurrency 
     tie: null,
     epsAdj,
     bvps,
+    marketCap,
+    avgVolume,
     grahamFormula,
     source: "Yahoo Finance quoteSummary supplemental",
     sourceDate: new Date().toISOString().slice(0, 10),
@@ -188,6 +197,17 @@ export function buildYahooDeepSnapshot(data) {
   const summary = data.summary || {};
   const rawPrice = pick(summary.price?.regularMarketPrice);
   const price = rawPrice === null ? null : rawPrice * data.priceFx.rate;
+  // Liquidity signals: market cap (FX-converted) and average daily share volume.
+  const rawMarketCap = pick(summary.price?.marketCap, summary.summaryDetail?.marketCap);
+  const marketCap = rawMarketCap === null ? null : rawMarketCap * data.priceFx.rate;
+  // averageVolume is the most consistently populated field; averageDailyVolume3Month
+  // is often undefined. Order matters — see AMZN where the 3-month field is missing.
+  const avgVolume = pick(
+    summary.summaryDetail?.averageVolume,
+    summary.price?.averageDailyVolume3Month,
+    summary.summaryDetail?.averageDailyVolume10Day,
+    summary.price?.regularMarketVolume,
+  );
   const convert = (...values) => {
     const parsed = pick(...values);
     return parsed === null ? null : parsed * data.financialFx.rate;
@@ -247,6 +267,8 @@ export function buildYahooDeepSnapshot(data) {
     pbTangible,
     pePbTangible: pe !== null && pbTangible !== null ? pe * pbTangible : null,
     tangibleBvps: tbvps,
+    marketCap,
+    avgVolume,
     debtRatio: hasNegativeEquity ? null : rawDebtRatio,
     currentRatio: ratio(currentAssets, currentLiabilities),
     quickRatio: currentAssets !== null && currentLiabilities ? ratio(currentAssets - inventory, currentLiabilities) : null,
