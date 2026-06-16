@@ -55,7 +55,15 @@ export function importCompanies(path, { dryRun = false } = {}) {
   const parsedCompanies = parseImportFile(path);
   const { companies, duplicateTickers } = dedupeCompanies(parsedCompanies);
   const sql = companies.map(upsertCompanySql).join("\n");
-  const dbResult = runPsql(sql, { dryRun });
+  // The JSON catalog (companies.json) is the source of truth; PostgreSQL is
+  // optional. A DB failure (e.g. psql ENAMETOOLONG on Windows for a long batch,
+  // or no server running) must NOT abort the JSON write — degrade gracefully.
+  let dbResult;
+  try {
+    dbResult = runPsql(sql, { dryRun });
+  } catch (error) {
+    dbResult = { ok: false, skipped: true, reason: `PostgreSQL no disponible (${error.message}). Catálogo JSON actualizado igualmente.` };
+  }
   const publicCompanies = dryRun ? [] : upsertPublicCompanies(companies);
   return { companies, duplicateTickers, skippedCount: duplicateTickers.length, dbResult, publicCount: publicCompanies.length };
 }

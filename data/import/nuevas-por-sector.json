@@ -1,0 +1,705 @@
+[
+  {
+    "ticker": "BK",
+    "yahooSymbol": "BK",
+    "companyName": "The Bank of New York Mellon Corp",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Asset Management",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "AON",
+    "yahooSymbol": "AON",
+    "companyName": "Aon plc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Insurance Brokers",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "FITB",
+    "yahooSymbol": "FITB",
+    "companyName": "Fifth Third Bancorp",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Banks Regional",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "WTW",
+    "yahooSymbol": "WTW",
+    "companyName": "Willis Towers Watson",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Insurance Brokers",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ACGL",
+    "yahooSymbol": "ACGL",
+    "companyName": "Arch Capital Group",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Insurance",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "TROW",
+    "yahooSymbol": "TROW",
+    "companyName": "T. Rowe Price Group",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Financial Services",
+    "industry": "Asset Management",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "financial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ZBH",
+    "yahooSymbol": "ZBH",
+    "companyName": "Zimmer Biomet Holdings",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Medical Devices",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "LH",
+    "yahooSymbol": "LH",
+    "companyName": "Labcorp Holdings",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Diagnostics & Research",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "UHS",
+    "yahooSymbol": "UHS",
+    "companyName": "Universal Health Services",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Medical Care Facilities",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "MOH",
+    "yahooSymbol": "MOH",
+    "companyName": "Molina Healthcare",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Healthcare Plans",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "RMD",
+    "yahooSymbol": "RMD",
+    "companyName": "ResMed Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Medical Instruments",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "STE",
+    "yahooSymbol": "STE",
+    "companyName": "STERIS plc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Healthcare",
+    "industry": "Medical Instruments",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "healthcare",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ADBE",
+    "yahooSymbol": "ADBE",
+    "companyName": "Adobe Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Infrastructure",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "NOW",
+    "yahooSymbol": "NOW",
+    "companyName": "ServiceNow Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ACN",
+    "yahooSymbol": "ACN",
+    "companyName": "Accenture plc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Information Technology Services",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ADP",
+    "yahooSymbol": "ADP",
+    "companyName": "Automatic Data Processing",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "WDC",
+    "yahooSymbol": "WDC",
+    "companyName": "Western Digital Corp",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "STX",
+    "yahooSymbol": "STX",
+    "companyName": "Seagate Technology",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ON",
+    "yahooSymbol": "ON",
+    "companyName": "ON Semiconductor",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "FSLR",
+    "yahooSymbol": "FSLR",
+    "companyName": "First Solar Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Solar",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "TEL",
+    "yahooSymbol": "TEL",
+    "companyName": "TE Connectivity",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "technology",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "DOV",
+    "yahooSymbol": "DOV",
+    "companyName": "Dover Corporation",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "industrial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "FAST",
+    "yahooSymbol": "FAST",
+    "companyName": "Fastenal Company",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Industrial Distribution",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "industrial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "SWK",
+    "yahooSymbol": "SWK",
+    "companyName": "Stanley Black & Decker",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Tools & Accessories",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "industrial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "GGG",
+    "yahooSymbol": "GGG",
+    "companyName": "Graco Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "industrial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "SNA",
+    "yahooSymbol": "SNA",
+    "companyName": "Snap-on Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Industrials",
+    "industry": "Tools & Accessories",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "industrial",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "OXY",
+    "yahooSymbol": "OXY",
+    "companyName": "Occidental Petroleum",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Energy",
+    "industry": "Oil & Gas E&P",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "energy",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "BKR",
+    "yahooSymbol": "BKR",
+    "companyName": "Baker Hughes Company",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "energy",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "WMB",
+    "yahooSymbol": "WMB",
+    "companyName": "The Williams Companies",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Energy",
+    "industry": "Oil & Gas Midstream",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "energy",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "TRGP",
+    "yahooSymbol": "TRGP",
+    "companyName": "Targa Resources",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Energy",
+    "industry": "Oil & Gas Midstream",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "energy",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "CTRA",
+    "yahooSymbol": "CTRA",
+    "companyName": "Coterra Energy",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Energy",
+    "industry": "Oil & Gas E&P",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "energy",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "VTR",
+    "yahooSymbol": "VTR",
+    "companyName": "Ventas Inc",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Healthcare Facilities",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "ARE",
+    "yahooSymbol": "ARE",
+    "companyName": "Alexandria Real Estate",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Office",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "WY",
+    "yahooSymbol": "WY",
+    "companyName": "Weyerhaeuser Company",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Specialty",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "INVH",
+    "yahooSymbol": "INVH",
+    "companyName": "Invitation Homes",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Residential",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "KIM",
+    "yahooSymbol": "KIM",
+    "companyName": "Kimco Realty",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Retail",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  },
+  {
+    "ticker": "REG",
+    "yahooSymbol": "REG",
+    "companyName": "Regency Centers",
+    "market": "US",
+    "quoteType": "EQUITY",
+    "country": "United States",
+    "currency": "USD",
+    "sector": "Real Estate",
+    "industry": "REIT Retail",
+    "source": "seed-import-diversified",
+    "sourceDate": "2026-06-16",
+    "tags": [
+      "us-listed",
+      "reit",
+      "seed-batch"
+    ],
+    "notes": "Empresa añadida en lote diversificado por sector. Pendiente de extraer fundamentales con fundamentals:ingest."
+  }
+]

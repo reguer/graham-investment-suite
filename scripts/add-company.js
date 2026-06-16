@@ -31,7 +31,13 @@ export function companyFromArgs(args) {
 export function addCompany(companyInput, { dryRun = false } = {}) {
   const company = normalizeCompany(companyInput);
   const sql = upsertCompanySql(company);
-  const dbResult = runPsql(sql, { dryRun });
+  // JSON catalog is the source of truth; a DB failure must not block the JSON write.
+  let dbResult;
+  try {
+    dbResult = runPsql(sql, { dryRun });
+  } catch (error) {
+    dbResult = { ok: false, skipped: true, reason: `PostgreSQL no disponible (${error.message}). Catálogo JSON actualizado igualmente.` };
+  }
   const publicCompanies = dryRun ? [] : upsertPublicCompanies([company]);
   return { company, dbResult, publicCount: publicCompanies.length };
 }
