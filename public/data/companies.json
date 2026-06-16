@@ -132,7 +132,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "A",
-    "watchReason": "Falla: P/E 26.07 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 26.07 > 20.00 · P/B tang. 18.62 > 2.50 · P/E×P/B 485.42 > 22.50",
     "price": 130.59,
     "pe": 26.065865999999996,
     "pb": 5.1747503,
@@ -143,8 +143,8 @@
     "fcf": 1165000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 13065000000,
       "currentAssets": 4763000000,
@@ -185,7 +185,10 @@
     "tie": 13.8125,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 18.622867345968185,
+    "pePbTangible": 485.4211647757823,
+    "tangibleBvps": 7.012346572305499
   },
   {
     "ticker": "AA",
@@ -231,7 +234,7 @@
     ],
     "notes": "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "AAPL",
-    "watchReason": "Falla: P/E 35.84 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 3.87 >= 1.00 · Corriente 0.89 < 1.50",
+    "watchReason": "Falla: P/E 35.84 > 20.00 · P/B tang. 54.41 > 2.50 · P/E×P/B 1950.33 > 22.50 · Deuda 3.87 >= 1.00 · Corriente 0.89 < 1.50",
     "price": 296.42,
     "pe": 35.842804,
     "pb": 40.8292,
@@ -284,7 +287,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 54.41343341288018,
+    "pePbTangible": 1950.3300287849154,
+    "tangibleBvps": 5.447551852698098
   },
   {
     "ticker": "ABBV",
@@ -308,7 +314,7 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0001551152); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "ABBV",
     "watchReason": "Falla: P/E 110.24 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda N/D · Corriente 0.67 < 1.50 · Patrimonio negativo",
-    "price": 226.17819923074,
+    "price": 226.15323742525,
     "pe": 110.23755000000001,
     "pb": null,
     "pePb": null,
@@ -335,19 +341,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 2.0517346333507955
+        "eps": 2.051508196846265
       },
       {
         "year": 2024,
-        "eps": 2.077816005808645
+        "eps": 2.077586690873972
       },
       {
         "year": 2023,
-        "eps": 2.364711102844985
+        "eps": 2.3644501251787466
       },
       {
         "year": 2022,
-        "eps": 5.76398331318465
+        "eps": 5.763347180123194
       }
     ],
     "lastPrice": 3924.26,
@@ -360,7 +366,10 @@
     "roa": 0.03154673036727381,
     "tie": 3.2803318354649154,
     "sicCode": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -44.88648630815156
   },
   {
     "ticker": "ABT",
@@ -383,8 +392,8 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "ABT",
-    "watchReason": "Falla: P/E 24.57 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
-    "price": 87.86153347386,
+    "watchReason": "Falla: P/E 24.57 > 20.00 · P/B tang. 7.08 > 2.50 · P/E×P/B 174.08 > 22.50",
+    "price": 87.85183677225001,
     "pe": 24.57368,
     "pb": 2.9254308,
     "pePb": 71.888600341344,
@@ -394,8 +403,8 @@
     "fcf": 7144000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 110429000000,
       "currentAssets": 25508000000,
@@ -411,19 +420,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.5754324738443737
+        "eps": 3.575037876795417
       },
       {
         "year": 2024,
-        "eps": 7.34309250004597
+        "eps": 7.342282091052953
       },
       {
         "year": 2023,
-        "eps": 3.133309103422757
+        "eps": 3.1329633006325426
       },
       {
         "year": 2022,
-        "eps": 3.7580486485837366
+        "eps": 3.7576338973844305
       }
     ],
     "lastPrice": 1560,
@@ -437,7 +446,10 @@
     "tie": 18.17241379310345,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 7.084197027356109,
+    "pePbTangible": 174.08479080720028,
+    "tangibleBvps": 12.401100143460743
   },
   {
     "ticker": "ADI",
@@ -461,10 +473,10 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "ADI",
     "watchReason": "Falla: P/E 59.88 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
-    "price": 402.89259228873,
-    "pe": 59.88248399999999,
-    "pb": 5.787418,
-    "pePb": 346.5649657863119,
+    "price": 402.84577417123995,
+    "pe": 59.882484,
+    "pb": 5.787418000000001,
+    "pePb": 346.56496578631203,
     "debtRatio": 0.4192411791485951,
     "currentRatio": 2.1899250755052453,
     "quickRatio": 1.6796279254335063,
@@ -488,19 +500,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.728054104915388
+        "eps": 6.727272271658603
       },
       {
         "year": 2024,
-        "eps": 4.8394775140619455
+        "eps": 4.838915142771977
       },
       {
         "year": 2023,
-        "eps": 9.66420052350785
+        "eps": 9.663077495474528
       },
       {
         "year": 2022,
-        "eps": 7.746114923422322
+        "eps": 7.745214786449051
       }
     ],
     "lastPrice": 6934.99,
@@ -514,7 +526,10 @@
     "tie": 9.536277681954953,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -3.395545423773568
   },
   {
     "ticker": "ADM",
@@ -541,10 +556,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 81.97234874073,
+    "price": 81.96282314724,
     "pe": 36.497414,
-    "pb": 1.7241092,
-    "pePb": 62.9255272536088,
+    "pb": 1.7241092000000002,
+    "pePb": 62.925527253608806,
     "debtRatio": 1.2916025161659261,
     "currentRatio": 1.310983871672713,
     "quickRatio": 0.7978058481576992,
@@ -558,19 +573,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 2.2459768996436296
+        "eps": 2.2457159059882983
       },
       {
         "year": 2024,
-        "eps": 3.676150530806838
+        "eps": 3.6757233438821926
       },
       {
         "year": 2023,
-        "eps": 6.476067921393963
+        "eps": 6.475315370181506
       },
       {
         "year": 2022,
-        "eps": 7.765238518498827
+        "eps": 7.76433615926896
       }
     ],
     "roe": 0.04742005014736286,
@@ -578,7 +593,10 @@
     "tie": 3.0506535947712417,
     "sicCode": 2070,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 2.4638722090617966,
+    "pePbTangible": 89.92496405722294,
+    "tangibleBvps": 33.265858044825364
   },
   {
     "ticker": "ADSK",
@@ -602,7 +620,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "ADSK",
     "watchReason": "Falla: P/E 28.54 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 3.09 >= 1.00 · Corriente 0.85 < 1.50",
-    "price": 196.152460779,
+    "price": 196.211713621,
     "pe": 28.541245,
     "pb": 12.91679,
     "pePb": 368.66126800355,
@@ -629,19 +647,19 @@
     "epsHistory": [
       {
         "year": 2026,
-        "eps": 6.8725965100331114
+        "eps": 6.874672552686472
       },
       {
         "year": 2025,
-        "eps": 6.72804859108404
+        "eps": 6.73008096936037
       },
       {
         "year": 2024,
-        "eps": 5.505961639969166
+        "eps": 5.507624855785147
       },
       {
         "year": 2023,
-        "eps": 4.967192123886264
+        "eps": 4.968692590660585
       }
     ],
     "lastPrice": 3550,
@@ -655,7 +673,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -10.497410087565184
   },
   {
     "ticker": "AEE",
@@ -720,7 +741,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.5517399707790602,
+    "pePbTangible": 58.08180189892331,
+    "tangibleBvps": 45.83633218247184
   },
   {
     "ticker": "AEP",
@@ -796,7 +820,10 @@
     "tie": 2.8381046396841065,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.202729792494705,
+    "pePbTangible": 42.1353485707743,
+    "tangibleBvps": 58.70443140170622
   },
   {
     "ticker": "AES",
@@ -823,7 +850,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 14.393169852600002,
+    "price": 14.393085105,
     "pe": 7.4796257,
     "pb": 2.3112807,
     "pePb": 17.28751452363399,
@@ -844,24 +871,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.9243168615509734
+        "eps": 1.9243055310909474
       },
       {
         "year": 2024,
-        "eps": 3.604276026397061
+        "eps": 3.604254804265584
       },
       {
         "year": 2023,
-        "eps": 0.534532461541937
+        "eps": 0.5345293141919298
       },
       {
         "year": 2022,
-        "eps": -1.252333195612538
+        "eps": -1.2523258218210926
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 4.002956849939322,
+    "pePbTangible": 29.940618930797193,
+    "tangibleBvps": 3.595613353968124
   },
   {
     "ticker": "AFL",
@@ -885,10 +915,10 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000004977); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "AFL",
     "watchReason": "Falla: P/B 2.03 > 2.00 · P/E×P/B 27.59 > 22.50",
-    "price": 119.02245360555001,
-    "pe": 13.568730999999998,
+    "price": 119.02452324705,
+    "pe": 13.568731,
     "pb": 2.0333323,
-    "pePb": 27.5897390123113,
+    "pePb": 27.589739012311302,
     "debtRatio": 2.949474398101051,
     "currentRatio": null,
     "quickRatio": null,
@@ -912,19 +942,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 8.771819089460173
+        "eps": 8.771971619678363
       },
       {
         "year": 2024,
-        "eps": 12.386014344794937
+        "eps": 12.386229721041442
       },
       {
         "year": 2023,
-        "eps": 10.00656195249269
+        "eps": 10.006735953240126
       },
       {
         "year": 2022,
-        "eps": 8.913300042515981
+        "eps": 8.91345503289898
       }
     ],
     "lastPrice": 2049.15,
@@ -937,7 +967,10 @@
     "tie": 21.604545454545455,
     "sicCode": 6321,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.6784313012125724,
+    "pePbTangible": 22.77418282813337,
+    "tangibleBvps": 70.91414653734202
   },
   {
     "ticker": "AIG",
@@ -961,10 +994,10 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000005272); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "AIG",
     "watchReason": "Falla: EPS no siempre positivo",
-    "price": 72.60477125,
+    "price": 72.60603375,
     "pe": 12.755102,
-    "pb": 0.96005344,
-    "pePb": 12.24557955265088,
+    "pb": 0.9600534400000001,
+    "pePb": 12.245579552650883,
     "debtRatio": 2.919176450570019,
     "currentRatio": null,
     "quickRatio": null,
@@ -988,19 +1021,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 5.692214084215085
+        "eps": 5.692313064215401
       },
       {
         "year": 2024,
-        "eps": -2.2747890539128424
+        "eps": -2.274828609456247
       },
       {
         "year": 2023,
-        "eps": 5.2204836352469846
+        "eps": 5.220574412484844
       },
       {
         "year": 2022,
-        "eps": 13.564871132549392
+        "eps": 13.565107007540938
       }
     ],
     "lastPrice": 1250,
@@ -1013,7 +1046,10 @@
     "tie": 10.795454545454545,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.0477020061645594,
+    "pePbTangible": 13.363545954233585,
+    "tangibleBvps": 69.30027175933076
   },
   {
     "ticker": "AJG",
@@ -1089,7 +1125,10 @@
     "tie": 3.928012519561815,
     "sicCode": 6411,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -40.73962940918204
   },
   {
     "ticker": "AKAM",
@@ -1128,7 +1167,7 @@
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 45.34 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.31 >= 1.00",
+    "watchReason": "Falla: P/E 45.34 > 20.00 · P/B tang. 17.70 > 2.50 · P/E×P/B 802.37 > 22.50 · Deuda 1.31 >= 1.00",
     "rawTicker": "AKAM",
     "secSnapshot": {
       "assets": 11645752000,
@@ -1165,7 +1204,10 @@
     "tie": 20.584674404239408,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 17.69752051744227,
+    "pePbTangible": 802.3673005239533,
+    "tangibleBvps": 7.58298315674987
   },
   {
     "ticker": "ALB",
@@ -1187,7 +1229,7 @@
       "pending-analysis"
     ],
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000915913); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
-    "price": 156.24365466999998,
+    "price": 156.2808493,
     "pe": null,
     "pb": 2.4138665,
     "pePb": null,
@@ -1229,7 +1271,10 @@
     "tie": -1.6586580368021344,
     "sicCode": 2821,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.3516450723399207,
+    "pePbTangible": 7833.587016755219,
+    "tangibleBvps": 66.45596784063095
   },
   {
     "ticker": "ALL",
@@ -1305,7 +1350,10 @@
     "tie": 33.97243107769424,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.8509570925965695,
+    "pePbTangible": 9.077178726119836,
+    "tangibleBvps": 119.83530082204084
   },
   {
     "ticker": "ALLY",
@@ -1364,7 +1412,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 0.5218669344706318,
+    "pePbTangible": 5.619344686585639,
+    "tangibleBvps": 87.0720043723275
   },
   {
     "ticker": "AMAT",
@@ -1387,7 +1438,7 @@
     ],
     "notes": "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "AMAT",
-    "watchReason": "Falla: P/E 53.50 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 53.50 > 20.00 · P/B tang. 22.71 > 2.50 · P/E×P/B 1214.96 > 22.50",
     "price": 585.78,
     "pe": 53.495895,
     "pb": 19.452084,
@@ -1398,8 +1449,8 @@
     "fcf": 5176000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 40286000000,
       "currentAssets": 22571000000,
@@ -1440,7 +1491,10 @@
     "tie": 35.46468401486989,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 22.711185303094283,
+    "pePbTangible": 1214.9551842998749,
+    "tangibleBvps": 25.792577189715875
   },
   {
     "ticker": "AMD",
@@ -1464,10 +1518,10 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "AMD",
     "priority": "requested",
-    "watchReason": "Falla: P/E 182.57 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
-    "price": 547.0651276866,
+    "watchReason": "Falla: P/E 182.57 > 20.00 · P/B tang. 37.39 > 2.50 · P/E×P/B 6826.71 > 22.50",
+    "price": 547.0777959995,
     "pe": 182.57066,
-    "pb": 13.667971,
+    "pb": 13.667970999999998,
     "pePb": 2495.37048633086,
     "debtRatio": 0.22106700106350893,
     "currentRatio": 2.850026441036489,
@@ -1492,19 +1546,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 2.996456975543606
+        "eps": 2.9965263640910322
       },
       {
         "year": 2024,
-        "eps": 1.1307384813372099
+        "eps": 1.1307646656947292
       },
       {
         "year": 2023,
-        "eps": 0.5992913951087213
+        "eps": 0.5993052728182066
       },
       {
         "year": 2022,
-        "eps": 0.9498203243232562
+        "eps": 0.9498423191835725
       }
     ],
     "lastPrice": 8461.08,
@@ -1518,7 +1572,10 @@
     "tie": 32.603053435114504,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 37.39214093745275,
+    "pePbTangible": 6826.707849763768,
+    "tangibleBvps": 14.630823009429113
   },
   {
     "ticker": "AME",
@@ -1594,7 +1651,10 @@
     "tie": 23.1323134861053,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -3.039230824934215
   },
   {
     "ticker": "AMGN",
@@ -1671,7 +1731,10 @@
     "tie": 4.258076225045372,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -60.34892598419436
   },
   {
     "ticker": "AMP",
@@ -1695,7 +1758,7 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000820027); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "AMP",
     "watchReason": "Falla: P/B 6.84 > 2.00 · P/E×P/B 80.67 > 22.50",
-    "price": 474.11536368,
+    "price": 474.04927584,
     "pe": 11.792419,
     "pb": 6.840526999999999,
     "pePb": 80.66636056481299,
@@ -1722,19 +1785,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 40.20509818044965
+        "eps": 40.199493915540145
       },
       {
         "year": 2024,
-        "eps": 36.625647598232106
+        "eps": 36.620542279729925
       },
       {
         "year": 2023,
-        "eps": 26.275162013739287
+        "eps": 26.2714994690589
       },
       {
         "year": 2022,
-        "eps": 30.696836262360954
+        "eps": 30.69255737211858
       }
     ],
     "lastPrice": 8160,
@@ -1747,7 +1810,10 @@
     "tie": 14.815950920245399,
     "sicCode": 6282,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 5.962029468076518,
+    "pePbTangible": 70.30674957790544,
+    "tangibleBvps": 79.51139429589882
   },
   {
     "ticker": "AMT",
@@ -1823,7 +1889,10 @@
     "tie": 3.2393703104310725,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -56.20548744012851
   },
   {
     "ticker": "AMZN",
@@ -1847,7 +1916,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "AMZN",
     "watchReason": "Falla: P/E 32.95 > 20.00 · P/B 5.94 > 2.00 · P/E×P/B 195.60 > 22.50 · Corriente 1.05 < 2.00 · EPS no siempre positivo",
-    "price": 246.0118726,
+    "price": 246.0147268215,
     "pe": 32.945,
     "pb": 5.937183,
     "pePb": 195.600493935,
@@ -1874,19 +1943,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 7.467350814994689
+        "eps": 7.467437450948552
       },
       {
         "year": 2024,
-        "eps": 5.759337518398972
+        "eps": 5.759404338039817
       },
       {
         "year": 2023,
-        "eps": 3.020267414711938
+        "eps": 3.0203024557532494
       },
       {
         "year": 2022,
-        "eps": -0.28119731102490464
+        "eps": -0.28120057346668187
       }
     ],
     "lastPrice": 4165.24,
@@ -1900,7 +1969,10 @@
     "tie": 43.79287598944591,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 6.755257841624955,
+    "pePbTangible": 222.55196959233413,
+    "tangibleBvps": 36.41825857565223
   },
   {
     "ticker": "ANET",
@@ -1923,7 +1995,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "ANET",
-    "watchReason": "Falla: P/E 56.18 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 56.18 > 20.00 · P/B tang. 16.49 > 2.50 · P/E×P/B 926.10 > 22.50",
     "price": 169.09,
     "pe": 56.17608,
     "pb": 15.786573,
@@ -1976,7 +2048,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 16.48560525446697,
+    "pePbTangible": 926.096679623357,
+    "tangibleBvps": 10.256826934163248
   },
   {
     "ticker": "APD",
@@ -2052,7 +2127,10 @@
     "tie": -1.0593457943925233,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -333.2038164368748
   },
   {
     "ticker": "APH",
@@ -2075,7 +2153,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "APH",
-    "watchReason": "Falla: P/E 44.30 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.69 >= 1.00",
+    "watchReason": "Falla: P/E 44.30 > 20.00 · P/B tang. 316.98 > 2.50 · P/E×P/B 14041.97 > 22.50 · Deuda 1.69 >= 1.00",
     "price": 158.59,
     "pe": 44.29888,
     "pb": 13.948109,
@@ -2086,8 +2164,8 @@
     "fcf": 292600000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 42133800000,
       "currentAssets": 15383700000,
@@ -2128,7 +2206,10 @@
     "tie": 16.22756933115824,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 316.9825190809995,
+    "pePbTangible": 14041.970574866906,
+    "tangibleBvps": 0.5003115012770626
   },
   {
     "ticker": "ATO",
@@ -2193,7 +2274,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.1299136518559068,
+    "pePbTangible": 48.295668520840884,
+    "tangibleBvps": 82.70854967125106
   },
   {
     "ticker": "AVB",
@@ -2258,7 +2342,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 2.292734173470713,
+    "pePbTangible": 57.74968183135452,
+    "tangibleBvps": 95.34345856196238
   },
   {
     "ticker": "AVGO",
@@ -2334,7 +2421,10 @@
     "tie": 8.080685358255451,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -13.023250170360955
   },
   {
     "ticker": "AWK",
@@ -2399,7 +2489,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.5597929377130466,
+    "pePbTangible": 57.171951346645805,
+    "tangibleBvps": 49.31406712254585
   },
   {
     "ticker": "AXP",
@@ -2475,7 +2568,10 @@
     "tie": 4.438035853468433,
     "sicCode": 6199,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 7.866745292048681,
+    "pePbTangible": 164.8303014215111,
+    "tangibleBvps": 42.733988204727
   },
   {
     "ticker": "AZO",
@@ -2551,7 +2647,10 @@
     "roa": 0.1290728587131892,
     "tie": 7.438697113369871,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -216.88539205794387
   },
   {
     "ticker": "BAC",
@@ -2630,7 +2729,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.7364488306822627,
+    "pePbTangible": 24.133181476861562,
+    "tangibleBvps": 32.174861137744145
   },
   {
     "ticker": "BAX",
@@ -2706,7 +2808,10 @@
     "tie": -0.7413793103448276,
     "sicCode": 3841,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.177387914230019
   },
   {
     "ticker": "BB",
@@ -2730,7 +2835,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "BB",
     "priority": "requested",
-    "watchReason": "Falla: P/E 102.67 > 20.00 · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 102.67 > 20.00 · P/B tang. 24.35 > 2.50 · P/E×P/B 2499.53 > 22.50 · EPS no siempre positivo",
     "price": 9.24,
     "pe": 102.66666000000001,
     "pb": 7.2755904000000005,
@@ -2784,7 +2889,10 @@
     "tie": 10.833333333333334,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 24.34605397464286,
+    "pePbTangible": 2499.528045756307,
+    "tangibleBvps": 0.3795276232289526
   },
   {
     "ticker": "BDX",
@@ -2811,7 +2919,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 149.473098598,
+    "price": 149.497405729,
     "pe": 26.04251,
     "pb": 1.6826557,
     "pePb": 43.820577893807,
@@ -2832,24 +2940,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 5.739581115568353
+        "eps": 5.740514479172707
       },
       {
         "year": 2024,
-        "eps": 5.848061171017239
+        "eps": 5.849012175514459
       },
       {
         "year": 2023,
-        "eps": 4.871740671977262
+        "eps": 4.872532908438689
       },
       {
         "year": 2022,
-        "eps": 5.798752054904109
+        "eps": 5.7996950408136625
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -36.32773142818166
   },
   {
     "ticker": "BF-B",
@@ -2908,7 +3019,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 8.086036605778824,
+    "pePbTangible": 142.37766304680642,
+    "tangibleBvps": 3.331669310122449
   },
   {
     "ticker": "BIDU",
@@ -2932,15 +3046,15 @@
     "notes": "Snapshot Yahoo completo con FX validado. Fundamentales convertidos de CNY a USD. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "BIDU",
     "priority": "requested",
-    "watchReason": "Falla: P/E 67.11 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 67.10 > 20.00 · P/E×P/B 88.55 > 22.50",
     "price": 116.75,
-    "pe": 67.10642905786885,
+    "pe": 67.1024557054937,
     "pb": 1.0008391,
-    "pePb": 67.16273806249131,
-    "debtRatio": 0.5986220102879887,
-    "currentRatio": 1.7603790195533315,
-    "quickRatio": 1.6885599110369753,
-    "fcf": -4164361371.0599995,
+    "pePb": 67.15876137607619,
+    "debtRatio": 0.5986220102879886,
+    "currentRatio": 1.7603790195533318,
+    "quickRatio": 1.6885599110369756,
+    "fcf": -4164607956.2999997,
     "epsAllPositive": true,
     "epsGrowing": false,
     "classificationId": "rejected",
@@ -2951,30 +3065,33 @@
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "USD",
     "autoAnalysisNote": "SEC no devolvio campos minimos para ratios Graham.",
-    "roe": 0.020985243870386364,
-    "roa": 0.01244331046827724,
+    "roe": 0.02098524387038636,
+    "roa": 0.012443310468277239,
     "tie": 3.4123563218390807,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.7397736944
+        "eps": 1.7398767119999998
       },
       {
         "year": 2024,
-        "eps": 9.752200844799999
+        "eps": 9.752778304
       },
       {
         "year": 2023,
-        "eps": 8.1544494928
+        "eps": 8.154932343999999
       },
       {
         "year": 2022,
-        "eps": 2.9351284096
+        "eps": 2.935302208
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 1.3195746543720268,
+    "pePbTangible": 88.54669979509109,
+    "tangibleBvps": 88.47547928658892
   },
   {
     "ticker": "BKNG",
@@ -2998,7 +3115,7 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0001075531); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "BKNG",
     "watchReason": "Falla: P/E 23.20 > 20.00 · P/B N/D · P/E×P/B N/D · Deuda N/D · Corriente 1.33 < 2.00 · Patrimonio negativo",
-    "price": 176.183560908,
+    "price": 176.224497309,
     "pe": 23.195168,
     "pb": null,
     "pePb": null,
@@ -3025,19 +3142,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 7.595701005830179
+        "eps": 7.597465873452608
       },
       {
         "year": 2024,
-        "eps": 7.922338628355462
+        "eps": 7.924179390508733
       },
       {
         "year": 2023,
-        "eps": 5.385850686020795
+        "eps": 5.387102093032168
       },
       {
         "year": 2022,
-        "eps": 3.5026379887366925
+        "eps": 3.503451829667854
       }
     ],
     "lastPrice": 2780.52,
@@ -3050,7 +3167,10 @@
     "roa": 0.18466375068343358,
     "tie": 5.225108225108225,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -12.884949898891307
   },
   {
     "ticker": "BLK",
@@ -3127,7 +3247,10 @@
     "tie": 13.408794788273616,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -51.661857027862105
   },
   {
     "ticker": "BMY",
@@ -3203,7 +3326,10 @@
     "tie": 5.932839767318879,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.29303419164844
   },
   {
     "ticker": "BR",
@@ -3279,7 +3405,10 @@
     "tie": 8.796023564064802,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -24.472132897366773
   },
   {
     "ticker": "BSX",
@@ -3356,7 +3485,10 @@
     "tie": 10.699140401146131,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -0.8837665944638976
   },
   {
     "ticker": "C",
@@ -3432,7 +3564,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.2124615067059168,
+    "pePbTangible": 21.210476658629513,
+    "tangibleBvps": 117.00710956018811
   },
   {
     "ticker": "CAG",
@@ -3508,7 +3643,10 @@
     "tie": 3.7581106870229006,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.318323952470294
   },
   {
     "ticker": "CAH",
@@ -3535,7 +3673,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 222.4946197,
+    "price": 222.53208859,
     "pe": 33.923824,
     "pb": null,
     "pePb": null,
@@ -3552,19 +3690,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.558653874044388
+        "eps": 6.5597583748223665
       },
       {
         "year": 2024,
-        "eps": 3.508117188442347
+        "eps": 3.5087079679282427
       },
       {
         "year": 2023,
-        "eps": 1.0168455618673469
+        "eps": 1.0170168022980413
       },
       {
         "year": 2022,
-        "eps": -3.406432632255612
+        "eps": -3.4070062876984384
       }
     ],
     "hasNegativeEquity": true,
@@ -3572,7 +3710,10 @@
     "roa": 0.02938518881066225,
     "tie": 10.772093023255813,
     "sicCode": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -62.86172449906653
   },
   {
     "ticker": "CARR",
@@ -3648,7 +3789,10 @@
     "tie": 4.925764192139738,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.275438757111631
   },
   {
     "ticker": "CAT",
@@ -3724,7 +3868,10 @@
     "tie": 23.99003984063745,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 25.513227808565684,
+    "pePbTangible": 1154.4364876175914,
+    "tangibleBvps": 36.60571712084376
   },
   {
     "ticker": "CB",
@@ -3746,32 +3893,32 @@
       "pending-analysis"
     ],
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000896159); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
-    "price": 268.3173362049,
-    "pe": 179.90393207134082,
-    "pb": 25.147573111704652,
-    "pePb": 4524.14728484719,
+    "price": 268.4155325481,
+    "pe": 179.9039320713408,
+    "pb": 25.14757311170465,
+    "pePb": 4524.147284847189,
     "debtRatio": 2.6105725558252098,
     "currentRatio": null,
     "quickRatio": null,
-    "fcf": 90374218.05199993,
+    "fcf": 90407292.38800001,
     "epsAllPositive": true,
     "epsGrowing": true,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.4914478695134852
+        "eps": 1.491993696066965
       },
       {
         "year": 2024,
-        "eps": 1.30740594367
+        "eps": 1.30788441623
       },
       {
         "year": 2023,
-        "eps": 1.2661683506
+        "eps": 1.2666317314
       },
       {
         "year": 2022,
-        "eps": 0.72891801835
+        "eps": 0.7291847811500001
       }
     ],
     "classificationId": "rejected",
@@ -3785,10 +3932,13 @@
     "quoteCurrency": "MXN",
     "roe": 0.1397833425979907,
     "roa": 0.03785889757534141,
-    "tie": 18.07329842931937,
+    "tie": 18.073298429319372,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 41.8371802679659,
+    "pePbTangible": 7526.673236984576,
+    "tangibleBvps": 6.415717570565379
   },
   {
     "ticker": "CCI",
@@ -3864,7 +4014,10 @@
     "tie": 2.189160467587673,
     "sicCode": null,
     "hasNegativeEquity": true,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -39.378392675415526
   },
   {
     "ticker": "CDNS",
@@ -3887,8 +4040,8 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "CDNS",
-    "watchReason": "Falla: P/E 89.29 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
-    "price": 384.5595072,
+    "watchReason": "Falla: P/E 89.29 > 20.00 · P/B tang. 49.37 > 2.50 · P/E×P/B 4408.47 > 22.50",
+    "price": 384.63770926,
     "pe": 89.290535,
     "pb": 16.08736,
     "pePb": 1436.4489811376002,
@@ -3898,8 +4051,8 @@
     "fcf": 1268258000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 12098354000,
       "currentAssets": 3180400000,
@@ -3915,19 +4068,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.306833946061584
+        "eps": 4.307709761846538
       },
       {
         "year": 2024,
-        "eps": 4.084066672989433
+        "eps": 4.084897187957925
       },
       {
         "year": 2023,
-        "eps": 4.052242776836269
+        "eps": 4.05306682025955
       },
       {
         "year": 2022,
-        "eps": 3.2778613037759348
+        "eps": 3.2785278729324636
       }
     ],
     "lastPrice": 6633.03,
@@ -3941,7 +4094,10 @@
     "tie": 14.0601505049725,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 49.37223874138633,
+    "pePbTangible": 4408.473611366113,
+    "tangibleBvps": 7.790566501850301
   },
   {
     "ticker": "CEG",
@@ -4019,7 +4175,10 @@
     "tie": 7.870841487279844,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.630813812073492,
+    "pePbTangible": 79.97850645472175,
+    "tangibleBvps": 72.25652803446198
   },
   {
     "ticker": "CF",
@@ -4041,10 +4200,10 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
-    "price": 115.19035584759999,
+    "price": 115.23385534716999,
     "pe": 10.351741,
-    "pb": 3.2969289999999996,
-    "pePb": 34.128955103388996,
+    "pb": 3.296929,
+    "pePb": 34.128955103389,
     "debtRatio": 1.3048780487804879,
     "currentRatio": 3.3652762119503947,
     "quickRatio": 2.9334836527621193,
@@ -4067,24 +4226,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 11.127631173113777
+        "eps": 11.131833316460487
       },
       {
         "year": 2024,
-        "eps": 8.361230112239337
+        "eps": 8.364387575579004
       },
       {
         "year": 2023,
-        "eps": 9.763038721561363
+        "eps": 9.766725551900114
       },
       {
         "year": 2022,
-        "eps": 20.320022142207765
+        "eps": 20.327695621362622
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 8.045459369708334,
+    "pePbTangible": 83.28451162124392,
+    "tangibleBvps": 14.322843488717721
   },
   {
     "ticker": "CFG",
@@ -4151,7 +4313,10 @@
     "tie": null,
     "sicCode": 6022,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.49979776697672,
+    "pePbTangible": 24.029212396316062,
+    "tangibleBvps": 44.43932473266214
   },
   {
     "ticker": "CHD",
@@ -4227,7 +4392,10 @@
     "tie": 11.051470588235293,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.89143426382882
   },
   {
     "ticker": "CHTR",
@@ -4251,7 +4419,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "CHTR",
     "watchReason": "Falla: Deuda 8.33 >= 1.00 · Corriente 0.39 < 2.00",
-    "price": 135.5778588,
+    "price": 135.610938582,
     "pe": 3.660315,
     "pb": 1.0026207,
     "pePb": 3.6699075875205005,
@@ -4278,19 +4446,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 37.03994295572922
+        "eps": 37.04898036972227
       },
       {
         "year": 2024,
-        "eps": 35.771521821647354
+        "eps": 35.78024975225595
       },
       {
         "year": 2023,
-        "eps": 30.677378879931485
+        "eps": 30.68486388533474
       },
       {
         "year": 2022,
-        "eps": 31.44456908199713
+        "eps": 31.452241274931307
       }
     ],
     "lastPrice": 2334,
@@ -4304,7 +4472,10 @@
     "tie": 2.479174930583102,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -605.8854954833954
   },
   {
     "ticker": "CI",
@@ -4380,7 +4551,10 @@
     "tie": 6.526278409090909,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -131.47406524215188
   },
   {
     "ticker": "CINF",
@@ -4491,7 +4665,10 @@
     "tie": 12.456928838951312,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -5.633076450709432
   },
   {
     "ticker": "CLF",
@@ -4567,7 +4744,10 @@
     "tie": -2.3737373737373737,
     "sicCode": 1000,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.1858947020524155,
+    "pePbTangible": 48.388066982659055,
+    "tangibleBvps": 6.235433018435106
   },
   {
     "ticker": "CLX",
@@ -4594,10 +4774,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 98.7568216,
+    "price": 98.739043,
     "pe": 16.02564,
-    "pb": 40.4560661862729,
-    "pePb": 648.3343525173824,
+    "pb": 40.45606618627289,
+    "pePb": 648.3343525173823,
     "debtRatio": 15.822429906542055,
     "currentRatio": 0.8379364252214695,
     "quickRatio": 0.5653986451276707,
@@ -4615,24 +4795,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.162426062235268
+        "eps": 6.161316677524267
       },
       {
         "year": 2024,
-        "eps": 2.1266040858940727
+        "eps": 2.1262212460781598
       },
       {
         "year": 2023,
-        "eps": 1.1341888458101719
+        "eps": 1.1339846645750185
       },
       {
         "year": 2022,
-        "eps": 3.525436995726618
+        "eps": 3.5248023323873494
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.207215259732028
   },
   {
     "ticker": "CMA",
@@ -4679,7 +4862,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "CMCSA",
     "watchReason": "Falla: Deuda 1.81 >= 1.00 · Corriente 0.88 < 2.00",
-    "price": 23.99709556436,
+    "price": 24.00267131003,
     "pe": 4.6960325,
     "pb": 0.95877874,
     "pePb": 4.50245612334905,
@@ -4706,19 +4889,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 5.110078681176077
+        "eps": 5.111266012326363
       },
       {
         "year": 2024,
-        "eps": 3.92499549908515
+        "eps": 3.9259074751449243
       },
       {
         "year": 2023,
-        "eps": 3.5173268844458714
+        "eps": 3.5181441383545096
       },
       {
         "year": 2022,
-        "eps": 1.1471605202640174
+        "eps": 1.1474270639916326
       }
     ],
     "lastPrice": 414.48,
@@ -4732,7 +4915,10 @@
     "tie": 6.843955545475165,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -15.001800491271629
   },
   {
     "ticker": "CME",
@@ -4808,7 +4994,10 @@
     "tie": 31.741061130334487,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.58329475085863
   },
   {
     "ticker": "CMI",
@@ -4884,7 +5073,10 @@
     "tie": 13.045592705167174,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 12.234593119119127,
+    "pePbTangible": 418.9408159508959,
+    "tangibleBvps": 55.55640415518274
   },
   {
     "ticker": "CMS",
@@ -4944,7 +5136,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.360713845379762,
+    "pePbTangible": 48.02944084126025,
+    "tangibleBvps": 31.19819038810785
   },
   {
     "ticker": "CNC",
@@ -5020,7 +5215,10 @@
     "tie": -8.923303834808259,
     "sicCode": 6324,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 6.814201046207498,
+    "pePbTangible": 64.38328919639554,
+    "tangibleBvps": 9.304098832729013
   },
   {
     "ticker": "CNP",
@@ -5080,7 +5278,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.647758690622123,
+    "pePbTangible": 96.38586963077853,
+    "tangibleBvps": 11.807250329010781
   },
   {
     "ticker": "COF",
@@ -5104,7 +5305,7 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000927628); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "COF",
     "watchReason": "Falla: P/E 55.24 > 20.00 · P/E×P/B 57.29 > 22.50",
-    "price": 179.45813703000002,
+    "price": 179.53633256999998,
     "pe": 55.237755,
     "pb": 1.0370882,
     "pePb": 57.286423904991,
@@ -5131,19 +5332,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.248831112524396
+        "eps": 3.2502467301576607
       },
       {
         "year": 2024,
-        "eps": 9.343412554381574
+        "eps": 9.347483772339277
       },
       {
         "year": 2023,
-        "eps": 9.633630718279536
+        "eps": 9.637828393395544
       },
       {
         "year": 2022,
-        "eps": 14.438353653923556
+        "eps": 14.444644897549304
       }
     ],
     "lastPrice": 3073.51,
@@ -5156,7 +5357,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.7583474591697679,
+    "pePbTangible": 97.12716615449214,
+    "tangibleBvps": 102.10515085270517
   },
   {
     "ticker": "COO",
@@ -5195,7 +5399,7 @@
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 57.42 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 57.42 > 20.00 · P/B tang. 7.67 > 2.50 · P/E×P/B 440.58 > 22.50",
     "rawTicker": "COO",
     "secSnapshot": {
       "assets": 12482300000,
@@ -5232,7 +5436,10 @@
     "tie": 6.665,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 7.672362154186911,
+    "pePbTangible": 440.5756758213341,
+    "tangibleBvps": 8.831699890889857
   },
   {
     "ticker": "COP",
@@ -5308,7 +5515,10 @@
     "tie": 11.264395782643957,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.4480247445063075,
+    "pePbTangible": 48.553934284632774,
+    "tangibleBvps": 45.85737960857068
   },
   {
     "ticker": "COPPER",
@@ -5362,7 +5572,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "COR",
     "watchReason": "Falla: P/B tang. N/D · P/E×P/B N/D · Deuda 49.63 >= 1.20 · Corriente 0.90 < 1.50",
-    "price": 259.66837426370006,
+    "price": 259.7815199203,
     "pe": 19.841574,
     "pb": 14.909556,
     "pePb": 295.82905868114403,
@@ -5389,19 +5599,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 13.087085443105474
+        "eps": 13.092787896781777
       },
       {
         "year": 2024,
-        "eps": 12.380119772183948
+        "eps": 12.385514178739545
       },
       {
         "year": 2023,
-        "eps": 14.024225983629357
+        "eps": 14.030336778837757
       },
       {
         "year": 2022,
-        "eps": 13.218613940021106
+        "eps": 13.224373704789633
       }
     ],
     "lastPrice": 4471.1,
@@ -5415,7 +5625,10 @@
     "tie": 6.380154519443577,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -134.32890909350243
   },
   {
     "ticker": "COST",
@@ -5491,7 +5704,10 @@
     "tie": 71.24675324675324,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 13.752655219572405,
+    "pePbTangible": 680.9928415120585,
+    "tangibleBvps": 71.21897439892723
   },
   {
     "ticker": "CPB",
@@ -5567,7 +5783,10 @@
     "tie": 3.307246376811594,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -18.420894696709226
   },
   {
     "ticker": "CPRT",
@@ -5643,7 +5862,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 3.4416341823898877,
+    "pePbTangible": 65.58585284339951,
+    "tangibleBvps": 8.803957188430623
   },
   {
     "ticker": "CRM",
@@ -5719,7 +5941,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.444565980423261
   },
   {
     "ticker": "CRWD",
@@ -5742,7 +5967,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "CRWD",
-    "watchReason": "Falla: P/E N/D · P/B tang. N/D · P/E×P/B N/D · Deuda 1.49 >= 1.00 · EPS no siempre positivo",
+    "watchReason": "Falla: P/E N/D · P/B tang. 59.29 > 2.50 · P/E×P/B 195809.07 > 22.50 · Deuda 1.49 >= 1.00 · EPS no siempre positivo",
     "price": 692.91,
     "pe": null,
     "pb": 38.06152,
@@ -5795,7 +6020,10 @@
     "tie": -3.531922486706399,
     "sicCode": 7372,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 59.29072937589682,
+    "pePbTangible": 195809.06864058695,
+    "tangibleBvps": 11.686649958495627
   },
   {
     "ticker": "CSCO",
@@ -5871,7 +6099,10 @@
     "tie": 7.967984934086629,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.130904434770433
   },
   {
     "ticker": "CSGP",
@@ -5947,7 +6178,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 2.378757331809759,
+    "pePbTangible": 1088.7912469991716,
+    "tangibleBvps": 13.469217549662353
   },
   {
     "ticker": "CSX",
@@ -6023,7 +6257,10 @@
     "tie": 5.4656398104265405,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 6.506869258255741,
+    "pePbTangible": 189.17824420420928,
+    "tangibleBvps": 7.283072414567549
   },
   {
     "ticker": "CTAS",
@@ -6047,7 +6284,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "CTAS",
     "watchReason": "Falla: P/E 34.84 > 20.00 · P/B 13.75 > 2.00 · P/E×P/B 479.14 > 22.50 · Deuda 1.10 >= 1.00",
-    "price": 165.70542680100002,
+    "price": 165.72756322799998,
     "pe": 34.843674,
     "pb": 13.751169,
     "pePb": 479.141249754906,
@@ -6074,19 +6311,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.75568181475352
+        "eps": 4.756317121667479
       },
       {
         "year": 2024,
-        "eps": 4.093669289404308
+        "eps": 4.094216158708085
       },
       {
         "year": 2023,
-        "eps": 3.510017430320921
+        "eps": 3.5104863301398037
       },
       {
         "year": 2022,
-        "eps": 3.1479371103340057
+        "eps": 3.148357640194666
       }
     ],
     "lastPrice": 2853,
@@ -6100,7 +6337,10 @@
     "tie": 23.39389563634925,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 64.55270608066864,
+    "pePbTangible": 2249.2534464926357,
+    "tangibleBvps": 2.5673217017563545
   },
   {
     "ticker": "CTSH",
@@ -6133,10 +6373,10 @@
     "fcf": 2653000000,
     "epsAllPositive": true,
     "note": "Tecnologia no especulativa: P/E bajo, liquidez fuerte, deuda minima y FCF positivo. Cumple gran parte del perfil defensivo.",
-    "watchReason": "Falla: P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/B tang. 3.89 > 2.50 · P/E×P/B 44.00 > 22.50",
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 20500000000,
       "currentAssets": 7835000000,
@@ -6178,7 +6418,10 @@
     "tie": 95.02702702702703,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 3.8876175018853973,
+    "pePbTangible": 44.00194426844485,
+    "tangibleBvps": 13.072273693426261
   },
   {
     "ticker": "CTVA",
@@ -6202,7 +6445,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "CTVA",
     "watchReason": "Falla: P/E 44.44 > 20.00 · P/B 2.26 > 2.00 · P/E×P/B 100.62 > 22.50 · Corriente 1.43 < 2.00",
-    "price": 82.47518614,
+    "price": 82.48620392,
     "pe": 44.444443,
     "pb": 2.263861,
     "pePb": 100.61604117442299,
@@ -6229,19 +6472,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.855691748459982
+        "eps": 1.8559396485180384
       },
       {
         "year": 2024,
-        "eps": 1.5077495456237353
+        "eps": 1.5079509644209061
       },
       {
         "year": 2023,
-        "eps": 1.1946015630711133
+        "eps": 1.1947611487334873
       },
       {
         "year": 2022,
-        "eps": 1.8324956016042322
+        "eps": 1.8327404029115628
       }
     ],
     "lastPrice": 1420,
@@ -6255,7 +6498,10 @@
     "tie": 10.377777777777778,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 9.009875332153218,
+    "pePbTangible": 400.43889063698975,
+    "tangibleBvps": 9.155088264721538
   },
   {
     "ticker": "CVS",
@@ -6331,7 +6577,10 @@
     "tie": 1.6848348829753126,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -45.76056051561068
   },
   {
     "ticker": "CVX",
@@ -6407,7 +6656,10 @@
     "tie": 17.222678718159408,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.20264026454712,
+    "pePbTangible": 71.72496039649417,
+    "tangibleBvps": 81.90170810170478
   },
   {
     "ticker": "D",
@@ -6483,7 +6735,10 @@
     "tie": 2.7858555885262115,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.5837244512489055,
+    "pePbTangible": 51.78847519659386,
+    "tangibleBvps": 26.37665172346767
   },
   {
     "ticker": "DAL",
@@ -6507,7 +6762,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "DAL",
     "watchReason": "Falla: P/B 2.71 > 2.00 · P/E×P/B 33.57 > 22.50 · Deuda 2.90 >= 1.00 · Corriente 0.40 < 2.00",
-    "price": 84.8406819744,
+    "price": 84.85793474277,
     "pe": 12.364459,
     "pb": 2.714901,
     "pePb": 33.568282103559,
@@ -6534,19 +6789,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.8616574307375675
+        "eps": 6.863052782395898
       },
       {
         "year": 2024,
-        "eps": 4.774495314077185
+        "eps": 4.775466231092707
       },
       {
         "year": 2023,
-        "eps": 6.422726341826157
+        "eps": 6.424032434696944
       },
       {
         "year": 2022,
-        "eps": 1.8453021288928708
+        "eps": 1.8456773801221344
       }
     ],
     "lastPrice": 1410,
@@ -6560,7 +6815,10 @@
     "tie": 10.108983799705449,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 12.064956833805999,
+    "pePbTangible": 149.1766641083641,
+    "tangibleBvps": 7.033422159041476
   },
   {
     "ticker": "DD",
@@ -6636,7 +6894,10 @@
     "tie": 1.6389776357827477,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -1.4872228333387967
   },
   {
     "ticker": "DE",
@@ -6660,7 +6921,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "DE",
     "watchReason": "Falla: P/E 32.63 > 20.00 · P/B 5.70 > 2.00 · P/E×P/B 185.87 > 22.50 · Deuda 3.08 >= 1.00",
-    "price": 576.7421454,
+    "price": 576.95656389,
     "pe": 32.633343,
     "pb": 5.695565,
     "pePb": 185.86532622379502,
@@ -6687,19 +6948,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 17.673400650371615
+        "eps": 17.679971184380342
       },
       {
         "year": 2024,
-        "eps": 24.475271603379504
+        "eps": 24.48437090507159
       },
       {
         "year": 2023,
-        "eps": 33.08269537958752
+        "eps": 33.094994708923856
       },
       {
         "year": 2022,
-        "eps": 22.23982525084601
+        "eps": 22.248093468776993
       }
     ],
     "lastPrice": 10280,
@@ -6713,7 +6974,10 @@
     "tie": 2.9738170347003154,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 8.040679751095588,
+    "pePbTangible": 262.394260270657,
+    "tangibleBvps": 71.75470006890728
   },
   {
     "ticker": "DFS",
@@ -6763,7 +7027,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 201.54147599,
+    "price": 201.54381130000002,
     "pe": 22.222223,
     "pb": 3.0229158,
     "pePb": 67.1759090178234,
@@ -6784,24 +7048,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 9.069366102122187
+        "eps": 9.069471191068509
       },
       {
         "year": 2024,
-        "eps": 7.970677180036528
+        "eps": 7.970769538207637
       },
       {
         "year": 2023,
-        "eps": 7.763377383416592
+        "eps": 7.7634673395546425
       },
       {
         "year": 2022,
-        "eps": 8.260896895304437
+        "eps": 8.260992616321829
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -31.287955734750625
   },
   {
     "ticker": "DHR",
@@ -6877,7 +7144,10 @@
     "tie": 16.973584905660378,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -12.057549952831051
   },
   {
     "ticker": "DIS",
@@ -6954,7 +7224,10 @@
     "tie": 7.624172185430464,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 7.264735256854557,
+    "pePbTangible": 116.15580843343598,
+    "tangibleBvps": 13.997757165899689
   },
   {
     "ticker": "DLR",
@@ -7031,7 +7304,10 @@
     "tie": 4.071615971795674,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 5.497549777179698,
+    "pePbTangible": 268.91453850786826,
+    "tangibleBvps": 33.633165227083346
   },
   {
     "ticker": "DTE",
@@ -7058,14 +7334,14 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 26.75922161816,
+    "price": 26.755957381400002,
     "pe": 233.83756345177667,
     "pb": 36.14137053261971,
     "pePb": 8451.210025155633,
     "debtRatio": 3.1773173987872156,
-    "currentRatio": 1.1174826313504127,
+    "currentRatio": 1.1174826313504125,
     "quickRatio": 1.0397036474164134,
-    "fcf": 977868138.5839999,
+    "fcf": 977748852.8599999,
     "epsAllPositive": true,
     "epsGrowing": false,
     "classificationId": "rejected",
@@ -7079,24 +7355,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.11443508572
+        "eps": 0.1144211263
       },
       {
         "year": 2024,
-        "eps": 0.13186174852
+        "eps": 0.1318456633
       },
       {
         "year": 2023,
-        "eps": 0.20737728732
+        "eps": 0.20735199029999998
       },
       {
         "year": 2022,
-        "eps": 0.09352309036
+        "eps": 0.0935116819
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -0.985088616368122
   },
   {
     "ticker": "DUK",
@@ -7173,7 +7452,10 @@
     "tie": 2.5718216840946617,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.878203013463085,
+    "pePbTangible": 55.474041638223426,
+    "tangibleBvps": 43.5271589300651
   },
   {
     "ticker": "DVA",
@@ -7200,7 +7482,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 195.10167091,
+    "price": 195.0438781811,
     "pe": 18.761328,
     "pb": null,
     "pePb": null,
@@ -7217,19 +7499,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 10.399139704289592
+        "eps": 10.396059286480147
       },
       {
         "year": 2024,
-        "eps": 11.339712299494646
+        "eps": 11.336353266659756
       },
       {
         "year": 2023,
-        "eps": 7.841627703844387
+        "eps": 7.839304868463689
       },
       {
         "year": 2022,
-        "eps": 6.182415372977043
+        "eps": 6.180584027023259
       }
     ],
     "hasNegativeEquity": true,
@@ -7237,7 +7519,10 @@
     "roa": 0.04272303200959399,
     "tie": 3.322404927525236,
     "sicCode": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -117.2039402308778
   },
   {
     "ticker": "DVN",
@@ -7259,7 +7544,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 43.922844,
+    "price": 43.915190255999995,
     "pe": 12.20536,
     "pb": 1.7720233,
     "pePb": 21.628182304888004,
@@ -7285,24 +7570,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.5986520676161944
+        "eps": 3.5980249870548673
       },
       {
         "year": 2024,
-        "eps": 3.9352166494795795
+        "eps": 3.93453092109597
       },
       {
         "year": 2023,
-        "eps": 5.036774403210185
+        "eps": 5.035896723662205
       },
       {
         "year": 2022,
-        "eps": 7.870433298959159
+        "eps": 7.86906184219194
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.180534031106599,
+    "pePbTangible": 26.61420284190724,
+    "tangibleBvps": 20.139649108669715
   },
   {
     "ticker": "DXCM",
@@ -7325,7 +7613,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "DXCM",
-    "watchReason": "Falla: P/E 32.41 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.31 >= 1.20",
+    "watchReason": "Falla: P/E 32.41 > 20.00 · P/B tang. 10.36 > 2.50 · P/E×P/B 335.81 > 22.50 · Deuda 1.31 >= 1.20",
     "price": 74.22,
     "pe": 32.41048,
     "pb": 9.686766,
@@ -7336,8 +7624,8 @@
     "fcf": 1976700000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 6633300000,
       "currentAssets": 4331700000,
@@ -7378,7 +7666,10 @@
     "tie": 60.47540983606557,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 10.361267351037343,
+    "pePbTangible": 335.81364825544875,
+    "tangibleBvps": 7.163216379371708
   },
   {
     "ticker": "EA",
@@ -7401,7 +7692,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "EA",
-    "watchReason": "Falla: P/E 57.70 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Corriente 1.05 < 1.50",
+    "watchReason": "Falla: P/E 57.70 > 20.00 · P/B tang. 43.39 > 2.50 · P/E×P/B 2503.79 > 22.50 · Corriente 1.05 < 1.50",
     "price": 203.12,
     "pe": 57.704544,
     "pb": 7.528818599999999,
@@ -7412,8 +7703,8 @@
     "fcf": 2277000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 13131000000,
       "currentAssets": 3973000000,
@@ -7454,7 +7745,10 @@
     "tie": 23.264150943396228,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 43.389810506621494,
+    "pePbTangible": 2503.789229531002,
+    "tangibleBvps": 4.681283407978998
   },
   {
     "ticker": "EBAY",
@@ -7530,7 +7824,10 @@
     "tie": 10.378048780487806,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 346.04218887567566,
+    "pePbTangible": 8725.377663218609,
+    "tangibleBvps": 0.3155106617338664
   },
   {
     "ticker": "ECL",
@@ -7606,7 +7903,10 @@
     "tie": 9.321032005225343,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.314072083926895
   },
   {
     "ticker": "ED",
@@ -7718,7 +8018,10 @@
     "tie": 5.215261422515309,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -30.962439914815175
   },
   {
     "ticker": "EIX",
@@ -7794,7 +8097,10 @@
     "tie": 4.893437296946069,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.9886732442510955,
+    "pePbTangible": 15.593792061441066,
+    "tangibleBvps": 36.275441532963775
   },
   {
     "ticker": "ELV",
@@ -7870,7 +8176,10 @@
     "tie": 5.7860199714693294,
     "sicCode": 6324,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 22.227379531929,
+    "pePbTangible": 378.5153361655475,
+    "tangibleBvps": 18.080853814670164
   },
   {
     "ticker": "EMR",
@@ -7892,7 +8201,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 141.64009578,
+    "price": 141.691934286,
     "pe": 32.68123,
     "pb": 3.8897235,
     "pePb": 127.120948339905,
@@ -7918,28 +8227,31 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.333989136271799
+        "eps": 4.335575322165047
       },
       {
         "year": 2024,
-        "eps": 3.648648491328208
+        "eps": 3.6499838511051697
       },
       {
         "year": 2023,
-        "eps": 24.33850655439924
+        "eps": 24.34741414381524
       },
       {
         "year": 2022,
-        "eps": 5.7548654046896806
+        "eps": 5.75697161355072
       },
       {
         "year": 2021,
-        "eps": 4.0635093985054676
+        "eps": 4.064996592192929
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -13.93321346142776
   },
   {
     "ticker": "EOG",
@@ -8016,7 +8328,10 @@
     "tie": 28.072340425531916,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.2432991307987797,
+    "pePbTangible": 30.14975748905644,
+    "tangibleBvps": 58.83299208207039
   },
   {
     "ticker": "EQIX",
@@ -8092,7 +8407,10 @@
     "tie": 3.861480075901328,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 14.485936731635938,
+    "pePbTangible": 1065.5521883246568,
+    "tangibleBvps": 73.4767809440651
   },
   {
     "ticker": "EQR",
@@ -8169,7 +8487,10 @@
     "tie": 4.82182739131285,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 2.7966171077269126,
+    "pePbTangible": 75.2358239435968,
+    "tangibleBvps": 23.664304926529983
   },
   {
     "ticker": "ES",
@@ -8196,14 +8517,14 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 14.568778527400001,
-    "pe": 3.1009889,
-    "pb": 0.3241160258718232,
+    "price": 14.574110518380001,
+    "pe": 3.1009888999999995,
+    "pb": 0.32411602587182325,
     "pePb": 1.0050801985406366,
-    "debtRatio": 2.9285101175377015,
+    "debtRatio": 2.928510117537701,
     "currentRatio": 0.6502117176742509,
     "quickRatio": 0.5872547804242345,
-    "fcf": -11184340.994819999,
+    "fcf": -11188434.323933989,
     "epsAllPositive": false,
     "epsGrowing": false,
     "classificationId": "rejected",
@@ -8211,30 +8532,33 @@
     "watchReason": "Falla: Deuda 2.93 >= 2.50 · Corriente 0.65 < 1.00 · EPS no siempre positivo",
     "rawTicker": "ES",
     "autoAnalysisNote": "SEC no devolvio campos minimos para ratios Graham.",
-    "roe": 0.10448500861657499,
+    "roe": 0.10448500861657498,
     "roa": 0.026531733232020693,
     "tie": 2.480115277020364,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.698107280358212
+        "eps": 4.699826728944435
       },
       {
         "year": 2024,
-        "eps": 2.338750773336215
+        "eps": 2.3396067269087433
       },
       {
         "year": 2023,
-        "eps": -1.3084640890471337
+        "eps": -1.3089429705612792
       },
       {
         "year": 2022,
-        "eps": 4.172661071370781
+        "eps": 4.174188213207228
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 0.4388175158790379,
+    "pePbTangible": 1.36076824586647,
+    "tangibleBvps": 33.212235134199666
   },
   {
     "ticker": "ESS",
@@ -8260,10 +8584,10 @@
     "pe": 0,
     "pb": 0,
     "pePb": 0,
-    "debtRatio": 1.3394000619341202,
-    "currentRatio": 0.7747813202728971,
-    "quickRatio": 0.7747813202728971,
-    "fcf": 30310632.058800004,
+    "debtRatio": 1.3394000619341204,
+    "currentRatio": 0.774781320272897,
+    "quickRatio": 0.774781320272897,
+    "fcf": 30321725.37156,
     "epsAllPositive": true,
     "epsGrowing": false,
     "classificationId": "graham_approved",
@@ -8276,30 +8600,33 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "roe": 0.12084841082677719,
-    "roa": 0.05089030640529238,
+    "roe": 0.12084841082677718,
+    "roa": 0.05089030640529237,
     "tie": 3.7196676522035266,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.603959408
+        "eps": 0.6041804496000001
       },
       {
         "year": 2024,
-        "eps": 0.6701626508
+        "eps": 0.67040792196
       },
       {
         "year": 2023,
-        "eps": 0.36702148640000004
+        "eps": 0.36715581168
       },
       {
         "year": 2022,
-        "eps": 0.3641178354
+        "eps": 0.36425109798
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 0,
+    "pePbTangible": 0,
+    "tangibleBvps": 4.9988305539015165
   },
   {
     "ticker": "ETN",
@@ -8359,7 +8686,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -3.6317550571499675
   },
   {
     "ticker": "ETR",
@@ -8426,7 +8756,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.0062584916661117,
+    "pePbTangible": 85.18755021984232,
+    "tangibleBvps": 36.949583779283685
   },
   {
     "ticker": "EVRG",
@@ -8453,7 +8786,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 78.1345237725,
+    "price": 78.17220449999999,
     "pe": 21.3809,
     "pb": 1.7490798,
     "pePb": 37.396900295820004,
@@ -8474,24 +8807,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.6544076148571856
+        "eps": 3.656169969458722
       },
       {
         "year": 2024,
-        "eps": 3.7842089782264297
+        "eps": 3.786033930122556
       },
       {
         "year": 2023,
-        "eps": 3.1651563221577264
+        "eps": 3.166682733110423
       },
       {
         "year": 2022,
-        "eps": 3.265003524749453
+        "eps": 3.2665780874672183
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.31843397445686,
+    "pePbTangible": 49.57020496446467,
+    "tangibleBvps": 33.71767553497546
   },
   {
     "ticker": "EXC",
@@ -8567,7 +8903,10 @@
     "tie": 2.547249647390691,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.1121798544061217,
+    "pePbTangible": 35.72910637217035,
+    "tangibleBvps": 21.86366842940293
   },
   {
     "ticker": "FANG",
@@ -8643,7 +8982,10 @@
     "tie": 8.071698113207548,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 8.773818468045643,
+    "pePbTangible": 1718.221178380642,
+    "tangibleBvps": 21.650778471407484
   },
   {
     "ticker": "FCX",
@@ -8720,7 +9062,10 @@
     "tie": 18.26829268292683,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 4.293541454100828,
+    "pePbTangible": 155.20930380481315,
+    "tangibleBvps": 16.333835541058477
   },
   {
     "ticker": "FDX",
@@ -8797,7 +9142,10 @@
     "tie": 7.896070975918884,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 3.4395241131152923,
+    "pePbTangible": 62.07451907189863,
+    "tangibleBvps": 98.48746188704075
   },
   {
     "ticker": "FE",
@@ -8873,7 +9221,10 @@
     "tie": 2.510658914728682,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.777041671967498,
+    "pePbTangible": 96.65143698189398,
+    "tangibleBvps": 12.533618665462097
   },
   {
     "ticker": "FFIV",
@@ -8912,7 +9263,7 @@
     "epsGrowing": true,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 32.47 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 32.47 > 20.00 · P/B tang. 21.38 > 2.50 · P/E×P/B 694.18 > 22.50",
     "rawTicker": "FFIV",
     "secSnapshot": {
       "assets": 6497472000,
@@ -8949,7 +9300,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 21.377596904248982,
+    "pePbTangible": 694.177089131828,
+    "tangibleBvps": 18.561955386160854
   },
   {
     "ticker": "FIS",
@@ -9026,7 +9380,10 @@
     "tie": 4.0076726342711,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -103.0417211378192
   },
   {
     "ticker": "FITB",
@@ -9100,7 +9457,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "FTNT",
-    "watchReason": "Falla: P/E 56.84 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 7.40 >= 1.00 · Corriente 1.17 < 1.50",
+    "watchReason": "Falla: P/E 56.84 > 20.00 · P/B tang. 119.14 > 2.50 · P/E×P/B 6771.74 > 22.50 · Deuda 7.40 >= 1.00 · Corriente 1.17 < 1.50",
     "price": 149.49,
     "pe": 56.840305,
     "pb": 110.89763,
@@ -9111,8 +9468,8 @@
     "fcf": 1991500000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 9883500000,
       "currentAssets": 5332600000,
@@ -9153,7 +9510,10 @@
     "tie": 114.54228855721394,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 119.13619758864975,
+    "pePbTangible": 6771.737807479117,
+    "tangibleBvps": 1.2547823669524443
   },
   {
     "ticker": "GD",
@@ -9230,7 +9590,10 @@
     "tie": 13.694029850746269,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 29.408302784379245,
+    "pePbTangible": 665.3975228855633,
+    "tangibleBvps": 12.225459001699713
   },
   {
     "ticker": "GDDY",
@@ -9307,7 +9670,10 @@
     "tie": 7.754966887417218,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -32.328912229993286
   },
   {
     "ticker": "GE",
@@ -9383,7 +9749,10 @@
     "tie": 12.862396204033216,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 67.30736033211828,
+    "pePbTangible": 2805.921824001729,
+    "tangibleBvps": 5.085030794717967
   },
   {
     "ticker": "GEHC",
@@ -9459,7 +9828,10 @@
     "tie": 7.290909090909091,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.42343632831007
   },
   {
     "ticker": "GEN",
@@ -9535,7 +9907,10 @@
     "tie": 3.6555360281195077,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -17.52675585284281
   },
   {
     "ticker": "GEV",
@@ -9562,7 +9937,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 972.5046954039999,
+    "price": 972.8719437492999,
     "pe": 28.395231,
     "pb": 18.683556,
     "pePb": 530.523888521436,
@@ -9583,24 +9958,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 34.24887423539537
+        "eps": 34.261807686977434
       },
       {
         "year": 2024,
-        "eps": 10.80320623140227
+        "eps": 10.807285861692145
       },
       {
         "year": 2023,
-        "eps": -3.093900804522637
+        "eps": -3.0950691587283834
       },
       {
         "year": 2022,
-        "eps": -19.468488926545458
+        "eps": -19.47584083998871
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 23.056379784407117,
+    "pePbTangible": 654.6912300019702,
+    "tangibleBvps": 42.1953469211696
   },
   {
     "ticker": "GILD",
@@ -9677,7 +10055,10 @@
     "tie": 10.56640625,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -2.2128946849695494
   },
   {
     "ticker": "GIS",
@@ -9755,7 +10136,10 @@
     "tie": 6.165816326530612,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -23.987171517410687
   },
   {
     "ticker": "GLW",
@@ -9792,9 +10176,9 @@
     "fcf": 1452000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 86.18 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.58 >= 1.00",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 86.18 > 20.00 · P/B tang. 15.86 > 2.50 · P/E×P/B 1366.94 > 22.50 · Deuda 1.58 >= 1.00",
     "rawTicker": "GLW",
     "secSnapshot": {
       "assets": 31253000000,
@@ -9831,7 +10215,10 @@
     "tie": 7.107142857142857,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 15.86080709106339,
+    "pePbTangible": 1366.9397093245907,
+    "tangibleBvps": 11.845551044237785
   },
   {
     "ticker": "GM",
@@ -9907,7 +10294,10 @@
     "tie": 5.287482806052269,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.6709530331090794,
+    "pePbTangible": 49.81454706737076,
+    "tangibleBvps": 50.31260504286833
   },
   {
     "ticker": "GOLD",
@@ -9960,7 +10350,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "GOOG",
-    "watchReason": "Falla: P/E 27.31 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 27.31 > 20.00 · P/B tang. 9.46 > 2.50 · P/E×P/B 258.29 > 22.50",
     "price": 367.11,
     "pe": 27.314732,
     "pb": 9.29063,
@@ -9971,8 +10361,8 @@
     "fcf": 44422000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 703919000000,
       "currentAssets": 213753000000,
@@ -10014,7 +10404,10 @@
     "tie": 216.7961956521739,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 9.456196638285347,
+    "pePbTangible": 258.2934769140652,
+    "tangibleBvps": 38.8221622331414
   },
   {
     "ticker": "GOOGL",
@@ -10037,7 +10430,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "GOOGL",
-    "watchReason": "Falla: P/E 27.48 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 27.48 > 20.00 · P/B tang. 9.51 > 2.50 · P/E×P/B 261.46 > 22.50",
     "price": 369.35,
     "pe": 27.4814,
     "pb": 9.347321,
@@ -10048,8 +10441,8 @@
     "fcf": 44422000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 703919000000,
       "currentAssets": 213753000000,
@@ -10091,7 +10484,10 @@
     "tie": 216.7961956521739,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 9.513896101758384,
+    "pePbTangible": 261.45518433086283,
+    "tangibleBvps": 38.82216034834938
   },
   {
     "ticker": "GPC",
@@ -10113,7 +10509,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 148.0776075,
+    "price": 148.15245,
     "pe": 23.865232,
     "pb": 4.4878087,
     "pePb": 107.10259579711841,
@@ -10139,24 +10535,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.204742007117299
+        "eps": 6.20787805456909
       },
       {
         "year": 2024,
-        "eps": 85.41421443840197
+        "eps": 85.45738513417449
       },
       {
         "year": 2023,
-        "eps": 123.17072963064766
+        "eps": 123.2329835087864
       },
       {
         "year": 2022,
-        "eps": 109.70511931732928
+        "eps": 109.76056730525349
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -58.95461416067479
   },
   {
     "ticker": "GRBK",
@@ -10232,7 +10631,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.7763161295700898,
+    "pePbTangible": 18.87925269360012,
+    "tangibleBvps": 40.567103344065345
   },
   {
     "ticker": "GS",
@@ -10308,7 +10710,10 @@
     "tie": null,
     "sicCode": 6211,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.67814362068813,
+    "pePbTangible": 52.005376566002454,
+    "tangibleBvps": 401.8343122776536
   },
   {
     "ticker": "GWW",
@@ -10385,7 +10790,10 @@
     "tie": 31,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 19.302076327868853,
+    "pePbTangible": 682.1243752433784,
+    "tangibleBvps": 68.07143323244077
   },
   {
     "ticker": "HAL",
@@ -10407,7 +10815,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
-    "price": 40.03717689424,
+    "price": 40.04066927332,
     "pe": 22.076874,
     "pb": 3.0579085,
     "pePb": 67.509060658029,
@@ -10433,24 +10841,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.8135346921960056
+        "eps": 1.8136928839345643
       },
       {
         "year": 2024,
-        "eps": 3.4215354526097976
+        "eps": 3.421833907689878
       },
       {
         "year": 2023,
-        "eps": 3.5303475341415576
+        "eps": 3.5306554807259514
       },
       {
         "year": 2022,
-        "eps": 2.1037002429473666
+        "eps": 2.1038837453640946
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 3.754799984447694,
+    "pePbTangible": 82.8942461518537,
+    "tangibleBvps": 10.663862106947812
   },
   {
     "ticker": "HBAN",
@@ -10477,7 +10888,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 18.29799594,
+    "price": 18.2947023,
     "pe": 13.08683,
     "pb": 1.2447981,
     "pePb": 16.290461119023,
@@ -10494,19 +10905,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.398199253753583
+        "eps": 1.3979475778320647
       },
       {
         "year": 2024,
-        "eps": 1.2271964673232887
+        "eps": 1.2269755719101576
       },
       {
         "year": 2023,
-        "eps": 1.247314442197441
+        "eps": 1.247089925548029
       },
       {
         "year": 2022,
-        "eps": 1.4585531783760397
+        "eps": 1.458290638745679
       }
     ],
     "roe": 0.0908306630515159,
@@ -10514,7 +10925,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.5561299390950947,
+    "pePbTangible": 20.36480797084786,
+    "tangibleBvps": 11.756538988407714
   },
   {
     "ticker": "HCA",
@@ -10590,7 +11004,10 @@
     "roa": 0.11172595520421608,
     "tie": 5.3736654804270465,
     "sicCode": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -70.35629955526906
   },
   {
     "ticker": "HD",
@@ -10666,7 +11083,10 @@
     "tie": 8.712271973466004,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -19.847584722636405
   },
   {
     "ticker": "HIG",
@@ -10742,7 +11162,10 @@
     "tie": 24.91959798994975,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.1097402627802686,
+    "pePbTangible": 19.247118222539136,
+    "tangibleBvps": 61.533641031678435
   },
   {
     "ticker": "HL",
@@ -10819,7 +11242,10 @@
     "tie": 12.523989322046127,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.9936190594336414,
+    "pePbTangible": 72.280716649453,
+    "tangibleBvps": 5.565170340394573
   },
   {
     "ticker": "HLT",
@@ -10895,7 +11321,10 @@
     "roa": 0.08686061762251103,
     "tie": 4.341935483870968,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -77.32509438735062
   },
   {
     "ticker": "HOLX",
@@ -10995,7 +11424,10 @@
     "tie": 5.074404761904762,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -17.49718719591766
   },
   {
     "ticker": "HPE",
@@ -11018,7 +11450,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "HPE",
-    "watchReason": "Falla: P/E 44.97 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 2.07 >= 1.00 · Corriente 1.01 < 1.50 · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 44.97 > 20.00 · Deuda 2.07 >= 1.00 · Corriente 1.01 < 1.50 · EPS no siempre positivo",
     "price": 49.02,
     "pe": 44.972477,
     "pb": 2.5647464,
@@ -11071,7 +11503,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 0.43701695081100916,
+    "pePbTangible": 19.65373476895824,
+    "tangibleBvps": 112.1695620937116
   },
   {
     "ticker": "HPQ",
@@ -11147,7 +11582,10 @@
     "roa": 0.06054729584141349,
     "tie": 5.807207207207207,
     "sicCode": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -10.759587531479783
   },
   {
     "ticker": "HRL",
@@ -11174,7 +11612,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 23.634483895,
+    "price": 23.63722911,
     "pe": 27.78157,
     "pb": 1.5964341,
     "pePb": 44.351445699536995,
@@ -11195,24 +11633,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.850725279204883
+        "eps": 0.8508240934547616
       },
       {
         "year": 2024,
-        "eps": 1.4374323683116987
+        "eps": 1.4375993303201144
       },
       {
         "year": 2023,
-        "eps": 1.4178754653414716
+        "eps": 1.4180401557579358
       },
       {
         "year": 2022,
-        "eps": 1.7796781702906748
+        "eps": 1.779884885158237
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 10.005722385471346,
+    "pePbTangible": 277.9746768525392,
+    "tangibleBvps": 2.3623710712104176
   },
   {
     "ticker": "HSY",
@@ -11288,7 +11729,10 @@
     "tie": 6.4011369803297065,
     "sicCode": 2060,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -7.203454407381092
   },
   {
     "ticker": "HUBB",
@@ -11366,7 +11810,10 @@
     "tie": 18.458658346333852,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.932790849405487
   },
   {
     "ticker": "HUM",
@@ -11442,7 +11889,10 @@
     "tie": 3.464342313787639,
     "sicCode": 6324,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 7.035970537182569,
+    "pePbTangible": 284.930583693702,
+    "tangibleBvps": 54.04513819244451
   },
   {
     "ticker": "HWM",
@@ -11518,7 +11968,10 @@
     "tie": 13.185430463576159,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 108.13895520137298,
+    "pePbTangible": 6785.405835916071,
+    "tangibleBvps": 2.500856416602094
   },
   {
     "ticker": "IBM",
@@ -11594,7 +12047,10 @@
     "tie": 6.337467700258398,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -49.54117060579625
   },
   {
     "ticker": "ICE",
@@ -11670,7 +12126,10 @@
     "tie": 6.412204234122043,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -35.37550118831178
   },
   {
     "ticker": "IDXX",
@@ -11693,7 +12152,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "IDXX",
-    "watchReason": "Falla: P/E 41.33 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Corriente 1.23 < 1.50",
+    "watchReason": "Falla: P/E 41.33 > 20.00 · P/B tang. 40.50 > 2.50 · P/E×P/B 1674.20 > 22.50 · Corriente 1.23 < 1.50",
     "price": 570,
     "pe": 41.3343,
     "pb": 29.025358,
@@ -11746,7 +12205,10 @@
     "tie": 35.08290435498816,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 40.50385792067947,
+    "pePbTangible": 1674.1986144507414,
+    "tangibleBvps": 14.072733543462864
   },
   {
     "ticker": "INDEX100",
@@ -11854,7 +12316,10 @@
     "tie": 27.324324324324323,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 2.320522509239492,
+    "pePbTangible": 22.671437620117068,
+    "tangibleBvps": 43.744458239824624
   },
   {
     "ticker": "INTC",
@@ -11878,7 +12343,7 @@
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000050863); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "INTC",
     "priority": "requested",
-    "watchReason": "Falla: P/E N/D · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
+    "watchReason": "Falla: P/E N/D · P/B tang. 6.61 > 2.50 · P/E×P/B 2328.78 > 22.50 · EPS no siempre positivo",
     "price": 127.86,
     "pe": null,
     "pb": 5.765433,
@@ -11931,7 +12396,10 @@
     "tie": 2.4271310724106323,
     "sicCode": 3674,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 6.612164800164389,
+    "pePbTangible": 2328.782031743512,
+    "tangibleBvps": 19.337086092715232
   },
   {
     "ticker": "INTU",
@@ -11954,7 +12422,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "INTU",
-    "watchReason": "Falla: P/B tang. N/D · P/E×P/B N/D · Corriente 1.36 < 1.50",
+    "watchReason": "Falla: P/B tang. 152.69 > 2.50 · P/E×P/B 2579.34 > 22.50 · Corriente 1.36 < 1.50",
     "price": 281.77,
     "pe": 16.892685,
     "pb": 3.7461944,
@@ -11965,8 +12433,8 @@
     "fcf": 3889000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 39330000000,
       "currentAssets": 17837000000,
@@ -12007,7 +12475,10 @@
     "tie": 20.57085020242915,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 152.68974326600465,
+    "pePbTangible": 2579.339735723488,
+    "tangibleBvps": 1.84537608075692
   },
   {
     "ticker": "IQV",
@@ -12083,7 +12554,10 @@
     "tie": 3.1824417009602195,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -87.774219818061
   },
   {
     "ticker": "ISRG",
@@ -12106,7 +12580,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "ISRG",
-    "watchReason": "Falla: P/E 50.01 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 50.01 > 20.00 · P/B tang. 8.18 > 2.50 · P/E×P/B 409.22 > 22.50",
     "price": 416.55,
     "pe": 50.006,
     "pb": 8.448091,
@@ -12159,7 +12633,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 8.183388754772798,
+    "pePbTangible": 409.21853807116855,
+    "tangibleBvps": 50.90189559393174
   },
   {
     "ticker": "ITW",
@@ -12219,7 +12696,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.815419857500919
   },
   {
     "ticker": "JNJ",
@@ -12295,7 +12775,10 @@
     "tie": 34.55406797116375,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -5.55321925121642
   },
   {
     "ticker": "JNPR",
@@ -12394,7 +12877,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.871021240610175,
+    "pePbTangible": 44.107941456765175,
+    "tangibleBvps": 111.24961232683818
   },
   {
     "ticker": "K",
@@ -12497,7 +12983,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.1395834442795663,
+    "pePbTangible": 11.894123001724125,
+    "tangibleBvps": 46.71005029706402
   },
   {
     "ticker": "KDP",
@@ -12573,7 +13062,10 @@
     "tie": 4.563660477453581,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.949446810254257
   },
   {
     "ticker": "KEY",
@@ -12600,14 +13092,14 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 475.28522551755003,
+    "price": 475.34040018248,
     "pe": 4.457603111738204,
     "pb": 0.5716475931546454,
     "pePb": 2.5481780900638022,
-    "debtRatio": 0.05737740571648157,
-    "currentRatio": 10.538755583476636,
-    "quickRatio": 10.084767690104401,
-    "fcf": 6871108642.965,
+    "debtRatio": 0.057377405716481575,
+    "currentRatio": 10.538755583476638,
+    "quickRatio": 10.084767690104403,
+    "fcf": 6871906292.664001,
     "epsAllPositive": true,
     "epsGrowing": true,
     "classificationId": "graham_approved",
@@ -12617,27 +13109,30 @@
     "epsHistory": [
       {
         "year": 2026,
-        "eps": 106.62349554315001
+        "eps": 106.63587319624
       },
       {
         "year": 2025,
-        "eps": 95.47921055385001
+        "eps": 95.49029449496
       },
       {
         "year": 2024,
-        "eps": 88.53044159070001
+        "eps": 88.54071886672
       },
       {
         "year": 2023,
-        "eps": 86.930766783
+        "eps": 86.94085835679999
       }
     ],
-    "roe": 0.12824102520228456,
-    "roa": 0.1212821689861891,
+    "roe": 0.1282410252022846,
+    "roa": 0.12128216898618911,
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 0.5764935673217974,
+    "pePbTangible": 2.5697795195907016,
+    "tangibleBvps": 824.5372145100555
   },
   {
     "ticker": "KHC",
@@ -12713,7 +13208,10 @@
     "tie": -4.74973600844773,
     "sicCode": 2030,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -15.201347935973041
   },
   {
     "ticker": "KLAC",
@@ -12736,7 +13234,7 @@
     ],
     "notes": "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "KLAC",
-    "watchReason": "Falla: P/E 72.03 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 2.42 >= 1.00",
+    "watchReason": "Falla: P/E 72.03 > 20.00 · P/B tang. 13.79 > 2.50 · P/E×P/B 993.04 > 22.50 · Deuda 2.42 >= 1.00",
     "price": 256.42,
     "pe": 72.02809,
     "pb": 57.48039,
@@ -12747,8 +13245,8 @@
     "fcf": 3879422000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 16873515000,
       "currentAssets": 11350979000,
@@ -12789,7 +13287,10 @@
     "tie": 16.370518191987188,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 13.786879385862207,
+    "pePbTangible": 993.0425892240279,
+    "tangibleBvps": 18.59884262590609
   },
   {
     "ticker": "KMB",
@@ -12866,7 +13367,10 @@
     "tie": 9.015625,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -1.0664595384292137
   },
   {
     "ticker": "KMI",
@@ -12942,7 +13446,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 6.972406492682928,
+    "pePbTangible": 149.2189814162447,
+    "tangibleBvps": 4.512071984474106
   },
   {
     "ticker": "KO",
@@ -13019,7 +13526,10 @@
     "tie": 10.672309552599758,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 81.99108341532674,
+    "pePbTangible": 2126.24959494706,
+    "tangibleBvps": 0.9868146221479901
   },
   {
     "ticker": "KR",
@@ -13095,7 +13605,10 @@
     "tie": 2.8779342723004695,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 16.842866961925516,
+    "pePbTangible": 709.8381984363399,
+    "tangibleBvps": 3.8033904883777883
   },
   {
     "ticker": "KVUE",
@@ -13171,7 +13684,10 @@
     "tie": 5.648837209302326,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.272841761229836
   },
   {
     "ticker": "LEN",
@@ -13251,7 +13767,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.5787330955849037,
+    "pePbTangible": 22.208666791364884,
+    "tangibleBvps": 56.849381476194736
   },
   {
     "ticker": "LHX",
@@ -13327,7 +13846,10 @@
     "tie": 4.236180904522613,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -38.93810321169331
   },
   {
     "ticker": "LIN",
@@ -13403,7 +13925,10 @@
     "tie": 20.174568965517242,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -3.3895300636717782
   },
   {
     "ticker": "LLY",
@@ -13426,7 +13951,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "LLY",
-    "watchReason": "Falla: P/E 40.32 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 3.24 >= 1.20",
+    "watchReason": "Falla: P/E 40.32 > 20.00 · P/B tang. 58.96 > 2.50 · P/E×P/B 2377.05 > 22.50 · Deuda 3.24 >= 1.20",
     "price": 1129.35,
     "pe": 40.319527,
     "pb": 32.34384,
@@ -13480,7 +14005,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 58.95522651908534,
+    "pePbTangible": 2377.0468474273775,
+    "tangibleBvps": 19.156062433826794
   },
   {
     "ticker": "LMT",
@@ -13556,7 +14084,10 @@
     "tie": 6.29695885509839,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -36.595694247979125
   },
   {
     "ticker": "LNT",
@@ -13668,7 +14199,10 @@
     "roa": 0.12289450354609929,
     "tie": 6.72822527832351,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -35.24398864787573
   },
   {
     "ticker": "LW",
@@ -13744,7 +14278,10 @@
     "tie": 3.695,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 23.421540358682268,
+    "pePbTangible": 499.43956815919984,
+    "tangibleBvps": 1.9392405155437609
   },
   {
     "ticker": "MA",
@@ -13820,7 +14357,10 @@
     "tie": 26.73130193905817,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.536687990913444
   },
   {
     "ticker": "MAA",
@@ -13846,10 +14386,10 @@
     "pe": 0,
     "pb": 0,
     "pePb": 0,
-    "debtRatio": 1.0796172544139775,
+    "debtRatio": 1.0796172544139773,
     "currentRatio": 0.0902011121526771,
     "quickRatio": 0.0902011121526771,
-    "fcf": 22528527.20505,
+    "fcf": 22529310.878189996,
     "epsAllPositive": true,
     "epsGrowing": false,
     "classificationId": "graham_approved",
@@ -13863,29 +14403,32 @@
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
     "roe": 0.07863612617632894,
-    "roa": 0.03731897343074538,
-    "tie": 3.4781033915047748,
+    "roa": 0.03731897343074539,
+    "tie": 3.4781033915047743,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.219503277
+        "eps": 0.2195109126
       },
       {
         "year": 2024,
-        "eps": 0.2607327285
+        "eps": 0.2607417983
       },
       {
         "year": 2023,
-        "eps": 0.2735080515
+        "eps": 0.27351756569999996
       },
       {
         "year": 2022,
-        "eps": 0.318221682
+        "eps": 0.31823275160000003
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 0,
+    "pePbTangible": 0,
+    "tangibleBvps": 2.8172326929167983
   },
   {
     "ticker": "MAR",
@@ -13961,7 +14504,10 @@
     "roa": 0.09444444444444444,
     "tie": 5.195302843016069,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -83.93859178495346
   },
   {
     "ticker": "MCD",
@@ -14037,7 +14583,10 @@
     "roa": 0.1438796941947408,
     "tie": 7.88811630847029,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -7.32455368788467
   },
   {
     "ticker": "MCHP",
@@ -14114,7 +14663,10 @@
     "tie": 2.2697307335190344,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.403680182379322
   },
   {
     "ticker": "MCK",
@@ -14190,7 +14742,10 @@
     "roa": 0.05784531661868494,
     "tie": 26.105263157894736,
     "sicCode": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -140.92819187603516
   },
   {
     "ticker": "MCO",
@@ -14266,7 +14821,10 @@
     "tie": 12.138790035587188,
     "sicCode": 7320,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -24.00000384715338
   },
   {
     "ticker": "MDLZ",
@@ -14342,7 +14900,10 @@
     "tie": 6.031719532554257,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -14.555653904485148
   },
   {
     "ticker": "MDT",
@@ -14418,7 +14979,10 @@
     "tie": 8.720164609053498,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.309509873406984
   },
   {
     "ticker": "MET",
@@ -14494,7 +15058,10 @@
     "tie": 5.3930254476908575,
     "sicCode": 6311,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.9032886913312645,
+    "pePbTangible": 49.90241120273293,
+    "tangibleBvps": 30.193346001635362
   },
   {
     "ticker": "META",
@@ -14518,7 +15085,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "META",
     "priority": "requested",
-    "watchReason": "Falla: P/E 20.62 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 20.62 > 20.00 · P/B tang. 6.60 > 2.50 · P/E×P/B 136.03 > 22.50",
     "price": 593.48,
     "pe": 20.621264,
     "pb": 6.1812463,
@@ -14529,8 +15096,8 @@
     "fcf": 13797000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 395250000000,
       "currentAssets": 109765000000,
@@ -14572,7 +15139,10 @@
     "tie": 74.76137339055794,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 6.596384699580672,
+    "pePbTangible": 136.02579033561372,
+    "tangibleBvps": 89.9704955106283
   },
   {
     "ticker": "MHO",
@@ -14649,7 +15219,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.3625646890686525,
+    "pePbTangible": 14.464068370552381,
+    "tangibleBvps": 103.6941593551608
   },
   {
     "ticker": "MKC",
@@ -14676,10 +15249,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 47.91831,
-    "pe": 7.8414600000000005,
+    "price": 47.909127749999996,
+    "pe": 7.841459999999999,
     "pb": 1.8294444,
-    "pePb": 14.345515084824001,
+    "pePb": 14.345515084824,
     "debtRatio": 1.295615793602371,
     "currentRatio": 0.6982234994448436,
     "quickRatio": 0.28283586963620927,
@@ -14697,24 +15270,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 6.110891339112869
+        "eps": 6.109720351822237
       },
       {
         "year": 2024,
-        "eps": 6.090035054679037
+        "eps": 6.0888680639320585
       },
       {
         "year": 2023,
-        "eps": 5.255783677325744
+        "eps": 5.254776548324927
       },
       {
         "year": 2022,
-        "eps": 5.255783677325744
+        "eps": 5.254776548324927
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -23.73631256273969
   },
   {
     "ticker": "MLM",
@@ -14790,7 +15366,10 @@
     "tie": 6.3304347826086955,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 7.0563794202711865,
+    "pePbTangible": 260.8557042129974,
+    "tangibleBvps": 83.45497951942161
   },
   {
     "ticker": "MMM",
@@ -14867,7 +15446,10 @@
     "tie": 5.453488372093023,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.506373828259196
   },
   {
     "ticker": "MNST",
@@ -14944,7 +15526,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 15.442865395432992,
+    "pePbTangible": 692.1819195693488,
+    "tangibleBvps": 6.037092055958181
   },
   {
     "ticker": "MO",
@@ -15020,7 +15605,10 @@
     "roa": 0.19838935374246794,
     "tie": 8.977060322854715,
     "sicCode": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -14.620845086632313
   },
   {
     "ticker": "MOS",
@@ -15042,7 +15630,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 21.60215904,
+    "price": 21.60266124,
     "pe": 153.71901,
     "pb": 0.5737417,
     "pePb": 88.19500611971701,
@@ -15068,24 +15656,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.14053017281336902
+        "eps": 0.14053343981333213
       },
       {
         "year": 2024,
-        "eps": 0.04546564414550175
+        "eps": 0.04546670111607805
       },
       {
         "year": 2023,
-        "eps": 0.28932682638046564
+        "eps": 0.2893335525568603
       },
       {
         "year": 2022,
-        "eps": 0.8316079638249956
+        "eps": 0.8316272967777184
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 7.521407145553168,
+    "pePbTangible": 1156.1832602213588,
+    "tangibleBvps": 2.8721568746310986
   },
   {
     "ticker": "MPC",
@@ -15161,7 +15752,10 @@
     "tie": 5.968130311614731,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 12.7433687307358,
+    "pePbTangible": 210.59298668657075,
+    "tangibleBvps": 19.685532554272672
   },
   {
     "ticker": "MPWR",
@@ -15184,7 +15778,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "MPWR",
-    "watchReason": "Falla: P/E 112.32 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 112.32 > 20.00 · P/B tang. 19.79 > 2.50 · P/E×P/B 2222.38 > 22.50",
     "price": 1652.29,
     "pe": 112.32427,
     "pb": 22.074095,
@@ -15237,7 +15831,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 19.78543664032492,
+    "pePbTangible": 2222.384727255749,
+    "tangibleBvps": 83.51041374707137
   },
   {
     "ticker": "MRK",
@@ -15260,7 +15857,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "MRK",
-    "watchReason": "Falla: P/E 33.60 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.60 >= 1.20",
+    "watchReason": "Falla: P/E 33.60 > 20.00 · P/B tang. 141.09 > 2.50 · P/E×P/B 4740.06 > 22.50 · Deuda 1.60 >= 1.20",
     "price": 114.9,
     "pe": 33.596493,
     "pb": 6.1854005,
@@ -15271,8 +15868,8 @@
     "fcf": 2731000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 128685000000,
       "currentAssets": 35015000000,
@@ -15314,7 +15911,10 @@
     "tie": 16.524686809137805,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 141.0879544140083,
+    "pePbTangible": 4740.0604728545495,
+    "tangibleBvps": 0.8143856112821481
   },
   {
     "ticker": "MRO",
@@ -15361,7 +15961,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "MRVL",
     "priority": "requested",
-    "watchReason": "Falla: P/E 96.22 > 20.00 · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 96.22 > 20.00 · P/B tang. 214.96 > 2.50 · P/E×P/B 20684.11 > 22.50 · EPS no siempre positivo",
     "price": 308.88,
     "pe": 96.2243,
     "pb": 14.847143999999998,
@@ -15415,7 +16015,10 @@
     "tie": 16.03751233958539,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 214.9572124244478,
+    "pePbTangible": 20684.10729549379,
+    "tangibleBvps": 1.4369371304931848
   },
   {
     "ticker": "MS",
@@ -15491,7 +16094,10 @@
     "tie": null,
     "sicCode": 6211,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 3.610223874150468,
+    "pePbTangible": 71.28229633749186,
+    "tangibleBvps": 60.378527093778494
   },
   {
     "ticker": "MSCI",
@@ -15567,7 +16173,10 @@
     "roa": 0.21083974474871278,
     "tie": 8.119267803458019,
     "sicCode": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -95.16310198661193
   },
   {
     "ticker": "MSFT",
@@ -15590,7 +16199,7 @@
     ],
     "notes": "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
     "rawTicker": "MSFT",
-    "watchReason": "Falla: P/E 23.26 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Corriente 1.35 < 1.50",
+    "watchReason": "Falla: P/E 23.26 > 20.00 · P/B tang. 11.76 > 2.50 · P/E×P/B 273.47 > 22.50 · Corriente 1.35 < 1.50",
     "price": 399.76,
     "pe": 23.25538,
     "pb": 7.167112,
@@ -15601,8 +16210,8 @@
     "fcf": 63563000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 694228000000,
       "currentAssets": 175329000000,
@@ -15643,7 +16252,10 @@
     "tie": 52.835220125786165,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 11.759300257183439,
+    "pePbTangible": 273.4669960148986,
+    "tangibleBvps": 33.99522006046214
   },
   {
     "ticker": "MSI",
@@ -15720,7 +16332,10 @@
     "tie": 8.811111111111112,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -43.16071082443243
   },
   {
     "ticker": "MSTR",
@@ -15797,7 +16412,10 @@
     "tie": -84.05655091737471,
     "sicCode": 6199,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -28.131729453288195
   },
   {
     "ticker": "MTB",
@@ -15824,10 +16442,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 231.76822546364,
-    "pe": 12.979894999999999,
+    "price": 231.78167937272,
+    "pe": 12.979895000000003,
     "pb": 1.3268952,
-    "pePb": 17.222960372004,
+    "pePb": 17.222960372004003,
     "debtRatio": 6.3177502827569665,
     "currentRatio": null,
     "quickRatio": null,
@@ -15841,19 +16459,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 17.855939933538753
+        "eps": 17.85697645263848
       },
       {
         "year": 2024,
-        "eps": 15.377115331000432
+        "eps": 15.378007956860433
       },
       {
         "year": 2023,
-        "eps": 16.585017150033934
+        "eps": 16.585979893362445
       },
       {
         "year": 2022,
-        "eps": 12.110528672570695
+        "eps": 12.111231676407158
       }
     ],
     "roe": 0.09771395277101827,
@@ -15861,7 +16479,10 @@
     "tie": null,
     "sicCode": 6022,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.696945884253439,
+    "pePbTangible": 22.0261793982918,
+    "tangibleBvps": 136.5875491513926
   },
   {
     "ticker": "MTH",
@@ -15938,7 +16559,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.1837758323765122,
+    "pePbTangible": 16.070252926584917,
+    "tangibleBvps": 61.582605427624074
   },
   {
     "ticker": "MU",
@@ -15962,7 +16586,7 @@
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "MU",
     "priority": "requested",
-    "watchReason": "Falla: P/E 51.32 > 20.00 · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 51.32 > 20.00 · P/B tang. 8.34 > 2.50 · P/E×P/B 427.86 > 22.50 · EPS no siempre positivo",
     "price": 1087.99,
     "pe": 51.320282,
     "pb": 16.937124,
@@ -16016,7 +16640,10 @@
     "tie": 21.238993710691823,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 8.337031656472357,
+    "pePbTangible": 427.85881565308847,
+    "tangibleBvps": 130.50088386738364
   },
   {
     "ticker": "NDAQ",
@@ -16092,7 +16719,10 @@
     "tie": 7.059322033898305,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -16.071937220964955
   },
   {
     "ticker": "NEE",
@@ -16168,7 +16798,10 @@
     "tie": 1.9908136482939633,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.1129881487238142,
+    "pePbTangible": 68.0432840403695,
+    "tangibleBvps": 27.66473750801311
   },
   {
     "ticker": "NEM",
@@ -16190,10 +16823,10 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 105.74605272000001,
+    "price": 105.785983608,
     "pe": 13.697908,
-    "pb": 3.234163,
-    "pePb": 44.301267231004005,
+    "pb": 3.2341629999999997,
+    "pePb": 44.301267231004,
     "debtRatio": 0.6814598281512977,
     "currentRatio": 2.2874649859943976,
     "quickRatio": 1.816701680672269,
@@ -16216,24 +16849,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 7.7198688091641445
+        "eps": 7.722783917661004
       },
       {
         "year": 2024,
-        "eps": 3.527702178835572
+        "eps": 3.5290342784929782
       },
       {
         "year": 2023,
-        "eps": -3.5518645225262264
+        "eps": -3.553205746153889
       },
       {
         "year": 2022,
-        "eps": -0.6523832796476743
+        "eps": -0.6526296268445919
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 3.107527712805921,
+    "pePbTangible": 42.56662871746593,
+    "tangibleBvps": 34.041847212516494
   },
   {
     "ticker": "NFLX",
@@ -16309,7 +16945,10 @@
     "tie": 17.384273222495526,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -1.766441806083685
   },
   {
     "ticker": "NI",
@@ -16369,7 +17008,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.7302130157454605,
+    "pePbTangible": 64.16000587001832,
+    "tangibleBvps": 17.386921725973362
   },
   {
     "ticker": "NKE",
@@ -16446,7 +17088,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 7.515408189168475,
+    "pePbTangible": 223.48451340221723,
+    "tangibleBvps": 6.014310715037961
   },
   {
     "ticker": "NOC",
@@ -16522,7 +17167,10 @@
     "tie": 8.621052631578948,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -5.824171605399573
   },
   {
     "ticker": "NRG",
@@ -16549,10 +17197,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 137.97373637984,
+    "price": 137.9328660032,
     "pe": 151.47194,
-    "pb": 71.90546900690065,
-    "pePb": 10891.660887085114,
+    "pb": 71.90546900690066,
+    "pePb": 10891.660887085116,
     "debtRatio": 16.33491969066032,
     "currentRatio": 1.637439282600573,
     "quickRatio": 1.5800224187320961,
@@ -16570,24 +17218,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 0.9108864412764504
+        "eps": 0.9106166198386315
       },
       {
         "year": 2024,
-        "eps": 1.1334970927604708
+        "eps": 1.1331613299238832
       },
       {
         "year": 2023,
-        "eps": -0.2544121731245947
+        "eps": -0.25433681152600185
       },
       {
         "year": 2022,
-        "eps": 1.1743847634412092
+        "eps": 1.1740368889191335
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.441723353662421
   },
   {
     "ticker": "NTAP",
@@ -16663,7 +17314,10 @@
     "tie": 16.119266055045873,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -7.190409652732161
   },
   {
     "ticker": "NTRS",
@@ -16685,7 +17339,7 @@
       "pending-analysis"
     ],
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000073124); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
-    "price": 145.81154247999999,
+    "price": 145.73535394,
     "pe": 15.174415,
     "pb": 2.214374,
     "pePb": 33.60183004121,
@@ -16698,19 +17352,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 9.609038798530289
+        "eps": 9.604017943360585
       },
       {
         "year": 2024,
-        "eps": 10.741454126045872
+        "eps": 10.735841568264634
       },
       {
         "year": 2023,
-        "eps": 5.585116372601129
+        "eps": 5.582198072342308
       },
       {
         "year": 2022,
-        "eps": 6.750514670821049
+        "eps": 6.7469874338940485
       }
     ],
     "classificationId": "rejected",
@@ -16727,7 +17381,10 @@
     "tie": null,
     "sicCode": 6022,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.082208292920678,
+    "pePbTangible": 31.59629275321993,
+    "tangibleBvps": 69.99076626266795
   },
   {
     "ticker": "NUE",
@@ -16803,7 +17460,10 @@
     "tie": 16.105882352941176,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 3.3393724883471188,
+    "pePbTangible": 88.36389011233548,
+    "tangibleBvps": 77.6553082667202
   },
   {
     "ticker": "NVDA",
@@ -16827,7 +17487,7 @@
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "NVDA",
     "priority": "requested",
-    "watchReason": "Falla: P/E 31.43 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 31.43 > 20.00 · P/B tang. 28.35 > 2.50 · P/E×P/B 890.99 > 22.50",
     "price": 212.45,
     "pe": 31.427513,
     "pb": 26.325900000000004,
@@ -16838,8 +17498,8 @@
     "fcf": 50490000000,
     "epsAllPositive": true,
     "epsGrowing": true,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
     "secSnapshot": {
       "assets": 259474000000,
       "currentAssets": 150995000000,
@@ -16880,7 +17540,10 @@
     "tie": 547.1389961389962,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 28.350635447724837,
+    "pePbTangible": 890.9899640916332,
+    "tangibleBvps": 7.4936591947553435
   },
   {
     "ticker": "O",
@@ -16957,7 +17620,10 @@
     "tie": 2.04395131663258,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 1.901370824241318,
+    "pePbTangible": 97.64560218611786,
+    "tangibleBvps": 32.68168376612963
   },
   {
     "ticker": "ODFL",
@@ -17033,7 +17699,10 @@
     "tie": 4600.013513513513,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 11.774837566026894,
+    "pePbTangible": 583.6287728366732,
+    "tangibleBvps": 20.16333547436876
   },
   {
     "ticker": "OGE",
@@ -17109,7 +17778,10 @@
     "tie": 3.073621901590825,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.046784018748155,
+    "pePbTangible": 43.601049600209386,
+    "tangibleBvps": 23.41722407492449
   },
   {
     "ticker": "OKE",
@@ -17186,7 +17858,10 @@
     "tie": 3.5182277061132923,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 4.5879908103810525,
+    "pePbTangible": 71.51867434206949,
+    "tangibleBvps": 19.06063102875677
   },
   {
     "ticker": "ORCL",
@@ -17265,7 +17940,10 @@
     "tie": 4.957518166573505,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -22.764570485587527
   },
   {
     "ticker": "ORLY",
@@ -17341,7 +18019,10 @@
     "roa": 0.15347503753872915,
     "tie": 14.784207705135623,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -2.1535871837522294
   },
   {
     "ticker": "OTIS",
@@ -17417,7 +18098,10 @@
     "roa": 0.12991645545855626,
     "tie": null,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -20.212567647126754
   },
   {
     "ticker": "PANW",
@@ -17440,7 +18124,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "PANW",
-    "watchReason": "Falla: P/E 243.20 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 2.01 >= 1.00 · Corriente 0.94 < 1.50 · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 243.20 > 20.00 · P/B tang. 110.62 > 2.50 · P/E×P/B 26901.53 > 22.50 · Deuda 2.01 >= 1.00 · Corriente 0.94 < 1.50 · EPS no siempre positivo",
     "price": 284.54,
     "pe": 243.1966,
     "pb": 8.360954,
@@ -17493,7 +18177,10 @@
     "tie": 840.8421052631579,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 110.61639108973588,
+    "pePbTangible": 26901.53021729406,
+    "tangibleBvps": 2.572313173453392
   },
   {
     "ticker": "PCAR",
@@ -17570,7 +18257,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 3.107503502072467,
+    "pePbTangible": 78.29741336156889,
+    "tangibleBvps": 38.83825067920567
   },
   {
     "ticker": "PCG",
@@ -17647,7 +18337,10 @@
     "tie": 1.8001981505944518,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.0507412102636755,
+    "pePbTangible": 13.826420411103541,
+    "tangibleBvps": 15.779337326875543
   },
   {
     "ticker": "PEG",
@@ -17724,7 +18417,10 @@
     "tie": 3.470343392299688,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.2042686854586058,
+    "pePbTangible": 39.086758019695004,
+    "tangibleBvps": 36.36126599662895
   },
   {
     "ticker": "PEP",
@@ -17800,7 +18496,10 @@
     "tie": 10.138269402319358,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -10.645904762088144
   },
   {
     "ticker": "PFE",
@@ -17878,7 +18577,10 @@
     "tie": 3.8154249344814675,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.494293281194166
   },
   {
     "ticker": "PG",
@@ -17954,7 +18656,10 @@
     "tie": 23.2348401323043,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.97243235315539
   },
   {
     "ticker": "PGR",
@@ -18030,7 +18735,10 @@
     "tie": 52.16187050359712,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 3.8526222904568805,
+    "pePbTangible": 39.79738792406047,
+    "tangibleBvps": 52.82116560039604
   },
   {
     "ticker": "PH",
@@ -18106,7 +18814,10 @@
     "tie": 11.04156479217604,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -34.245595971576655
   },
   {
     "ticker": "PHM",
@@ -18183,7 +18894,10 @@
     "tie": 4813.100826446281,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 2.0424135861244914,
+    "pePbTangible": 24.28752046765911,
+    "tangibleBvps": 60.14452745248852
   },
   {
     "ticker": "PLD",
@@ -18248,7 +18962,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 2.415626396805304,
+    "pePbTangible": 90.11535822056211,
+    "tangibleBvps": 61.58826850242892
   },
   {
     "ticker": "PLTR",
@@ -18271,7 +18988,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "PLTR",
-    "watchReason": "Falla: P/E 149.68 > 20.00 · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 149.68 > 20.00 · P/B tang. 32.74 > 2.50 · P/E×P/B 4901.08 > 22.50 · EPS no siempre positivo",
     "price": 134.71,
     "pe": 149.6778,
     "pb": 38.215603,
@@ -18325,7 +19042,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 32.74423202485114,
+    "pePbTangible": 4901.084612169263,
+    "tangibleBvps": 4.114007007333758
   },
   {
     "ticker": "PM",
@@ -18401,7 +19121,10 @@
     "roa": 0.16402399364023992,
     "tie": 9.74606175173283,
     "sicCode": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -23.604642657335383
   },
   {
     "ticker": "PNC",
@@ -18477,7 +19200,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.914690256908652,
+    "pePbTangible": 25.65084305924001,
+    "tangibleBvps": 120.416343671299
   },
   {
     "ticker": "PNR",
@@ -18553,7 +19279,10 @@
     "tie": 11.90057636887608,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.529891055570814
   },
   {
     "ticker": "PNW",
@@ -18580,7 +19309,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 103.82111234269999,
+    "price": 103.85790189688,
     "pe": 19.342314,
     "pb": 1.7849901,
     "pePb": 34.5258390010914,
@@ -18601,24 +19330,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 5.367564208848021
+        "eps": 5.369466233299698
       },
       {
         "year": 2024,
-        "eps": 5.569512169180918
+        "eps": 5.571485754948598
       },
       {
         "year": 2023,
-        "eps": 4.687318447726689
+        "eps": 4.688979423534984
       },
       {
         "year": 2022,
-        "eps": 4.5278858474638755
+        "eps": 4.5294903274963785
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.8412802409581204,
+    "pePbTangible": 35.61462058260762,
+    "tangibleBvps": 56.40526606793812
   },
   {
     "ticker": "POR",
@@ -18694,7 +19426,10 @@
     "tie": 2.5474137931034484,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.679412305571754,
+    "pePbTangible": 38.001409126841146,
+    "tangibleBvps": 30.04622499941785
   },
   {
     "ticker": "PPL",
@@ -18754,7 +19489,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 2.1052401465459107,
+    "pePbTangible": 46.14941345810383,
+    "tangibleBvps": 17.180937794362556
   },
   {
     "ticker": "PRU",
@@ -18821,7 +19559,10 @@
     "tie": null,
     "sicCode": 6311,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.294205832228821,
+    "pePbTangible": 14.486841816724013,
+    "tangibleBvps": 83.98200447978135
   },
   {
     "ticker": "PSA",
@@ -18898,7 +19639,10 @@
     "tie": 6.8779421665380385,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 5.841493391037067,
+    "pePbTangible": 193.6986167707901,
+    "tangibleBvps": 54.94827752308986
   },
   {
     "ticker": "PSX",
@@ -18974,7 +19718,10 @@
     "tie": 5.990791896869245,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.825017397245896,
+    "pePbTangible": 48.36585725045302,
+    "tangibleBvps": 61.330595758068895
   },
   {
     "ticker": "PWR",
@@ -19050,7 +19797,10 @@
     "tie": 6.31471246342443,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -9.106785075897266
   },
   {
     "ticker": "PYPL",
@@ -19126,7 +19876,10 @@
     "tie": 15.267573696145124,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 4.44560647727352,
+    "pePbTangible": 34.65941959256834,
+    "tangibleBvps": 9.55775105538784
   },
   {
     "ticker": "QCOM",
@@ -19149,7 +19902,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "QCOM",
-    "watchReason": "Falla: P/E 22.79 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.36 >= 1.00",
+    "watchReason": "Falla: P/E 22.79 > 20.00 · P/B tang. 14.50 > 2.50 · P/E×P/B 330.42 > 22.50 · Deuda 1.36 >= 1.00",
     "price": 220.81,
     "pe": 22.78741,
     "pb": 8.572482,
@@ -19160,8 +19913,8 @@
     "fcf": 13212000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 57136000000,
       "currentAssets": 23112000000,
@@ -19204,7 +19957,10 @@
     "tie": 20.07078313253012,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 14.500257601206897,
+    "pePbTangible": 330.4233150643181,
+    "tangibleBvps": 15.228005327410278
   },
   {
     "ticker": "QQQ",
@@ -19308,7 +20064,10 @@
     "tie": 5.408266129032258,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 8.32106487476433,
+    "pePbTangible": 149.4028891921211,
+    "tangibleBvps": 37.69589646528069
   },
   {
     "ticker": "REGN",
@@ -19331,7 +20090,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "REGN",
-    "watchReason": "Falla: P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E×P/B 33.87 > 22.50",
     "price": 614.98,
     "pe": 15.017826,
     "pb": 1.9945834999999998,
@@ -19342,8 +20101,8 @@
     "fcf": 4349800000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 40868800000,
       "currentAssets": 18209200000,
@@ -19386,7 +20145,10 @@
     "tie": 120.42237442922375,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 2.255078294015834,
+    "pePbTangible": 33.86637343590664,
+    "tangibleBvps": 272.7089350431582
   },
   {
     "ticker": "RF",
@@ -19413,7 +20175,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 29.30337786818,
+    "price": 29.31392926328,
     "pe": 12.224078999999998,
     "pb": 1.428995,
     "pePb": 17.468147770604997,
@@ -19430,19 +20192,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 2.397184922330754
+        "eps": 2.3980480871630494
       },
       {
         "year": 2024,
-        "eps": 2.01155082612972
+        "eps": 2.012275134010733
       },
       {
         "year": 2023,
-        "eps": 2.1991566026599525
+        "eps": 2.199948462571319
       },
       {
         "year": 2022,
-        "eps": 2.376339836049617
+        "eps": 2.377195495100762
       }
     ],
     "roe": 0.11321745523289398,
@@ -19450,7 +20212,10 @@
     "tie": 1.2694610778443114,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.064867377311475,
+    "pePbTangible": 25.241101944778272,
+    "tangibleBvps": 14.196519149548333
   },
   {
     "ticker": "RJF",
@@ -19477,10 +20242,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 184.34180688848002,
+    "price": 184.2839964378,
     "pe": 16.722492,
-    "pb": 2.8446496,
-    "pePb": 47.569630178803195,
+    "pb": 2.8446496000000003,
+    "pePb": 47.5696301788032,
     "debtRatio": 6.056626409661681,
     "currentRatio": null,
     "quickRatio": null,
@@ -19514,7 +20279,10 @@
     "tie": null,
     "sicCode": 6211,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 3.4266100070273215,
+    "pePbTangible": 57.30145842963432,
+    "tangibleBvps": 53.78026564443248
   },
   {
     "ticker": "ROK",
@@ -19536,7 +20304,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 397.962879314,
+    "price": 397.979038688,
     "pe": 41.151745,
     "pb": 12.608074,
     "pePb": 518.84424618913,
@@ -19562,24 +20330,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 9.6706197832923
+        "eps": 9.671012461026866
       },
       {
         "year": 2024,
-        "eps": 10.439730352758831
+        "eps": 10.44015426040449
       },
       {
         "year": 2023,
-        "eps": 15.067002139549281
+        "eps": 15.067613938627256
       },
       {
         "year": 2022,
-        "eps": 10.048870883029938
+        "eps": 10.049278919737175
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -11.694710144035152
   },
   {
     "ticker": "ROST",
@@ -19656,7 +20427,10 @@
     "tie": 75.90793843234411,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 11.622899540519649,
+    "pePbTangible": 389.795171128787,
+    "tangibleBvps": 20.370992554359997
   },
   {
     "ticker": "RTX",
@@ -19732,7 +20506,10 @@
     "tie": 5.759128065395095,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -15.799678522100121
   },
   {
     "ticker": "SBUX",
@@ -19808,7 +20585,10 @@
     "roa": 0.05797680802755804,
     "tie": 5.620899373387394,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.20201621315765
   },
   {
     "ticker": "SCHW",
@@ -19884,7 +20664,10 @@
     "tie": null,
     "sicCode": 6211,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 5.039579918608843,
+    "pePbTangible": 91.30473532321336,
+    "tangibleBvps": 18.047139140340573
   },
   {
     "ticker": "SHW",
@@ -19961,7 +20744,10 @@
     "tie": 8.178924731182796,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -30.261991778912698
   },
   {
     "ticker": "SILVER",
@@ -20067,7 +20853,10 @@
     "tie": -1.693079495755081,
     "sicCode": 2033,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -56.149436090225564
   },
   {
     "ticker": "SKHYNIX",
@@ -20091,15 +20880,15 @@
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de KRW a USD. Fundamentales convertidos de KRW a USD. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "SKHYNIX",
     "priority": "requested",
-    "watchReason": "Falla: P/E 38.54 > 20.00 · P/B tang. N/D · P/E×P/B N/D · EPS no siempre positivo",
-    "price": 1538.8378863,
-    "pe": 38.54052800688993,
-    "pb": 13.725393632429997,
-    "pePb": 528.983917696257,
-    "debtRatio": 0.4600287606200057,
-    "currentRatio": 1.8582111575540052,
-    "quickRatio": 1.475927244600638,
-    "fcf": 3517355548.987499,
+    "watchReason": "Falla: P/E 38.71 > 20.00 · P/B tang. 14.26 > 2.50 · P/E×P/B 552.09 > 22.50 · EPS no siempre positivo",
+    "price": 1544.6950695,
+    "pe": 38.706151247143005,
+    "pb": 13.784376845289602,
+    "pePb": 533.5401750213953,
+    "debtRatio": 0.46002876062000564,
+    "currentRatio": 1.858211157554005,
+    "quickRatio": 1.4759272446006377,
+    "fcf": 3515635424.812496,
     "epsAllPositive": false,
     "epsGrowing": false,
     "classificationId": "rejected",
@@ -20111,29 +20900,32 @@
     "quoteCurrency": "KRW",
     "autoAnalysisNote": "No se encontro CIK en SEC para analisis automatico.",
     "roe": 0.35612884271852696,
-    "roa": 0.2437105077866034,
-    "tie": 55.63395918385023,
+    "roa": 0.24371050778660344,
+    "tie": 55.63395918385022,
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 39.9277842282
+        "eps": 39.908257983
       },
       {
         "year": 2024,
-        "eps": 18.7933966011
+        "eps": 18.784205896499998
       },
       {
         "year": 2023,
-        "eps": -8.7582161436
+        "eps": -8.753933034
       },
       {
         "year": 2022,
-        "eps": 2.1439245498
+        "eps": 2.142876087
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 14.263642135212876,
+    "pePbTangible": 552.0906898206714,
+    "tangibleBvps": 108.29597762317572
   },
   {
     "ticker": "SLB",
@@ -20209,7 +21001,10 @@
     "tie": 8.689964157706093,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 19.316708110122484,
+    "pePbTangible": 478.1107399398581,
+    "tangibleBvps": 2.7804944659206448
   },
   {
     "ticker": "SNDK",
@@ -20283,7 +21078,10 @@
     "tie": -22.476190476190474,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -80.15742585692473
   },
   {
     "ticker": "SNPS",
@@ -20359,7 +21157,10 @@
     "tie": 4.118539427706731,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -36.83174503001091
   },
   {
     "ticker": "SO",
@@ -20435,7 +21236,10 @@
     "tie": 2.543854231006794,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 3.422678778098511,
+    "pePbTangible": 82.3373639842368,
+    "tangibleBvps": 27.411278148667588
   },
   {
     "ticker": "SP500",
@@ -20542,7 +21346,10 @@
     "tie": 6.539304600265686,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 13.696277709564532,
+    "pePbTangible": 208.45019728260777,
+    "tangibleBvps": 15.745883996598433
   },
   {
     "ticker": "SPGI",
@@ -20618,7 +21425,10 @@
     "tie": 22.696864111498257,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -76.32055648369914
   },
   {
     "ticker": "SPY",
@@ -20723,7 +21533,10 @@
     "tie": 1.7630548302872062,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.7844527336508351,
+    "pePbTangible": 55.987962910706756,
+    "tangibleBvps": 51.51719530946568
   },
   {
     "ticker": "STLD",
@@ -20799,7 +21612,10 @@
     "tie": 22.315063603786246,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 4.410773719864046,
+    "pePbTangible": 133.69360370449337,
+    "tangibleBvps": 61.710261574785505
   },
   {
     "ticker": "STT",
@@ -20875,7 +21691,10 @@
     "tie": null,
     "sicCode": 6022,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.464932194861876,
+    "pePbTangible": 41.926391582506106,
+    "tangibleBvps": 67.90044786987687
   },
   {
     "ticker": "STZ",
@@ -20952,7 +21771,10 @@
     "tie": 7.575774336283186,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 82.43071205583975,
+    "pePbTangible": 1270.5996075276585,
+    "tangibleBvps": 1.7970243894005744
   },
   {
     "ticker": "SWKS",
@@ -20991,7 +21813,7 @@
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 30.87 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 30.87 > 20.00 · P/B tang. 5.32 > 2.50 · P/E×P/B 164.31 > 22.50",
     "rawTicker": "SWKS",
     "secSnapshot": {
       "assets": 7896000000,
@@ -21028,7 +21850,10 @@
     "tie": 20.435424354243544,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 5.3218565553366535,
+    "pePbTangible": 164.30963360845874,
+    "tangibleBvps": 14.329585776514019
   },
   {
     "ticker": "SYF",
@@ -21050,7 +21875,7 @@
       "pending-analysis"
     ],
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0001601712); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
-    "price": 71.1871300035,
+    "price": 71.2036683736,
     "pe": 7.3527293,
     "pb": 1.5496505,
     "pePb": 11.39416063610965,
@@ -21063,19 +21888,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 9.681728661423724
+        "eps": 9.683977944570868
       },
       {
         "year": 2024,
-        "eps": 8.920127161117765
+        "eps": 8.92219950712079
       },
       {
         "year": 2023,
-        "eps": 5.414673680257451
+        "eps": 5.415931630638234
       },
       {
         "year": 2022,
-        "eps": 6.4162318176461115
+        "eps": 6.417722452490393
       }
     ],
     "classificationId": "graham_approved",
@@ -21092,7 +21917,10 @@
     "tie": null,
     "sicCode": 6199,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.8032542623201582,
+    "pePbTangible": 13.258840449911313,
+    "tangibleBvps": 39.48620550159452
   },
   {
     "ticker": "SYK",
@@ -21168,7 +21996,10 @@
     "tie": 8.43657331136738,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -6.7050327036727575
   },
   {
     "ticker": "SYY",
@@ -21233,7 +22064,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -8.853552091874532
   },
   {
     "ticker": "TAP",
@@ -21292,7 +22126,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -18.611250627825214
   },
   {
     "ticker": "TDG",
@@ -21368,7 +22205,10 @@
     "roa": 0.09053210528613209,
     "tie": 2.672391857506361,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -407.47385527982215
   },
   {
     "ticker": "TECH",
@@ -21390,7 +22230,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham. Fundamentales obtenidos con simbolo Yahoo base TECH.",
-    "watchReason": "Falla: P/E 76.95 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "watchReason": "Falla: P/E 76.95 > 20.00 · P/B tang. 9.88 > 2.50 · P/E×P/B 760.10 > 22.50",
     "price": 56.17,
     "pe": 76.9452,
     "pb": 4.3539257,
@@ -21428,7 +22268,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": 9.878397400308245,
+    "pePbTangible": 760.095263646198,
+    "tangibleBvps": 5.686145001439938
   },
   {
     "ticker": "TER",
@@ -21465,9 +22308,9 @@
     "fcf": 305798000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 74.68 > 20.00 · P/B tang. N/D · P/E×P/B N/D",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 74.68 > 20.00 · P/B tang. 18.62 > 2.50 · P/E×P/B 1390.24 > 22.50",
     "rawTicker": "TER",
     "secSnapshot": {
       "assets": 4433827000,
@@ -21504,7 +22347,10 @@
     "tie": 96.42214431784984,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 18.615448615490305,
+    "pePbTangible": 1390.2428427462562,
+    "tangibleBvps": 23.22855650334328
   },
   {
     "ticker": "TFC",
@@ -21531,10 +22377,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 48.960390465,
-    "pe": 12.091221999999998,
+    "price": 48.96664974,
+    "pe": 12.091222,
     "pb": 1.0239275,
-    "pePb": 12.380534714405,
+    "pePb": 12.380534714405002,
     "debtRatio": 7.39923913543696,
     "currentRatio": null,
     "quickRatio": null,
@@ -21548,19 +22394,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.049250808975305
+        "eps": 4.049768479976631
       },
       {
         "year": 2024,
-        "eps": 3.561644690617022
+        "eps": 3.562100024272639
       },
       {
         "year": 2023,
-        "eps": -1.1554144978489747
+        "eps": -1.1555622102551122
       },
       {
         "year": 2022,
-        "eps": 4.695858922450419
+        "eps": 4.696459258192795
       }
     ],
     "roe": 0.08140944024298578,
@@ -21568,7 +22414,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.4046530328627322,
+    "pePbTangible": 16.98397165331659,
+    "tangibleBvps": 34.8603168144693
   },
   {
     "ticker": "TGT",
@@ -21645,7 +22494,10 @@
     "tie": 11.712359550561798,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 4.256557670771728,
+    "pePbTangible": 75.98468783182629,
+    "tangibleBvps": 31.28584417272933
   },
   {
     "ticker": "TJX",
@@ -21722,7 +22574,10 @@
     "tie": 99.63513513513513,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 17.71680872459679,
+    "pePbTangible": 576.7614598550942,
+    "tangibleBvps": 9.444703196896326
   },
   {
     "ticker": "TMHC",
@@ -21799,7 +22654,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.490290340762486,
+    "pePbTangible": 15.980086756218325,
+    "tangibleBvps": 48.27918294309538
   },
   {
     "ticker": "TMO",
@@ -21876,7 +22734,10 @@
     "tie": 6.150105708245243,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -32.32394609931958
   },
   {
     "ticker": "TOL",
@@ -21953,7 +22814,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 1.8183308739751731,
+    "pePbTangible": 20.315852643742435,
+    "tangibleBvps": 81.7837953083287
   },
   {
     "ticker": "TRV",
@@ -22032,7 +22896,10 @@
     "tie": 19.343529411764706,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.9902973968918998,
+    "pePbTangible": 18.078434510132446,
+    "tangibleBvps": 153.98201317983512
   },
   {
     "ticker": "TSLA",
@@ -22109,7 +22976,10 @@
     "tie": 16.615384615384617,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 17.469577018502005,
+    "pePbTangible": 6470.825663369043,
+    "tangibleBvps": 23.535200627041604
   },
   {
     "ticker": "TSN",
@@ -22136,10 +23006,10 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 57.316072065,
-    "pe": 45.047924,
+    "price": 57.331389318,
+    "pe": 45.047923999999995,
     "pb": 1.1101733,
-    "pePb": 50.0110024452292,
+    "pePb": 50.011002445229195,
     "debtRatio": 1.0191318772463367,
     "currentRatio": 1.5520425731726404,
     "quickRatio": 0.662858037251526,
@@ -22157,24 +23027,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.2723354813198495
+        "eps": 1.2726755026047372
       },
       {
         "year": 2024,
-        "eps": 2.1524472428343318
+        "eps": 2.153022466812525
       },
       {
         "year": 2023,
-        "eps": -1.7889228196000893
+        "eps": -1.7894008946397433
       },
       {
         "year": 2022,
-        "eps": 8.533257513814329
+        "eps": 8.535537957318988
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 7.136602924271967,
+    "pePbTangible": 321.4891461507813,
+    "tangibleBvps": 8.03342849901497
   },
   {
     "ticker": "TXN",
@@ -22197,7 +23070,7 @@
     ],
     "notes": "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
     "rawTicker": "TXN",
-    "watchReason": "Falla: P/E 51.54 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.13 >= 1.00",
+    "watchReason": "Falla: P/E 51.54 > 20.00 · P/B tang. 21.91 > 2.50 · P/E×P/B 1129.07 > 22.50 · Deuda 1.13 >= 1.00",
     "price": 313.34,
     "pe": 51.536182,
     "pb": 16.995173,
@@ -22208,8 +23081,8 @@
     "fcf": 5714000000,
     "epsAllPositive": true,
     "epsGrowing": false,
-    "classificationId": "rejected",
-    "classificationLabel": "RECHAZADA",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
     "secSnapshot": {
       "assets": 34393000000,
       "currentAssets": 13796000000,
@@ -22250,7 +23123,10 @@
     "tie": 11.515653775322283,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 21.90827092735583,
+    "pePbTangible": 1129.0686378175187,
+    "tangibleBvps": 14.302361014202496
   },
   {
     "ticker": "UBER",
@@ -22273,7 +23149,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "UBER",
-    "watchReason": "Falla: P/B tang. N/D · P/E×P/B N/D · Deuda 1.25 >= 1.00 · Corriente 1.14 < 1.50 · EPS no siempre positivo",
+    "watchReason": "Falla: P/B tang. 10.05 > 2.50 · P/E×P/B 171.85 > 22.50 · Deuda 1.25 >= 1.00 · Corriente 1.14 < 1.50 · EPS no siempre positivo",
     "price": 72.85,
     "pe": 17.100937,
     "pb": 5.9939113,
@@ -22326,7 +23202,10 @@
     "tie": 14.181818181818182,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 10.049009487155368,
+    "pePbTangible": 171.84747815224625,
+    "tangibleBvps": 7.2494707158070435
   },
   {
     "ticker": "UDR",
@@ -22391,7 +23270,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 9.885798082984069,
+    "pePbTangible": 859.0932919591339,
+    "tangibleBvps": 4.054670223236098
   },
   {
     "ticker": "UNH",
@@ -22467,7 +23349,10 @@
     "tie": 4.672413793103448,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -40.861932311890094
   },
   {
     "ticker": "UPS",
@@ -22544,7 +23429,10 @@
     "tie": 8.044247787610619,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 15.293683655204896,
+    "pePbTangible": 267.16077166767775,
+    "tangibleBvps": 7.11600961897508
   },
   {
     "ticker": "URI",
@@ -22620,7 +23508,10 @@
     "tie": 5.662011173184357,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 49.94067775719096,
+    "pePbTangible": 1371.925902083024,
+    "tangibleBvps": 21.70595291618591
   },
   {
     "ticker": "USB",
@@ -22699,7 +23590,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.865163568354388,
+    "pePbTangible": 23.031582504638372,
+    "tangibleBvps": 30.983877757695772
   },
   {
     "ticker": "V",
@@ -22776,7 +23670,10 @@
     "tie": 42.07640067911715,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -4.954352991392846
   },
   {
     "ticker": "VICI",
@@ -22853,7 +23750,10 @@
     "tie": 4.343921509126211,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 0.9564459962605478,
+    "pePbTangible": 9.168124044891048,
+    "tangibleBvps": 29.264590065130214
   },
   {
     "ticker": "VLO",
@@ -22930,7 +23830,10 @@
     "tie": 6.404676258992806,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 1.8950422311995543,
+    "pePbTangible": 35.83616200233901,
+    "tangibleBvps": 130.42453404510604
   },
   {
     "ticker": "VRSK",
@@ -23007,7 +23910,10 @@
     "tie": 7.853715623171445,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -13.61288342242243
   },
   {
     "ticker": "VST",
@@ -23085,7 +23991,10 @@
     "tie": 2.1435845213849287,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -1.1769146722378145
   },
   {
     "ticker": "VTRS",
@@ -23190,7 +24099,10 @@
     "tie": 4.386913654018524,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -20.497302575275665
   },
   {
     "ticker": "WAB",
@@ -23266,7 +24178,10 @@
     "tie": 8.075555555555555,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -17.642246091917123
   },
   {
     "ticker": "WDAY",
@@ -23289,7 +24204,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "WDAY",
-    "watchReason": "Falla: P/E 40.50 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.32 >= 1.00 · Corriente 1.32 < 1.50 · EPS no siempre positivo",
+    "watchReason": "Falla: P/E 40.50 > 20.00 · P/B tang. 15.01 > 2.50 · P/E×P/B 607.81 > 22.50 · Deuda 1.32 >= 1.00 · Corriente 1.32 < 1.50 · EPS no siempre positivo",
     "price": 129.6,
     "pe": 40.5,
     "pb": 4.3027887,
@@ -23342,7 +24257,10 @@
     "tie": 9.850877192982455,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "tech"
+    "sectorProfileId": "tech",
+    "pbTangible": 15.007541470117395,
+    "pePbTangible": 607.8054295397545,
+    "tangibleBvps": 8.635658296067744
   },
   {
     "ticker": "WEC",
@@ -23455,7 +24373,10 @@
     "tie": 0.26371452017393837,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "reit"
+    "sectorProfileId": "reit",
+    "pbTangible": 2.316203084838228,
+    "pePbTangible": 239.28852497754733,
+    "tangibleBvps": 91.88313468413506
   },
   {
     "ticker": "WFC",
@@ -23531,7 +24452,10 @@
     "tie": null,
     "sicCode": 6021,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.7516531032536256,
+    "pePbTangible": 22.64890265151903,
+    "tangibleBvps": 47.46373573943995
   },
   {
     "ticker": "WMT",
@@ -23608,7 +24532,10 @@
     "tie": 11.528403001071812,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "consumer_staples"
+    "sectorProfileId": "consumer_staples",
+    "pbTangible": 13.144069538603594,
+    "pePbTangible": 559.1783580490064,
+    "tangibleBvps": 9.19197814992964
   },
   {
     "ticker": "WRB",
@@ -23630,8 +24557,8 @@
       "pending-analysis"
     ],
     "notes": "Yahoo time series no entrego todos los ratios minimos. Fundamentales SEC EDGAR (0000011544); precio Yahoo Chart. SEC EDGAR companyfacts + Yahoo Chart price No cumple los criterios mínimos defensivos de Graham.",
-    "price": 74.157098626,
-    "pe": 15.747934999999998,
+    "price": 74.185965211,
+    "pe": 15.747935,
     "pb": 2.7745867,
     "pePb": 43.694011003464496,
     "debtRatio": 3.541884509120777,
@@ -23643,19 +24570,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 4.709004617176792
+        "eps": 4.71083765655624
       },
       {
         "year": 2024,
-        "eps": 4.613766321548497
+        "eps": 4.615562288221395
       },
       {
         "year": 2023,
-        "eps": 3.5626180780891548
+        "eps": 3.564004872064096
       },
       {
         "year": 2022,
-        "eps": 3.4850157984046506
+        "eps": 3.486372384714457
       }
     ],
     "classificationId": "rejected",
@@ -23672,7 +24599,10 @@
     "tie": 18.972315039561202,
     "sicCode": 6331,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 2.944530514184096,
+    "pePbTangible": 46.37027514288772,
+    "tangibleBvps": 25.194497001691385
   },
   {
     "ticker": "WTRG",
@@ -23758,7 +24688,7 @@
     "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
     "lastPriceSource": "Yahoo Finance Chart",
     "quoteCurrency": "MXN",
-    "price": 79.84808975,
+    "price": 79.85226424999999,
     "pe": 22.989466,
     "pb": 2.0296857,
     "pePb": 46.661390390836196,
@@ -23779,24 +24709,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.473246823131951
+        "eps": 3.4734284062970406
       },
       {
         "year": 2024,
-        "eps": 3.4935582080625474
+        "eps": 3.493740853117491
       },
       {
         "year": 2023,
-        "eps": 3.259977281360691
+        "eps": 3.26014771468231
       },
       {
         "year": 2022,
-        "eps": 3.2193545114994984
+        "eps": 3.2195228210414086
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "utilities"
+    "sectorProfileId": "utilities",
+    "pbTangible": 1.961519781485027,
+    "pePbTangible": 45.094292324777456,
+    "tangibleBvps": 40.70938514295556
   },
   {
     "ticker": "XOM",
@@ -23872,7 +24805,10 @@
     "tie": 69.43781094527363,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default"
+    "sectorProfileId": "default",
+    "pbTangible": 2.7540340962360714,
+    "pePbTangible": 68.20711346011117,
+    "tangibleBvps": 51.168574925268665
   },
   {
     "ticker": "XYL",
@@ -23948,7 +24884,10 @@
     "tie": 41.724137931034484,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": 29.917296803652967,
+    "pePbTangible": 819.7339324200914,
+    "tangibleBvps": 3.709225493476079
   },
   {
     "ticker": "YUM",
@@ -24024,7 +24963,10 @@
     "roa": 0.19019153348786141,
     "tie": 5.145708582834331,
     "sicCode": null,
-    "sectorProfileId": "industrial"
+    "sectorProfileId": "industrial",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -36.586578279294024
   },
   {
     "ticker": "ZION",
@@ -24083,7 +25025,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "financial"
+    "sectorProfileId": "financial",
+    "pbTangible": 1.4946534138853735,
+    "pePbTangible": 15.380539639950458,
+    "tangibleBvps": 44.33803809254358
   },
   {
     "ticker": "ZTS",
@@ -24159,6 +25104,9 @@
     "tie": 16.135135135135137,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "healthcare"
+    "sectorProfileId": "healthcare",
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -0.9957869414336865
   }
 ]
