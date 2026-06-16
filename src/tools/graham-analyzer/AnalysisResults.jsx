@@ -2,9 +2,22 @@ import MetricCard from "../../components/ui/MetricCard.jsx";
 import SectionTitle from "../../components/ui/SectionTitle.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, fmtM, pct } from "../../lib/formatters.js";
+import { colorForState, boolState, NA_PLACEHOLDER } from "../../lib/metricState.js";
 import { alertFor } from "./constants.js";
 import EntryPrices from "./EntryPrices.jsx";
 import InterpretationPanel from "./InterpretationPanel.jsx";
+import FreshnessBadge from "../../components/ui/FreshnessBadge.jsx";
+
+// Renders SI / NO / N/D for a tri-state boolean (true / false / null = missing data).
+function boolLabel(value) {
+  const state = boolState(value);
+  return state === "unknown" ? NA_PLACEHOLDER : state === "pass" ? "SI" : "NO";
+}
+
+function boolColor(value) {
+  const state = boolState(value);
+  return state === "unknown" ? AC.gray : state === "pass" ? AC.green : AC.red;
+}
 
 function metricGrid(children) {
   return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 12 }}>{children}</div>;
@@ -16,14 +29,51 @@ function peValue(ratios) {
   return "—";
 }
 
-export default function AnalysisResults({ form, ratios, classification, checks, aiText, aiError, aiLoading, onRequestAI, onSave }) {
+const THRESHOLD_LABELS = {
+  peMax: "P/E máx",
+  pbMax: "P/B máx",
+  pePbMax: "P/E×P/B máx",
+  debtMax: "Deuda/patrimonio máx",
+  currentMin: "Ratio corriente mín",
+  quickMin: "Quick ratio mín",
+};
+
+export default function AnalysisResults({ form, ratios, classification, checks, validation, profile, adjustments, aiText, aiError, aiLoading, onRequestAI, onSave }) {
+  const hasDataGaps = validation && (validation.missing.length > 0 || validation.warnings.length > 0);
+  const adjustmentEntries = adjustments ? Object.entries(adjustments) : [];
+  const isAdjusted = profile && profile.id !== "default";
   return (
     <div>
+      {profile ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 }}>
+          <span style={{ fontSize: 12, color: SURFACE.muted }}>Perfil de sector:</span>
+          <span style={{ border: `1px solid ${isAdjusted ? "rgba(56, 189, 248, 0.45)" : SURFACE.border}`, background: isAdjusted ? "rgba(56, 189, 248, 0.12)" : SURFACE.panel, color: isAdjusted ? AC.blueText : SURFACE.text, borderRadius: 999, padding: "3px 10px", fontSize: 12 }}>
+            {profile.label}
+          </span>
+          {adjustmentEntries.length > 0 ? (
+            <span style={{ fontSize: 12, color: SURFACE.muted }}>
+              Ajustado: {adjustmentEntries.map(([key, { base, adjusted }]) => `${THRESHOLD_LABELS[key] || key} ${base ?? "n/a"}→${adjusted ?? "n/a"}`).join(" · ")}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+      {hasDataGaps ? (
+        <div style={{ background: "rgba(234, 179, 8, 0.1)", border: "1px solid rgba(234, 179, 8, 0.45)", borderRadius: 8, padding: "12px 14px", marginBottom: 14, color: AC.yellow, fontSize: 13 }}>
+          <strong style={{ display: "block", marginBottom: 4 }}>Datos incompletos — el veredicto puede no ser concluyente</strong>
+          {validation.missing.length > 0 ? (
+            <div style={{ color: SURFACE.text }}>Faltan: {validation.missing.map((m) => m.label).join(", ")}.</div>
+          ) : null}
+          {validation.warnings.map((warning) => (
+            <div key={warning} style={{ color: SURFACE.text }}>{warning}</div>
+          ))}
+        </div>
+      ) : null}
       <div style={{ background: "rgba(15, 23, 42, 0.5)", border: `1px solid ${classification.color}`, borderRadius: 8, padding: 16, display: "flex", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <div style={{ color: SURFACE.muted, fontSize: 12 }}>{form.ticker || "SIN TICKER"} · {form.companyName || "Empresa sin nombre"}</div>
           <h2 style={{ margin: "6px 0", color: classification.color, fontSize: 24 }}>{classification.label}</h2>
-          <p style={{ margin: 0, color: SURFACE.text }}>{classification.reason}</p>
+          <p style={{ margin: "0 0 8px", color: SURFACE.text }}>{classification.reason}</p>
+          <FreshnessBadge asOf={form.date || null} source="Captura manual" />
         </div>
         <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px", alignSelf: "center" }}>
           Guardar analisis
@@ -46,7 +96,7 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
           {ratios.pePbTangible !== null ? (
             <MetricCard label="P/E x P/B tangible" value={fmt(ratios.pePbTangible)} sublabel="Regla 22.5 sin intangibles" color={alertFor("pePb", ratios.pePbTangible)} ref="Sin goodwill/intangibles" />
           ) : null}
-          <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={ratios.intangibleWeight < 0.1 ? AC.green : ratios.intangibleWeight <= 0.3 ? AC.yellow : AC.red} />
+          <MetricCard label="Peso intangibles" value={pct(ratios.intangibleWeight)} sublabel={`Tangible equity ${fmtM(ratios.tangibleEquity)}`} color={colorForState(ratios.intangibleWeight, (v) => (v < 0.1 ? AC.green : v <= 0.3 ? AC.yellow : AC.red))} />
         </>,
       )}
 
@@ -78,8 +128,8 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
             <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 20 }}>{fmt(entry.value)}</div>
           </div>
         ))}
-        <MetricCard label="EPS positivo" value={ratios.epsAllPositive ? "SI" : "NO"} color={ratios.epsAllPositive ? AC.green : AC.red} />
-        <MetricCard label="EPS creciente" value={ratios.epsGrowing ? "SI" : "NO"} sublabel={`CAGR ${pct(ratios.epsCagr)}`} color={ratios.epsGrowing ? AC.green : AC.red} />
+        <MetricCard label="EPS positivo" value={boolLabel(ratios.epsAllPositive)} color={boolColor(ratios.epsAllPositive)} />
+        <MetricCard label="EPS creciente" value={boolLabel(ratios.epsGrowing)} sublabel={`CAGR ${pct(ratios.epsCagr)}`} color={boolColor(ratios.epsGrowing)} />
       </div>
 
       <SectionTitle number="5" title="Precios de entrada Graham" />

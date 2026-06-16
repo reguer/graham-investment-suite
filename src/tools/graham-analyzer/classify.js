@@ -1,4 +1,5 @@
 import { AC } from "../../lib/colors.js";
+import { DEFAULT_PROFILE } from "./sectorProfiles.js";
 
 function isStrongCompany(ratios) {
   return (
@@ -14,15 +15,23 @@ function isFiniteNumber(value) {
   return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 }
 
-export function classify(ratios) {
+export function classify(ratios, profile = DEFAULT_PROFILE) {
+  const t = profile.thresholds;
+  const omit = new Set(profile.omit || []);
+  const pbValue = profile.useTangibleBook ? ratios.pbTangible : ratios.pb;
+  const pePbValue = profile.useTangibleBook ? ratios.pePbTangible : ratios.pePb;
+
+  // A criterion gate either is omitted for the sector (auto-pass) or must have
+  // finite data AND meet the (sector-adjusted) threshold.
+  const gate = (omitted, value, ok) => omitted || (isFiniteNumber(value) && ok);
+
   const approved =
-    [ratios.pePb, ratios.debtRatio, ratios.currentRatio, ratios.pe, ratios.pb].every(isFiniteNumber) &&
-    ratios.pePb <= 22.5 &&
-    ratios.debtRatio < 1 &&
-    ratios.currentRatio >= 2 &&
-    ratios.epsAllPositive === true &&
-    ratios.pe <= 20 &&
-    ratios.pb <= 2;
+    gate(omit.has("pePb"), pePbValue, pePbValue <= t.pePbMax) &&
+    gate(omit.has("debt"), ratios.debtRatio, ratios.debtRatio < t.debtMax) &&
+    gate(omit.has("current"), ratios.currentRatio, ratios.currentRatio >= t.currentMin) &&
+    gate(omit.has("pe"), ratios.pe, ratios.pe <= t.peMax) &&
+    gate(omit.has("pb"), pbValue, pbValue <= t.pbMax) &&
+    ratios.epsAllPositive === true;
 
   if (approved) {
     return {
@@ -30,10 +39,17 @@ export function classify(ratios) {
       label: "APROBADA GRAHAMIANA",
       color: AC.green,
       reason: "Cumple valuación defensiva, liquidez, deuda controlada y EPS positivo.",
+      sectorId: profile.id,
     };
   }
 
-  const strong = isFiniteNumber(ratios.pePb) && isStrongCompany(ratios) && ratios.pePb > 22.5 && ratios.epsAllPositive === true;
+  // "Out of the defensive range" — measured by P/E x P/B when the sector uses it,
+  // otherwise by P/E (e.g. REITs omit pePb, so a strong-but-pricey REIT is judged
+  // expensive by its P/E rather than silently falling through to "rejected").
+  const outOfRange = omit.has("pePb")
+    ? isFiniteNumber(ratios.pe) && isFiniteNumber(t.peMax) && ratios.pe > t.peMax
+    : isFiniteNumber(pePbValue) && pePbValue > t.pePbMax;
+  const strong = outOfRange && isStrongCompany(ratios) && ratios.epsAllPositive === true;
 
   if (strong && ratios.epsGrowing === true) {
     return {
@@ -41,6 +57,7 @@ export function classify(ratios) {
       label: "EXCELENTE, PERO CARA",
       color: AC.yellow,
       reason: "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
+      sectorId: profile.id,
     };
   }
 
@@ -49,7 +66,8 @@ export function classify(ratios) {
       id: "good_overvalued",
       label: "BUENA EMPRESA, SOBREVALORADA",
       color: AC.orange,
-      reason: "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
+      reason: "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede el límite del sector.",
+      sectorId: profile.id,
     };
   }
 
@@ -58,5 +76,6 @@ export function classify(ratios) {
     label: "RECHAZADA",
     color: AC.red,
     reason: "No cumple los criterios mínimos defensivos de Graham.",
+    sectorId: profile.id,
   };
 }

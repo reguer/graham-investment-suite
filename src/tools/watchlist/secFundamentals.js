@@ -1,6 +1,24 @@
+import { withRetry } from "../../lib/withRetry.js";
+
 const SEC_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json";
 const SEC_FACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK";
+const SEC_SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK";
 const SEC_HEADERS = { "user-agent": "GrahamInvestmentSuite/1.0 local" };
+
+// Pure: pull the SIC code out of a SEC submissions payload. The SIC is the
+// higher-priority sector signal for detectSector when Yahoo text is ambiguous.
+export function extractSicFromSubmissions(submissions) {
+  const sic = Number(submissions?.sicCode ?? submissions?.sic);
+  return Number.isFinite(sic) && sic > 0 ? sic : null;
+}
+
+export async function fetchSecSicCode(cik, fetchImpl = fetch) {
+  return withRetry(async () => {
+    const response = await fetchImpl(`${SEC_SUBMISSIONS_URL}${cik}.json`, { headers: SEC_HEADERS });
+    if (!response.ok) throw new Error(`SEC submissions devolvio ${response.status}: ${response.statusText}`);
+    return extractSicFromSubmissions(await response.json());
+  });
+}
 
 function factList(companyFacts, concepts, preferredUnits = ["USD"]) {
   const namespaces = [
@@ -71,7 +89,7 @@ export async function fetchSecCompanyFacts(cik, fetchImpl = fetch) {
   return response.json();
 }
 
-export function buildSecGrahamSnapshot(companyFacts, price) {
+export function buildSecGrahamSnapshot(companyFacts, price, { sicCode = null } = {}) {
   const assets = valueOf(latestFact(companyFacts, ["Assets"]));
   const currentAssets = valueOf(latestFact(companyFacts, ["AssetsCurrent"]));
   const inventory = valueOf(latestFact(companyFacts, ["InventoryNet"]));
@@ -120,6 +138,7 @@ export function buildSecGrahamSnapshot(companyFacts, price) {
       : safeRatio(ebit, interestExpense),
     epsAdj: eps,
     bvps,
+    sicCode,
     source: "SEC EDGAR companyfacts + Yahoo Chart price",
     sourceDate: new Date().toISOString().slice(0, 10),
     epsHistory,

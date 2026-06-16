@@ -23,6 +23,6 @@ data/export/
 *.log
 !CHANGELOG.md
 *.lock
-!yarn.lock
 !package-lock.json
-!pnpm-lock.yaml
+# Single lockfile policy: npm (package-lock.json). yarn.lock intentionally removed.
+vite.config.js.tmp.*
