@@ -972,6 +972,68 @@
     "tangibleBvps": 45.83633218247184
   },
   {
+    "ticker": "AEM",
+    "yahooSymbol": "AEM",
+    "companyName": "Agnico Eagle Mines Limited",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 171.8,
+    "pe": 15.311943,
+    "pb": 3.2695162,
+    "pePb": 50.0626456919766,
+    "pbTangible": 3.317875499088906,
+    "pePbTangible": 50.80312052314588,
+    "tangibleBvps": 51.78012256553224,
+    "debtRatio": 0.39320364374380823,
+    "currentRatio": 2.020034738205473,
+    "quickRatio": 1.3328630381125197,
+    "fcf": 4218818000,
+    "roe": 0.1803159539809778,
+    "roa": 0.1294254108440557,
+    "tie": 201.46381795347168,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 11.21999996995809
+      },
+      {
+        "year": 2024,
+        "eps": 4.786862289666093
+      },
+      {
+        "year": 2023,
+        "eps": 5.002144456132558
+      },
+      {
+        "year": 2022,
+        "eps": 1.9375394981981806
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "default",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/B 3.27 > 2.00 · P/E×P/B 50.06 > 22.50"
+  },
+  {
     "ticker": "AEP",
     "yahooSymbol": "AEP",
     "companyName": "American Electric Power Company, Inc.",
@@ -2561,6 +2623,68 @@
     "watchReason": "Falla: P/E N/D · EPS no siempre positivo"
   },
   {
+    "ticker": "ASML",
+    "yahooSymbol": "ASML",
+    "companyName": "ASML Holding N.V.",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 1892.66,
+    "pe": 63.469486,
+    "pb": 1681.8152,
+    "pePb": 106743.94629098721,
+    "pbTangible": 44.75320291005656,
+    "pePbTangible": 2840.4627855549943,
+    "tangibleBvps": 42.29105129757534,
+    "debtRatio": 1.5783236964746434,
+    "currentRatio": 1.2617963311751204,
+    "quickRatio": 0.790754989923302,
+    "fcf": 10294077614.119999,
+    "roe": 0.48997052854855644,
+    "roa": 0.19003452872053883,
+    "tie": 97.41673710904479,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 29.819998857403696
+      },
+      {
+        "year": 2024,
+        "eps": 21.848315994533397
+      },
+      {
+        "year": 2023,
+        "eps": 23.381331929700764
+      },
+      {
+        "year": 2022,
+        "eps": 18.24856746528855
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 63.47 > 20.00 · P/B tang. 44.75 > 2.50 · P/E×P/B 2840.46 > 22.50 · Deuda 1.58 >= 1.00 · Corriente 1.26 < 1.50"
+  },
+  {
     "ticker": "ATO",
     "yahooSymbol": "ATO.MX",
     "companyName": "Atmos Energy Corporation",
@@ -3372,6 +3496,68 @@
     "pbTangible": 8.086036605778824,
     "pePbTangible": 142.37766304680642,
     "tangibleBvps": 3.331669310122449
+  },
+  {
+    "ticker": "BHP",
+    "yahooSymbol": "BHP",
+    "companyName": "BHP Group Limited",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-06-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 92.13,
+    "pe": 22.580883,
+    "pb": 4.63944,
+    "pePb": 104.76265182552,
+    "pbTangible": 4.5959120301707745,
+    "pePbTangible": 103.77975183157874,
+    "tangibleBvps": 20.046075598313102,
+    "debtRatio": 1.2237604914770268,
+    "currentRatio": 1.4598120084404373,
+    "quickRatio": 1.1056972952234798,
+    "fcf": 5342000000,
+    "roe": 0.19509820887773643,
+    "roa": 0.08290284033458957,
+    "tie": 10.793489861259339,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 4.079999883086946
+      },
+      {
+        "year": 2024,
+        "eps": 3.57632458748602
+      },
+      {
+        "year": 2023,
+        "eps": 5.857812684454594
+      },
+      {
+        "year": 2022,
+        "eps": 14.013212676239435
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "industrial",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 22.58 > 20.00 · P/B 4.64 > 2.00 · P/E×P/B 104.76 > 22.50 · Deuda 1.22 >= 1.00 · Corriente 1.46 < 2.00"
   },
   {
     "ticker": "BIDU",
@@ -7412,6 +7598,68 @@
     "tangibleBvps": -1.4872228333387967
   },
   {
+    "ticker": "DDOG",
+    "yahooSymbol": "DDOG",
+    "companyName": "Datadog Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 233.09,
+    "pe": 597.6667,
+    "pb": 20.796751,
+    "pePb": 12429.5255408917,
+    "pbTangible": 21.132624045121396,
+    "pePbTangible": 12630.265675388357,
+    "tangibleBvps": 11.029865458369821,
+    "debtRatio": 0.7801386097123256,
+    "currentRatio": 3.382101682731128,
+    "quickRatio": 3.382101682731128,
+    "fcf": -284345000,
+    "roe": 0.02886791350745377,
+    "roa": 0.01621666613484603,
+    "tie": 12.485758205986075,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 0.3899999782487463
+      },
+      {
+        "year": 2024,
+        "eps": 0.6541935119011228
+      },
+      {
+        "year": 2023,
+        "eps": 0.1761290224349177
+      },
+      {
+        "year": 2022,
+        "eps": -0.20129031135419165
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 597.67 > 20.00 · P/B tang. 21.13 > 2.50 · P/E×P/B 12630.27 > 22.50 · EPS no siempre positivo"
+  },
+  {
     "ticker": "DE",
     "yahooSymbol": "DE.MX",
     "companyName": "Deere & Company",
@@ -7490,6 +7738,68 @@
     "pbTangible": 8.040679751095588,
     "pePbTangible": 262.394260270657,
     "tangibleBvps": 71.75470006890728
+  },
+  {
+    "ticker": "DELL",
+    "yahooSymbol": "DELL",
+    "companyName": "Dell Technologies Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2026-01-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 409.07,
+    "pe": 31.539707,
+    "pb": null,
+    "pePb": null,
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -58.00009098296432,
+    "debtRatio": null,
+    "currentRatio": 0.9104300684379396,
+    "quickRatio": 0.7454677646240655,
+    "fcf": 9130000000,
+    "roe": -2.403238866396761,
+    "roa": 0.05860632269020398,
+    "tie": 5.655769230769231,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2026,
+        "eps": 12.970000006658273
+      },
+      {
+        "year": 2025,
+        "eps": 9.53324885282025
+      },
+      {
+        "year": 2024,
+        "eps": 6.792813367542455
+      },
+      {
+        "year": 2023,
+        "eps": 4.8413364080153
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": true,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 31.54 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda N/D · Corriente 0.91 < 1.50 · Patrimonio negativo"
   },
   {
     "ticker": "DGX",
@@ -8805,6 +9115,68 @@
     "tangibleBvps": -13.93321346142776
   },
   {
+    "ticker": "ENTG",
+    "yahooSymbol": "ENTG",
+    "companyName": "Entegris Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 162.89,
+    "pe": 87.10695,
+    "pb": 6.1266785,
+    "pePb": 533.6762777655749,
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -7.135662058286963,
+    "debtRatio": 1.1122325087266656,
+    "currentRatio": 3.3528448628735164,
+    "quickRatio": 2.0364306180925094,
+    "fcf": 394600000,
+    "roe": 0.05959427328375575,
+    "roa": 0.028213879408418657,
+    "tie": 2.274274274274274,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 1.8700000401804904
+      },
+      {
+        "year": 2024,
+        "eps": 2.328451662934417
+      },
+      {
+        "year": 2023,
+        "eps": 1.4477419665913474
+      },
+      {
+        "year": 2022,
+        "eps": 1.7614193926861392
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 87.11 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.11 >= 1.00"
+  },
+  {
     "ticker": "EOG",
     "yahooSymbol": "EOG",
     "companyName": "EOG Resources, Inc.",
@@ -10059,6 +10431,68 @@
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
     "watchReason": "Falla: P/E×P/B 26.84 > 22.50"
+  },
+  {
+    "ticker": "FNV",
+    "yahooSymbol": "FNV",
+    "companyName": "Franco-Nevada Corporation",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 222.35,
+    "pe": 29.489391,
+    "pb": 5.28964,
+    "pePb": 155.98826220924002,
+    "pbTangible": 4.293579320639661,
+    "pePbTangible": 126.61503937585734,
+    "tangibleBvps": 51.786629149050896,
+    "debtRatio": 0.07938129477558184,
+    "currentRatio": 8.304065040650407,
+    "quickRatio": 7.978048780487805,
+    "fcf": -539300000,
+    "roe": 0.14565243015991514,
+    "roa": 0.13494066542092362,
+    "tie": 4721,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 7.539999723968528
+      },
+      {
+        "year": 2024,
+        "eps": 3.7569095846857077
+      },
+      {
+        "year": 2023,
+        "eps": -3.1809373835492227
+      },
+      {
+        "year": 2022,
+        "eps": 4.777951213973112
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "default",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 29.49 > 20.00 · P/B 5.29 > 2.00 · P/E×P/B 155.99 > 22.50 · EPS no siempre positivo"
   },
   {
     "ticker": "FSLR",
@@ -15070,6 +15504,68 @@
     "tangibleBvps": -35.24398864787573
   },
   {
+    "ticker": "LRCX",
+    "yahooSymbol": "LRCX",
+    "companyName": "Lam Research Corporation",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-06-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 388.92,
+    "pe": 69.450005,
+    "pb": 45.94991,
+    "pePb": 3191.2214792495506,
+    "pbTangible": 46.17466486816439,
+    "pePbTangible": 3206.8307059673416,
+    "tangibleBvps": 8.422800709229294,
+    "debtRatio": 1.1644782667024554,
+    "currentRatio": 2.210118102893768,
+    "quickRatio": 1.5542544826195017,
+    "fcf": 5465172000,
+    "roe": 0.5433405001754783,
+    "roa": 0.25102608260569326,
+    "tie": 34.43450446962172,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 5.599999596832283
+      },
+      {
+        "year": 2024,
+        "eps": 3.9132527303165343
+      },
+      {
+        "year": 2023,
+        "eps": 4.481349074959039
+      },
+      {
+        "year": 2022,
+        "eps": 4.419276790271258
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 69.45 > 20.00 · P/B tang. 46.17 > 2.50 · P/E×P/B 3206.83 > 22.50 · Deuda 1.16 >= 1.00"
+  },
+  {
     "ticker": "LW",
     "yahooSymbol": "LW",
     "companyName": "Lamb Weston Holdings, Inc.",
@@ -15690,6 +16186,68 @@
     "pbTangible": null,
     "pePbTangible": null,
     "tangibleBvps": -24.00000384715338
+  },
+  {
+    "ticker": "MDB",
+    "yahooSymbol": "MDB",
+    "companyName": "MongoDB Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Software Infrastructure",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2026-01-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 354.18,
+    "pe": null,
+    "pb": 9.71474,
+    "pePb": null,
+    "pbTangible": 10.554309620500437,
+    "pePbTangible": null,
+    "tangibleBvps": 33.55785577031484,
+    "debtRatio": 0.2731680914035493,
+    "currentRatio": 4.6525371324100515,
+    "quickRatio": 4.6525371324100515,
+    "fcf": 1043963000,
+    "roe": -0.024099719613949258,
+    "roa": -0.018928937802220255,
+    "tie": -16.80402813299233,
+    "epsAllPositive": false,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2026,
+        "eps": -0.88
+      },
+      {
+        "year": 2025,
+        "eps": -1.73
+      },
+      {
+        "year": 2024,
+        "eps": -2.48
+      },
+      {
+        "year": 2023,
+        "eps": -5.03
+      }
+    ],
+    "sicCode": 7372,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E N/D · P/B tang. 10.55 > 2.50 · P/E×P/B N/D · EPS no siempre positivo"
   },
   {
     "ticker": "MDLZ",
@@ -18512,6 +19070,68 @@
     "tangibleBvps": 7.4936591947553435
   },
   {
+    "ticker": "NXPI",
+    "yahooSymbol": "NXPI",
+    "companyName": "NXP Semiconductors N.V.",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 315.88,
+    "pe": 30.198853,
+    "pb": 7.302908400000001,
+    "pePb": 220.5394572440652,
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -9.26015560959221,
+    "debtRatio": 1.6019291964996023,
+    "currentRatio": 2.045864467920639,
+    "quickRatio": 1.3818603452718372,
+    "fcf": 463000000,
+    "roe": 0.20097454256165473,
+    "roa": 0.07609186746987952,
+    "tie": 6.714592274678112,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 10.459999921189059
+      },
+      {
+        "year": 2024,
+        "eps": 12.801987324926987
+      },
+      {
+        "year": 2023,
+        "eps": 14.078238887638102
+      },
+      {
+        "year": 2022,
+        "eps": 13.880880398559066
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 30.20 > 20.00 · P/B tang. N/D · P/E×P/B N/D · Deuda 1.60 >= 1.00"
+  },
+  {
     "ticker": "O",
     "yahooSymbol": "O",
     "companyName": "Realty Income Corporation",
@@ -21081,6 +21701,68 @@
     "watchReason": "No se analiza con Graham automatico: quoteType=ETF."
   },
   {
+    "ticker": "QRVO",
+    "yahooSymbol": "QRVO",
+    "companyName": "Qorvo Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2026-03-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 101.28,
+    "pe": 27.225805,
+    "pb": 2.6571516999999996,
+    "pePb": 72.34309403961849,
+    "pbTangible": 10.602691243817555,
+    "pePbTangible": 288.6668042793842,
+    "tangibleBvps": 9.552291740934786,
+    "debtRatio": 0.7419465185379657,
+    "currentRatio": 3.235764783790268,
+    "quickRatio": 2.4588969312121804,
+    "fcf": 765031000,
+    "roe": 0.10136324533183187,
+    "roa": 0.05818964259414068,
+    "tie": 6.445798123991577,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2026,
+        "eps": 3.7200001983412427
+      },
+      {
+        "year": 2025,
+        "eps": 0.5960221312259449
+      },
+      {
+        "year": 2024,
+        "eps": -0.754343078893747
+      },
+      {
+        "year": 2023,
+        "eps": 1.0276243641826637
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 27.23 > 20.00 · P/B tang. 10.60 > 2.50 · P/E×P/B 288.67 > 22.50 · EPS no siempre positivo"
+  },
+  {
     "ticker": "RCL",
     "yahooSymbol": "RCL",
     "companyName": "Royal Caribbean Cruises Ltd.",
@@ -21368,6 +22050,68 @@
     "pbTangible": 2.064867377311475,
     "pePbTangible": 25.241101944778272,
     "tangibleBvps": 14.196519149548333
+  },
+  {
+    "ticker": "RIO",
+    "yahooSymbol": "RIO",
+    "companyName": "Rio Tinto Group",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 105.89,
+    "pe": 17.38752,
+    "pb": 2.7661242,
+    "pePb": 48.096039849983995,
+    "pbTangible": 3.0532303744685643,
+    "pePbTangible": 53.088104200679645,
+    "tangibleBvps": 34.68130046309751,
+    "debtRatio": 0.981914055592174,
+    "currentRatio": 1.444675150703282,
+    "quickRatio": 0.9779638312123242,
+    "fcf": null,
+    "roe": 0.1602173528607945,
+    "roa": 0.07779738021264306,
+    "tie": 8.965008201202844,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 6.090000184040048
+      },
+      {
+        "year": 2024,
+        "eps": 7.078974572901253
+      },
+      {
+        "year": 2023,
+        "eps": 6.1710800681470905
+      },
+      {
+        "year": 2022,
+        "eps": 7.628516009626761
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "industrial",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/B 2.77 > 2.00 · P/E×P/B 48.10 > 22.50 · Corriente 1.44 < 2.00"
   },
   {
     "ticker": "RJF",
@@ -21805,6 +22549,68 @@
     "tangibleBvps": -8.20201621315765
   },
   {
+    "ticker": "SCCO",
+    "yahooSymbol": "SCCO",
+    "companyName": "Southern Copper Corporation",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Copper",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 193.22,
+    "pe": 32.14975,
+    "pb": 13.676387,
+    "pePb": 439.69242295324995,
+    "pbTangible": 12.672487818784088,
+    "pePbTangible": 407.4173152519537,
+    "tangibleBvps": 15.247203450737999,
+    "debtRatio": 0.9310026182042199,
+    "currentRatio": 3.8937578667661183,
+    "quickRatio": 3.4004941494569016,
+    "fcf": 3067500000,
+    "roe": 0.3927215734592004,
+    "roa": 0.20274163525307043,
+    "tie": 19.370701326834553,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 6.010000077761102
+      },
+      {
+        "year": 2024,
+        "eps": 4.792406325450161
+      },
+      {
+        "year": 2023,
+        "eps": 3.3993231611406336
+      },
+      {
+        "year": 2022,
+        "eps": 3.691622486649878
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "default",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 32.15 > 20.00 · P/B 13.68 > 2.00 · P/E×P/B 439.69 > 22.50"
+  },
+  {
     "ticker": "SCHW",
     "yahooSymbol": "SCHW",
     "companyName": "The Charles Schwab Corporation",
@@ -22221,6 +23027,68 @@
     "tangibleBvps": 2.7804944659206448
   },
   {
+    "ticker": "SMCI",
+    "yahooSymbol": "SMCI",
+    "companyName": "Super Micro Computer Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-06-30",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 30.85,
+    "pe": 16.236843,
+    "pb": 2.4489958,
+    "pePb": 39.7639603122594,
+    "pbTangible": 2.720139580428383,
+    "pePbTangible": 44.16647930550153,
+    "tangibleBvps": 11.341329769239843,
+    "debtRatio": 1.2245214103575024,
+    "currentRatio": 5.246373239076217,
+    "quickRatio": 3.2503006663277594,
+    "fcf": 1476310000,
+    "roe": 0.16644003444788566,
+    "roa": 0.07481965347186907,
+    "tie": 21.343377033219745,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 1.8999998952998438
+      },
+      {
+        "year": 2024,
+        "eps": 2.2720832081293967
+      },
+      {
+        "year": 2023,
+        "eps": 1.2926785001950722
+      },
+      {
+        "year": 2022,
+        "eps": 0.6016666335116172
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/B tang. 2.72 > 2.50 · P/E×P/B 44.17 > 22.50 · Deuda 1.22 >= 1.00"
+  },
+  {
     "ticker": "SNA",
     "yahooSymbol": "SNA",
     "companyName": "Snap-on Inc",
@@ -22358,6 +23226,68 @@
     "pbTangible": null,
     "pePbTangible": null,
     "tangibleBvps": -80.15742585692473
+  },
+  {
+    "ticker": "SNOW",
+    "yahooSymbol": "SNOW",
+    "companyName": "Snowflake Inc",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Software Application",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX + SEC EDGAR companyfacts + Yahoo Chart price",
+    "sourceDate": "2026-01-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_sec_merged",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 240.78,
+    "pe": null,
+    "pb": 43.02716,
+    "pePb": null,
+    "pbTangible": 222.51676384815698,
+    "pePbTangible": null,
+    "tangibleBvps": 1.0820757763864732,
+    "debtRatio": 3.746367396323064,
+    "currentRatio": 1.2987366145666894,
+    "quickRatio": 1.2987366145666894,
+    "fcf": 1534183000,
+    "roe": -0.6920714182512153,
+    "roa": -0.14581075598727403,
+    "tie": -157.0995420583273,
+    "epsAllPositive": false,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2026,
+        "eps": -3.95
+      },
+      {
+        "year": 2025,
+        "eps": -3.86
+      },
+      {
+        "year": 2024,
+        "eps": -2.55
+      },
+      {
+        "year": 2023,
+        "eps": -2.5
+      }
+    ],
+    "sicCode": 7372,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E N/D · P/B tang. 222.52 > 2.50 · P/E×P/B N/D · Deuda 3.75 >= 1.00 · Corriente 1.30 < 1.50 · EPS no siempre positivo"
   },
   {
     "ticker": "SNPS",
@@ -24630,6 +25560,68 @@
     "tangibleBvps": 23.535200627041604
   },
   {
+    "ticker": "TSM",
+    "yahooSymbol": "TSM",
+    "companyName": "Taiwan Semiconductor Mfg",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "semiconductor",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 441.4,
+    "pe": 37.888412,
+    "pb": 98.15046,
+    "pePb": 3718.76506646952,
+    "pbTangible": 12.211525117598626,
+    "pePbTangible": 462.6752948039252,
+    "tangibleBvps": 36.1461812303753,
+    "debtRatio": 0.47368906969803976,
+    "currentRatio": 2.5072882934602547,
+    "quickRatio": 2.3180431209907426,
+    "fcf": 35841434258.85,
+    "roe": 0.3170105941531291,
+    "roa": 0.2139969374155607,
+    "tie": 166.04354750048503,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 11.650000005278658
+      },
+      {
+        "year": 2024,
+        "eps": 7.9571698149261785
+      },
+      {
+        "year": 2023,
+        "eps": 5.68695849314282
+      },
+      {
+        "year": 2022,
+        "eps": 6.893283021991298
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "tech",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 37.89 > 20.00 · P/B tang. 12.21 > 2.50 · P/E×P/B 462.68 > 22.50"
+  },
+  {
     "ticker": "TSN",
     "yahooSymbol": "TSN.MX",
     "companyName": "Tyson Foods, Inc.",
@@ -25626,6 +26618,68 @@
     "tangibleBvps": -13.61288342242243
   },
   {
+    "ticker": "VRT",
+    "yahooSymbol": "VRT",
+    "companyName": "Vertiv Holdings Co",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "ai-datacenter",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 311.93,
+    "pe": 76.2665,
+    "pb": 30.275646,
+    "pePb": 2309.0175556589998,
+    "pbTangible": 7937.234178237684,
+    "pePbTangible": 605345.0704545643,
+    "tangibleBvps": 0.03929958383428449,
+    "debtRatio": 2.0985715373100247,
+    "currentRatio": 1.5474245518493306,
+    "quickRatio": 1.2169276151577038,
+    "fcf": 613000000,
+    "roe": 0.3381625352041205,
+    "roa": 0.10913497756378762,
+    "tie": 21.231126596980257,
+    "epsAllPositive": true,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 4.090000196678752
+      },
+      {
+        "year": 2024,
+        "eps": 1.5352493406887984
+      },
+      {
+        "year": 2023,
+        "eps": 1.4273021214216173
+      },
+      {
+        "year": 2022,
+        "eps": 0.04797654189652495
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "industrial",
+    "classificationId": "excellent_expensive",
+    "classificationLabel": "EXCELENTE, PERO CARA",
+    "watchReason": "Falla: P/E 76.27 > 20.00 · P/B 30.28 > 2.00 · P/E×P/B 2309.02 > 22.50 · Deuda 2.10 >= 1.00 · Corriente 1.55 < 2.00"
+  },
+  {
     "ticker": "VST",
     "yahooSymbol": "VST",
     "companyName": "Vistra",
@@ -26404,6 +27458,68 @@
     "pbTangible": 13.144069538603594,
     "pePbTangible": 559.1783580490064,
     "tangibleBvps": 9.19197814992964
+  },
+  {
+    "ticker": "WPM",
+    "yahooSymbol": "WPM",
+    "companyName": "Wheaton Precious Metals",
+    "exchange": "",
+    "market": "US",
+    "country": "United States",
+    "currency": "USD",
+    "quoteType": "EQUITY",
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [
+      "us-listed",
+      "gold-metals",
+      "seed-batch"
+    ],
+    "notes": "Empresa temática (semis/IA/metales-refugio). Pendiente de extraer fundamentales.",
+    "price": 123.94,
+    "pe": 29.300238,
+    "pb": 6.475106,
+    "pePb": 189.72214687522802,
+    "pbTangible": 4.9628972604920065,
+    "pePbTangible": 145.41407090196378,
+    "tangibleBvps": 24.97331568530455,
+    "debtRatio": 0.050086024890604784,
+    "currentRatio": 7.784552030875251,
+    "quickRatio": 7.784552030875251,
+    "fcf": 625838000,
+    "roe": 0.16934798287971198,
+    "roa": 0.1612705805672961,
+    "tie": 3959.200466200466,
+    "epsAllPositive": true,
+    "epsGrowing": false,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 4.229999769967739
+      },
+      {
+        "year": 2024,
+        "eps": 1.5223817522435636
+      },
+      {
+        "year": 2023,
+        "eps": 1.5498238267475246
+      },
+      {
+        "year": 2022,
+        "eps": 1.9327061043504126
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "default",
+    "classificationId": "good_overvalued",
+    "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
+    "watchReason": "Falla: P/E 29.30 > 20.00 · P/B 6.48 > 2.00 · P/E×P/B 189.72 > 22.50"
   },
   {
     "ticker": "WRB",
