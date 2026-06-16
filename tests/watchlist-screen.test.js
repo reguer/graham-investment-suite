@@ -131,7 +131,9 @@ describe("watchlist screening", () => {
     };
     const result = evaluateCandidate(bank, { price: 55.52, source: "test" });
     expect(result.ratios).not.toBeNull();
-    expect(result.alertLevel).toBe("near");
+    // P/E 12, P/B 1.48, P/E×P/B 17.83 (<22.5), EPS+: with the financial profile
+    // (debt/current omitted) this bank meets every applicable criterion → approved.
+    expect(result.alertLevel).toBe("approved");
     expect(result.ratios.pePb).toBeCloseTo(17.83, 1);
   });
 
@@ -152,10 +154,12 @@ describe("watchlist screening", () => {
     };
     const result = evaluateCandidate(bank, { price: 55.52, source: "test" });
     expect(result.ratios).not.toBeNull();
-    expect(result.alertLevel).toBe("near");
+    // Same valuation as USB above, recognised as financial via the compound
+    // sector string → approved under the financial profile.
+    expect(result.alertLevel).toBe("approved");
   });
 
-  it("marks financial sector company as near even with high debtRatio structure", () => {
+  it("approves financial sector company despite high debtRatio (debt is omitted for the sector)", () => {
     const insurer = {
       ticker: "TRV",
       companyName: "The Travelers Companies",
@@ -171,7 +175,9 @@ describe("watchlist screening", () => {
       epsAllPositive: true,
     };
     const result = evaluateCandidate(insurer, { price: 299.6, source: "test" });
-    expect(result.alertLevel).toBe("near");
+    // debtRatio 3.37 is structural for an insurer; the financial profile omits it,
+    // so with P/E 8.58, P/B 1.99, P/E×P/B 17.07 and EPS+ this is a clean approval.
+    expect(result.alertLevel).toBe("approved");
   });
 
   it("does not promote financial sector to near when pePb exceeds nearPePb", () => {
@@ -240,5 +246,46 @@ describe("watchlist screening", () => {
     expect(result.ratios.pe).toBeCloseTo(23.0, 1);
     expect(result.ratios.pb).toBeNull();
     expect(result.ratios.hasNegativeEquity).toBe(true);
+  });
+
+  it("attaches an actionable watchReason naming the failing criteria, not a generic note", () => {
+    const overpriced = {
+      ticker: "ZZZ",
+      companyName: "Overpriced Industrial",
+      sector: "Industrials",
+      price: 100,
+      pe: 30,
+      pb: 3,
+      pePb: 90,
+      debtRatio: 0.5,
+      currentRatio: 2.5,
+      epsAllPositive: true,
+      analysisStatus: "analyzed",
+    };
+    const result = evaluateCandidate(overpriced, { price: 100, source: "test" });
+    expect(result.alertLevel).not.toBe("approved");
+    expect(result.watchReason).toMatch(/^Falla:/);
+    expect(result.watchReason).toContain("P/E");
+    // Sector profile id is recorded so the UI can show which thresholds applied.
+    expect(result.sectorProfileId).toBe("industrial");
+  });
+
+  it("approved company keeps its positive verdict reason as watchReason", () => {
+    const clean = {
+      ticker: "GOOD",
+      companyName: "Clean Builder",
+      sector: "Industrials",
+      price: 50,
+      pe: 11,
+      pb: 1.2,
+      pePb: 13.2,
+      debtRatio: 0.4,
+      currentRatio: 2.6,
+      epsAllPositive: true,
+      analysisStatus: "analyzed",
+    };
+    const result = evaluateCandidate(clean, { price: 50, source: "test" });
+    expect(result.alertLevel).toBe("approved");
+    expect(result.watchReason).not.toMatch(/^Falla:/);
   });
 });

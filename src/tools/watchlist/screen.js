@@ -1,18 +1,26 @@
 import { classify } from "../graham-analyzer/classify.js";
 import { detectSector } from "../graham-analyzer/detectSector.js";
+import { getSectorProfile } from "../graham-analyzer/sectorProfiles.js";
+import { actionableReason } from "../graham-analyzer/failingCriteria.js";
 import { grahamNumber, maxDefensivePrice as defensiveCeiling, marginOfSafety } from "../../lib/grahamFormulas.js";
 import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
 const CRITICAL_RATIO_KEYS = ["pe", "pb", "debtRatio", "currentRatio", "fcf"];
 
-// Sectors whose balance sheets don't report current/quick/debt in an industrially
-// comparable way, so the screen judges them on valuation + EPS only. Resolved via
-// the shared detectSector taxonomy instead of a private prefix list.
-const RELAXED_SECTOR_IDS = new Set(["financial", "reit"]);
+// Resolve the sector profile for a candidate so the screen judges it against the
+// same sector-adjusted thresholds as the manual analyzer (useAnalysis). Without
+// this the screen applied industrial defaults to every company, so only builders
+// passed and banks/utilities/tech/healthcare could never approve.
+function profileFor(candidate) {
+  return getSectorProfile(detectSector({ sector: candidate.sector, industry: candidate.industry, sicCode: candidate.sicCode }));
+}
 
+// A sector counts as "relaxed" when it omits the industrial liquidity/debt
+// criteria (banks, REITs): such a company is analyzable from fewer ratios.
 function isFinancialSector(candidate) {
-  return RELAXED_SECTOR_IDS.has(detectSector({ sector: candidate.sector, industry: candidate.industry, sicCode: candidate.sicCode }));
+  const omit = new Set(profileFor(candidate).omit || []);
+  return omit.has("current") && omit.has("debt");
 }
 
 function isAvailableRatio(value) {
@@ -202,21 +210,23 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     });
   }
 
-  const classification = classify(ratios);
-  const financial = isFinancialSector(candidate);
+  const profile = profileFor(candidate);
+  const classification = classify(ratios, profile);
+  const omit = new Set(profile.omit || []);
+  // "near" reuses the alert policy bands but skips whichever criteria the sector
+  // omits (a bank has no industrial current/debt ratio), and reads P/B tangible
+  // for intangible-heavy sectors — mirroring how classify judges the same company.
+  const pbForNear = profile.useTangibleBook ? ratios.pbTangible : ratios.pb;
+  const pePbForNear = profile.useTangibleBook ? ratios.pePbTangible : ratios.pePb;
+  const passesNearGate = (omitted, value, ok) => omitted || (isAvailableRatio(value) && ok);
   // Equity negativo: P/B no aplica, nunca puede aprobar Graham defensivo pero puede estar en "watch" con P/E bajo
   const near = ratios.hasNegativeEquity
     ? false
-    : financial
-    ? ratios.pePb <= policy.nearPePb &&
-      ratios.pe <= policy.nearPe &&
-      ratios.pb <= policy.nearPb &&
-      ratios.epsAllPositive === true
-    : ratios.pePb <= policy.nearPePb &&
-      ratios.pe <= policy.nearPe &&
-      ratios.pb <= policy.nearPb &&
-      ratios.debtRatio < policy.nearDebtRatio &&
-      ratios.currentRatio >= policy.nearCurrentRatio &&
+    : passesNearGate(omit.has("pePb"), pePbForNear, pePbForNear <= policy.nearPePb) &&
+      passesNearGate(omit.has("pe"), ratios.pe, ratios.pe <= policy.nearPe) &&
+      passesNearGate(omit.has("pb"), pbForNear, pbForNear <= policy.nearPb) &&
+      passesNearGate(omit.has("debt"), ratios.debtRatio, ratios.debtRatio < policy.nearDebtRatio) &&
+      passesNearGate(omit.has("current"), ratios.currentRatio, ratios.currentRatio >= policy.nearCurrentRatio) &&
       ratios.epsAllPositive === true;
   // Equity negativo: sin P/B no hay precio defensivo Graham completo — no puede ser "cerca de aprobar"
   const closeToDefensive =
@@ -233,14 +243,22 @@ export function evaluateCandidate(candidate, quote = null, policy = DEFAULT_ALER
     alertLabel = "Cerca de aprobar";
   }
 
+  // Actionable reason: which sector-adjusted criteria the company misses, so the
+  // dashboard shows "Falla: P/B 3.1 > 2.0 · Deuda 1.4 > 1.0" instead of the
+  // generic "no cumple los criterios mínimos". Approved companies keep their
+  // positive verdict reason.
+  const watchReason = alertLevel === "approved" ? classification.reason : actionableReason(ratios, profile);
+
   return withSystemStatus({
     ...candidate,
     quote,
     livePrice: price,
     ratios,
     classification,
+    sectorProfileId: profile.id,
     alertLevel,
     alertLabel,
+    watchReason,
     closeToDefensive,
     near,
   });
