@@ -57,10 +57,14 @@ if ($existingStartup) {
 if (-not $existingStartup) {
   $actionStartup  = New-ScheduledTaskAction -Execute $npm -Argument "run dev:safe" -WorkingDirectory $repo
   $triggerStartup = New-ScheduledTaskTrigger -AtLogOn
-  $settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 0)
+  # "Siempre vivo": si el dashboard se cae, reiniciarlo automáticamente (hasta
+  # 999 veces, cada 1 min) y mantener el proceso corriendo indefinidamente.
+  $settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+    -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) `
+    -ExecutionTimeLimit (New-TimeSpan -Hours 0)
   Register-ScheduledTask -TaskName $StartupTaskName -Action $actionStartup -Trigger $triggerStartup -Settings $settingsStartup `
-    -Description "Graham Investment Suite: arranca dashboard local al iniciar sesion."
-  Write-Host "Tarea creada: $StartupTaskName (arranque al iniciar sesion) -> $repo"
+    -Description "Graham Investment Suite: arranca dashboard local al iniciar sesion y lo reinicia si se cae."
+  Write-Host "Tarea creada: $StartupTaskName (arranque al iniciar sesion + auto-reinicio) -> $repo"
 }
 
 Write-Host ""
