@@ -25034,6 +25034,60 @@
     "tangibleBvps": 9.444703196896326
   },
   {
+    "ticker": "TKO",
+    "yahooSymbol": "TKO",
+    "companyName": "TKO Group Holdings Inc",
+    "exchange": "",
+    "market": "",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "Communication Services",
+    "industry": "Entertainment",
+    "source": "Yahoo Finance fundamentalsTimeSeries + FX",
+    "sourceDate": "2025-12-31",
+    "analysisStatus": "analyzed",
+    "validationStatus": "yahoo_full_fx",
+    "tags": [],
+    "notes": "",
+    "price": 201.19,
+    "pe": 75.63534,
+    "pb": 4.4674144,
+    "pePb": 337.894407064896,
+    "pbTangible": null,
+    "pePbTangible": null,
+    "tangibleBvps": -48.74750469252585,
+    "debtRatio": 1.671154747134424,
+    "currentRatio": 1.2608854768095723,
+    "quickRatio": 1.229959131922846,
+    "fcf": 1138837000,
+    "roe": 0.052283403806034225,
+    "roa": 0.012610044992130458,
+    "tie": 3.9923640022888263,
+    "epsAllPositive": false,
+    "epsGrowing": true,
+    "epsHistory": [
+      {
+        "year": 2025,
+        "eps": 2.6599999418261357
+      },
+      {
+        "year": 2024,
+        "eps": 0.023539822494036602
+      },
+      {
+        "year": 2023,
+        "eps": -0.5061061836217869
+      }
+    ],
+    "sicCode": null,
+    "hasNegativeEquity": null,
+    "sectorProfileId": "default",
+    "classificationId": "rejected",
+    "classificationLabel": "RECHAZADA",
+    "watchReason": "Falla: P/E 75.64 > 20.00 · P/B 4.47 > 2.00 · P/E×P/B 337.89 > 22.50 · Deuda 1.67 >= 1.00 · Corriente 1.26 < 2.00 · EPS no siempre positivo"
+  },
+  {
     "ticker": "TMHC",
     "yahooSymbol": "TMHC",
     "companyName": "Taylor Morrison Home",
