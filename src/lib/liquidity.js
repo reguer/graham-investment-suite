@@ -21,11 +21,22 @@ const MARKET_CAP = { high: 10_000_000_000, medium: 2_000_000_000 }; // large / m
 export function liquidityLabel({ avgVolume, price, marketCap } = {}) {
   const dollarVol = isNum(avgVolume) && isNum(price) ? avgVolume * price : null;
 
-  if (dollarVol === null && !isNum(marketCap)) {
-    return { level: "unknown", label: "Liquidez N/D", color: AC.gray, detail: "Sin datos de volumen" };
+  if (!isNum(marketCap) && dollarVol === null) {
+    return { level: "unknown", label: "Liquidez N/D", color: AC.gray, detail: "Sin datos" };
   }
 
-  // Prefer dollar volume; fall back to market cap when volume is missing.
+  const rank = { very_low: 0, low: 1, medium: 2, high: 3 };
+  const order = ["very_low", "low", "medium", "high"];
+
+  // Market cap is the PRIMARY, robust signal (a >$10B company is liquid by
+  // definition). Average volume is noisy from Yahoo, so dollar volume can only
+  // RAISE the level, never drop a large/mid cap below what its size implies.
+  const byCap = isNum(marketCap)
+    ? marketCap >= MARKET_CAP.high ? "high"
+      : marketCap >= MARKET_CAP.medium ? "medium"
+      : "low"
+    : null;
+
   const byDollar = dollarVol !== null
     ? dollarVol >= DOLLAR_VOL.high ? "high"
       : dollarVol >= DOLLAR_VOL.medium ? "medium"
@@ -33,14 +44,12 @@ export function liquidityLabel({ avgVolume, price, marketCap } = {}) {
       : "very_low"
     : null;
 
-  const byCap = isNum(marketCap)
-    ? marketCap >= MARKET_CAP.high ? "high"
-      : marketCap >= MARKET_CAP.medium ? "medium"
-      : "low"
-    : null;
+  let level;
+  if (byCap && byDollar) level = order[Math.max(rank[byCap], rank[byDollar])];
+  else level = byCap ?? byDollar;
 
-  const level = byDollar ?? byCap;
-  const money = dollarVol !== null ? `$${formatShort(dollarVol)}/día` : `cap $${formatShort(marketCap)}`;
+  // Show market cap as the headline figure (reliable); dollar volume if no cap.
+  const money = isNum(marketCap) ? `cap $${formatShort(marketCap)}` : `$${formatShort(dollarVol)}/día`;
 
   switch (level) {
     case "high":

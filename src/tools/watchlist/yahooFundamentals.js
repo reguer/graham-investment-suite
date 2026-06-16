@@ -121,7 +121,10 @@ export function buildYahooSupplementalSnapshot(data, { symbol, expectedCurrency 
   // Liquidity signals (already in the price/summaryDetail modules): market cap and
   // average daily share volume, used to label how easily a stock can be sold.
   const marketCap = raw(data?.price?.marketCap) ?? raw(data?.summaryDetail?.marketCap);
-  const avgVolume = raw(data?.summaryDetail?.averageDailyVolume3Month) ?? raw(data?.summaryDetail?.averageVolume) ?? raw(data?.price?.averageDailyVolume3Month);
+  const avgVolume = raw(data?.summaryDetail?.averageVolume)
+    ?? raw(data?.price?.averageDailyVolume3Month)
+    ?? raw(data?.summaryDetail?.averageDailyVolume10Day)
+    ?? raw(data?.price?.regularMarketVolume);
   const pe = raw(data?.summaryDetail?.trailingPE) ?? raw(data?.defaultKeyStatistics?.trailingPE);
   const pb = raw(data?.defaultKeyStatistics?.priceToBook);
   const currentRatio = raw(data?.financialData?.currentRatio);
@@ -197,7 +200,14 @@ export function buildYahooDeepSnapshot(data) {
   // Liquidity signals: market cap (FX-converted) and average daily share volume.
   const rawMarketCap = pick(summary.price?.marketCap, summary.summaryDetail?.marketCap);
   const marketCap = rawMarketCap === null ? null : rawMarketCap * data.priceFx.rate;
-  const avgVolume = pick(summary.summaryDetail?.averageDailyVolume3Month, summary.summaryDetail?.averageVolume, summary.price?.averageDailyVolume3Month);
+  // averageVolume is the most consistently populated field; averageDailyVolume3Month
+  // is often undefined. Order matters — see AMZN where the 3-month field is missing.
+  const avgVolume = pick(
+    summary.summaryDetail?.averageVolume,
+    summary.price?.averageDailyVolume3Month,
+    summary.summaryDetail?.averageDailyVolume10Day,
+    summary.price?.regularMarketVolume,
+  );
   const convert = (...values) => {
     const parsed = pick(...values);
     return parsed === null ? null : parsed * data.financialFx.rate;

@@ -2,31 +2,27 @@ import { describe, expect, it } from "vitest";
 import { liquidityLabel, formatShort } from "../src/lib/liquidity.js";
 
 describe("liquidityLabel", () => {
-  it("flags high liquidity for heavy dollar volume", () => {
-    // 10M shares * $200 = $2B/day → high
-    const r = liquidityLabel({ avgVolume: 10_000_000, price: 200 });
+  it("uses market cap as the primary signal (large cap = high)", () => {
+    const r = liquidityLabel({ marketCap: 50_000_000_000 });
     expect(r.level).toBe("high");
     expect(r.label).toMatch(/alta/i);
   });
 
-  it("flags medium for mid dollar volume", () => {
-    // 200k shares * $50 = $10M/day → medium
-    expect(liquidityLabel({ avgVolume: 200_000, price: 50 }).level).toBe("medium");
-  });
-
-  it("flags low when exit can be slow", () => {
-    // 50k shares * $40 = $2M/day → low
-    expect(liquidityLabel({ avgVolume: 50_000, price: 40 }).level).toBe("low");
-  });
-
-  it("flags very_low for thin trading", () => {
-    // 5k shares * $20 = $100k/day → very_low
-    expect(liquidityLabel({ avgVolume: 5_000, price: 20 }).level).toBe("very_low");
-  });
-
-  it("falls back to market cap when volume is missing", () => {
-    expect(liquidityLabel({ marketCap: 50_000_000_000 }).level).toBe("high");
+  it("classifies mid and small caps", () => {
+    expect(liquidityLabel({ marketCap: 5_000_000_000 }).level).toBe("medium");
     expect(liquidityLabel({ marketCap: 500_000_000 }).level).toBe("low");
+  });
+
+  it("dollar volume can RAISE but not lower a large cap (noisy Yahoo volume)", () => {
+    // Large cap but a corrupt tiny avgVolume must NOT drag it to very_low.
+    expect(liquidityLabel({ marketCap: 50_000_000_000, avgVolume: 100, price: 200 }).level).toBe("high");
+    // A small cap that trades heavily IS liquid → raised to high.
+    expect(liquidityLabel({ marketCap: 500_000_000, avgVolume: 10_000_000, price: 200 }).level).toBe("high");
+  });
+
+  it("uses dollar volume alone when market cap is missing", () => {
+    expect(liquidityLabel({ avgVolume: 10_000_000, price: 200 }).level).toBe("high");
+    expect(liquidityLabel({ avgVolume: 5_000, price: 20 }).level).toBe("very_low");
   });
 
   it("returns unknown when nothing is available", () => {
