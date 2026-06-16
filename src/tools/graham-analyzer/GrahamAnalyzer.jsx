@@ -9,6 +9,7 @@ import { buildPrompt } from "./prompts.js";
 import AnalysisForm from "./AnalysisForm.jsx";
 import AnalysisResults from "./AnalysisResults.jsx";
 import AnalysisHistory from "./AnalysisHistory.jsx";
+import CompareView from "./CompareView.jsx";
 import CandidatePanel from "./CandidatePanel.jsx";
 import CandidateAnalysis from "./CandidateAnalysis.jsx";
 import { screenWatchlist, summarizeScreen } from "../watchlist/screen.js";
@@ -18,6 +19,7 @@ const views = [
   { id: "input", label: "Input" },
   { id: "results", label: "Results" },
   { id: "candidates", label: "Candidatas" },
+  { id: "compare", label: "Comparar" },
   { id: "history", label: "History" },
 ];
 
@@ -142,7 +144,7 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
           <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Graham Analyzer</h1>
           <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>Captura manual desde Yahoo Finance, calculo automatico y lectura Graham.</p>
         </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div className="no-print" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {views.map((item) => (
             <button
               key={item.id}
@@ -204,6 +206,8 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
       ) : null}
 
       {view === "candidates" ? <CandidateAnalysis candidates={candidateOpportunities} /> : null}
+
+      {view === "compare" ? <CompareView history={history} /> : null}
 
       {view === "history" ? (
         <AnalysisHistory

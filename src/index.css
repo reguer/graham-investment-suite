@@ -27,3 +27,20 @@ button {
 ::selection {
   background: rgba(56, 189, 248, 0.25);
 }
+
+/* Print / "Save as PDF": hide controls and navigation, switch to a light,
+   ink-friendly surface so a saved analysis reads as a clean document. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  body {
+    color: #111827 !important;
+  }
+}
