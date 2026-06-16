@@ -7,6 +7,8 @@ import { alertFor } from "./constants.js";
 import EntryPrices from "./EntryPrices.jsx";
 import InterpretationPanel from "./InterpretationPanel.jsx";
 import FreshnessBadge from "../../components/ui/FreshnessBadge.jsx";
+import EpsChart from "../../components/ui/EpsChart.jsx";
+import { analysesToCsv, triggerDownload, exportFilename } from "../../lib/exportAnalysis.js";
 
 // Renders SI / NO / N/D for a tri-state boolean (true / false / null = missing data).
 function boolLabel(value) {
@@ -75,9 +77,27 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
           <p style={{ margin: "0 0 8px", color: SURFACE.text }}>{classification.reason}</p>
           <FreshnessBadge asOf={form.date || null} source="Captura manual" />
         </div>
-        <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px", alignSelf: "center" }}>
-          Guardar analisis
-        </button>
+        <div style={{ display: "flex", gap: 8, alignSelf: "center", flexWrap: "wrap" }}>
+          <button type="button" onClick={onSave} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px" }}>
+            Guardar analisis
+          </button>
+          <button
+            type="button"
+            onClick={() => triggerDownload(exportFilename(form.ticker, "csv"), analysesToCsv({ form, ratios }))}
+            className="no-print"
+            style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px" }}
+          >
+            Exportar CSV
+          </button>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="no-print"
+            style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, color: SURFACE.text, borderRadius: 8, padding: "10px 13px" }}
+          >
+            Exportar PDF
+          </button>
+        </div>
       </div>
 
       <SectionTitle number="1" title="Valuacion" />
@@ -121,6 +141,9 @@ export default function AnalysisResults({ form, ratios, classification, checks, 
       )}
 
       <SectionTitle number="4" title="Consistencia EPS" />
+      <div style={{ marginBottom: 12 }}>
+        <EpsChart history={ratios.epsHistory} />
+      </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
         {ratios.epsHistory.map((entry) => (
           <div key={entry.year} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 12, background: SURFACE.panel }}>
