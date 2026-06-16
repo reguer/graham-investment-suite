@@ -91,6 +91,21 @@ export const SECTOR_PROFILES = {
     omit: ["quick"],
     useTangibleBook: false,
   },
+  basic_materials: {
+    id: "basic_materials",
+    label: "Materiales básicos (minería / metales)",
+    // Miners (gold, copper, steel, industrial metals) are cyclical and very
+    // capital-intensive: P/B reflects physical reserves and PP&E (low
+    // intangibles), asset-backed leverage is structural, and working capital
+    // runs tight. Mirror the energy stance — relax debt and current, omit quick,
+    // book value is real so do NOT use tangible book — while keeping valuation
+    // discipline (P/E, P/B, P/E×P/B, EPS). Royalty/streaming names (FNV, WPM)
+    // run with near-zero debt and high P/B; the relaxed P/B keeps them sane
+    // without a dedicated sub-profile.
+    thresholds: { peMax: 20, pbMax: 2.5, pePbMax: 22.5, debtMax: 1.5, currentMin: 1, quickMin: null },
+    omit: ["quick"],
+    useTangibleBook: false,
+  },
 };
 
 export const DEFAULT_PROFILE = SECTOR_PROFILES.default;

@@ -38,6 +38,22 @@ describe("detectSector from Yahoo text", () => {
     expect(detectSector({ sicCode: 4911 })).toBe("utilities");
   });
 
+  it("maps basic materials (miners/metals) ahead of the generic industrial rule", () => {
+    expect(detectSector({ sector: "Basic Materials", industry: "Gold" })).toBe("basic_materials");
+    expect(detectSector({ sector: "Basic Materials", industry: "Copper" })).toBe("basic_materials");
+    expect(detectSector({ sector: "Basic Materials", industry: "Steel" })).toBe("basic_materials");
+    // "Other Industrial Metals & Mining" contains "industrial" but must not be canibalized.
+    expect(detectSector({ sector: "Basic Materials", industry: "Other Industrial Metals & Mining" })).toBe("basic_materials");
+  });
+
+  it("maps basic materials SIC ranges (metal/coal mining, primary metals, chemicals)", () => {
+    expect(detectSector({ sicCode: 1040 })).toBe("basic_materials"); // gold mining
+    expect(detectSector({ sicCode: 1220 })).toBe("basic_materials"); // coal mining
+    expect(detectSector({ sicCode: 3310 })).toBe("basic_materials"); // steel works
+    expect(detectSector({ sicCode: 2810 })).toBe("basic_materials"); // industrial chemicals
+    expect(detectSector({ sicCode: 2834 })).toBe("healthcare"); // pharma still wins its range
+  });
+
   it("falls back to default when unknown or empty", () => {
     expect(detectSector({ sector: "Mystery Sector" })).toBe("default");
     expect(detectSector({})).toBe("default");
