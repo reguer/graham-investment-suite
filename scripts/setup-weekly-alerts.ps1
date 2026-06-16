@@ -41,30 +41,36 @@ if (-not $existing) {
   Write-Host "Tarea creada: $PipelineTaskName ($Time lunes y viernes) -> $repo"
 }
 
-# Tarea de arranque: iniciar dashboard al encender el equipo
-$existingStartup = Get-ScheduledTask -TaskName $StartupTaskName -ErrorAction SilentlyContinue
-if ($existingStartup) {
-  $currentDir = $existingStartup.Actions[0].WorkingDirectory
-  if ($currentDir -ne $repo -or $Force) {
-    Unregister-ScheduledTask -TaskName $StartupTaskName -Confirm:$false
-    Write-Host "Tarea startup eliminada para recrear con ruta actualizada."
-    $existingStartup = $null
-  } else {
-    Write-Host "La tarea '$StartupTaskName' ya existe y apunta a '$repo'. Sin cambios."
-  }
+# ¿Esta consola está elevada (admin real)? Modificar tareas en la raíz lo exige.
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+  Write-Warning "Esta consola NO está elevada. Si la tarea Startup ya existe, su modificación fallará con 'Acceso denegado'."
+  Write-Warning "Abre PowerShell COMO ADMINISTRADOR (clic derecho > Ejecutar como administrador) y vuelve a correr este script."
 }
 
-if (-not $existingStartup) {
-  $actionStartup  = New-ScheduledTaskAction -Execute $npm -Argument "run dev:safe" -WorkingDirectory $repo
-  $triggerStartup = New-ScheduledTaskTrigger -AtLogOn
-  # "Siempre vivo": si el dashboard se cae, reiniciarlo automáticamente (hasta
-  # 999 veces, cada 1 min) y mantener el proceso corriendo indefinidamente.
-  $settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
-    -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) `
-    -ExecutionTimeLimit (New-TimeSpan -Hours 0)
-  Register-ScheduledTask -TaskName $StartupTaskName -Action $actionStartup -Trigger $triggerStartup -Settings $settingsStartup `
-    -Description "Graham Investment Suite: arranca dashboard local al iniciar sesion y lo reinicia si se cae."
-  Write-Host "Tarea creada: $StartupTaskName (arranque al iniciar sesion + auto-reinicio) -> $repo"
+# Tarea de arranque: iniciar dashboard al encender el equipo + auto-reinicio.
+$actionStartup  = New-ScheduledTaskAction -Execute $npm -Argument "run dev:safe" -WorkingDirectory $repo
+$triggerStartup = New-ScheduledTaskTrigger -AtLogOn
+# "Siempre vivo": si el dashboard se cae, reiniciarlo (hasta 999 veces, cada 1 min).
+$settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+  -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) `
+  -ExecutionTimeLimit (New-TimeSpan -Hours 0)
+$descStartup = "Graham Investment Suite: arranca dashboard local al iniciar sesion y lo reinicia si se cae."
+
+$existingStartup = Get-ScheduledTask -TaskName $StartupTaskName -ErrorAction SilentlyContinue
+try {
+  if ($existingStartup) {
+    # Modificar en sitio (Set-) en vez de borrar+crear: no depende de poder borrar
+    # de la raíz del Task Scheduler, que es lo que fallaba con 'Acceso denegado'.
+    Set-ScheduledTask -TaskName $StartupTaskName -Action $actionStartup -Trigger $triggerStartup -Settings $settingsStartup | Out-Null
+    Write-Host "Tarea actualizada: $StartupTaskName (arranque + auto-reinicio) -> $repo"
+  } else {
+    Register-ScheduledTask -TaskName $StartupTaskName -Action $actionStartup -Trigger $triggerStartup -Settings $settingsStartup -Description $descStartup | Out-Null
+    Write-Host "Tarea creada: $StartupTaskName (arranque al iniciar sesion + auto-reinicio) -> $repo"
+  }
+} catch {
+  Write-Warning "No se pudo configurar '$StartupTaskName': $($_.Exception.Message)"
+  Write-Warning "Ejecuta este script en una consola ELEVADA (Administrador) para aplicar el auto-reinicio."
 }
 
 Write-Host ""
