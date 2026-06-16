@@ -12,6 +12,8 @@ const KEYWORD_RULES = [
   { id: "tech", keywords: ["technology", "software", "semiconductor", "internet", "information technology", "it services", "electronic"] },
   { id: "healthcare", keywords: ["healthcare", "health care", "pharmaceutic", "biotech", "medical", "drug"] },
   { id: "consumer_staples", keywords: ["consumer defensive", "consumer staples", "packaged foods", "beverages", "household", "tobacco"] },
+  // Before industrial: "Other Industrial Metals & Mining" contains "industrial".
+  { id: "basic_materials", keywords: ["basic material", "mining", "metals", "gold", "silver", "copper", "steel", "aluminum", "iron", "coal", "chemical", "precious metals"] },
   { id: "industrial", keywords: ["industrial", "construction", "consumer cyclical", "manufactur", "aerospace", "machinery", "auto"] },
 ];
 
@@ -34,6 +36,11 @@ function sectorFromSic(sicCode) {
   if (sic >= 2833 && sic <= 2836) return "healthcare"; // pharma/biotech
   if (sic >= 8000 && sic <= 8099) return "healthcare"; // health services
   if (sic >= 2000 && sic <= 2199) return "consumer_staples"; // food/beverage
+  if (sic >= 1000 && sic <= 1099) return "basic_materials"; // metal mining (1040 = gold)
+  if (sic >= 1200 && sic <= 1299) return "basic_materials"; // coal mining
+  if (sic >= 1400 && sic <= 1499) return "basic_materials"; // mining of nonmetallic minerals
+  if (sic >= 2800 && sic <= 2829) return "basic_materials"; // industrial chemicals (excl. pharma 2833-2836)
+  if (sic >= 3300 && sic <= 3399) return "basic_materials"; // primary metal industries (steel/aluminum)
   if (sic >= 3400 && sic <= 3999) return "industrial";
   if (sic >= 1500 && sic <= 1799) return "industrial"; // construction
   return null;
