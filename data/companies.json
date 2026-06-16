@@ -191,29 +191,6 @@
     "tangibleBvps": 7.012346572305499
   },
   {
-    "ticker": "AA",
-    "yahooSymbol": "AA.MX",
-    "companyName": "Alcoa Corporation",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Basic Materials",
-    "industry": "Aluminum",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_partial_incomplete",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "rawTicker": "AA"
-  },
-  {
     "ticker": "AAPL",
     "yahooSymbol": "AAPL",
     "companyName": "Apple Inc.",
@@ -4818,29 +4795,6 @@
     "tangibleBvps": -11.207215259732028
   },
   {
-    "ticker": "CMA",
-    "yahooSymbol": "CMA.MX",
-    "companyName": "Comerica Incorporated",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Financial Services",
-    "industry": "Banks Regional",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: CMA",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: CMA",
-    "rawTicker": "CMA"
-  },
-  {
     "ticker": "CMCSA",
     "yahooSymbol": "CMCSA.MX",
     "companyName": "Comcast Corporation",
@@ -6978,29 +6932,6 @@
     "pbTangible": 8.040679751095588,
     "pePbTangible": 262.394260270657,
     "tangibleBvps": 71.75470006890728
-  },
-  {
-    "ticker": "DFS",
-    "yahooSymbol": "DFS.MX",
-    "companyName": "Discover Financial Services",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Financial Services",
-    "industry": "Credit Services",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: DFS",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: DFS",
-    "rawTicker": "DFS"
   },
   {
     "ticker": "DGX",
@@ -9386,57 +9317,6 @@
     "tangibleBvps": -103.0417211378192
   },
   {
-    "ticker": "FITB",
-    "yahooSymbol": "FITB.MX",
-    "companyName": "Fifth Third Bancorp",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Financial Services",
-    "industry": "Banks Regional",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_partial_incomplete",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "lastPrice": 915.57,
-    "lastPriceDate": "2026-05-20",
-    "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
-    "lastPriceSource": "Yahoo Finance Chart",
-    "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "rawTicker": "FITB"
-  },
-  {
-    "ticker": "FNF",
-    "yahooSymbol": "FNF.MX",
-    "companyName": "Fidelity National Financial Inc.",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Financial Services",
-    "industry": "Insurance Specialty",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_partial_incomplete",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "rawTicker": "FNF"
-  },
-  {
     "ticker": "FTNT",
     "yahooSymbol": "FTNT",
     "companyName": "Fortinet, Inc.",
@@ -11327,29 +11207,6 @@
     "tangibleBvps": -77.32509438735062
   },
   {
-    "ticker": "HOLX",
-    "yahooSymbol": "HOLX.MX",
-    "companyName": "Hologic, Inc.",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Healthcare",
-    "industry": "Medical Instruments & Supplies",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: HOLX",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: HOLX",
-    "rawTicker": "HOLX"
-  },
-  {
     "ticker": "HON",
     "yahooSymbol": "HON",
     "companyName": "Honeywell International Inc.",
@@ -12781,29 +12638,6 @@
     "tangibleBvps": -5.55321925121642
   },
   {
-    "ticker": "JNPR",
-    "yahooSymbol": "JNPR.MX",
-    "companyName": "Juniper Networks, Inc.",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Technology",
-    "industry": "Communication Equipment",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: JNPR",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: JNPR",
-    "rawTicker": "JNPR"
-  },
-  {
     "ticker": "JPM",
     "yahooSymbol": "JPM",
     "companyName": "JPMorgan Chase & Co.",
@@ -12881,29 +12715,6 @@
     "pbTangible": 2.871021240610175,
     "pePbTangible": 44.107941456765175,
     "tangibleBvps": 111.24961232683818
-  },
-  {
-    "ticker": "K",
-    "yahooSymbol": "K.MX",
-    "companyName": "Kellanova",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Consumer Defensive",
-    "industry": "Packaged Foods",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: K",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: K",
-    "rawTicker": "K"
   },
   {
     "ticker": "KBH",
@@ -15915,29 +15726,6 @@
     "pbTangible": 141.0879544140083,
     "pePbTangible": 4740.0604728545495,
     "tangibleBvps": 0.8143856112821481
-  },
-  {
-    "ticker": "MRO",
-    "yahooSymbol": "MRO.MX",
-    "companyName": "Marathon Oil Corporation",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Energy",
-    "industry": "Oil & Gas E&P",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: MRO",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: MRO",
-    "rawTicker": "MRO"
   },
   {
     "ticker": "MRVL",
@@ -23997,34 +23785,6 @@
     "tangibleBvps": -1.1769146722378145
   },
   {
-    "ticker": "VTRS",
-    "yahooSymbol": "VTRS.MX",
-    "companyName": "Viatris Inc.",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Healthcare",
-    "industry": "Drug Manufacturers Specialty & Generic",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_partial_incomplete",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "lastPrice": 278.43,
-    "lastPriceDate": "2026-06-09",
-    "lastPriceUpdatedAt": "2026-06-11T23:40:09.117Z",
-    "lastPriceSource": "Yahoo Finance Chart",
-    "quoteCurrency": "MXN",
-    "watchReason": "Yahoo fundamentalsTimeSeries no devolvio estados anuales.",
-    "rawTicker": "VTRS"
-  },
-  {
     "ticker": "VZ",
     "yahooSymbol": "VZ",
     "companyName": "Verizon Communications Inc.",
@@ -24639,29 +24399,6 @@
     "classificationLabel": "RECHAZADA",
     "rawTicker": "WTRG",
     "autoAnalysisNote": "SEC no devolvio campos minimos para ratios Graham."
-  },
-  {
-    "ticker": "X",
-    "yahooSymbol": "X.MX",
-    "companyName": "United States Steel Corporation",
-    "exchange": "",
-    "market": "BMV SIC",
-    "country": "",
-    "currency": "",
-    "quoteType": "EQUITY",
-    "sector": "Basic Materials",
-    "industry": "Steel",
-    "source": "Yahoo Finance Search",
-    "sourceDate": "2026-06-16",
-    "analysisStatus": "pending_fundamentals",
-    "validationStatus": "yahoo_fetch_failed",
-    "tags": [
-      "bmv-sic",
-      "pending-analysis"
-    ],
-    "notes": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: X",
-    "watchReason": "Yahoo y SEC EDGAR sin datos suficientes: Quote not found for symbol: X",
-    "rawTicker": "X"
   },
   {
     "ticker": "XEL",
