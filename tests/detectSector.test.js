@@ -24,6 +24,20 @@ describe("detectSector from Yahoo text", () => {
     expect(detectSector({ sector: "Residential Construction" })).toBe("industrial");
   });
 
+  it("maps energy (oil/gas/midstream) without canibalizing utilities", () => {
+    expect(detectSector({ sector: "Energy", industry: "Oil & Gas E&P" })).toBe("energy");
+    expect(detectSector({ sector: "Energy", industry: "Oil & Gas Midstream" })).toBe("energy");
+    expect(detectSector({ sector: "Energy", industry: "Oil & Gas Equipment & Services" })).toBe("energy");
+    expect(detectSector({ sector: "Utilities", industry: "Utilities Regulated Gas" })).toBe("utilities");
+  });
+
+  it("maps energy SIC ranges (extraction/refining/pipelines)", () => {
+    expect(detectSector({ sicCode: 1311 })).toBe("energy");
+    expect(detectSector({ sicCode: 2911 })).toBe("energy");
+    expect(detectSector({ sicCode: 4612 })).toBe("energy");
+    expect(detectSector({ sicCode: 4911 })).toBe("utilities");
+  });
+
   it("falls back to default when unknown or empty", () => {
     expect(detectSector({ sector: "Mystery Sector" })).toBe("default");
     expect(detectSector({})).toBe("default");

@@ -8,6 +8,7 @@ const KEYWORD_RULES = [
   { id: "reit", keywords: ["reit", "real estate"] },
   { id: "financial", keywords: ["financial", "bank", "insurance", "insurer", "capital markets", "asset management"] },
   { id: "utilities", keywords: ["utilit", "regulated electric", "power generation", "water", "gas distribution"] },
+  { id: "energy", keywords: ["energy", "oil", "gas e&p", "petroleum", "midstream", "drilling", "refin", "pipeline", "exploration"] },
   { id: "tech", keywords: ["technology", "software", "semiconductor", "internet", "information technology", "it services", "electronic"] },
   { id: "healthcare", keywords: ["healthcare", "health care", "pharmaceutic", "biotech", "medical", "drug"] },
   { id: "consumer_staples", keywords: ["consumer defensive", "consumer staples", "packaged foods", "beverages", "household", "tobacco"] },
@@ -23,6 +24,9 @@ function sectorFromSic(sicCode) {
   if (sic >= 6000 && sic <= 6199) return "financial"; // depository / non-depository credit
   if (sic >= 6300 && sic <= 6411) return "financial"; // insurance
   if (sic >= 6500 && sic <= 6799) return "reit"; // real estate
+  if (sic >= 1300 && sic <= 1399) return "energy"; // oil & gas extraction
+  if (sic >= 2900 && sic <= 2999) return "energy"; // petroleum refining
+  if (sic >= 4610 && sic <= 4619) return "energy"; // pipelines (midstream)
   if (sic >= 4900 && sic <= 4991) return "utilities";
   if (sic >= 7370 && sic <= 7379) return "tech"; // computer services
   if (sic >= 3570 && sic <= 3589) return "tech"; // computer hardware

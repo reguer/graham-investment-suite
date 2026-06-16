@@ -80,6 +80,17 @@ export const SECTOR_PROFILES = {
     omit: [],
     useTangibleBook: false,
   },
+  energy: {
+    id: "energy",
+    label: "Energía (petróleo / gas / midstream)",
+    // Cyclical and capital-intensive: asset-backed leverage is structural, P/B
+    // reflects physical reserves and PP&E (low intangibles), and working capital
+    // runs tighter than industrials. Relax debt and current; keep valuation
+    // discipline (P/E, P/B, P/E×P/B, EPS).
+    thresholds: { peMax: 20, pbMax: 2.5, pePbMax: 22.5, debtMax: 1.5, currentMin: 1, quickMin: null },
+    omit: ["quick"],
+    useTangibleBook: false,
+  },
 };
 
 export const DEFAULT_PROFILE = SECTOR_PROFILES.default;

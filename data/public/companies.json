@@ -3640,10 +3640,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 20.15 > 20.00 · P/B 3.21 > 2.00 · P/E×P/B 64.62 > 22.50 · Deuda 1.16 >= 1.00 · Corriente 1.36 < 2.00 · EPS no siempre positivo"
+    "watchReason": "Falla: P/E 20.15 > 20.00 · P/B 3.21 > 2.50 · P/E×P/B 64.62 > 22.50 · EPS no siempre positivo"
   },
   {
     "ticker": "BLK",
@@ -5912,7 +5912,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "COP",
-    "watchReason": "Falla: P/B 2.12 > 2.00 · P/E×P/B 42.03 > 22.50 · Corriente 1.30 < 2.00",
+    "watchReason": "Falla: P/E×P/B 42.03 > 22.50",
     "price": 112.26,
     "pe": 19.833923,
     "pb": 2.1190329,
@@ -5965,7 +5965,7 @@
     "tie": 11.264395782643957,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.4480247445063075,
     "pePbTangible": 48.553934284632774,
     "tangibleBvps": 45.85737960857068
@@ -6849,10 +6849,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E×P/B 25.02 > 22.50 · Corriente 1.19 < 2.00"
+    "watchReason": "Falla: P/E×P/B 25.02 > 22.50"
   },
   {
     "ticker": "CTSH",
@@ -7115,7 +7115,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "CVX",
-    "watchReason": "Falla: P/E 32.56 > 20.00 · P/E×P/B 63.23 > 22.50 · Corriente 1.15 < 2.00",
+    "watchReason": "Falla: P/E 32.56 > 20.00 · P/E×P/B 63.23 > 22.50",
     "price": 180.4,
     "pe": 32.563175,
     "pb": 1.9417474999999997,
@@ -7168,7 +7168,7 @@
     "tie": 17.222678718159408,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.20264026454712,
     "pePbTangible": 71.72496039649417,
     "tangibleBvps": 81.90170810170478
@@ -8095,7 +8095,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
-    "price": 43.915190255999995,
+    "price": 43.8986142,
     "pe": 12.20536,
     "pb": 1.7720233,
     "pePb": 21.628182304888004,
@@ -8107,7 +8107,7 @@
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: Deuda 1.03 >= 1.00 · Corriente 0.98 < 2.00",
+    "watchReason": "Falla: Corriente 0.98 < 1.00",
     "rawTicker": "DVN",
     "autoAnalysisNote": "SEC no devolvio campos minimos para ratios Graham.",
     "lastPrice": 787,
@@ -8121,27 +8121,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 3.5980249870548673
+        "eps": 3.596666890611993
       },
       {
         "year": 2024,
-        "eps": 3.93453092109597
+        "eps": 3.933045808439014
       },
       {
         "year": 2023,
-        "eps": 5.035896723662205
+        "eps": 5.033995893775893
       },
       {
         "year": 2022,
-        "eps": 7.86906184219194
+        "eps": 7.866091616878028
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.180534031106599,
     "pePbTangible": 26.61420284190724,
-    "tangibleBvps": 20.139649108669715
+    "tangibleBvps": 20.13204727546577
   },
   {
     "ticker": "DXCM",
@@ -8825,7 +8825,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "EOG",
-    "watchReason": "Falla: P/B 2.28 > 2.00 · P/E×P/B 30.69 > 22.50 · Corriente 1.63 < 2.00",
+    "watchReason": "Falla: P/E×P/B 30.69 > 22.50",
     "price": 131.98,
     "pe": 13.439918500000001,
     "pb": 2.2838652,
@@ -8879,7 +8879,7 @@
     "tie": 28.072340425531916,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.2432991307987797,
     "pePbTangible": 30.14975748905644,
     "tangibleBvps": 58.83299208207039
@@ -9480,7 +9480,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "FANG",
-    "watchReason": "Falla: P/E 195.84 > 20.00 · P/E×P/B 286.93 > 22.50 · Corriente 0.42 < 2.00",
+    "watchReason": "Falla: P/E 195.84 > 20.00 · P/E×P/B 286.93 > 22.50 · Corriente 0.42 < 1.00",
     "price": 189.96,
     "pe": 195.83505,
     "pb": 1.4651417,
@@ -9533,7 +9533,7 @@
     "tie": 8.071698113207548,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 8.773818468045643,
     "pePbTangible": 1718.221178380642,
     "tangibleBvps": 21.650778471407484
@@ -11563,7 +11563,7 @@
       "pending-analysis"
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Precio convertido de MXN a USD. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede 22.5.",
-    "price": 40.04066927332,
+    "price": 40.022064618,
     "pe": 22.076874,
     "pb": 3.0579085,
     "pePb": 67.509060658029,
@@ -11575,7 +11575,7 @@
     "epsGrowing": false,
     "classificationId": "good_overvalued",
     "classificationLabel": "BUENA EMPRESA, SOBREVALORADA",
-    "watchReason": "Falla: P/E 22.08 > 20.00 · P/B 3.06 > 2.00 · P/E×P/B 67.51 > 22.50 · Deuda 1.39 >= 1.00",
+    "watchReason": "Falla: P/E 22.08 > 20.00 · P/B 3.06 > 2.50 · P/E×P/B 67.51 > 22.50",
     "rawTicker": "HAL",
     "autoAnalysisNote": "SEC no devolvio campos minimos para ratios Graham.",
     "lastPrice": 689.24,
@@ -11589,27 +11589,27 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.8136928839345643
+        "eps": 1.8128501624822428
       },
       {
         "year": 2024,
-        "eps": 3.421833907689878
+        "eps": 3.420243973216498
       },
       {
         "year": 2023,
-        "eps": 3.5306554807259514
+        "eps": 3.5290149829654327
       },
       {
         "year": 2022,
-        "eps": 2.1038837453640946
+        "eps": 2.102906188479402
       }
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 3.754799984447694,
     "pePbTangible": 82.8942461518537,
-    "tangibleBvps": 10.663862106947812
+    "tangibleBvps": 10.658907207779533
   },
   {
     "ticker": "HBAN",
@@ -14196,11 +14196,11 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "KMI",
-    "watchReason": "Falla: P/E 21.40 > 20.00 · P/B 2.23 > 2.00 · P/E×P/B 47.82 > 22.50 · Deuda 1.29 >= 1.00 · Corriente 0.64 < 2.00",
+    "watchReason": "Falla: P/E 21.11 > 20.00 · P/E×P/B 47.18 > 22.50 · Corriente 0.64 < 1.00",
     "price": 31.46,
-    "pe": 21.40136,
+    "pe": 21.114094,
     "pb": 2.2345335,
-    "pePb": 47.82205586556,
+    "pePb": 47.180150365149004,
     "debtRatio": 1.293209678454528,
     "currentRatio": 0.6372049976862564,
     "quickRatio": 0.5043961129106895,
@@ -14224,19 +14224,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 1.470000037380802
+        "eps": 1.4899999971582962
       },
       {
         "year": 2024,
-        "eps": 1.255401491777765
+        "eps": 1.2724817493979608
       },
       {
         "year": 2023,
-        "eps": 1.1373722916960949
+        "eps": 1.1528467131297766
       },
       {
         "year": 2022,
-        "eps": 1.2017518553770061
+        "eps": 1.2181021874578772
       }
     ],
     "lastPrice": 31.36,
@@ -14249,10 +14249,10 @@
     "tie": null,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
-    "pbTangible": 6.972406492682928,
-    "pePbTangible": 149.2189814162447,
-    "tangibleBvps": 4.512071984474106
+    "sectorProfileId": "energy",
+    "pbTangible": 6.87881733182927,
+    "pePbTangible": 145.2399957530724,
+    "tangibleBvps": 4.573460593935253
   },
   {
     "ticker": "KO",
@@ -16626,11 +16626,11 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "MPC",
-    "watchReason": "Falla: P/B 4.39 > 2.00 · P/E×P/B 72.51 > 22.50 · Deuda 3.46 >= 1.00 · Corriente 1.26 < 2.00",
+    "watchReason": "Falla: P/B 4.39 > 2.50 · P/E×P/B 72.41 > 22.50 · Deuda 3.46 >= 1.50",
     "price": 250.86,
-    "pe": 16.525692,
+    "pe": 16.503948,
     "pb": 4.3874288,
-    "pePb": 72.5052970207296,
+    "pePb": 72.40989676890241,
     "debtRatio": 3.4578375880790113,
     "currentRatio": 1.2592743164955789,
     "quickRatio": 0.7445370464478097,
@@ -16654,19 +16654,19 @@
     "epsHistory": [
       {
         "year": 2025,
-        "eps": 15.17999972406602
+        "eps": 15.199999418320996
       },
       {
         "year": 2024,
-        "eps": 11.574462724552607
+        "eps": 11.589712113212983
       },
       {
         "year": 2023,
-        "eps": 27.133388311624813
+        "eps": 27.16913663047845
       },
       {
         "year": 2022,
-        "eps": 32.289076568890806
+        "eps": 32.33161752217749
       }
     ],
     "lastPrice": 260.81,
@@ -16679,10 +16679,10 @@
     "tie": 5.968130311614731,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
-    "pbTangible": 12.7433687307358,
-    "pePbTangible": 210.59298668657075,
-    "tangibleBvps": 19.685532554272672
+    "sectorProfileId": "energy",
+    "pbTangible": 12.726601395989329,
+    "pePbTangible": 210.0391676561353,
+    "tangibleBvps": 19.711468301274543
   },
   {
     "ticker": "MPWR",
@@ -18770,7 +18770,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "OKE",
-    "watchReason": "Falla: P/B 2.46 > 2.00 · P/E×P/B 38.41 > 22.50 · Deuda 1.96 >= 1.00 · Corriente 0.71 < 2.00",
+    "watchReason": "Falla: P/E×P/B 38.41 > 22.50 · Deuda 1.96 >= 1.50 · Corriente 0.71 < 1.00",
     "price": 87.45,
     "pe": 15.588234000000002,
     "pb": 2.4643521,
@@ -18824,7 +18824,7 @@
     "tie": 3.5182277061132923,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 4.5879908103810525,
     "pePbTangible": 71.51867434206949,
     "tangibleBvps": 19.06063102875677
@@ -19188,10 +19188,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 76.70 > 20.00 · P/E×P/B 135.11 > 22.50 · Deuda 1.32 >= 1.00 · Corriente 0.94 < 2.00"
+    "watchReason": "Falla: P/E 76.70 > 20.00 · P/E×P/B 135.11 > 22.50 · Corriente 0.94 < 1.00"
   },
   {
     "ticker": "PANW",
@@ -20755,7 +20755,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "PSX",
-    "watchReason": "Falla: P/B 2.44 > 2.00 · P/E×P/B 41.69 > 22.50 · Deuda 1.49 >= 1.00 · Corriente 1.30 < 2.00",
+    "watchReason": "Falla: P/E×P/B 41.69 > 22.50",
     "price": 173.26,
     "pe": 17.120552,
     "pb": 2.4350002,
@@ -20808,7 +20808,7 @@
     "tie": 5.990791896869245,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.825017397245896,
     "pePbTangible": 48.36585725045302,
     "tangibleBvps": 61.330595758068895
@@ -22173,7 +22173,7 @@
     "epsGrowing": false,
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 24.75 > 20.00 · P/B 3.07 > 2.00 · P/E×P/B 75.93 > 22.50 · Deuda 1.06 >= 1.00 · Corriente 1.33 < 2.00",
+    "watchReason": "Falla: P/E 24.75 > 20.00 · P/B 3.07 > 2.50 · P/E×P/B 75.93 > 22.50",
     "rawTicker": "SLB",
     "secSnapshot": {
       "assets": 54526000000,
@@ -22215,7 +22215,7 @@
     "tie": 8.689964157706093,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 19.316708110122484,
     "pePbTangible": 478.1107399398581,
     "tangibleBvps": 2.7804944659206448
@@ -24400,10 +24400,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 27.85 > 20.00 · P/B 18.36 > 2.00 · P/E×P/B 511.15 > 22.50 · Deuda 7.18 >= 1.00 · Corriente 0.67 < 2.00"
+    "watchReason": "Falla: P/E 27.85 > 20.00 · P/B 18.36 > 2.50 · P/E×P/B 511.15 > 22.50 · Deuda 7.18 >= 1.50 · Corriente 0.67 < 1.00"
   },
   {
     "ticker": "TROW",
@@ -25486,7 +25486,7 @@
     ],
     "notes": "Snapshot Yahoo completo con FX validado. Escala por accion inferida desde P/E Yahoo para alinear ADR/listado con estados financieros. No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "VLO",
-    "watchReason": "Falla: P/B 3.11 > 2.00 · P/E×P/B 58.89 > 22.50 · Deuda 1.32 >= 1.00 · Corriente 1.65 < 2.00",
+    "watchReason": "Falla: P/B 3.11 > 2.50 · P/E×P/B 58.89 > 22.50",
     "price": 247.16,
     "pe": 18.910482,
     "pb": 3.1142585,
@@ -25540,7 +25540,7 @@
     "tie": 6.404676258992806,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 1.8950422311995543,
     "pePbTangible": 35.83616200233901,
     "tangibleBvps": 130.42453404510604
@@ -26320,10 +26320,10 @@
     ],
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "classificationId": "rejected",
     "classificationLabel": "RECHAZADA",
-    "watchReason": "Falla: P/E 31.63 > 20.00 · P/B 6.84 > 2.00 · P/E×P/B 216.36 > 22.50 · Deuda 3.40 >= 1.00 · Corriente 0.53 < 2.00"
+    "watchReason": "Falla: P/E 31.63 > 20.00 · P/B 6.84 > 2.50 · P/E×P/B 216.36 > 22.50 · Deuda 3.40 >= 1.50 · Corriente 0.53 < 1.00"
   },
   {
     "ticker": "WMT",
@@ -26721,7 +26721,7 @@
     ],
     "notes": "No cumple los criterios mínimos defensivos de Graham.",
     "rawTicker": "XOM",
-    "watchReason": "Falla: P/E 24.77 > 20.00 · P/B 2.27 > 2.00 · P/E×P/B 56.23 > 22.50 · Corriente 1.15 < 2.00",
+    "watchReason": "Falla: P/E 24.77 > 20.00 · P/E×P/B 56.23 > 22.50",
     "price": 140.92,
     "pe": 24.766256,
     "pb": 2.2703764,
@@ -26774,7 +26774,7 @@
     "tie": 69.43781094527363,
     "sicCode": null,
     "hasNegativeEquity": null,
-    "sectorProfileId": "default",
+    "sectorProfileId": "energy",
     "pbTangible": 2.7540340962360714,
     "pePbTangible": 68.20711346011117,
     "tangibleBvps": 51.168574925268665
