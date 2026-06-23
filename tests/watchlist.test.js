@@ -24,6 +24,7 @@ describe("watchlist universe merge", () => {
   it("loads persisted companies from the public export", () => {
     expect(publicCompanies.length).toBeGreaterThan(0);
     expect(watchlistMeta.publicExportCount).toBe(publicCompanies.length);
+    expect(watchlistMeta.dataUpdatedAt).toBeTruthy();
 
     for (const company of publicCompanies) {
       expect(watchlist.some((item) => item.ticker === company.ticker)).toBe(true);

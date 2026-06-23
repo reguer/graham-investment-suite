@@ -79,6 +79,25 @@ export default function Watchlist({ onManualCapture }) {
     return Number.isFinite(Number(value)) ? `${Number(value).toFixed(2)} ${currency || ""}`.trim() : "N/D";
   }
 
+  function formatUpdatedAt(value) {
+    if (!value) return "";
+    const text = String(value);
+    const date = new Date(text);
+    if (Number.isNaN(date.getTime())) return value;
+    const options = text.includes("T") ? { dateStyle: "medium", timeStyle: "short" } : { dateStyle: "medium" };
+    return date.toLocaleString("es-MX", options);
+  }
+
+  async function loadPublicCompanies() {
+    return fetchPublicCompanies(fetch, import.meta.env.BASE_URL);
+  }
+
+  async function reloadPublicCompanies() {
+    const companies = await fetchPublicCompanies(fetch, import.meta.env.BASE_URL);
+    setPublicCompanies(companies);
+    return companies;
+  }
+
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(WATCHLIST_FAVORITES_KEY);
@@ -93,8 +112,9 @@ export default function Watchlist({ onManualCapture }) {
 
   useEffect(() => {
     let cancelled = false;
-    fetchPublicCompanies(fetch, import.meta.env.BASE_URL).then((companies) => {
-      if (!cancelled) setPublicCompanies(companies);
+    loadPublicCompanies().then((companies) => {
+      if (cancelled) return;
+      setPublicCompanies(companies);
     });
     return () => {
       cancelled = true;
@@ -182,9 +202,10 @@ export default function Watchlist({ onManualCapture }) {
       const response = await fetch(endpoint, { method: "POST" });
       const payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo completar la accion.");
+      const companies = await reloadPublicCompanies();
       setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
       const yahooText = Number.isFinite(payload.partial) && payload.partial > 0 ? ` Parciales Yahoo: ${payload.partial}.` : "";
-      setCaptureMessage(`${doneText}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}.${yahooText} Reporte: ${payload.reportPath || "generado"}`);
+      setCaptureMessage(`${doneText}. Registros recargados: ${companies.length}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}.${yahooText} Reporte: ${payload.reportPath || "generado"}`);
     } catch (error) {
       setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
       setCaptureMessage(error.message);
@@ -272,9 +293,9 @@ export default function Watchlist({ onManualCapture }) {
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
-          Radar Graham con {activeCount} en universo activo, {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.referenceCount || 0} referencias y {watchlistMeta.publicExportCount} registros persistidos en export publico.
-          {watchlistMeta.sourceDate ? (
-            <> · Datos al <strong style={{ color: SURFACE.text }}>{watchlistMeta.sourceDate}</strong></>
+          Radar Graham con {activeCount} oportunidades activas, {watchlistMeta.analyzedCount} analizadas, {watchlistMeta.referenceCount || 0} referencias y {watchlistMeta.publicExportCount} registros persistidos en export publico.
+          {watchlistMeta.dataUpdatedAt ? (
+            <> · Datos actualizados: <strong style={{ color: SURFACE.text }}>{formatUpdatedAt(watchlistMeta.dataUpdatedAt)}</strong></>
           ) : null}
         </p>
       </div>

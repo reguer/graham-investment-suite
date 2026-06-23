@@ -129,13 +129,30 @@ export function buildWatchlist(publicCompanies = []) {
 }
 
 export function buildWatchlistMeta(watchlist, publicCompanies = []) {
+  const latestUpdate = publicCompanies
+    .map((item) => item.lastPriceUpdatedAt || item.lastPriceDate || item.sourceDate)
+    .filter(Boolean)
+    .sort((a, b) => String(b).localeCompare(String(a)))[0] || universeMeta.sourceDate;
   return {
     ...universeMeta,
     publicExportCount: publicCompanies.length,
     analyzedCount: watchlist.filter((item) => item.analysisStatus === "analyzed").length,
-    referenceCount: watchlist.filter((item) => item.analysisStatus === "index_reference" || item.validationStatus === "index_reference").length,
-    pendingCount: watchlist.filter((item) => item.analysisStatus !== "analyzed" && item.analysisStatus !== "index_reference").length,
+    referenceCount: watchlist.filter((item) => (
+      item.analysisStatus === "index_reference" ||
+      item.analysisStatus === "market_reference" ||
+      item.validationStatus === "index_reference" ||
+      item.validationStatus === "market_reference" ||
+      ["INDEX", "ETF", "FUTURE"].includes(String(item.quoteType || "").toUpperCase())
+    )).length,
+    pendingCount: watchlist.filter((item) => (
+      item.analysisStatus !== "analyzed" &&
+      item.analysisStatus !== "index_reference" &&
+      item.analysisStatus !== "market_reference" &&
+      item.validationStatus !== "index_reference" &&
+      item.validationStatus !== "market_reference"
+    )).length,
     totalCount: watchlist.length,
+    dataUpdatedAt: latestUpdate,
   };
 }
 
