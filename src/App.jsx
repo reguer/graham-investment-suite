@@ -6,12 +6,10 @@ import { SURFACE } from "./lib/colors.js";
 const GrahamAnalyzer = lazy(() => import("./tools/graham-analyzer/GrahamAnalyzer.jsx"));
 const MacroRadar = lazy(() => import("./tools/macro-radar/MacroRadar.jsx"));
 const Watchlist = lazy(() => import("./tools/watchlist/Watchlist.jsx"));
-const BacktestingResults = lazy(() => import("./tools/backtesting/BacktestingResults.jsx"));
 
 const tabs = [
   { id: "graham", label: "Graham Analyzer" },
   { id: "watchlist", label: "Watchlist" },
-  { id: "backtesting", label: "Backtesting" },
   { id: "macro", label: "Macro Radar" },
 ];
 
@@ -31,7 +29,6 @@ export default function App() {
         <Suspense fallback={<div style={{ color: SURFACE.muted }}>Cargando...</div>}>
           {activeTab === "graham" ? <GrahamAnalyzer manualDraft={manualDraft} onManualDraftLoaded={() => setManualDraft(null)} /> : null}
           {activeTab === "watchlist" ? <Watchlist onManualCapture={openManualCapture} /> : null}
-          {activeTab === "backtesting" ? <BacktestingResults /> : null}
           {activeTab === "macro" ? <MacroRadar /> : null}
         </Suspense>
       </main>
