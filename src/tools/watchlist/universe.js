@@ -196,13 +196,9 @@ CAH|CAH.MX|Cardinal Health, Inc.|Healthcare|Medical Distribution
 COO|COO.MX|The Cooper Companies, Inc.|Healthcare|Medical Instruments & Supplies
 DGX|DGX.MX|Quest Diagnostics Incorporated|Healthcare|Diagnostics & Research
 DVA|DVA.MX|DaVita Inc.|Healthcare|Medical Care Facilities
-HOLX|HOLX.MX|Hologic, Inc.|Healthcare|Medical Instruments & Supplies
 HUM|HUM.MX|Humana Inc.|Healthcare|Healthcare Plans
 TECH|TECH.MX|Bio-Techne Corporation|Healthcare|Biotechnology
-VTRS|VTRS.MX|Viatris Inc.|Healthcare|Drug Manufacturers Specialty & Generic
 CFG|CFG.MX|Citizens Financial Group, Inc.|Financial Services|Banks Regional
-CINF|CINF.MX|Cincinnati Financial Corporation|Financial Services|Insurance Property & Casualty
-CMA|CMA.MX|Comerica Incorporated|Financial Services|Banks Regional
 FITB|FITB.MX|Fifth Third Bancorp|Financial Services|Banks Regional
 HBAN|HBAN.MX|Huntington Bancshares Incorporated|Financial Services|Banks Regional
 KEY|KEY.MX|KeyCorp|Financial Services|Banks Regional
@@ -215,7 +211,6 @@ AKAM|AKAM.MX|Akamai Technologies, Inc.|Technology|Software Infrastructure
 FFIV|FFIV.MX|F5, Inc.|Technology|Software Infrastructure
 GEN|GEN.MX|Gen Digital Inc.|Technology|Software Infrastructure
 GLW|GLW.MX|Corning Incorporated|Technology|Electronic Components
-JNPR|JNPR.MX|Juniper Networks, Inc.|Technology|Communication Equipment
 NTAP|NTAP.MX|NetApp, Inc.|Technology|Computer Hardware
 SWKS|SWKS.MX|Skyworks Solutions, Inc.|Technology|Semiconductors
 TER|TER.MX|Teradyne, Inc.|Technology|Semiconductor Equipment & Materials
@@ -305,7 +300,6 @@ BR|BR.MX|Broadridge Financial Solutions Inc.|Technology|Information Technology S
 GDDY|GDDY.MX|GoDaddy Inc.|Technology|Software Infrastructure
 DXCM|DXCM.MX|DexCom, Inc.|Healthcare|Medical Devices
 SLB|SLB.MX|SLB (Schlumberger)|Energy|Oil & Gas Equipment & Services
-MRO|MRO.MX|Marathon Oil Corporation|Energy|Oil & Gas E&P
 DVN|DVN.MX|Devon Energy Corporation|Energy|Oil & Gas E&P
 HAL|HAL.MX|Halliburton Company|Energy|Oil & Gas Equipment & Services
 ITW|ITW.MX|Illinois Tool Works Inc.|Industrials|Specialty Industrial Machinery
@@ -314,15 +308,12 @@ ROK|ROK.MX|Rockwell Automation Inc.|Industrials|Specialty Industrial Machinery
 PNR|PNR.MX|Pentair plc|Industrials|Specialty Industrial Machinery
 AME|AME.MX|AMETEK Inc.|Industrials|Specialty Industrial Machinery
 SYY|SYY.MX|Sysco Corporation|Consumer Defensive|Food Distribution
-K|K.MX|Kellanova|Consumer Defensive|Packaged Foods
 GPC|GPC.MX|Genuine Parts Company|Consumer Defensive|Specialty Retail
 MDT|MDT.MX|Medtronic plc|Healthcare|Medical Devices
-DFS|DFS.MX|Discover Financial Services|Financial Services|Credit Services
 SYF|SYF.MX|Synchrony Financial|Financial Services|Credit Services
 ALLY|ALLY.MX|Ally Financial Inc.|Financial Services|Credit Services
 ZION|ZION.MX|Zions Bancorporation|Financial Services|Banks Regional
 NTRS|NTRS.MX|Northern Trust Corporation|Financial Services|Asset Management
-FNF|FNF.MX|Fidelity National Financial Inc.|Financial Services|Insurance Specialty
 WRB|WRB.MX|W.R. Berkley Corporation|Financial Services|Insurance Property & Casualty
 CB|CB.MX|Chubb Limited|Financial Services|Insurance Property & Casualty
 APD|APD.MX|Air Products and Chemicals Inc.|Basic Materials|Specialty Chemicals
@@ -330,8 +321,6 @@ LIN|LIN.MX|Linde plc|Basic Materials|Specialty Chemicals
 NEM|NEM.MX|Newmont Corporation|Basic Materials|Gold
 STLD|STLD.MX|Steel Dynamics Inc.|Basic Materials|Steel
 CLF|CLF.MX|Cleveland-Cliffs Inc.|Basic Materials|Steel
-X|X.MX|United States Steel Corporation|Basic Materials|Steel
-AA|AA.MX|Alcoa Corporation|Basic Materials|Aluminum
 ALB|ALB.MX|Albemarle Corporation|Basic Materials|Specialty Chemicals
 CF|CF.MX|CF Industries Holdings Inc.|Basic Materials|Agricultural Inputs
 MOS|MOS.MX|The Mosaic Company|Basic Materials|Agricultural Inputs

@@ -4,9 +4,10 @@ import MetricCard from "../../components/ui/MetricCard.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
 import { buildDataIssueRows } from "./dataQuality.js";
+import { DEFAULT_POSITIONS } from "./defaultPositions.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
 import { businessNoteFor } from "./notes.js";
-import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, normalizePositions, parseMoney } from "./positions.js";
+import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, mergePositions, normalizePositions, parseMoney } from "./positions.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
@@ -59,6 +60,7 @@ export default function Watchlist({ onManualCapture }) {
   const [positions, setPositions] = useState([]);
   const [positionDraft, setPositionDraft] = useState({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
   const [usdMxn, setUsdMxn] = useState(String(DEFAULT_USD_MXN));
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
@@ -102,11 +104,13 @@ export default function Watchlist({ onManualCapture }) {
     try {
       const stored = window.localStorage.getItem(WATCHLIST_FAVORITES_KEY);
       setFavorites(normalizeFavorites(JSON.parse(stored || "[]")));
-      setPositions(normalizePositions(JSON.parse(window.localStorage.getItem(POSITIONS_STORAGE_KEY) || "[]")));
+      const mergedPositions = mergePositions(DEFAULT_POSITIONS, JSON.parse(window.localStorage.getItem(POSITIONS_STORAGE_KEY) || "[]"));
+      setPositions(mergedPositions);
+      window.localStorage.setItem(POSITIONS_STORAGE_KEY, JSON.stringify(mergedPositions));
       setUsdMxn(window.localStorage.getItem("graham-watchlist:usd-mxn") || String(DEFAULT_USD_MXN));
     } catch {
       setFavorites([]);
-      setPositions([]);
+      setPositions(normalizePositions(DEFAULT_POSITIONS));
     }
   }, []);
 
@@ -181,6 +185,7 @@ export default function Watchlist({ onManualCapture }) {
         shares: parseMoney(positionDraft.shares) ?? 0,
         entryPriceMxn,
         notes: positionDraft.notes,
+        snapshotPriceMxn: null,
         createdAt: now,
         updatedAt: now,
       },
@@ -251,7 +256,7 @@ export default function Watchlist({ onManualCapture }) {
         (view === "bmv" && result.market === "BMV SIC");
       const matchesQuery =
         !normalizedQuery ||
-        [result.ticker, result.yahooSymbol, result.companyName, result.sector, result.market]
+        [result.ticker, result.yahooSymbol, result.companyName, result.sector, result.market, businessNoteFor(result), getVisibleWatchReason(result)]
           .filter(Boolean)
           .some((value) => String(value).toLowerCase().includes(normalizedQuery));
       const matchesTag = !selectedTag || normalizeTags(result.tags).includes(selectedTag);
@@ -277,6 +282,8 @@ export default function Watchlist({ onManualCapture }) {
       return String(av).localeCompare(String(bv), "es", { numeric: true });
     });
   }, [favoriteSet, favorites, positionSet, positions, query, results, selectedSector, selectedSignal, selectedStatus, selectedTag, sortKey, view]);
+
+  const selectedBusinessNote = selectedCompany ? getVisibleWatchReason(selectedCompany) : "";
 
   return (
     <section>
@@ -641,7 +648,11 @@ export default function Watchlist({ onManualCapture }) {
           </thead>
           <tbody>
             {filteredResults.map((result) => (
-              <tr key={result.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
+              <tr
+                key={result.ticker}
+                onClick={() => setSelectedCompany(result)}
+                style={{ borderTop: `1px solid ${SURFACE.border}`, cursor: "pointer" }}
+              >
                 {WATCHLIST_TABLE_COLUMNS.map((column) => (
                   <td key={column.id} style={{ padding: "8px", verticalAlign: "top", maxWidth: column.id === "reason" ? 420 : 180, whiteSpace: column.id === "reason" ? "normal" : "nowrap", color: ["reason", "tags", "validation"].includes(column.id) ? SURFACE.muted : SURFACE.text }}>
                     {column.id === "ticker" ? (
@@ -649,7 +660,10 @@ export default function Watchlist({ onManualCapture }) {
                         <Dot color={colorFor(result.alertLevel)} />
                         <button
                           type="button"
-                          onClick={() => handleToggleFavorite(result.ticker)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleFavorite(result.ticker);
+                          }}
                           title={favoriteSet.has(result.ticker.toUpperCase()) ? "Quitar de favoritos" : "Marcar como favorito"}
                           style={{ border: 0, background: "transparent", color: favoriteSet.has(result.ticker.toUpperCase()) ? AC.yellow : SURFACE.muted, cursor: "pointer", padding: 0 }}
                         >
@@ -668,13 +682,16 @@ export default function Watchlist({ onManualCapture }) {
 
       <div className="watchlist-card-list">
         {filteredResults.map((result) => (
-          <article key={result.ticker} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14 }}>
+          <article key={result.ticker} onClick={() => setSelectedCompany(result)} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14, cursor: "pointer" }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <button
                     type="button"
-                    onClick={() => handleToggleFavorite(result.ticker)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleToggleFavorite(result.ticker);
+                    }}
                     title={favoriteSet.has(result.ticker.toUpperCase()) ? "Quitar de favoritos" : "Marcar como favorito"}
                     aria-label={favoriteSet.has(result.ticker.toUpperCase()) ? `Quitar ${result.ticker} de favoritos` : `Marcar ${result.ticker} como favorito`}
                     style={{
@@ -735,7 +752,10 @@ export default function Watchlist({ onManualCapture }) {
               {result.alertLevel === "pending" || (result.analysisStatus !== "analyzed" && result.alertLevel !== "reference") ? (
                 <button
                   type="button"
-                  onClick={() => onManualCapture?.(result)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onManualCapture?.(result);
+                  }}
                   style={{
                     border: `1px solid ${AC.yellow}`,
                     background: SURFACE.activeFavorite,
@@ -748,10 +768,90 @@ export default function Watchlist({ onManualCapture }) {
                   Captura manual
                 </button>
               ) : null}
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setSelectedCompany(result);
+                }}
+                style={{ border: `1px solid ${AC.blue}`, background: SURFACE.activeBlue, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", cursor: "pointer" }}
+              >
+                Ver detalle
+              </button>
             </div>
           </article>
         ))}
       </div>
+
+      {selectedCompany ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Detalle de ${selectedCompany.ticker}`}
+          onClick={() => setSelectedCompany(null)}
+          style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.55)", display: "flex", justifyContent: "flex-end" }}
+        >
+          <aside
+            onClick={(event) => event.stopPropagation()}
+            style={{ width: "min(620px, 100%)", height: "100%", overflowY: "auto", background: SURFACE.page, borderLeft: `4px solid ${SURFACE.border}`, boxShadow: "-8px 0 0 #000", padding: 22 }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "start", marginBottom: 18 }}>
+              <div>
+                <div style={{ color: SURFACE.muted, fontSize: 12 }}>{selectedCompany.yahooSymbol || selectedCompany.ticker} · {selectedCompany.market || "Mercado no definido"}</div>
+                <h2 style={{ margin: "4px 0 0", fontSize: 26, letterSpacing: 0 }}>{selectedCompany.ticker}</h2>
+                <div style={{ color: SURFACE.text, fontWeight: 700 }}>{selectedCompany.companyName}</div>
+              </div>
+              <button type="button" onClick={() => setSelectedCompany(null)} style={{ border: `2px solid ${SURFACE.border}`, background: SURFACE.navInactive, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", cursor: "pointer" }}>
+                Cerrar
+              </button>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: 18 }}>
+              {[
+                ["Precio", fmt(selectedCompany.livePrice ?? selectedCompany.lastPrice ?? selectedCompany.price)],
+                ["Max defensivo", fmt(selectedCompany.ratios?.maxDefensivePrice)],
+                ["MoS", pct(selectedCompany.ratios?.marginOfSafety)],
+                ["P/E", fmt(selectedCompany.ratios?.pe)],
+                ["P/B", fmt(selectedCompany.ratios?.pb)],
+                ["P/E x P/B", fmt(selectedCompany.ratios?.pePb)],
+                ["Deuda", fmt(selectedCompany.ratios?.debtRatio)],
+                ["Corriente", fmt(selectedCompany.ratios?.currentRatio)],
+              ].map(([label, value]) => (
+                <div key={label} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, borderRadius: 6, padding: 10 }}>
+                  <div style={{ color: SURFACE.muted, fontSize: 11 }}>{label}</div>
+                  <strong style={{ color: SURFACE.text, fontFamily: "IBM Plex Mono, monospace" }}>{value}</strong>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panelDark, borderRadius: 8, padding: 14, marginBottom: 12 }}>
+              <strong>Nota de empresa</strong>
+              <p style={{ color: selectedBusinessNote ? SURFACE.text : SURFACE.muted, lineHeight: 1.55, margin: "8px 0 0" }}>
+                {selectedBusinessNote || "Sin nota de negocio visible. La informacion tecnica de extraccion queda fuera de esta seccion."}
+              </p>
+            </div>
+
+            <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, borderRadius: 8, padding: 14 }}>
+              <strong>Estado</strong>
+              <div style={{ color: SURFACE.muted, lineHeight: 1.7, marginTop: 8 }}>
+                Senal: {selectedCompany.alertLabel || selectedCompany.alertLevel || "N/D"}<br />
+                Estado del sistema: {selectedCompany.systemStatus?.label || selectedCompany.analysisStatus || "N/D"}<br />
+                Sector: {selectedCompany.sector || "N/D"} · Industria: {selectedCompany.industry || "N/D"}<br />
+                Fuente: {selectedCompany.source || "N/D"} · Actualizado: {formatUpdatedAt(selectedCompany.updatedAt || selectedCompany.sourceDate || selectedCompany.date)}
+              </div>
+              {normalizeTags(selectedCompany.tags).length ? (
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}>
+                  {normalizeTags(selectedCompany.tags).map((tag) => (
+                    <span key={tag} style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 999, color: SURFACE.muted, fontSize: 11, padding: "3px 7px", background: SURFACE.page }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </aside>
+        </div>
+      ) : null}
     </section>
   );
 }

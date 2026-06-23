@@ -15,11 +15,26 @@ export function normalizePositions(payload) {
       ticker: String(item.ticker || "").trim().toUpperCase(),
       shares: parseMoney(item.shares) ?? 0,
       entryPriceMxn: parseMoney(item.entryPriceMxn),
+      snapshotPriceMxn: parseMoney(item.snapshotPriceMxn),
       notes: String(item.notes || "").trim(),
       createdAt: item.createdAt || new Date().toISOString(),
       updatedAt: item.updatedAt || item.createdAt || new Date().toISOString(),
     }))
     .filter((item) => item.ticker && item.entryPriceMxn !== null);
+}
+
+export function mergePositions(defaultPositions, storedPositions) {
+  const merged = new Map();
+  normalizePositions(defaultPositions).forEach((position) => {
+    merged.set(position.ticker, position);
+  });
+  normalizePositions(storedPositions).forEach((position) => {
+    merged.set(position.ticker, {
+      ...merged.get(position.ticker),
+      ...position,
+    });
+  });
+  return [...merged.values()];
 }
 
 export function quoteCurrencyFor(company) {
@@ -65,9 +80,9 @@ export function evaluatePositions(positions, companies, { usdMxn = DEFAULT_USD_M
   const byTicker = new Map(companies.map((company) => [String(company.ticker).toUpperCase(), company]));
   return normalizePositions(positions).map((position) => {
     const company = byTicker.get(position.ticker);
-    const currency = quoteCurrencyFor(company);
+    const currency = company ? quoteCurrencyFor(company) : "MXN";
     const livePrice = company?.livePrice ?? company?.lastPrice ?? company?.price;
-    const currentPriceMxn = priceToMxn(livePrice, currency, usdMxn);
+    const currentPriceMxn = priceToMxn(livePrice, currency, usdMxn) ?? position.snapshotPriceMxn ?? null;
     const entryPriceQuote = entryPriceInQuoteCurrency(position.entryPriceMxn, currency, usdMxn);
     const defensivePriceMxn = priceToMxn(company?.ratios?.maxDefensivePrice, currency, usdMxn);
     const gainPct = currentPriceMxn !== null && position.entryPriceMxn

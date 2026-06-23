@@ -26,4 +26,10 @@ describe("watchlist data quality", () => {
 
     expect(rows.map((row) => row.ticker)).toEqual(["CMA", "FITB"]);
   });
+
+  it("does not flag analyzed companies only because the Yahoo snapshot was partial", () => {
+    expect(buildDataIssueRows([
+      { ticker: "ED", validationStatus: "yahoo_partial_incomplete", analysisStatus: "analyzed" },
+    ])).toHaveLength(0);
+  });
 });

@@ -30,7 +30,7 @@ export function classifyDataIssue(item) {
     };
   }
 
-  if (PARTIAL_STATUSES.has(item.validationStatus)) {
+  if (PARTIAL_STATUSES.has(item.validationStatus) && item.analysisStatus !== "analyzed") {
     return {
       severity: "medium",
       status: "Snapshot parcial",
