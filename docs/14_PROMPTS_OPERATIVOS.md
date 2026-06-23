@@ -436,6 +436,60 @@ RESTRICCIONES:
 ## Prompt 17: Diagnosticar error de Telegram
 
 ```
+
+---
+
+## Prompt 18: Implementar Score Calidad V2 por partes
+
+```
+Actúa como desarrollador del proyecto Graham Investment Suite.
+Repositorio: c:\00_Apps_Locales\GrahamAnalizer
+
+OBJETIVO:
+Implementar una parte acotada del roadmap E23/E24 Score Calidad V2 sin romper el motor Graham ni publicar datos manuales privados.
+
+PARTE A IMPLEMENTAR EN ESTA SESIÓN:
+[Elegir UNA: S67 inventario / S68 series anuales / S69 recompras-dilución / S70 intangibles / S71 software quality / S72 score V2 / S73-S75 moat manual / S76 filtros V2]
+
+CONTEXTO OBLIGATORIO:
+- Leer `AGENTS.md` y obedecer: no tocar `.env`, `.env.local`, tokens ni credenciales.
+- Fuente principal del proyecto: `HANDOFF_GRAHAM_ECOSYSTEM.md`.
+- Roadmap de esta tarea: `docs/13_ROADMAP_NOTION_READY.md`, sección `E23 Score Calidad V2` y `E24 Moat Manual y Evidencias`.
+- Scoring actual: `src/tools/watchlist/scoring.js`, `src/tools/watchlist/screen.js`, `src/tools/watchlist/tableColumns.js`.
+- Ingesta: `scripts/data-ingestion.js`, `src/tools/watchlist/yahooFundamentals.js`, `src/tools/watchlist/secFundamentals.js`.
+- Dashboard: `src/tools/watchlist/Watchlist.jsx`.
+- Tests base: `tests/watchlistScoring.test.js`, `tests/watchlist-screen.test.js`, `tests/watchlistTable.test.js`.
+
+REGLAS:
+- No cambiar fórmulas Graham sin actualizar tests y documentación.
+- Mantener `Score Graham`, `Score Calidad` y `Score Moat` separados cuando aplique.
+- No inventar moat, contratos, política, regulación favorable, clientes clave ni calidad directiva. Todo eso requiere captura manual con fuente URL y fecha.
+- No convertir datos faltantes a cero; usar `null`/`N/D` y score parcial.
+- Para software/IA, deuda, liquidez, FCF y dilución siguen siendo criterios duros.
+- Si se agrega captura manual, debe funcionar en dashboard local y verse como lectura en GitHub Pages; no dejar botones decorativos.
+- No tocar `.env.local` ni credenciales.
+
+TAREA:
+1. Revisar el estado actual con `git status --short`.
+2. Leer los archivos obligatorios de la parte elegida.
+3. Proponer brevemente el alcance exacto de esta sesión.
+4. Implementar sólo esa parte.
+5. Agregar/actualizar tests enfocados.
+6. Ejecutar:
+   - `npm test`
+   - `npm run build`
+   - `npm run build:artifact`
+7. Si se modifica UI o export público, ejecutar `npm run deploy:pages` sólo si el usuario pide publicar.
+8. Entregar resumen con archivos modificados, pruebas y cualquier dato que siga requiriendo captura manual.
+
+CRITERIOS DE ACEPTACIÓN:
+- La app compila.
+- Los tests pasan.
+- El dashboard sigue en español.
+- El código usa nombres en inglés.
+- El score explica sus componentes y no oculta por qué una empresa falla Graham.
+- Las métricas nuevas muestran fuente/fecha cuando exista.
+```
 Actúa como developer del proyecto Graham Investment Suite.
 Repositorio: g:\Mi unidad\00. APPS\GrahamAnalizer
 

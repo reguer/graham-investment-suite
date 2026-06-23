@@ -57,8 +57,66 @@
 | **E20 UX/CLI** | S46 Exportar a CSV | Exportar tabla de screening a CSV | Añadir opción de exportar resultados del screening a CSV | 🟡 Media | ✅ Completado | S45 | `scripts/weekly-screen.js`, `data/export/` | CSV generado con columnas operativas y escape de comillas/comas | `data/export/` no se versiona por ser salida generada | Auto | v1.5 |
 | **E20 UX/CLI** | S47 Exportar a Notion | Sincronizar tabla con Notion | Script que usa Notion API para crear/actualizar tabla de empresas | 🟢 Baja | ✅ Script listo | S46 | `scripts/export-to-notion.js`, `tests/exportToNotion.test.js`, `data/export/` | Dry-run genera payload Notion local; envio real requiere `NOTION_TOKEN` y `NOTION_DATABASE_ID` | Tabla visible en Notion no verificada por falta de credenciales/base destino | Manual | v3.0 |
 | **E22 UX Dashboard** | S65 Tabla candidatos responsive | Evitar overflow en pantallas chicas | Renderizar tabla desktop y cards móviles para candidatos Graham bajo 1000px | 🟠 Alta | ✅ Completado | — | `src/tools/graham-analyzer/CandidatePanel.jsx`, `tests/candidatePanel.test.jsx` | Candidatos se ven como cards en móvil y como tabla en desktop | Mantener duplicación visual sincronizada | Manual | v1.5 |
+| **E23 Score Calidad V2** | S67 Inventario de métricas disponibles | Separar datos automáticos vs manuales | Auditar `data/public/companies.json`, snapshots Yahoo/SEC y export público para listar qué métricas existen hoy y cuáles faltan para calidad/moat | 🟠 Alta | 📋 Pendiente | S11, S20, S22 | `data/public/companies.json`, `public/data/companies.json`, `src/tools/watchlist/yahooFundamentals.js`, `src/tools/watchlist/secFundamentals.js`, `src/tools/watchlist/scoring.js`, `tests/watchlistScoring.test.js` | Documento o fixture enumera métricas automáticas: revenue, EPS, FCF, shares, margins, goodwill/intangibles, liquidity, leverage, ROE/ROA; y métricas manuales: moat, contratos, regulación, clientes clave | El export puede tener campos no uniformes por fuente; no asumir disponibilidad sin test | Auto | v2.1 |
+| **E23 Score Calidad V2** | S68 Series anuales normalizadas | Calcular tendencias de 3-5 años | Crear normalizador para series anuales por ticker: revenue, EPS, FCF, shares outstanding, margen bruto/operativo/neto cuando exista | 🔴 Crítica | 📋 Pendiente | S67 | `src/tools/watchlist/qualityMetrics.js` (nuevo), `src/tools/watchlist/yahooFundamentals.js`, `src/tools/watchlist/secFundamentals.js`, `scripts/data-ingestion.js`, `tests/qualityMetrics.test.js` | Métricas de crecimiento usan años reales, toleran gaps, nunca convierten faltantes a cero y registran `source/asOf` | Yahoo/SEC reportan conceptos con nombres distintos; requiere mapper defensivo | Auto | v2.1 |
+| **E23 Score Calidad V2** | S69 Recompras y dilución | Medir confianza directiva y presión por SBC | Calcular cambio anual de acciones en circulación; score positivo si acciones bajan sin deteriorar deuda, neutral si estable, penalización si diluye | 🔴 Crítica | 📋 Pendiente | S68 | `src/tools/watchlist/qualityMetrics.js`, `src/tools/watchlist/scoring.js`, `tests/watchlistScoring.test.js`, `tests/qualityMetrics.test.js` | Dashboard muestra `Buyback/dilución`; software con dilución alta baja score aunque tenga crecimiento | Reducción de acciones puede venir de splits/ajustes; validar contra split si la fuente lo expone | Auto | v2.1 |
+| **E23 Score Calidad V2** | S70 Intangibles y tangible quality | Hacer explícito goodwill/marca/intangibles | Añadir métricas `intangiblesToAssets`, `goodwillToAssets`, `tangibleEquity`, `pbTangible` y alertas sectoriales; software/marcas no se penalizan igual si ROIC/FCF/márgenes compensan | 🟠 Alta | 📋 Pendiente | S68 | `src/tools/watchlist/qualityMetrics.js`, `src/tools/watchlist/scoring.js`, `src/tools/graham-analyzer/sectorProfiles.js`, `src/tools/watchlist/Watchlist.jsx` | Detalle de empresa muestra dependencia de intangibles y si el balance tangible es débil/negativo | Intangibles pueden ser moat o fragilidad; no usar regla única para todos los sectores | Auto | v2.1 |
+| **E23 Score Calidad V2** | S71 Score software quality | Evaluar software con métricas adecuadas | Añadir subscore para software/IA: gross margin, operating margin, FCF margin, revenue growth, EPS/FCF consistency, rule of 40 cuando existan datos, SBC/dilución si disponible | 🟠 Alta | 📋 Pendiente | S68, S69 | `src/tools/graham-analyzer/sectorProfiles.js`, `src/tools/watchlist/scoring.js`, `src/tools/watchlist/qualityMetrics.js`, `tests/watchlistScoring.test.js` | Empresas de software pueden compararse por calidad sin relajar el freno Graham; score explica si falla por precio o por calidad real | SBC y net retention no siempre están estructurados; no inventar datos faltantes | Auto | v2.2 |
+| **E23 Score Calidad V2** | S72 Score general ponderado V2 | Separar Graham, calidad y moat | Reemplazar score único por desglose ponderado: `grahamScore`, `qualityScore`, `moatScore`, `generalScore`; conservar compatibilidad visual con columna Score | 🟠 Alta | 📋 Pendiente | S69, S70, S71 | `src/tools/watchlist/scoring.js`, `src/tools/watchlist/screen.js`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/Watchlist.jsx`, `tests/watchlistScoring.test.js`, `tests/watchlistTable.test.js` | Orden `Mejor score` usa `generalScore`; detalle muestra pesos y razones; Graham sigue siendo freno de seguridad separado | Cambiar pesos puede alterar ranking; documentar defaults y evitar consejos de compra automáticos | Auto | v2.2 |
+| **E24 Moat Manual y Evidencias** | S73 Modelo de captura manual de moat | Capturar lo que no debe inferirse automáticamente | Diseñar schema local/exportable para moat, contratos, regulación, clientes clave, calidad directiva, tesis personal, fuente URL y fecha | 🟠 Alta | 📋 Pendiente | S72 | `data/schema.sql`, `scripts/db-client.js`, `src/tools/watchlist/moatManual.js` (nuevo), `tests/dbClient.test.js`, `tests/moatManual.test.js` | Cada campo manual tiene `value`, `sourceUrl`, `asOf`, `confidence`, `notes`; no se mezcla con datos automáticos sin etiqueta | No tocar `.env.local`; si no hay DB, persistir en archivo público/versionado sólo si el usuario lo aprueba | Manual | v2.2 |
+| **E24 Moat Manual y Evidencias** | S74 UI Calidad y Moat | Hacer editable y auditable el moat | Agregar en el detalle de empresa una pestaña/sección `Calidad y Moat` con campos manuales y evidencias; lectura en Pages, edición sólo local si API local está disponible | 🟡 Media | 📋 Pendiente | S73 | `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/watchlist.js`, `scripts/local-dashboard-api.js`, `tests/localDashboardApi.test.js` | Dashboard local permite guardar/editar evidencia; GitHub Pages muestra datos ya exportados sin botones rotos | Evitar UI decorativa; todo botón debe guardar, cancelar o abrir fuente real | Manual | v2.3 |
+| **E24 Moat Manual y Evidencias** | S75 Import/export de moat manual | Sincronizar evidencia con el universo público | Crear script para exportar campos manuales a `public/data/company-quality.json` y mezclarlos en `buildWatchlist()` | 🟡 Media | 📋 Pendiente | S73, S74 | `scripts/export-company-quality.js` (nuevo), `public/data/company-quality.json`, `src/tools/watchlist/watchlist.js`, `tests/watchlist.test.js` | Pages muestra moat manual y fuentes sin depender de PostgreSQL/localStorage | Riesgo de publicar notas privadas; revisar contenido antes de commit | Manual | v2.3 |
+| **E24 Moat Manual y Evidencias** | S76 Filtros V2 de calidad | Encontrar empresas por señales cualitativas | Agregar filtros: `buyback positivo`, `sin dilución`, `software quality`, `moat alto`, `contratos top`, `riesgo regulatorio positivo`, `intangibles altos` | 🟡 Media | 📋 Pendiente | S72, S75 | `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/watchlist.js`, `tests/watchlistTable.test.js` | Filtros combinables con sector/estado/favoritos/posiciones; no rompen móvil | Demasiados filtros pueden meter ruido; agrupar por secciones compactas | Manual | v2.3 |
 
 ---
+
+## Actualización operativa 2026-06-23 — Score Calidad V2
+
+### Reglas de trabajo para E23/E24
+
+- No cambiar fórmulas Graham sin actualizar tests y documentación.
+- Mantener `Score Graham` separado de `Score Calidad` y `Score Moat`; el score general no debe ocultar por qué una empresa falla Graham.
+- No inventar moat, contratos, regulación favorable, cercanía política, clientes clave ni calidad directiva. Esos datos requieren captura manual con evidencia, URL y fecha.
+- No convertir datos faltantes a cero. Usar `null`, `N/D` y score parcial.
+- Para software/IA, no relajar liquidez/solvencia: deuda, current ratio, quick ratio, FCF y dilución siguen siendo señales duras.
+- Recompras/dilución tienen prioridad alta: usar series anuales de acciones en circulación y distinguir recompra real vs emisión/SBC cuando la fuente lo permita.
+- Goodwill/intangibles deben mostrarse como dependencia del balance, no como penalización universal. Software y marcas pueden vivir con intangibles altos si márgenes, ROE/ROA y FCF lo justifican.
+- GitHub Pages es estático: cualquier captura manual debe exportarse a archivos públicos versionados o BD local antes de publicarse.
+
+### Archivos base a consultar antes de implementar
+
+| Área | Archivos |
+|------|----------|
+| Scoring actual | `src/tools/watchlist/scoring.js`, `src/tools/watchlist/screen.js`, `src/tools/watchlist/tableColumns.js`, `tests/watchlistScoring.test.js`, `tests/watchlistTable.test.js` |
+| Ingesta automática | `scripts/data-ingestion.js`, `src/tools/watchlist/yahooFundamentals.js`, `src/tools/watchlist/secFundamentals.js`, `src/tools/watchlist/watchlist.js` |
+| Datos/export público | `data/public/companies.json`, `public/data/companies.json`, `public/data/`, `reports/weekly/` |
+| Sectores/umbrales | `src/tools/graham-analyzer/sectorProfiles.js`, `src/tools/graham-analyzer/detectSector.js`, `src/tools/graham-analyzer/classify.js`, `src/tools/graham-analyzer/getChecks.js` |
+| Dashboard | `src/tools/watchlist/Watchlist.jsx`, `src/components/ui/MetricCard.jsx`, `src/lib/colors.js`, `src/lib/formatters.js` |
+| API local/BD | `scripts/local-dashboard-api.js`, `scripts/db-client.js`, `data/schema.sql`, `docs/03_DASHBOARD_LOCAL_GITHUB_PAGES.md`, `docs/17_CONFIGURACION_ENV_CAPTURA.md` |
+| Validación | `tests/qualityMetrics.test.js` (nuevo), `tests/watchlistScoring.test.js`, `tests/watchlist-screen.test.js`, `tests/localDashboardApi.test.js`, `tests/securityAudit.test.js` |
+
+### Implementable por partes
+
+1. **Parte A — Métricas automáticas puras:** S67-S68. No tocar UI salvo tests/helpers. Entregable: `qualityMetrics.js` con revenue/EPS/FCF/shares/margins normalizados.
+2. **Parte B — Recompras/dilución:** S69. Entregable: subscore y razón legible; columna opcional o detalle.
+3. **Parte C — Intangibles:** S70. Entregable: dependencia de intangibles visible y ponderada por sector.
+4. **Parte D — Software quality:** S71. Entregable: rule-of-40/márgenes/dilución para software cuando haya datos.
+5. **Parte E — Score V2:** S72. Entregable: `grahamScore`, `qualityScore`, `moatScore`, `generalScore`.
+6. **Parte F — Manual moat/evidencias:** S73-S75. Entregable: schema, UI local editable, export público.
+7. **Parte G — Filtros V2:** S76. Entregable: filtros nuevos en dashboard y Pages.
+
+### Datos manuales obligatorios para V2
+
+| Dato | Motivo | Campo sugerido |
+|------|--------|----------------|
+| Moat real | No se deduce confiablemente de ratios | `moatRating`, `moatNotes`, `sourceUrl`, `asOf` |
+| Contratos top/hyperscalers/gobierno | Requiere evidencia puntual | `strategicContracts[]` |
+| Legislación/regulación favorable | Contexto legal cambia y debe citarse | `regulatoryTailwind` |
+| Cercanía política | Alto riesgo de subjetividad | `politicalAccessEvidence` |
+| Clientes clave/dependencia | Puede venir en 10-K, pero no siempre estructurado | `customerConcentration` |
+| Calidad directiva | Juicio cualitativo | `managementQuality` |
+| Ventaja tecnológica/patentes | Requiere evidencia y fecha | `technologyMoatEvidence` |
+| Tesis personal | Debe quedar separada del dato automático | `ownerThesis` |
 
 ## Actualización operativa 2026-06-09
 
