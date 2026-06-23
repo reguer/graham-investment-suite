@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { classify } from "../src/tools/graham-analyzer/classify.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
+import { businessNoteFor } from "../src/tools/watchlist/notes.js";
 import { buildSecGrahamSnapshot, fetchSecCompanyFacts, fetchSecTickerMap, hasMinimumGrahamSnapshot } from "../src/tools/watchlist/secFundamentals.js";
 import { buildWatchlist, normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
 import { PUBLIC_COMPANIES_PATH, normalizeCompany, runPsql, upsertCompanySql, upsertFinancialSnapshotSql } from "./db-client.js";
@@ -79,6 +80,7 @@ function persistDatabase(results) {
 }
 
 function unsupportedResult(item, reason) {
+  const note = businessNoteFor({ ...item, analysisStatus: "analysis_unsupported", watchReason: reason, notes: reason });
   return {
     ticker: item.ticker,
     status: "unsupported",
@@ -88,8 +90,9 @@ function unsupportedResult(item, reason) {
       validationStatus: "unsupported_sec_analysis",
       source: item.source || "watchlist",
       sourceDate: todayIso(),
-      notes: reason,
-      watchReason: reason,
+      notes: note,
+      watchReason: note,
+      autoAnalysisNote: reason,
     },
   };
 }
@@ -115,7 +118,7 @@ export function existingSnapshotResult(item, reason) {
     sourceDate: item.sourceDate || todayIso(),
   };
   const classification = classify(snapshot);
-  const notes = item.watchReason || item.notes || reason;
+  const notes = businessNoteFor({ ...item, watchReason: item.watchReason || item.notes || reason });
   return {
     ticker: item.ticker,
     status: "analyzed",

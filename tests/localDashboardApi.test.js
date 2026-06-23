@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadLocalDashboardConfig, nextCaptureRun, parseCaptureTime } from "../scripts/local-dashboard-api.js";
+import { loadLocalDashboardConfig, nextCaptureRun, parseCaptureTime, runFullRefresh } from "../scripts/local-dashboard-api.js";
 
 describe("local dashboard api scheduling", () => {
   it("parses the 18:00 capture time", () => {
@@ -32,5 +32,9 @@ describe("local dashboard api scheduling", () => {
     expect(config.captureTime).toBe("18:00");
     expect(config.hasDatabaseUrl).toBe(true);
     expect(config).not.toHaveProperty("databaseUrl");
+  });
+
+  it("exposes a full refresh action for the dashboard button", () => {
+    expect(typeof runFullRefresh).toBe("function");
   });
 });

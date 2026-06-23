@@ -123,6 +123,36 @@ export async function runYahooSupplemental(options = {}) {
   };
 }
 
+export async function runFullRefresh(options = {}) {
+  const analysis = await runLocalScript("scripts/analyze-watchlist.js", ["--all"], options);
+  if (!analysis.ok) return enrichRunResult(analysis);
+  const supplemental = await runLocalScript("scripts/data-ingestion.js", ["--all-unsupported"], options);
+  if (!supplemental.ok) return enrichRunResult({
+    ...supplemental,
+    stdout: `${analysis.stdout}\n${supplemental.stdout}`,
+    stderr: `${analysis.stderr}\n${supplemental.stderr}`,
+  });
+  const notes = await runLocalScript("scripts/sanitize-watchlist-notes.js", [], options);
+  if (!notes.ok) return enrichRunResult({
+    ...notes,
+    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}`,
+    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}`,
+  });
+  const prices = await runLocalScript("scripts/refresh-universe.js", [], options);
+  if (!prices.ok) return enrichRunResult({
+    ...prices,
+    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}\n${prices.stdout}`,
+    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}\n${prices.stderr}`,
+  });
+  const report = await runLocalScript("scripts/weekly-screen.js", ["--no-telegram"], options);
+  return enrichRunResult({
+    ok: report.ok,
+    code: report.code,
+    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}\n${prices.stdout}\n${report.stdout}`,
+    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}\n${prices.stderr}\n${report.stderr}`,
+  });
+}
+
 export function createLocalDashboardApiPlugin() {
   let captureInProgress = false;
   let lastCapture = null;
@@ -210,6 +240,23 @@ export function createLocalDashboardApiPlugin() {
         const startedAt = new Date().toISOString();
         const result = await runPriceRefresh();
         lastCapture = { ...result, trigger: "manual-price-refresh", startedAt, finishedAt: new Date().toISOString() };
+        captureInProgress = false;
+        sendJson(response, result.ok ? 200 : 500, lastCapture);
+      });
+
+      server.middlewares.use("/api/local/update-all", async (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        if (captureInProgress) {
+          sendJson(response, 409, { ok: false, busy: true, error: "Ya hay una captura en proceso." });
+          return;
+        }
+        captureInProgress = true;
+        const startedAt = new Date().toISOString();
+        const result = await runFullRefresh();
+        lastCapture = { ...result, trigger: "manual-full-refresh", startedAt, finishedAt: new Date().toISOString() };
         captureInProgress = false;
         sendJson(response, result.ok ? 200 : 500, lastCapture);
       });

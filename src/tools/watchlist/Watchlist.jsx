@@ -5,11 +5,12 @@ import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
 import { buildDataIssueRows } from "./dataQuality.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
+import { businessNoteFor } from "./notes.js";
 import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, normalizePositions, parseMoney } from "./positions.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
-import { buildWatchlist, buildWatchlistMeta, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
+import { buildWatchlist, buildWatchlistMeta, collectSectors, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
 
 function colorFor(level) {
   if (level === "approved") return AC.green;
@@ -37,7 +38,7 @@ function shouldShowWatchReason(reason) {
 }
 
 function getVisibleWatchReason(result) {
-  const reason = result.watchReason || result.notes || "";
+  const reason = businessNoteFor(result);
   return shouldShowWatchReason(reason) ? reason : "";
 }
 
@@ -52,6 +53,8 @@ export default function Watchlist({ onManualCapture }) {
   const [publicCompanies, setPublicCompanies] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedSignal, setSelectedSignal] = useState("");
   const [sortKey, setSortKey] = useState("system");
   const [positions, setPositions] = useState([]);
   const [positionDraft, setPositionDraft] = useState({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
@@ -61,15 +64,12 @@ export default function Watchlist({ onManualCapture }) {
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
   const allTags = useMemo(() => collectTags(results), [results]);
+  const allSectors = useMemo(() => collectSectors(results), [results]);
   const dataIssues = useMemo(() => buildDataIssueRows(watchlist), [watchlist]);
-  const statusCounts = useMemo(() => results.reduce((counts, result) => {
-    const id = result.systemStatus?.id || "watch_observation";
-    counts[id] = (counts[id] || 0) + 1;
-    return counts;
-  }, {}), [results]);
   const activeCount = summary.approved.length + summary.near.length;
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
   const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
+  const positionSet = useMemo(() => new Set(positions.map((item) => item.ticker)), [positions]);
 
   function formatMxn(value) {
     return Number.isFinite(Number(value)) ? Number(value).toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }) : "N/D";
@@ -235,12 +235,19 @@ export default function Watchlist({ onManualCapture }) {
           .some((value) => String(value).toLowerCase().includes(normalizedQuery));
       const matchesTag = !selectedTag || normalizeTags(result.tags).includes(selectedTag);
       const matchesStatus = !selectedStatus || result.systemStatus?.id === selectedStatus;
-      return matchesView && matchesQuery && matchesTag && matchesStatus;
+      const matchesSector = !selectedSector || result.sector === selectedSector;
+      const matchesSignal = !selectedSignal || result.alertLevel === selectedSignal;
+      return matchesView && matchesQuery && matchesTag && matchesStatus && matchesSector && matchesSignal;
     });
-    const sorted = sortFavoritesFirst(matches, favorites);
+    const sorted = sortFavoritesFirst(matches, favorites).sort((a, b) => {
+      const positionDelta = Number(positionSet.has(b.ticker.toUpperCase())) - Number(positionSet.has(a.ticker.toUpperCase()));
+      return positionDelta || 0;
+    });
     const column = WATCHLIST_TABLE_COLUMNS.find((item) => item.id === sortKey);
     if (!column) return sorted;
     return [...sorted].sort((a, b) => {
+      const positionDelta = Number(positionSet.has(b.ticker.toUpperCase())) - Number(positionSet.has(a.ticker.toUpperCase()));
+      if (positionDelta) return positionDelta;
       const favoriteDelta = Number(favoriteSet.has(b.ticker.toUpperCase())) - Number(favoriteSet.has(a.ticker.toUpperCase()));
       if (favoriteDelta) return favoriteDelta;
       if (sortKey === "system") return (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
@@ -248,7 +255,7 @@ export default function Watchlist({ onManualCapture }) {
       const bv = getTableCell(b, column);
       return String(av).localeCompare(String(bv), "es", { numeric: true });
     });
-  }, [favoriteSet, favorites, positions, query, results, selectedStatus, selectedTag, sortKey, view]);
+  }, [favoriteSet, favorites, positionSet, positions, query, results, selectedSector, selectedSignal, selectedStatus, selectedTag, sortKey, view]);
 
   return (
     <section>
@@ -272,6 +279,74 @@ export default function Watchlist({ onManualCapture }) {
         </p>
       </div>
 
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panelDark, padding: 14, marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start", marginBottom: 12 }}>
+          <div>
+            <strong>Mis posiciones</strong>
+            <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 4 }}>
+              Guarda tu entrada en MXN; cuando corra la actualizacion semanal, el precio vivo recalcula rendimiento y senal.
+            </div>
+          </div>
+          <label style={{ display: "grid", gap: 4, color: SURFACE.muted, fontSize: 12 }}>
+            USD/MXN
+            <input
+              value={usdMxn}
+              onChange={(event) => handleUsdMxnChange(event.target.value)}
+              style={{ width: 110, border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "7px 9px" }}
+            />
+          </label>
+        </div>
+        <div className="positions-form">
+          <input value={positionDraft.ticker} onChange={(event) => setPositionDraft((current) => ({ ...current, ticker: event.target.value.toUpperCase() }))} placeholder="Ticker" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.shares} onChange={(event) => setPositionDraft((current) => ({ ...current, shares: event.target.value }))} placeholder="Titulos" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.entryPriceMxn} onChange={(event) => setPositionDraft((current) => ({ ...current, entryPriceMxn: event.target.value }))} placeholder="Entrada MXN" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.notes} onChange={(event) => setPositionDraft((current) => ({ ...current, notes: event.target.value }))} placeholder="Nota opcional" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <button type="button" onClick={handleAddPosition} style={{ border: `1px solid ${AC.green}`, background: SURFACE.activeGreen, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", cursor: "pointer" }}>
+            Guardar posicion
+          </button>
+        </div>
+        {evaluatedPositions.length ? (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", minWidth: 980, borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
+                  {["Ticker", "Empresa", "Entrada MXN", "Entrada convertida", "Precio actual MXN", "P/L", "Valor", "Senal", ""].map((label) => (
+                    <th key={label} style={{ padding: "8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap" }}>{label}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {evaluatedPositions.map((position) => {
+                  const toneColor = position.recommendation.tone === "buy" ? AC.green : position.recommendation.tone === "sell" ? AC.red : position.recommendation.tone === "hold" ? AC.yellow : SURFACE.muted;
+                  return (
+                    <tr key={position.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
+                      <td style={{ padding: "8px", color: SURFACE.text, fontWeight: 700 }}>{position.ticker}</td>
+                      <td style={{ padding: "8px", color: SURFACE.muted }}>{position.company?.companyName || "No encontrada en catalogo"}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.entryPriceMxn)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.muted }}>{formatQuote(position.entryPriceQuote, position.currency)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.currentPriceMxn)}</td>
+                      <td style={{ padding: "8px", color: position.gainPct >= 0 ? AC.greenText : AC.redText }}>{pct(position.gainPct)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.marketValueMxn)}</td>
+                      <td style={{ padding: "8px", color: toneColor }}>
+                        <strong>{position.recommendation.action}</strong>
+                        <div style={{ color: SURFACE.muted, marginTop: 3 }}>{position.recommendation.reason}</div>
+                      </td>
+                      <td style={{ padding: "8px", textAlign: "right" }}>
+                        <button type="button" onClick={() => handleRemovePosition(position.ticker)} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.navInactive, color: SURFACE.muted, borderRadius: 6, padding: "6px 8px", cursor: "pointer" }}>
+                          Quitar
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div style={{ color: SURFACE.muted, fontSize: 12 }}>Aun no hay posiciones guardadas.</div>
+        )}
+      </div>
+
       <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panel, padding: 14, marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <div>
@@ -285,18 +360,17 @@ export default function Watchlist({ onManualCapture }) {
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
             {captureStatus.localApi ? (
               [
-                ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Actualizar precios"],
-                ["/api/local/process-companies", "Procesando fundamentales existentes...", "Procesamiento completo", "Procesar fundamentales"],
-                ["/api/local/yahoo-supplemental", "Intentando Yahoo complementario para no soportadas...", "Yahoo complementario completo", "Rescatar con Yahoo"],
-              ].map(([endpoint, pendingText, doneText, label]) => (
+                ["/api/local/update-all", "Actualizando analisis, Yahoo complementario, precios y reporte...", "Actualizacion completa", "Actualizar todo", "primary"],
+                ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Solo precios", "secondary"],
+              ].map(([endpoint, pendingText, doneText, label, kind]) => (
                 <button
                   key={endpoint}
                   type="button"
                   onClick={() => runLocalAction(endpoint, pendingText, doneText)}
                   disabled={captureStatus.captureInProgress}
                   style={{
-                    border: `1px solid ${AC.blue}`,
-                    background: SURFACE.activeBlue,
+                    border: `1px solid ${kind === "primary" ? AC.green : AC.blue}`,
+                    background: kind === "primary" ? SURFACE.activeGreen : SURFACE.activeBlue,
                     color: SURFACE.text,
                     borderRadius: 6,
                     padding: "9px 12px",
@@ -381,73 +455,7 @@ export default function Watchlist({ onManualCapture }) {
         </div>
       ) : null}
 
-      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panelDark, padding: 14, marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start", marginBottom: 12 }}>
-          <div>
-            <strong>Mis posiciones</strong>
-            <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 4 }}>
-              Guarda tu entrada en MXN; cuando corra la actualizacion semanal, el precio vivo recalcula rendimiento y senal.
-            </div>
-          </div>
-          <label style={{ display: "grid", gap: 4, color: SURFACE.muted, fontSize: 12 }}>
-            USD/MXN
-            <input
-              value={usdMxn}
-              onChange={(event) => handleUsdMxnChange(event.target.value)}
-              style={{ width: 110, border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "7px 9px" }}
-            />
-          </label>
-        </div>
-        <div className="positions-form">
-          <input value={positionDraft.ticker} onChange={(event) => setPositionDraft((current) => ({ ...current, ticker: event.target.value.toUpperCase() }))} placeholder="Ticker" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <input value={positionDraft.shares} onChange={(event) => setPositionDraft((current) => ({ ...current, shares: event.target.value }))} placeholder="Titulos" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <input value={positionDraft.entryPriceMxn} onChange={(event) => setPositionDraft((current) => ({ ...current, entryPriceMxn: event.target.value }))} placeholder="Entrada MXN" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <input value={positionDraft.notes} onChange={(event) => setPositionDraft((current) => ({ ...current, notes: event.target.value }))} placeholder="Nota opcional" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
-          <button type="button" onClick={handleAddPosition} style={{ border: `1px solid ${AC.green}`, background: SURFACE.activeGreen, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", cursor: "pointer" }}>
-            Guardar posicion
-          </button>
-        </div>
-        {evaluatedPositions.length ? (
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", minWidth: 980, borderCollapse: "collapse", fontSize: 12 }}>
-              <thead>
-                <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
-                  {["Ticker", "Empresa", "Entrada MXN", "Entrada convertida", "Precio actual MXN", "P/L", "Valor", "Senal", ""].map((label) => (
-                    <th key={label} style={{ padding: "8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap" }}>{label}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {evaluatedPositions.map((position) => {
-                  const toneColor = position.recommendation.tone === "buy" ? AC.green : position.recommendation.tone === "sell" ? AC.red : position.recommendation.tone === "hold" ? AC.yellow : SURFACE.muted;
-                  return (
-                    <tr key={position.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
-                      <td style={{ padding: "8px", color: SURFACE.text, fontWeight: 700 }}>{position.ticker}</td>
-                      <td style={{ padding: "8px", color: SURFACE.muted }}>{position.company?.companyName || "No encontrada en catalogo"}</td>
-                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.entryPriceMxn)}</td>
-                      <td style={{ padding: "8px", color: SURFACE.muted }}>{formatQuote(position.entryPriceQuote, position.currency)}</td>
-                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.currentPriceMxn)}</td>
-                      <td style={{ padding: "8px", color: position.gainPct >= 0 ? AC.greenText : AC.redText }}>{pct(position.gainPct)}</td>
-                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.marketValueMxn)}</td>
-                      <td style={{ padding: "8px", color: toneColor }}>
-                        <strong>{position.recommendation.action}</strong>
-                        <div style={{ color: SURFACE.muted, marginTop: 3 }}>{position.recommendation.reason}</div>
-                      </td>
-                      <td style={{ padding: "8px", textAlign: "right" }}>
-                        <button type="button" onClick={() => handleRemovePosition(position.ticker)} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.navInactive, color: SURFACE.muted, borderRadius: 6, padding: "6px 8px", cursor: "pointer" }}>
-                          Quitar
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div style={{ color: SURFACE.muted, fontSize: 12 }}>Aun no hay posiciones guardadas.</div>
-        )}
-      </div>
+
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
         {[
@@ -467,28 +475,6 @@ export default function Watchlist({ onManualCapture }) {
             style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left", borderRadius: 8 }}
           >
             <MetricCard label={label} value={String(value)} color={color} style={{ outline: view === targetView ? `2px solid ${color}` : undefined }} />
-          </button>
-        ))}
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8, marginBottom: 16 }}>
-        {listSystemStatuses().map((status) => (
-          <button
-            key={status.id}
-            type="button"
-            onClick={() => { setView("statuses"); setSelectedStatus(selectedStatus === status.id ? "" : status.id); }}
-            style={{
-              border: `1px solid ${selectedStatus === status.id ? status.color : SURFACE.border}`,
-              borderRadius: 6,
-              background: selectedStatus === status.id ? `${status.color}18` : SURFACE.panelDark,
-              padding: "8px 10px",
-              color: SURFACE.muted,
-              fontSize: 12,
-              cursor: "pointer",
-              textAlign: "left",
-            }}
-          >
-            <span style={{ color: status.color }}>●</span> {status.label}: <strong style={{ color: SURFACE.text }}>{statusCounts[status.id] || 0}</strong>
           </button>
         ))}
       </div>
@@ -537,6 +523,40 @@ export default function Watchlist({ onManualCapture }) {
             padding: "8px 10px",
           }}
         />
+        <select
+          value={selectedSignal}
+          onChange={(event) => setSelectedSignal(event.target.value)}
+          style={{
+            minWidth: 170,
+            border: `1px solid ${SURFACE.border}`,
+            background: SURFACE.panel,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Todas las senales</option>
+          <option value="approved">Aprobadas</option>
+          <option value="near">Cerca</option>
+          <option value="watch">Observacion</option>
+          <option value="pending">Pendientes</option>
+          <option value="reference">Referencias</option>
+        </select>
+        <select
+          value={selectedSector}
+          onChange={(event) => setSelectedSector(event.target.value)}
+          style={{
+            minWidth: 220,
+            border: `1px solid ${SURFACE.border}`,
+            background: SURFACE.panel,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Todos los sectores</option>
+          {allSectors.map((sector) => <option key={sector} value={sector}>{sector}</option>)}
+        </select>
         <select
           value={selectedTag}
           onChange={(event) => setSelectedTag(event.target.value)}

@@ -25,8 +25,8 @@ export function classifyDataIssue(item) {
     return {
       severity: "high",
       status: "Fuente pendiente",
-      source: "Yahoo base/alias, SEC EDGAR o captura manual",
-      action: "Validar alias Yahoo y, si falla, capturar estados financieros manualmente desde Yahoo Finance.",
+      source: "Pendiente de revision",
+      action: "Decidir si la empresa merece captura financiera manual o si se descarta del radar.",
     };
   }
 
@@ -34,8 +34,8 @@ export function classifyDataIssue(item) {
     return {
       severity: "medium",
       status: "Snapshot parcial",
-      source: "Yahoo fundamentalsTimeSeries",
-      action: "Reintentar en siguiente corrida; si no hay estados anuales, capturar EPS/history manual.",
+      source: "Informacion parcial",
+      action: "Mantener en observacion hasta que exista base suficiente para una lectura Graham.",
     };
   }
 
@@ -43,8 +43,8 @@ export function classifyDataIssue(item) {
     return {
       severity: "medium",
       status: "Datos insuficientes",
-      source: "Yahoo Finance / SEC EDGAR",
-      action: "Completar al menos 3 de 5 ratios criticos y validar moneda.",
+      source: "Informacion insuficiente",
+      action: "Revisar si sigue siendo parte del universo o si requiere captura manual.",
     };
   }
 
@@ -60,7 +60,7 @@ export function buildDataIssueRows(items) {
       yahooSymbol: item.yahooSymbol || item.yahoo_symbol || item.ticker,
       companyName: item.companyName,
       validationStatus: item.validationStatus || "",
-      notes: item.notes || item.watchReason || "",
+      notes: businessNoteFor(item),
       ...issue,
     }))
     .sort((a, b) => {
@@ -68,3 +68,4 @@ export function buildDataIssueRows(items) {
       return (rank[a.severity] ?? 9) - (rank[b.severity] ?? 9) || a.ticker.localeCompare(b.ticker);
     });
 }
+import { businessNoteFor } from "./notes.js";

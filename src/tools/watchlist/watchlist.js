@@ -1,5 +1,6 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
+import { businessNoteFor } from "./notes.js";
 
 export const DEFAULT_ALERT_POLICY = {
   nearPePb: 28,
@@ -150,6 +151,17 @@ export function collectTags(items) {
   }
   return [...tags].sort((a, b) => a.localeCompare(b));
 }
+
+export function collectSectors(items) {
+  const sectors = new Set();
+  for (const item of items) {
+    const sector = String(item.sector || "").trim();
+    if (sector) sectors.add(sector);
+  }
+  return [...sectors].sort((a, b) => a.localeCompare(b));
+}
+
+export { businessNoteFor };
 
 export const publicCompanies = [];
 export const watchlist = buildWatchlist(publicCompanies);

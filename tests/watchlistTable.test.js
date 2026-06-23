@@ -38,4 +38,14 @@ describe("watchlist table columns", () => {
     expect(byId.system).toBe("Aprobada Graham");
     expect(byId.tags).toBe("graham-approved");
   });
+
+  it("does not expose technical extraction notes as company notes", () => {
+    const reasonColumn = WATCHLIST_TABLE_COLUMNS.find((column) => column.id === "reason");
+    expect(getTableCell({
+      ticker: "AAOI",
+      companyName: "Applied Optoelectronics",
+      analysisStatus: "analysis_unsupported",
+      watchReason: "SEC no devolvio campos minimos para ratios Graham.",
+    }, reasonColumn)).toBe("Revision pendiente: no hay base financiera suficiente para emitir una tesis de empresa.");
+  });
 });

@@ -16,7 +16,7 @@ const tabs = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("graham");
+  const [activeTab, setActiveTab] = useState("watchlist");
   const [manualDraft, setManualDraft] = useState(null);
 
   function openManualCapture(company) {

@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildWatchlist, buildWatchlistMeta, normalizeExportedCompany } from "../src/tools/watchlist/watchlist.js";
+import { businessNoteFor } from "../src/tools/watchlist/notes.js";
 import { fetchMarketQuotes } from "../src/tools/watchlist/priceSources.js";
 import { screenWatchlist, summarizeScreen } from "../src/tools/watchlist/screen.js";
 import { fmt, pct } from "../src/lib/formatters.js";
@@ -92,7 +93,7 @@ export function renderCsv(results) {
     item.alertLabel,
     item.systemStatus?.label,
     Array.isArray(item.tags) ? item.tags.join("|") : item.tags || "",
-    item.watchReason || "",
+    businessNoteFor(item),
   ]);
   return [headers, ...rows].map((row) => row.map(csvEscape).join(",")).join("\n") + "\n";
 }
@@ -223,7 +224,7 @@ ${renderSection("Fuente o Captura Requerida", summary.pending, "No hay companias
 
 ## Notas
 
-${results.map((item) => `- **${item.ticker}**: ${item.watchReason}`).join("\n")}
+${results.map((item) => `- **${item.ticker}**: ${businessNoteFor(item)}`).join("\n")}
 
 ## Origen
 
@@ -264,7 +265,7 @@ export function buildCapturePayload(results, quoteStatus, { date = new Date(), d
       ratios: item.ratios || null,
       classification: item.classification || null,
       systemStatus: item.systemStatus || null,
-      watchReason: item.watchReason || "",
+      watchReason: businessNoteFor(item),
     })),
   };
 }

@@ -1,4 +1,5 @@
 import { fmt, pct } from "../../lib/formatters.js";
+import { businessNoteFor } from "./notes.js";
 import { normalizeTags } from "./watchlist.js";
 
 export const WATCHLIST_TABLE_COLUMNS = [
@@ -30,7 +31,7 @@ export const WATCHLIST_TABLE_COLUMNS = [
   { id: "analysis", label: "Analisis", value: (item) => item.analysisStatus || "" },
   { id: "validation", label: "Validacion", value: (item) => item.validationStatus || "" },
   { id: "tags", label: "Etiquetas", value: (item) => normalizeTags(item.tags).join(", ") },
-  { id: "reason", label: "Razon", value: (item) => item.watchReason || item.notes || "" },
+  { id: "reason", label: "Razon", value: (item) => businessNoteFor(item) },
   { id: "action", label: "Accion", value: (item) => (item.alertLevel === "pending" ? "Captura manual" : "Ver detalle") },
 ];
 

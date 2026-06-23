@@ -7,6 +7,7 @@ import { actionableReason } from "../src/tools/graham-analyzer/failingCriteria.j
 import { fetchYahooFundamentals, fetchYahooDeepFundamentals, buildYahooSupplementalSnapshot, buildYahooDeepSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
 import { fetchSecTickerMap, fetchSecCompanyFacts, buildSecGrahamSnapshot, hasMinimumGrahamSnapshot, fetchSecSicCode } from "../src/tools/watchlist/secFundamentals.js";
 import { fetchYahooChartQuote } from "../src/tools/watchlist/priceSources.js";
+import { businessNoteFor } from "../src/tools/watchlist/notes.js";
 import { PUBLIC_COMPANIES_PATH, normalizeCompany, runPsql, upsertCompanySql, upsertFinancialSnapshotSql } from "./db-client.js";
 
 export function parseArgs(argv) {
@@ -254,12 +255,14 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
           results.push({ ticker, status: "rejected", reason: classification.reason });
           continue;
         }
+        const note = businessNoteFor({ ...item, analysisStatus: "analysis_pending", watchReason: built.reason, notes: built.reason });
         const next = {
           ...item,
           sourceDate: new Date().toISOString().slice(0, 10),
           validationStatus: built.currency?.ok === false ? "currency_rejected" : "yahoo_partial_incomplete",
-          notes: built.reason,
-          watchReason: built.reason,
+          notes: note,
+          watchReason: note,
+          autoAnalysisNote: built.reason,
         };
         byTicker.set(ticker, next);
         results.push({ ticker, status: "skipped", reason: built.reason });
@@ -314,12 +317,15 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
         if (dbResult.skipped) dbSkipped = true;
         continue;
       }
+      const technicalNote = `Yahoo y SEC EDGAR sin datos suficientes: ${error.message}`;
+      const note = businessNoteFor({ ...item, analysisStatus: "analysis_pending", watchReason: technicalNote, notes: technicalNote });
       const next = {
         ...item,
         sourceDate: new Date().toISOString().slice(0, 10),
         validationStatus: "yahoo_fetch_failed",
-        notes: `Yahoo y SEC EDGAR sin datos suficientes: ${error.message}`,
-        watchReason: `Yahoo y SEC EDGAR sin datos suficientes: ${error.message}`,
+        notes: note,
+        watchReason: note,
+        autoAnalysisNote: technicalNote,
       };
       byTicker.set(ticker, next);
       results.push({ ticker, status: "failed", reason: error.message });
