@@ -4,7 +4,6 @@ import { generateAnalysis } from "../../lib/anthropic.js";
 import { usePersistedState } from "../../hooks/usePersistedState.js";
 import { useAnalysis } from "../../hooks/useAnalysis.js";
 import { EMPTY_FORM } from "./constants.js";
-import { prefillOptions } from "./prefills.js";
 import { buildPrompt } from "./prompts.js";
 import AnalysisForm from "./AnalysisForm.jsx";
 import AnalysisResults from "./AnalysisResults.jsx";
@@ -172,7 +171,6 @@ export default function GrahamAnalyzer({ manualDraft = null, onManualDraftLoaded
           <AnalysisForm
             form={form}
             onChange={updateField}
-            prefillOptions={prefillOptions}
             onPrefill={(prefill) => setForm({ ...EMPTY_FORM, ...prefill })}
             onReset={() => setForm({ ...EMPTY_FORM })}
             onAnalyze={() => setView("results")}

@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "../src/tools/watchlist/tableColumns.js";
 
 const item = {
-  ticker: "KBH",
-  companyName: "KB Home",
+  ticker: "INGR",
+  companyName: "Ingredion Incorporated",
   quoteType: "EQUITY",
   country: "United States",
   exchange: "NYSE",
   market: "US",
-  sector: "Residential Construction",
-  industry: "Homebuilding",
+  sector: "Consumer Defensive",
+  industry: "Packaged Foods",
   livePrice: 51.42,
   currency: "USD",
   quoteCurrency: "USD",
@@ -33,7 +33,7 @@ describe("watchlist table columns", () => {
 
   it("extracts formatted cell values", () => {
     const byId = Object.fromEntries(WATCHLIST_TABLE_COLUMNS.map((column) => [column.id, getTableCell(item, column)]));
-    expect(byId.ticker).toBe("KBH");
+    expect(byId.ticker).toBe("INGR");
     expect(byId.graham).toBe("APROBADA GRAHAMIANA");
     expect(byId.system).toBe("Aprobada Graham");
     expect(byId.tags).toBe("graham-approved");

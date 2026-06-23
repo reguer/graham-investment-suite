@@ -5,6 +5,7 @@ import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
 import { buildDataIssueRows } from "./dataQuality.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
+import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, normalizePositions, parseMoney } from "./positions.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
@@ -52,6 +53,9 @@ export default function Watchlist({ onManualCapture }) {
   const [selectedTag, setSelectedTag] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [sortKey, setSortKey] = useState("system");
+  const [positions, setPositions] = useState([]);
+  const [positionDraft, setPositionDraft] = useState({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
+  const [usdMxn, setUsdMxn] = useState(String(DEFAULT_USD_MXN));
   const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
@@ -65,13 +69,25 @@ export default function Watchlist({ onManualCapture }) {
   }, {}), [results]);
   const activeCount = summary.approved.length + summary.near.length;
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
+  const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
+
+  function formatMxn(value) {
+    return Number.isFinite(Number(value)) ? Number(value).toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }) : "N/D";
+  }
+
+  function formatQuote(value, currency) {
+    return Number.isFinite(Number(value)) ? `${Number(value).toFixed(2)} ${currency || ""}`.trim() : "N/D";
+  }
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(WATCHLIST_FAVORITES_KEY);
       setFavorites(normalizeFavorites(JSON.parse(stored || "[]")));
+      setPositions(normalizePositions(JSON.parse(window.localStorage.getItem(POSITIONS_STORAGE_KEY) || "[]")));
+      setUsdMxn(window.localStorage.getItem("graham-watchlist:usd-mxn") || String(DEFAULT_USD_MXN));
     } catch {
       setFavorites([]);
+      setPositions([]);
     }
   }, []);
 
@@ -110,6 +126,53 @@ export default function Watchlist({ onManualCapture }) {
       }
       return next;
     });
+  }
+
+  function savePositions(next) {
+    const normalized = normalizePositions(next);
+    setPositions(normalized);
+    try {
+      window.localStorage.setItem(POSITIONS_STORAGE_KEY, JSON.stringify(normalized));
+    } catch {
+      // La cartera queda en memoria si localStorage falla.
+    }
+  }
+
+  function handleUsdMxnChange(value) {
+    setUsdMxn(value);
+    try {
+      window.localStorage.setItem("graham-watchlist:usd-mxn", value);
+    } catch {
+      // El tipo de cambio se puede volver a capturar si el navegador bloquea localStorage.
+    }
+  }
+
+  function handleAddPosition() {
+    const ticker = positionDraft.ticker.trim().toUpperCase();
+    const entryPriceMxn = parseMoney(positionDraft.entryPriceMxn);
+    if (!ticker || entryPriceMxn === null) {
+      setCaptureMessage("Para guardar posicion necesitas ticker y precio de entrada en MXN.");
+      return;
+    }
+    const now = new Date().toISOString();
+    savePositions([
+      {
+        ticker,
+        shares: parseMoney(positionDraft.shares) ?? 0,
+        entryPriceMxn,
+        notes: positionDraft.notes,
+        createdAt: now,
+        updatedAt: now,
+      },
+      ...positions.filter((item) => item.ticker !== ticker),
+    ]);
+    setPositionDraft({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
+    setView("positions");
+    setCaptureMessage(`${ticker} guardada en Mis posiciones.`);
+  }
+
+  function handleRemovePosition(ticker) {
+    savePositions(positions.filter((item) => item.ticker !== ticker));
   }
 
   async function runLocalAction(endpoint, pendingText, doneText) {
@@ -157,6 +220,7 @@ export default function Watchlist({ onManualCapture }) {
         view === "all" ||
         (view === "opportunities" && ["approved", "near"].includes(result.alertLevel)) ||
         (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
+        (view === "positions" && positions.some((position) => position.ticker === result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
         (view === "reference" && result.alertLevel === "reference") ||
         (view === "statuses" && result.systemStatus) ||
@@ -184,16 +248,18 @@ export default function Watchlist({ onManualCapture }) {
       const bv = getTableCell(b, column);
       return String(av).localeCompare(String(bv), "es", { numeric: true });
     });
-  }, [favoriteSet, favorites, query, results, selectedStatus, selectedTag, sortKey, view]);
+  }, [favoriteSet, favorites, positions, query, results, selectedStatus, selectedTag, sortKey, view]);
 
   return (
     <section>
       <style>{`
         .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: SURFACE.panel; margin-bottom: 12px; }
         .watchlist-card-list { display: none; }
+        .positions-form { display: grid; grid-template-columns: minmax(90px, 120px) minmax(90px, 120px) minmax(150px, 180px) minmax(160px, 1fr) auto; gap: 8px; align-items: end; margin-bottom: 12px; }
         @media (max-width: 999px) {
           .watchlist-table-shell { display: none; }
           .watchlist-card-list { display: grid; gap: 10px; }
+          .positions-form { grid-template-columns: 1fr; }
         }
       `}</style>
       <div style={{ marginBottom: 18 }}>
@@ -315,6 +381,74 @@ export default function Watchlist({ onManualCapture }) {
         </div>
       ) : null}
 
+      <div style={{ border: `1px solid ${SURFACE.border}`, borderRadius: 8, background: SURFACE.panelDark, padding: 14, marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "start", marginBottom: 12 }}>
+          <div>
+            <strong>Mis posiciones</strong>
+            <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 4 }}>
+              Guarda tu entrada en MXN; cuando corra la actualizacion semanal, el precio vivo recalcula rendimiento y senal.
+            </div>
+          </div>
+          <label style={{ display: "grid", gap: 4, color: SURFACE.muted, fontSize: 12 }}>
+            USD/MXN
+            <input
+              value={usdMxn}
+              onChange={(event) => handleUsdMxnChange(event.target.value)}
+              style={{ width: 110, border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "7px 9px" }}
+            />
+          </label>
+        </div>
+        <div className="positions-form">
+          <input value={positionDraft.ticker} onChange={(event) => setPositionDraft((current) => ({ ...current, ticker: event.target.value.toUpperCase() }))} placeholder="Ticker" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.shares} onChange={(event) => setPositionDraft((current) => ({ ...current, shares: event.target.value }))} placeholder="Titulos" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.entryPriceMxn} onChange={(event) => setPositionDraft((current) => ({ ...current, entryPriceMxn: event.target.value }))} placeholder="Entrada MXN" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <input value={positionDraft.notes} onChange={(event) => setPositionDraft((current) => ({ ...current, notes: event.target.value }))} placeholder="Nota opcional" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+          <button type="button" onClick={handleAddPosition} style={{ border: `1px solid ${AC.green}`, background: SURFACE.activeGreen, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", cursor: "pointer" }}>
+            Guardar posicion
+          </button>
+        </div>
+        {evaluatedPositions.length ? (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", minWidth: 980, borderCollapse: "collapse", fontSize: 12 }}>
+              <thead>
+                <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
+                  {["Ticker", "Empresa", "Entrada MXN", "Entrada convertida", "Precio actual MXN", "P/L", "Valor", "Senal", ""].map((label) => (
+                    <th key={label} style={{ padding: "8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap" }}>{label}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {evaluatedPositions.map((position) => {
+                  const toneColor = position.recommendation.tone === "buy" ? AC.green : position.recommendation.tone === "sell" ? AC.red : position.recommendation.tone === "hold" ? AC.yellow : SURFACE.muted;
+                  return (
+                    <tr key={position.ticker} style={{ borderTop: `1px solid ${SURFACE.border}` }}>
+                      <td style={{ padding: "8px", color: SURFACE.text, fontWeight: 700 }}>{position.ticker}</td>
+                      <td style={{ padding: "8px", color: SURFACE.muted }}>{position.company?.companyName || "No encontrada en catalogo"}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.entryPriceMxn)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.muted }}>{formatQuote(position.entryPriceQuote, position.currency)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.currentPriceMxn)}</td>
+                      <td style={{ padding: "8px", color: position.gainPct >= 0 ? AC.greenText : AC.redText }}>{pct(position.gainPct)}</td>
+                      <td style={{ padding: "8px", color: SURFACE.text }}>{formatMxn(position.marketValueMxn)}</td>
+                      <td style={{ padding: "8px", color: toneColor }}>
+                        <strong>{position.recommendation.action}</strong>
+                        <div style={{ color: SURFACE.muted, marginTop: 3 }}>{position.recommendation.reason}</div>
+                      </td>
+                      <td style={{ padding: "8px", textAlign: "right" }}>
+                        <button type="button" onClick={() => handleRemovePosition(position.ticker)} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.navInactive, color: SURFACE.muted, borderRadius: 6, padding: "6px 8px", cursor: "pointer" }}>
+                          Quitar
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div style={{ color: SURFACE.muted, fontSize: 12 }}>Aun no hay posiciones guardadas.</div>
+        )}
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 16 }}>
         {[
           { label: "Aprobadas", value: summary.approved.length, color: AC.green, targetView: "opportunities" },
@@ -323,6 +457,7 @@ export default function Watchlist({ onManualCapture }) {
           { label: "Referencias", value: summary.reference.length, color: AC.blue, targetView: "reference" },
           { label: "Pendientes", value: summary.pending.length, color: AC.blue, targetView: "pending" },
           { label: "Favoritos", value: favorites.length, color: AC.yellow, targetView: "favorites" },
+          { label: "Posiciones", value: evaluatedPositions.length, color: AC.green, targetView: "positions" },
           { label: "Universo activo", value: activeCount, color: AC.green, targetView: "all" },
         ].map(({ label, value, color, targetView }) => (
           <button
@@ -363,6 +498,7 @@ export default function Watchlist({ onManualCapture }) {
           ["opportunities", "Oportunidades"],
           ["all", "Todo auditado"],
           ["favorites", "Favoritos"],
+          ["positions", "Mis posiciones"],
           ["analyzed", "Analizadas"],
           ["discarded", `En observacion (${summary.watch.length})`],
           ["statuses", "Estados"],

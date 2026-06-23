@@ -8,10 +8,10 @@ const watchlistMeta = buildWatchlistMeta(watchlist, publicCompanies);
 
 describe("watchlist universe merge", () => {
   it("keeps analyzed snapshots on their original quote symbol", () => {
-    const lennar = watchlist.find((item) => item.ticker === "LEN");
-    expect(lennar.analysisStatus).toBe("analyzed");
-    expect(lennar.yahooSymbol).toBe("LEN");
-    expect(lennar.market).toBe("US");
+    const ingredion = watchlist.find((item) => item.ticker === "INGR");
+    expect(ingredion.analysisStatus).toBe("analyzed");
+    expect(ingredion.yahooSymbol).toBe("INGR");
+    expect(ingredion.market).toBe("US");
   });
 
   it("keeps all analyzed candidates visible even when they are outside the BMV universe", () => {

@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import CandidatePanel from "../src/tools/graham-analyzer/CandidatePanel.jsx";
 
 const candidates = [{
-  ticker: "KBH",
-  companyName: "KB Home",
-  sector: "Residential Construction",
-  pe: 9.93,
-  pb: 0.84,
-  pePb: 8.3,
-  debtRatio: 0.74,
-  currentRatio: 2.2,
+  ticker: "INGR",
+  companyName: "Ingredion Incorporated",
+  sector: "Consumer Defensive / Packaged Foods",
+  pe: 9.77,
+  pb: 1.46,
+  pePb: 14.28,
+  debtRatio: 0.41,
+  currentRatio: 2.76,
   note: "Fixture note",
 }];
 

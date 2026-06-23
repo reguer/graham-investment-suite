@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { buildAlertItems, buildCapturePayload, getReportCadence, parseArgs, renderCsv, renderHtml, renderReport, todayIso } from "../scripts/weekly-screen.js";
 
 const approvedResult = {
-  ticker: "KBH",
-  yahooSymbol: "KBH",
-  companyName: "KB Home",
+  ticker: "INGR",
+  yahooSymbol: "INGR",
+  companyName: "Ingredion Incorporated",
   livePrice: 52,
   ratios: {
     maxDefensivePrice: 84,
@@ -48,7 +48,7 @@ describe("weekly-screen report cadence", () => {
     expect(report).toContain("Alerta formal de viernes");
     expect(report).toContain("## Resumen Semanal");
     expect(report).toContain("## Alertas Accionables");
-    expect(report).toContain("Aprobadas destacadas: KBH");
+    expect(report).toContain("Aprobadas destacadas: INGR");
     expect(report).toContain("Fuente/captura requerida: 1");
     expect(report).toContain("## Fuente o Captura Requerida");
     expect(report).toContain("Generado desde: Laptop Test (device-1, rol: principal)");
@@ -69,8 +69,8 @@ describe("weekly-screen report cadence", () => {
   });
 
   it("parses ticker, format and verbose flags", () => {
-    expect(parseArgs(["node", "weekly-screen.js", "--ticker", "kbh", "--format", "csv", "--verbose", "--no-telegram"])).toEqual({
-      ticker: "KBH",
+    expect(parseArgs(["node", "weekly-screen.js", "--ticker", "ingr", "--format", "csv", "--verbose", "--no-telegram"])).toEqual({
+      ticker: "INGR",
       format: "csv",
       verbose: true,
       noTelegram: true,
@@ -89,7 +89,7 @@ describe("weekly-screen report cadence", () => {
     expect(payload.counts.reference).toBe(0);
     expect(payload.device.device_id).toBe("device-1");
     expect(payload.companies[0]).toMatchObject({
-      ticker: "KBH",
+      ticker: "INGR",
       livePrice: 52,
       alertLevel: "approved",
     });
@@ -98,7 +98,7 @@ describe("weekly-screen report cadence", () => {
   it("builds actionable alert items for approved and near names", () => {
     const alerts = buildAlertItems({
       approved: [approvedResult],
-      near: [{ ...approvedResult, ticker: "LEN" }],
+      near: [{ ...approvedResult, ticker: "CTSH" }],
       watch: [],
       reference: [],
       pending: [],
@@ -112,7 +112,7 @@ describe("weekly-screen report cadence", () => {
     const html = renderHtml([approvedResult], { ok: true, source: "test" }, { date: new Date(2026, 5, 5) });
 
     expect(csv).toContain("ticker,yahoo,empresa");
-    expect(csv).toContain("KBH");
+    expect(csv).toContain("INGR");
     expect(html).toContain("<!doctype html>");
     expect(html).toContain("Oportunidades Graham");
   });

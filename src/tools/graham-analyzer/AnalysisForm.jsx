@@ -48,7 +48,7 @@ function Grid({ children }) {
   return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 12 }}>{children}</div>;
 }
 
-function Toolbar({ prefillOptions, onPrefill, onReset, onAnalyze }) {
+function Toolbar({ onReset, onAnalyze }) {
   function handleReset() {
     if (window.confirm("¿Limpiar todos los campos? Se perderán los datos no guardados.")) {
       onReset();
@@ -71,11 +71,6 @@ function Toolbar({ prefillOptions, onPrefill, onReset, onAnalyze }) {
         marginBottom: 16,
       }}
     >
-      {prefillOptions.map((option) => (
-        <button key={option.id} type="button" onClick={() => onPrefill(option.data)} style={buttonStyle("secondary")}>
-          Cargar {option.label}
-        </button>
-      ))}
       <button type="button" onClick={handleReset} style={buttonStyle("secondary")}>Limpiar</button>
       <button type="button" onClick={onAnalyze} style={buttonStyle("primary")}>Calcular resultados</button>
     </div>
@@ -93,10 +88,10 @@ function buttonStyle(kind) {
   };
 }
 
-export default function AnalysisForm({ form, onChange, prefillOptions = [], onPrefill, onReset, onAnalyze }) {
+export default function AnalysisForm({ form, onChange, onPrefill, onReset, onAnalyze }) {
   return (
     <div style={{ background: "rgba(15, 23, 42, 0.35)", border: `1px solid ${SURFACE.border}`, borderRadius: 8, padding: 16 }}>
-      <Toolbar prefillOptions={prefillOptions} onPrefill={onPrefill} onReset={onReset} onAnalyze={onAnalyze} />
+      <Toolbar onReset={onReset} onAnalyze={onAnalyze} />
 
       <TickerSearch onPrefill={onPrefill} />
 

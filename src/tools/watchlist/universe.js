@@ -18,6 +18,33 @@ export const requestedTickers = [
   { rawTicker: "SILVER", ticker: "SILVER", yahooSymbol: "SI=F", companyName: "Silver Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "silver"], notes: "Futuro de plata para contexto macro. No se analiza con reglas Graham defensivas." },
   { rawTicker: "COPPER", ticker: "COPPER", yahooSymbol: "HG=F", companyName: "Copper Futures", quoteType: "FUTURE", market: "COMEX", analysisStatus: "market_reference", validationStatus: "market_reference", tags: ["market_reference", "commodity", "copper"], notes: "Futuro de cobre para contexto macro/ciclo industrial. No se analiza con reglas Graham defensivas." },
   { rawTicker: "META", ticker: "META", yahooSymbol: "META.MX", companyName: "Meta Platforms, Inc.", sector: "Communication Services", industry: "Internet Content & Information", quoteType: "EQUITY", market: "BMV SIC", validationStatus: "validated_yahoo_mx" },
+  {rawTicker:"MOS",ticker:"MOS",yahooSymbol:"MOS.MX",companyName:"The Mosaic Company",sector:"Basic Materials",industry:"Agricultural Inputs",quoteType:"EQUITY",market:"BMV SIC",validationStatus:"validated_yahoo_mx"},
+  {rawTicker:"BAER",ticker:"BAER",yahooSymbol:"BAER",companyName:"Bridger Aerospace Group Holdings, Inc.",sector:"Industrials",industry:"Aerial Firefighting & Emergency Services",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"SHMD",ticker:"SHMD",yahooSymbol:"SHMD",companyName:"SCHMID Group N.V.",sector:"Technology",industry:"Semiconductor Equipment & Materials",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"CBRS",ticker:"CBRS",yahooSymbol:"CBRS",companyName:"Cerebras Systems Inc.",sector:"Technology",industry:"AI Accelerators & Systems",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"SPACEX",ticker:"SPACEX",yahooSymbol:"SPCX",companyName:"Space Exploration Technologies Corp.",sector:"Technology",industry:"Space Connectivity & Launch Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo_alias",tags:["requested","ai-infrastructure","space-connectivity"],notes:"Yahoo expone SpaceX como SPCX; se conserva rawTicker=SPACEX para busqueda del usuario."},
+  {rawTicker:"TR",ticker:"TR",yahooSymbol:"TR",companyName:"Tootsie Roll Industries, Inc.",sector:"Consumer Defensive",industry:"Confectioners",quoteType:"EQUITY",market:"NYSE",validationStatus:"validated_yahoo"},
+  {rawTicker:"SIVE",ticker:"SIVE",yahooSymbol:"SIVE.ST",companyName:"Sivers Semiconductors AB",sector:"Technology",industry:"Semiconductors",quoteType:"EQUITY",market:"Stockholm",validationStatus:"validated_yahoo_alias"},
+  {rawTicker:"IQE",ticker:"IQE",yahooSymbol:"IQE.L",companyName:"IQE plc",sector:"Technology",industry:"Semiconductor Materials",quoteType:"EQUITY",market:"London Stock Exchange",validationStatus:"validated_yahoo_alias"},
+  {rawTicker:"AAOI",ticker:"AAOI",yahooSymbol:"AAOI",companyName:"Applied Optoelectronics, Inc.",sector:"Technology",industry:"Communication Equipment",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"OPTX",ticker:"OPTX",yahooSymbol:"OPTX",companyName:"Syntec Optics Holdings, Inc.",sector:"Technology",industry:"Electronic Components",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"IREN",ticker:"IREN",yahooSymbol:"IREN",companyName:"IREN Limited",sector:"Technology",industry:"AI Cloud & Data Center Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"BRUN",ticker:"BRUN",yahooSymbol:"BRUN",companyName:"Boost Run, Inc.",sector:"Technology",industry:"AI Cloud & HPC Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"CRWV",ticker:"CRWV",yahooSymbol:"CRWV",companyName:"CoreWeave, Inc.",sector:"Technology",industry:"AI Cloud Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"HIVE",ticker:"HIVE",yahooSymbol:"HIVE",companyName:"HIVE Digital Technologies Ltd.",sector:"Technology",industry:"HPC & Digital Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"CLSK",ticker:"CLSK",yahooSymbol:"CLSK",companyName:"CleanSpark, Inc.",sector:"Technology",industry:"Digital Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"ASYS",ticker:"ASYS",yahooSymbol:"ASYS",companyName:"Amtech Systems, Inc.",sector:"Technology",industry:"Semiconductor Equipment & Materials",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"ICHR",ticker:"ICHR",yahooSymbol:"ICHR",companyName:"Ichor Holdings, Ltd.",sector:"Technology",industry:"Semiconductor Equipment & Materials",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"INTT",ticker:"INTT",yahooSymbol:"INTT",companyName:"InTest Corporation",sector:"Technology",industry:"Semiconductor Equipment & Materials",quoteType:"EQUITY",market:"NYSE American",validationStatus:"validated_yahoo"},
+  {rawTicker:"PENG",ticker:"PENG",yahooSymbol:"PENG",companyName:"Penguin Solutions, Inc.",sector:"Technology",industry:"Computer Hardware",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"AMPG",ticker:"AMPG",yahooSymbol:"AMPG",companyName:"AmpliTech Group, Inc.",sector:"Technology",industry:"Communication Equipment",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"SILC",ticker:"SILC",yahooSymbol:"SILC",companyName:"Silicom Ltd.",sector:"Technology",industry:"Communication Equipment",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"NOK",ticker:"NOK",yahooSymbol:"NOK",companyName:"Nokia Oyj",sector:"Technology",industry:"Communication Equipment",quoteType:"EQUITY",market:"NYSE",validationStatus:"validated_yahoo"},
+  {rawTicker:"XFAB",ticker:"XFAB",yahooSymbol:"XFAB.PA",companyName:"X-FAB Silicon Foundries SE",sector:"Technology",industry:"Semiconductor Foundry",quoteType:"EQUITY",market:"Euronext Paris",validationStatus:"validated_yahoo_alias"},
+  {rawTicker:"MCHP",ticker:"MCHP",yahooSymbol:"MCHP",companyName:"Microchip Technology Incorporated",sector:"Technology",industry:"Semiconductors",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
+  {rawTicker:"MX",ticker:"MX",yahooSymbol:"MX",companyName:"Magnachip Semiconductor Corporation",sector:"Technology",industry:"Semiconductors",quoteType:"EQUITY",market:"NYSE",validationStatus:"validated_yahoo"},
+  {rawTicker:"AMBQ",ticker:"AMBQ",yahooSymbol:"AMBQ",companyName:"Ambiq Micro, Inc.",sector:"Technology",industry:"Semiconductors",quoteType:"EQUITY",market:"NYSE",validationStatus:"validated_yahoo"},
+  {rawTicker:"AKAM",ticker:"AKAM",yahooSymbol:"AKAM",companyName:"Akamai Technologies, Inc.",sector:"Technology",industry:"Software Infrastructure",quoteType:"EQUITY",market:"NASDAQ",validationStatus:"validated_yahoo"},
 ];
 
 const bmvSicRows = `
@@ -52,7 +79,6 @@ IBM|IBM.MX|International Business Machines Corporation|Technology|Information Te
 CRM|CRM.MX|Salesforce, Inc.|Technology|Software Application
 ORCL|ORCL.MX|Oracle Corporation|Technology|Software Infrastructure
 CVX|CVX.MX|Chevron Corporation|Energy|Oil & Gas Integrated
-GE|GE.MX|General Electric Company|Industrials|Aerospace & Defense
 MCD|MCD.MX|McDonald's Corporation|Consumer Cyclical|Restaurants
 WFC|WFC.MX|Wells Fargo & Company|Financial Services|Banks Diversified
 ABT|ABT.MX|Abbott Laboratories|Healthcare|Medical Devices
@@ -64,9 +90,7 @@ ISRG|ISRG.MX|Intuitive Surgical, Inc.|Healthcare|Medical Instruments & Supplies
 PEP|PEP.MX|PepsiCo, Inc.|Consumer Defensive|Beverages Non-Alcoholic
 INTU|INTU.MX|Intuit Inc.|Technology|Software Application
 GS|GS.MX|The Goldman Sachs Group, Inc.|Financial Services|Capital Markets
-RTX|RTX.MX|RTX Corporation|Industrials|Aerospace & Defense
 QCOM|QCOM.MX|QUALCOMM Incorporated|Technology|Semiconductors
-CAT|CAT.MX|Caterpillar Inc.|Industrials|Farm & Heavy Construction Machinery
 VZ|VZ.MX|Verizon Communications Inc.|Communication Services|Telecom Services
 BKNG|BKNG.MX|Booking Holdings Inc.|Consumer Cyclical|Travel Services
 TXN|TXN.MX|Texas Instruments Incorporated|Technology|Semiconductors
@@ -88,15 +112,12 @@ TJX|TJX.MX|The TJX Companies, Inc.|Consumer Cyclical|Apparel Retail
 DHR|DHR.MX|Danaher Corporation|Healthcare|Diagnostics & Research
 SCHW|SCHW.MX|The Charles Schwab Corporation|Financial Services|Capital Markets
 GILD|GILD.MX|Gilead Sciences, Inc.|Healthcare|Drug Manufacturers General
-DE|DE.MX|Deere & Company|Industrials|Farm & Heavy Construction Machinery
 CMCSA|CMCSA.MX|Comcast Corporation|Communication Services|Telecom Services
-LMT|LMT.MX|Lockheed Martin Corporation|Industrials|Aerospace & Defense
 PANW|PANW.MX|Palo Alto Networks, Inc.|Technology|Software Infrastructure
 COP|COP.MX|ConocoPhillips|Energy|Oil & Gas E&P
 ADI|ADI.MX|Analog Devices, Inc.|Technology|Semiconductors
 MU|MU.MX|Micron Technology, Inc.|Technology|Semiconductors
 BMY|BMY.MX|Bristol-Myers Squibb Company|Healthcare|Drug Manufacturers General
-AMT|AMT.MX|American Tower Corporation|Real Estate|REIT Specialty
 MO|MO.MX|Altria Group, Inc.|Consumer Defensive|Tobacco
 NKE|NKE.MX|NIKE, Inc.|Consumer Cyclical|Footwear & Accessories
 UPS|UPS.MX|United Parcel Service, Inc.|Industrials|Integrated Freight & Logistics
@@ -111,9 +132,7 @@ SHW|SHW.MX|The Sherwin-Williams Company|Basic Materials|Specialty Chemicals
 CDNS|CDNS.MX|Cadence Design Systems, Inc.|Technology|Software Application
 PH|PH.MX|Parker-Hannifin Corporation|Industrials|Specialty Industrial Machinery
 APH|APH.MX|Amphenol Corporation|Technology|Electronic Components
-WELL|WELL.MX|Welltower Inc.|Real Estate|REIT Healthcare Facilities
 CRWD|CRWD.MX|CrowdStrike Holdings, Inc.|Technology|Software Infrastructure
-EQIX|EQIX.MX|Equinix, Inc.|Real Estate|REIT Specialty
 HCA|HCA.MX|HCA Healthcare, Inc.|Healthcare|Medical Care Facilities
 CTAS|CTAS.MX|Cintas Corporation|Industrials|Specialty Business Services
 MMM|MMM.MX|3M Company|Industrials|Conglomerates
@@ -121,18 +140,15 @@ SNPS|SNPS.MX|Synopsys, Inc.|Technology|Software Infrastructure
 CL|CL.MX|Colgate-Palmolive Company|Consumer Defensive|Household & Personal Products
 CME|CME.MX|CME Group Inc.|Financial Services|Financial Data & Stock Exchanges
 DUK|DUK.MX|Duke Energy Corporation|Utilities|Utilities Regulated Electric
-TDG|TDG.MX|TransDigm Group Incorporated|Industrials|Aerospace & Defense
 MSI|MSI.MX|Motorola Solutions, Inc.|Technology|Communication Equipment
 CVS|CVS.MX|CVS Health Corporation|Healthcare|Healthcare Plans
 MCK|MCK.MX|McKesson Corporation|Healthcare|Medical Distribution
 USB|USB.MX|U.S. Bancorp|Financial Services|Banks Regional
 MAR|MAR.MX|Marriott International, Inc.|Consumer Cyclical|Lodging
-NOC|NOC.MX|Northrop Grumman Corporation|Industrials|Aerospace & Defense
 ECL|ECL.MX|Ecolab Inc.|Basic Materials|Specialty Chemicals
 REGN|REGN.MX|Regeneron Pharmaceuticals, Inc.|Healthcare|Biotechnology
 PNC|PNC.MX|The PNC Financial Services Group, Inc.|Financial Services|Banks Regional
 ORLY|ORLY.MX|O'Reilly Automotive, Inc.|Consumer Cyclical|Auto Parts
-GD|GD.MX|General Dynamics Corporation|Industrials|Aerospace & Defense
 CEG|CEG.MX|Constellation Energy Corporation|Utilities|Utilities Independent Power Producers
 ETR|ETR.MX|Entergy Corporation|Utilities|Utilities Regulated Electric
 HUBB|HUBB.MX|Hubbell Incorporated|Industrials|Electrical Equipment & Parts
@@ -226,32 +242,25 @@ TGT|TGT.MX|Target Corporation|Consumer Defensive|Discount Stores
 URI|URI.MX|United Rentals, Inc.|Industrials|Rental & Leasing Services
 GM|GM.MX|General Motors Company|Consumer Cyclical|Auto Manufacturers
 KMB|KMB.MX|Kimberly-Clark Corporation|Consumer Defensive|Household & Personal Products
-SPG|SPG.MX|Simon Property Group, Inc.|Real Estate|REIT Retail
 MNST|MNST.MX|Monster Beverage Corporation|Consumer Defensive|Beverages Non-Alcoholic
 MPC|MPC.MX|Marathon Petroleum Corporation|Energy|Oil & Gas Refining & Marketing
 ALL|ALL.MX|Allstate Corporation|Financial Services|Insurance Property & Casualty
-O|O.MX|Realty Income Corporation|Real Estate|REIT Retail
 OKE|OKE.MX|ONEOK INC|Energy|Oil & Gas Midstream
 RCL|RCL.MX|Royal Caribbean Cruises Ltd.|Consumer Cyclical|Travel Services
 HLT|HLT.MX|Hilton Worldwide Holdings Inc.|Consumer Cyclical|Lodging
 GWW|GWW.MX|W.W. Grainger, Inc.|Industrials|Industrial Distribution
 FDX|FDX.MX|FedEx Corporation|Industrials|Integrated Freight & Logistics
-PSA|PSA.MX|Public Storage|Real Estate|REIT Industrial
 MET|MET.MX|MetLife, Inc.|Financial Services|Insurance Life
 SRE|SRE.MX|Sempra|Utilities|Utilities Diversified
-PCAR|PCAR.MX|PACCAR Inc.|Industrials|Farm & Heavy Construction Machinery
 AMP|AMP.MX|Ameriprise Financial, Inc.|Financial Services|Asset Management
 NDAQ|NDAQ.MX|Nasdaq, Inc.|Financial Services|Financial Data & Stock Exchanges
 AFL|AFL.MX|Aflac Incorporated|Financial Services|Insurance Life
 PSX|PSX.MX|Phillips 66|Energy|Oil & Gas Refining & Marketing
 AIG|AIG.MX|American International Group, Inc.|Financial Services|Insurance Diversified
 ROST|ROST.MX|Ross Stores, Inc.|Consumer Cyclical|Apparel Retail
-PWR|PWR.MX|QUANTA SERVICES|Industrials|Engineering & Construction
 ODFL|ODFL.MX|Old Dominion Freight Line, Inc.|Industrials|Trucking
 KR|KR.MX|The Kroger Co.|Consumer Defensive|Grocery Stores
-DLR|DLR.MX|Digital Realty Trust, Inc.|Real Estate|REIT Specialty
 VLO|VLO.MX|Valero Energy Corporation|Energy|Oil & Gas Refining & Marketing
-LHX|LHX.MX|L3Harris Technologies, Inc.|Industrials|Aerospace & Defense
 D|D.MX|Dominion Energy, Inc.|Utilities|Utilities Regulated Electric
 MSCI|MSCI.MX|MSCI Inc.|Financial Services|Financial Data & Stock Exchanges
 FANG|FANG.MX|Diamondback Energy, Inc.|Energy|Oil & Gas E&P
@@ -265,10 +274,8 @@ KHC|KHC.MX|The Kraft Heinz Company|Consumer Defensive|Packaged Foods
 KVUE|KVUE.MX|KENVUE INC|Consumer Defensive|Household & Personal Products
 COR|COR.MX|Cencora, Inc.|Healthcare|Medical Distribution
 VRSK|VRSK.MX|Verisk Analytics, Inc.|Industrials|Consulting Services
-LEN|LEN.MX|Lennar Corporation|Consumer Cyclical|Residential Construction
 FIS|FIS.MX|Fidelity National Information Services, Inc.|Technology|Information Technology Services
 STZ|STZ.MX|Constellation Brands, Inc.|Consumer Defensive|Beverages Brewers
-CSGP|CSGP.MX|CoStar Group Inc.|Real Estate|Real Estate Services
 EA|EA.MX|Electronic Arts Inc.|Communication Services|Electronic Gaming & Multimedia
 PCG|PCG.MX|PG&E Corporation|Utilities|Utilities Regulated Electric
 MLM|MLM.MX|Martin Marietta Materials, Inc.|Basic Materials|Building Materials
@@ -286,14 +293,11 @@ DD|DD.MX|DuPont de Nemours, Inc.|Basic Materials|Specialty Chemicals
 EFX|EFX.MX|Equifax Inc.|Industrials|Consulting Services
 HPQ|HPQ.MX|HP Inc.|Technology|Computer Hardware
 NUE|NUE.MX|Nucor Corporation|Basic Materials|Steel
-EQR|EQR.MX|Equity Residential|Real Estate|REIT Residential
 CNC|CNC.MX|Centene Corporation|Healthcare|Healthcare Plans
 IDXX|IDXX.MX|IDEXX Laboratories, Inc.|Healthcare|Diagnostics & Research
 MCHP|MCHP.MX|Microchip Technology Incorporated|Technology|Semiconductors
-VICI|VICI.MX|VICI Properties Inc.|Real Estate|REIT Diversified
 XYL|XYL.MX|Xylem Inc.|Industrials|Specialty Industrial Machinery
 OTIS|OTIS.MX|Otis Worldwide Corporation|Industrials|Specialty Industrial Machinery
-HWM|HWM.MX|Howmet Aerospace Inc.|Industrials|Aerospace & Defense
 EBAY|EBAY.MX|eBay Inc.|Consumer Cyclical|Internet Retail
 WAB|WAB.MX|Westinghouse Air Brake Technologies Corporation|Industrials|Railroads
 HPE|HPE.MX|Hewlett Packard Enterprise Company|Technology|Communication Equipment
@@ -331,19 +335,29 @@ AA|AA.MX|Alcoa Corporation|Basic Materials|Aluminum
 ALB|ALB.MX|Albemarle Corporation|Basic Materials|Specialty Chemicals
 CF|CF.MX|CF Industries Holdings Inc.|Basic Materials|Agricultural Inputs
 MOS|MOS.MX|The Mosaic Company|Basic Materials|Agricultural Inputs
-AVB|AVB.MX|AvalonBay Communities Inc.|Real Estate|REIT Residential
-ESS|ESS.MX|Essex Property Trust Inc.|Real Estate|REIT Residential
-MAA|MAA.MX|Mid-America Apartment Communities|Real Estate|REIT Residential
-UDR|UDR.MX|UDR Inc.|Real Estate|REIT Residential
-PLD|PLD.MX|Prologis Inc.|Real Estate|REIT Industrial
-CCI|CCI.MX|Crown Castle Inc.|Real Estate|REIT Specialty
-TOL|TOL.MX|Toll Brothers Inc.|Residential Construction|Residential Construction
-MTH|MTH.MX|Meritage Homes Corporation|Residential Construction|Residential Construction
-MHO|MHO.MX|M/I Homes Inc.|Residential Construction|Residential Construction
-TMHC|TMHC.MX|Taylor Morrison Home Corporation|Residential Construction|Residential Construction
-GRBK|GRBK.MX|Green Brick Partners Inc.|Residential Construction|Residential Construction
-PHM|PHM.MX|PulteGroup Inc.|Residential Construction|Residential Construction
-KBH|KBH.MX|KB Home|Residential Construction|Residential Construction
+TSM|TSM.MX|Taiwan Semiconductor Manufacturing Company Limited|Technology|Semiconductors
+ASML|ASML.MX|ASML Holding N.V.|Technology|Semiconductor Equipment & Materials
+LRCX|LRCX.MX|Lam Research Corporation|Technology|Semiconductor Equipment & Materials
+ON|ON.MX|ON Semiconductor Corporation|Technology|Semiconductors
+NXPI|NXPI.MX|NXP Semiconductors N.V.|Technology|Semiconductors
+VRT|VRT.MX|Vertiv Holdings Co|Industrials|Electrical Equipment & Parts
+SMCI|SMCI.MX|Super Micro Computer Inc.|Technology|Computer Hardware
+DELL|DELL.MX|Dell Technologies Inc.|Technology|Computer Hardware
+WDC|WDC.MX|Western Digital Corporation|Technology|Data Storage
+STX|STX.MX|Seagate Technology Holdings plc|Technology|Data Storage
+FSLR|FSLR.MX|First Solar Inc.|Technology|Solar
+ENPH|ENPH.MX|Enphase Energy Inc.|Technology|Solar
+POWL|POWL.MX|Powell Industries Inc.|Industrials|Electrical Equipment & Parts
+GNRC|GNRC.MX|Generac Holdings Inc.|Industrials|Electrical Equipment & Parts
+WM|WM.MX|Waste Management Inc.|Industrials|Waste Management
+RSG|RSG.MX|Republic Services Inc.|Industrials|Waste Management
+AOS|AOS.MX|A. O. Smith Corporation|Industrials|Specialty Industrial Machinery
+BG|BG.MX|Bunge Global SA|Consumer Defensive|Farm Products
+INGR|INGR.MX|Ingredion Incorporated|Consumer Defensive|Packaged Foods
+CALM|CALM.MX|Cal-Maine Foods Inc.|Consumer Defensive|Farm Products
+RMD|RMD.MX|ResMed Inc.|Healthcare|Medical Instruments & Supplies
+VRTX|VRTX.MX|Vertex Pharmaceuticals Incorporated|Healthcare|Biotechnology
+BIIB|BIIB.MX|Biogen Inc.|Healthcare|Biotechnology
 `.trim();
 
 function parseBmvSicRows(rows) {

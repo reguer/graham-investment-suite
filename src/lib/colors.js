@@ -1,15 +1,15 @@
 export const AC = {
   green: "#22c55e",
   greenText: "#bbf7d0",
-  yellow: "#eab308",
-  orange: "#f97316",
-  red: "#ef4444",
+  yellow: "#f8c14a",
+  orange: "#fb923c",
+  red: "#ff5f6d",
   redText: "#fecaca",
-  blue: "#38bdf8",
-  blueText: "#bae6fd",
-  blueLight: "#7dd3fc",
-  gray: "#64748b",
-  white: "#f8fafc",
+  blue: "#7c8cff",
+  blueText: "#dbe4ff",
+  blueLight: "#a8b4ff",
+  gray: "#7a8499",
+  white: "#f7f8ff",
 };
 
 export const ABG = {
@@ -31,15 +31,15 @@ export const ABR = {
 };
 
 export const SURFACE = {
-  page: "#060911",
-  panel: "#0b1020",
-  panelAlt: "#0f172a",
-  panelDark: "#08111f",
-  navInactive: "#111827",
-  activeBlue: "#16345f",
-  activeGreen: "#12351f",
-  activeFavorite: "#3f3412",
-  border: "rgba(148, 163, 184, 0.16)",
-  muted: "#94a3b8",
-  text: "#e2e8f0",
+  page: "#05060a",
+  panel: "#090d17",
+  panelAlt: "#0d1322",
+  panelDark: "#070a12",
+  navInactive: "#0b1020",
+  activeBlue: "#111a34",
+  activeGreen: "#0e2419",
+  activeFavorite: "#2b2410",
+  border: "rgba(120, 135, 170, 0.26)",
+  muted: "#9aa4b7",
+  text: "#f3f6ff",
 };
