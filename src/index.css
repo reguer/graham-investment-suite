@@ -5,13 +5,14 @@
 }
 
 html {
-  background: #030612;
+  background: #f6f3ed;
 }
 
 body {
   margin: 0;
-  font-family: "Instrument Sans", system-ui, sans-serif;
-  background: #030612;
+  font-family: "IBM Plex Mono", "Instrument Sans", system-ui, sans-serif;
+  background: #f6f3ed;
+  color: #111111;
 }
 
 button,
@@ -20,12 +21,40 @@ textarea {
   font: inherit;
 }
 
+select {
+  font: inherit;
+}
+
 button {
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 ::selection {
-  background: rgba(138, 168, 255, 0.28);
+  background: rgba(244, 189, 0, 0.45);
+}
+
+button,
+input,
+select,
+textarea {
+  border-radius: 0 !important;
+}
+
+button:not([style*="border: 0"]) {
+  box-shadow: 4px 4px 0 #111111;
+}
+
+input,
+select,
+textarea {
+  box-shadow: none;
+}
+
+.watchlist-table-shell {
+  border-radius: 0 !important;
+  box-shadow: 6px 6px 0 #111111;
 }
 
 /* Print / "Save as PDF": hide controls and navigation, switch to a light,

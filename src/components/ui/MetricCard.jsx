@@ -11,16 +11,16 @@ function keyForColor(color) {
 export default function MetricCard({ label, value, sublabel, note, color = AC.gray }) {
   const key = keyForColor(color);
   return (
-    <article style={{ background: ABG[key], border: `1px solid ${ABR[key]}`, borderRadius: 8, padding: 14, minHeight: 126 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, color: SURFACE.muted, fontSize: 12 }}>
+    <article style={{ background: ABG[key], border: `3px solid ${ABR[key]}`, borderRadius: 0, padding: 14, minHeight: 126, boxShadow: `5px 5px 0 ${SURFACE.shadow}` }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, color: SURFACE.text, fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}>
         <Dot color={color} />
         <span>{label}</span>
       </div>
-      <div style={{ marginTop: 10, fontFamily: "IBM Plex Mono, monospace", color: SURFACE.text, fontSize: 26, fontWeight: 600, wordBreak: "break-word" }}>
+      <div style={{ marginTop: 10, fontFamily: "IBM Plex Mono, monospace", color: SURFACE.text, fontSize: 26, fontWeight: 900, wordBreak: "break-word" }}>
         {value}
       </div>
       {sublabel ? <div style={{ marginTop: 8, color: SURFACE.muted, fontSize: 12 }}>{sublabel}</div> : null}
-      {note ? <div style={{ marginTop: 6, color: "#7dd3fc", fontSize: 11 }}>{note}</div> : null}
+      {note ? <div style={{ marginTop: 6, color: AC.redText, fontSize: 11, fontWeight: 800 }}>{note}</div> : null}
     </article>
   );
 }
