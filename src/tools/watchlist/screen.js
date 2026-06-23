@@ -3,6 +3,7 @@ import { detectSector } from "../graham-analyzer/detectSector.js";
 import { getSectorProfile } from "../graham-analyzer/sectorProfiles.js";
 import { actionableReason } from "../graham-analyzer/failingCriteria.js";
 import { grahamNumber, maxDefensivePrice as defensiveCeiling, marginOfSafety } from "../../lib/grahamFormulas.js";
+import { scoreWatchlistItem } from "./scoring.js";
 import { mapSystemStatus } from "./statusMapper.js";
 import { DEFAULT_ALERT_POLICY } from "./watchlist.js";
 
@@ -298,5 +299,7 @@ export function isReferenceInstrument(candidate) {
 }
 
 function withSystemStatus(result) {
-  return { ...result, systemStatus: mapSystemStatus(result) };
+  const systemStatus = mapSystemStatus(result);
+  const score = scoreWatchlistItem({ ...result, systemStatus });
+  return { ...result, systemStatus, score };
 }

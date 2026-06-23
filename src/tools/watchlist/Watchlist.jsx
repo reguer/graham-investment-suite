@@ -272,11 +272,14 @@ export default function Watchlist({ onManualCapture }) {
     const column = WATCHLIST_TABLE_COLUMNS.find((item) => item.id === sortKey);
     if (!column) return sorted;
     return [...sorted].sort((a, b) => {
-      const positionDelta = Number(positionSet.has(b.ticker.toUpperCase())) - Number(positionSet.has(a.ticker.toUpperCase()));
-      if (positionDelta) return positionDelta;
-      const favoriteDelta = Number(favoriteSet.has(b.ticker.toUpperCase())) - Number(favoriteSet.has(a.ticker.toUpperCase()));
-      if (favoriteDelta) return favoriteDelta;
+      if (sortKey !== "score") {
+        const positionDelta = Number(positionSet.has(b.ticker.toUpperCase())) - Number(positionSet.has(a.ticker.toUpperCase()));
+        if (positionDelta) return positionDelta;
+        const favoriteDelta = Number(favoriteSet.has(b.ticker.toUpperCase())) - Number(favoriteSet.has(a.ticker.toUpperCase()));
+        if (favoriteDelta) return favoriteDelta;
+      }
       if (sortKey === "system") return (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
+      if (sortKey === "score") return (b.score?.total ?? -1) - (a.score?.total ?? -1) || (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
       const av = getTableCell(a, column);
       const bv = getTableCell(b, column);
       return String(av).localeCompare(String(bv), "es", { numeric: true });
@@ -628,11 +631,26 @@ export default function Watchlist({ onManualCapture }) {
           }}
         >
           <option value="system">Orden por estado</option>
+          <option value="score">Orden por score</option>
           <option value="ticker">Orden por ticker</option>
           <option value="pePb">Orden por P/E x P/B</option>
           <option value="mos">Orden por MoS</option>
           <option value="updated">Orden por fecha</option>
         </select>
+        <button
+          type="button"
+          onClick={() => setSortKey("score")}
+          style={{
+            border: `1px solid ${sortKey === "score" ? AC.green : SURFACE.border}`,
+            background: sortKey === "score" ? SURFACE.activeGreen : SURFACE.navInactive,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+            cursor: "pointer",
+          }}
+        >
+          Mejor score
+        </button>
       </div>
 
       <div className="watchlist-table-shell">
@@ -809,6 +827,7 @@ export default function Watchlist({ onManualCapture }) {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: 18 }}>
               {[
                 ["Precio", fmt(selectedCompany.livePrice ?? selectedCompany.lastPrice ?? selectedCompany.price)],
+                ["Score", selectedCompany.score ? `${selectedCompany.score.total} · ${selectedCompany.score.label}` : "N/D"],
                 ["Max defensivo", fmt(selectedCompany.ratios?.maxDefensivePrice)],
                 ["MoS", pct(selectedCompany.ratios?.marginOfSafety)],
                 ["P/E", fmt(selectedCompany.ratios?.pe)],
@@ -822,6 +841,18 @@ export default function Watchlist({ onManualCapture }) {
                   <strong style={{ color: SURFACE.text, fontFamily: "IBM Plex Mono, monospace" }}>{value}</strong>
                 </div>
               ))}
+            </div>
+
+            <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panelDark, borderRadius: 8, padding: 14, marginBottom: 12 }}>
+              <strong>Composicion del score</strong>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 8, marginTop: 10, color: SURFACE.muted, fontSize: 12 }}>
+                <span>Valuacion: {selectedCompany.score?.valuation ?? 0}</span>
+                <span>Resiliencia: {selectedCompany.score?.resilience ?? 0}</span>
+                <span>Calidad: {selectedCompany.score?.quality ?? 0}</span>
+                <span>Estado: {selectedCompany.score?.status ?? 0}</span>
+                <span>Datos: {selectedCompany.score?.data ?? 0}</span>
+                <span>EPS sin retroceso: {selectedCompany.score?.epsNeverDeclined === true ? "Si" : selectedCompany.score?.epsNeverDeclined === false ? "No" : "N/D"}</span>
+              </div>
             </div>
 
             <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panelDark, borderRadius: 8, padding: 14, marginBottom: 12 }}>

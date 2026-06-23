@@ -16,6 +16,7 @@ export const WATCHLIST_TABLE_COLUMNS = [
   { id: "usd", label: "USD", value: (item) => (item.quoteCurrency === "USD" || item.currency === "USD" ? "Si" : "") },
   { id: "priceSource", label: "Fuente precio", value: (item) => item.quote?.source || item.lastPriceSource || "" },
   { id: "updated", label: "Actualizado", value: (item) => item.lastPriceUpdatedAt || item.sourceDate || "" },
+  { id: "score", label: "Score", value: (item) => (item.score ? `${item.score.total} · ${item.score.label}` : "") },
   { id: "pe", label: "P/E", value: (item) => fmt(item.ratios?.pe ?? item.pe) },
   { id: "pb", label: "P/B", value: (item) => fmt(item.ratios?.pb ?? item.pb) },
   { id: "pePb", label: "P/E x P/B", value: (item) => fmt(item.ratios?.pePb ?? item.pePb) },

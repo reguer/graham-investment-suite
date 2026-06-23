@@ -23,18 +23,21 @@ const item = {
   validationStatus: "sec_auto_snapshot",
   tags: ["graham-approved"],
   watchReason: "Cumple criterios defensivos.",
+  score: { total: 88, label: "Excelente" },
 };
 
 describe("watchlist table columns", () => {
-  it("defines the dense 30-column dashboard table", () => {
-    expect(WATCHLIST_TABLE_COLUMNS).toHaveLength(30);
+  it("defines the dense 31-column dashboard table", () => {
+    expect(WATCHLIST_TABLE_COLUMNS).toHaveLength(31);
     expect(WATCHLIST_TABLE_COLUMNS.map((column) => column.id)).toContain("action");
+    expect(WATCHLIST_TABLE_COLUMNS.map((column) => column.id)).toContain("score");
   });
 
   it("extracts formatted cell values", () => {
     const byId = Object.fromEntries(WATCHLIST_TABLE_COLUMNS.map((column) => [column.id, getTableCell(item, column)]));
     expect(byId.ticker).toBe("INGR");
     expect(byId.graham).toBe("APROBADA GRAHAMIANA");
+    expect(byId.score).toBe("88 · Excelente");
     expect(byId.system).toBe("Aprobada Graham");
     expect(byId.tags).toBe("graham-approved");
   });
