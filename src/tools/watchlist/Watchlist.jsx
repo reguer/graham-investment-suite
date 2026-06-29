@@ -404,8 +404,8 @@ export default function Watchlist({ onManualCapture }) {
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
             {captureStatus.localApi ? (
               [
-                ["/api/local/update-all", "Actualizando analisis, Yahoo complementario, precios y reporte...", "Actualizacion completa", "Actualizar todo", "primary"],
-                ["/api/local/update-prices", "Actualizando precios y reporte...", "Precios/reporte actualizados", "Solo precios", "secondary"],
+                ["/api/local/update-all", "Actualizando fundamentales completos, precios, posiciones y reporte...", "Actualizacion completa con posiciones", "Actualizar todo", "primary"],
+                ["/api/local/update-prices", "Actualizando precios, posiciones y reporte...", "Precios, posiciones y reporte actualizados", "Solo precios", "secondary"],
               ].map(([endpoint, pendingText, doneText, label, kind]) => (
                 <button
                   key={endpoint}

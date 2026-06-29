@@ -124,32 +124,26 @@ export async function runYahooSupplemental(options = {}) {
 }
 
 export async function runFullRefresh(options = {}) {
-  const analysis = await runLocalScript("scripts/analyze-watchlist.js", ["--all"], options);
-  if (!analysis.ok) return enrichRunResult(analysis);
-  const supplemental = await runLocalScript("scripts/data-ingestion.js", ["--all-unsupported"], options);
-  if (!supplemental.ok) return enrichRunResult({
-    ...supplemental,
-    stdout: `${analysis.stdout}\n${supplemental.stdout}`,
-    stderr: `${analysis.stderr}\n${supplemental.stderr}`,
-  });
+  const fundamentals = await runLocalScript("scripts/data-ingestion.js", ["--all"], options);
+  if (!fundamentals.ok) return enrichRunResult(fundamentals);
   const notes = await runLocalScript("scripts/sanitize-watchlist-notes.js", [], options);
   if (!notes.ok) return enrichRunResult({
     ...notes,
-    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}`,
-    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}`,
+    stdout: `${fundamentals.stdout}\n${notes.stdout}`,
+    stderr: `${fundamentals.stderr}\n${notes.stderr}`,
   });
   const prices = await runLocalScript("scripts/refresh-universe.js", [], options);
   if (!prices.ok) return enrichRunResult({
     ...prices,
-    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}\n${prices.stdout}`,
-    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}\n${prices.stderr}`,
+    stdout: `${fundamentals.stdout}\n${notes.stdout}\n${prices.stdout}`,
+    stderr: `${fundamentals.stderr}\n${notes.stderr}\n${prices.stderr}`,
   });
   const report = await runLocalScript("scripts/weekly-screen.js", ["--no-telegram"], options);
   return enrichRunResult({
     ok: report.ok,
     code: report.code,
-    stdout: `${analysis.stdout}\n${supplemental.stdout}\n${notes.stdout}\n${prices.stdout}\n${report.stdout}`,
-    stderr: `${analysis.stderr}\n${supplemental.stderr}\n${notes.stderr}\n${prices.stderr}\n${report.stderr}`,
+    stdout: `${fundamentals.stdout}\n${notes.stdout}\n${prices.stdout}\n${report.stdout}`,
+    stderr: `${fundamentals.stderr}\n${notes.stderr}\n${prices.stderr}\n${report.stderr}`,
   });
 }
 
