@@ -90,6 +90,19 @@ export default function Watchlist({ onManualCapture }) {
     return date.toLocaleString("es-MX", options);
   }
 
+  function formatFundamentalsFreshness(company) {
+    const asOf = company?.updatedAt || company?.sourceDate || company?.date;
+    return asOf ? formatUpdatedAt(asOf) : "N/D";
+  }
+
+  function formatPriceFreshness(company) {
+    const refreshedAt = company?.lastPriceUpdatedAt || company?.lastPriceDate;
+    if (!refreshedAt) return "N/D";
+    const parts = [formatUpdatedAt(refreshedAt)];
+    if (company?.lastPriceSource) parts.push(company.lastPriceSource);
+    return parts.join(" · ");
+  }
+
   async function loadPublicCompanies() {
     return fetchPublicCompanies(fetch, import.meta.env.BASE_URL);
   }
@@ -733,6 +746,11 @@ export default function Watchlist({ onManualCapture }) {
                 <div style={{ marginTop: 5, color: SURFACE.muted, fontSize: 12 }}>
                   {result.yahooSymbol || result.ticker} · {result.market || "Mercado no definido"} · {result.sector} · {result.alertLabel}
                 </div>
+                {result.score?.qualityLayer?.label ? (
+                  <div style={{ marginTop: 5, color: SURFACE.muted, fontSize: 12 }}>
+                    Calidad: <strong style={{ color: SURFACE.text }}>{result.score.qualityLayer.label}</strong>
+                  </div>
+                ) : null}
               </div>
               <div style={{ textAlign: "right", fontFamily: "IBM Plex Mono, monospace" }}>
                 <div>{fmt(result.livePrice)}</div>
@@ -828,6 +846,7 @@ export default function Watchlist({ onManualCapture }) {
               {[
                 ["Precio", fmt(selectedCompany.livePrice ?? selectedCompany.lastPrice ?? selectedCompany.price)],
                 ["Score", selectedCompany.score ? `${selectedCompany.score.total} · ${selectedCompany.score.label}` : "N/D"],
+                ["Calidad", selectedCompany.score?.qualityLayer?.label || "N/D"],
                 ["Max defensivo", fmt(selectedCompany.ratios?.maxDefensivePrice)],
                 ["MoS", pct(selectedCompany.ratios?.marginOfSafety)],
                 ["P/E", fmt(selectedCompany.ratios?.pe)],
@@ -849,6 +868,7 @@ export default function Watchlist({ onManualCapture }) {
                 <span>Valuacion: {selectedCompany.score?.valuation ?? 0}</span>
                 <span>Resiliencia: {selectedCompany.score?.resilience ?? 0}</span>
                 <span>Calidad: {selectedCompany.score?.quality ?? 0}</span>
+                <span>Capa Buffett: {selectedCompany.score?.qualityLayer?.label || "N/D"}</span>
                 <span>Estado: {selectedCompany.score?.status ?? 0}</span>
                 <span>Datos: {selectedCompany.score?.data ?? 0}</span>
                 <span>EPS sin retroceso: {selectedCompany.score?.epsNeverDeclined === true ? "Si" : selectedCompany.score?.epsNeverDeclined === false ? "No" : "N/D"}</span>
@@ -868,7 +888,10 @@ export default function Watchlist({ onManualCapture }) {
                 Senal: {selectedCompany.alertLabel || selectedCompany.alertLevel || "N/D"}<br />
                 Estado del sistema: {selectedCompany.systemStatus?.label || selectedCompany.analysisStatus || "N/D"}<br />
                 Sector: {selectedCompany.sector || "N/D"} · Industria: {selectedCompany.industry || "N/D"}<br />
-                Fuente: {selectedCompany.source || "N/D"} · Actualizado: {formatUpdatedAt(selectedCompany.updatedAt || selectedCompany.sourceDate || selectedCompany.date)}
+                Fuente fundamentales: {selectedCompany.source || "N/D"}<br />
+                Periodo fundamentales: {selectedCompany.sourcePeriod === "quarterly" ? "Trimestral / TTM" : selectedCompany.sourcePeriod === "annual" ? "Anual" : "N/D"}<br />
+                Corte fundamentales: {formatFundamentalsFreshness(selectedCompany)}<br />
+                Precio refrescado: {formatPriceFreshness(selectedCompany)}
               </div>
               {normalizeTags(selectedCompany.tags).length ? (
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}>

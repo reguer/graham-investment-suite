@@ -44,6 +44,29 @@ function sortedStatements(rows) {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
+function latestFrom(...collections) {
+  return collections
+    .map((rows) => latestStatement(rows))
+    .filter(Boolean)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] || null;
+}
+
+function rowValue(row, ...fields) {
+  return pick(...fields.map((field) => row?.[field]));
+}
+
+function sumRecentStatements(rows, fields, { count = 4 } = {}) {
+  const recent = sortedStatements(rows).slice(0, count);
+  if (recent.length < count) return null;
+  let total = 0;
+  for (const row of recent) {
+    const value = rowValue(row, ...fields);
+    if (value === null) return null;
+    total += value;
+  }
+  return total;
+}
+
 export function validateFundamentalCurrency({ priceCurrency, financialCurrency, expectedCurrency = "USD" }) {
   if (!priceCurrency && !financialCurrency) return { ok: false, message: "Yahoo no devolvio moneda." };
   if (priceCurrency && priceCurrency !== expectedCurrency) return { ok: false, message: `Precio en ${priceCurrency}; esperado ${expectedCurrency}.` };
@@ -98,9 +121,10 @@ export async function fetchYahooDeepFundamentals(symbol, { expectedCurrency = "U
   const period2 = new Date();
   const period1 = new Date();
   period1.setFullYear(period2.getFullYear() - years);
-  const [summary, annual] = await Promise.all([
+  const [summary, annual, quarterly] = await Promise.all([
     client.quoteSummary(symbol, { modules: ["price", "summaryDetail", "defaultKeyStatistics", "financialData"] }, { validateResult: false }),
     client.fundamentalsTimeSeries(symbol, { period1, period2, type: "annual", module: "all" }, { validateResult: false }),
+    client.fundamentalsTimeSeries(symbol, { period1, period2, type: "quarterly", module: "all" }, { validateResult: false }),
   ]);
   const priceCurrency = summary?.price?.currency || "";
   const financialCurrency = summary?.financialData?.financialCurrency || priceCurrency;
@@ -108,7 +132,7 @@ export async function fetchYahooDeepFundamentals(symbol, { expectedCurrency = "U
     fetchYahooFxRate(priceCurrency, expectedCurrency, client),
     fetchYahooFxRate(financialCurrency, expectedCurrency, client),
   ]);
-  return { symbol, expectedCurrency, summary, annual, priceFx, financialFx, priceCurrency, financialCurrency };
+  return { symbol, expectedCurrency, summary, annual, quarterly, priceFx, financialFx, priceCurrency, financialCurrency };
 }
 
 export function buildYahooSupplementalSnapshot(data, { symbol, expectedCurrency = "USD" } = {}) {
@@ -189,8 +213,10 @@ export function buildYahooSupplementalSnapshot(data, { symbol, expectedCurrency 
 }
 
 export function buildYahooDeepSnapshot(data) {
-  const latest = latestStatement(data?.annual);
-  if (!latest) return { ok: false, symbol: data?.symbol, reason: "Yahoo fundamentalsTimeSeries no devolvio estados anuales." };
+  const latestAnnual = latestStatement(data?.annual);
+  const latestQuarterly = latestStatement(data?.quarterly);
+  const latest = latestFrom(data?.quarterly, data?.annual);
+  if (!latest) return { ok: false, symbol: data?.symbol, reason: "Yahoo fundamentalsTimeSeries no devolvio estados financieros." };
   if (!data?.priceFx?.ok) return { ok: false, symbol: data?.symbol, reason: data?.priceFx?.message || "No se pudo validar FX del precio." };
   if (!data?.financialFx?.ok) return { ok: false, symbol: data?.symbol, reason: data?.financialFx?.message || "No se pudo validar FX de fundamentales." };
 
@@ -213,6 +239,14 @@ export function buildYahooDeepSnapshot(data) {
     return parsed === null ? null : parsed * data.financialFx.rate;
   };
 
+  const trailingRevenue = sumRecentStatements(data?.quarterly, ["totalRevenue", "operatingRevenue"]);
+  const trailingEbit = sumRecentStatements(data?.quarterly, ["EBIT", "normalizedEBITDA"]);
+  const trailingInterestExpense = sumRecentStatements(data?.quarterly, ["interestExpense"]);
+  const trailingNetIncome = sumRecentStatements(data?.quarterly, ["netIncome", "netIncomeCommonStockholders"]);
+  const trailingOperatingCF = sumRecentStatements(data?.quarterly, ["operatingCashFlow", "cashFlowFromContinuingOperatingActivities"]);
+  const trailingInvestingCF = sumRecentStatements(data?.quarterly, ["investingCashFlow", "cashFlowFromContinuingInvestingActivities"]);
+  const trailingStatementEps = sumRecentStatements(data?.quarterly, ["dilutedEPS", "basicEPS"]);
+
   const totalAssets = convert(latest.totalAssets);
   const currentAssets = convert(latest.currentAssets);
   const inventory = convert(latest.inventory) ?? 0;
@@ -220,17 +254,17 @@ export function buildYahooDeepSnapshot(data) {
   const currentLiabilities = convert(latest.currentLiabilities);
   const equity = convert(latest.stockholdersEquity, latest.commonStockEquity, latest.totalEquityGrossMinorityInterest);
   const shares = pick(latest.dilutedAverageShares, latest.ordinarySharesNumber, latest.basicAverageShares);
-  const revenue = convert(latest.totalRevenue, latest.operatingRevenue);
-  const ebit = convert(latest.EBIT, latest.normalizedEBITDA);
-  const interestExpense = convert(latest.interestExpense);
-  const netIncome = convert(latest.netIncome, latest.netIncomeCommonStockholders);
-  const operatingCF = convert(latest.operatingCashFlow, latest.cashFlowFromContinuingOperatingActivities);
-  const investingCF = convert(latest.investingCashFlow, latest.cashFlowFromContinuingInvestingActivities);
+  const revenue = trailingRevenue !== null ? trailingRevenue * data.financialFx.rate : convert(latestAnnual?.totalRevenue, latestAnnual?.operatingRevenue, latest.totalRevenue, latest.operatingRevenue);
+  const ebit = trailingEbit !== null ? trailingEbit * data.financialFx.rate : convert(latestAnnual?.EBIT, latestAnnual?.normalizedEBITDA, latest.EBIT, latest.normalizedEBITDA);
+  const interestExpense = trailingInterestExpense !== null ? trailingInterestExpense * data.financialFx.rate : convert(latestAnnual?.interestExpense, latest.interestExpense);
+  const netIncome = trailingNetIncome !== null ? trailingNetIncome * data.financialFx.rate : convert(latestAnnual?.netIncome, latestAnnual?.netIncomeCommonStockholders, latest.netIncome, latest.netIncomeCommonStockholders);
+  const operatingCF = trailingOperatingCF !== null ? trailingOperatingCF * data.financialFx.rate : convert(latestAnnual?.operatingCashFlow, latestAnnual?.cashFlowFromContinuingOperatingActivities, latest.operatingCashFlow, latest.cashFlowFromContinuingOperatingActivities);
+  const investingCF = trailingInvestingCF !== null ? trailingInvestingCF * data.financialFx.rate : convert(latestAnnual?.investingCashFlow, latestAnnual?.cashFlowFromContinuingInvestingActivities, latest.investingCashFlow, latest.cashFlowFromContinuingInvestingActivities);
   const netTangibleAssets = convert(latest.netTangibleAssets, latest.tangibleBookValue);
 
   const yahooPe = pick(summary.summaryDetail?.trailingPE, summary.defaultKeyStatistics?.trailingPE);
   const yahooPb = pick(summary.defaultKeyStatistics?.priceToBook);
-  const latestStatementEps = pick(latest.dilutedEPS, latest.basicEPS);
+  const latestStatementEps = trailingStatementEps ?? rowValue(latestAnnual, "dilutedEPS", "basicEPS") ?? rowValue(latest, "dilutedEPS", "basicEPS");
   const latestConvertedEps = latestStatementEps === null ? null : latestStatementEps * data.financialFx.rate;
   const epsFromYahooRatio = yahooPe && price ? price / yahooPe : null;
   const shareScale = latestConvertedEps && epsFromYahooRatio ? epsFromYahooRatio / latestConvertedEps : 1;
@@ -282,8 +316,9 @@ export function buildYahooDeepSnapshot(data) {
     epsAdj,
     bvps,
     grahamFormula: epsAdj !== null && epsAdj > 0 && bvps !== null && bvps > 0 ? Math.sqrt(22.5 * epsAdj * bvps) : null,
-    source: "Yahoo Finance fundamentalsTimeSeries + FX",
+    source: latestQuarterly ? "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX" : "Yahoo Finance fundamentalsTimeSeries annual + FX",
     sourceDate: new Date(latest.date).toISOString().slice(0, 10),
+    sourcePeriod: latestQuarterly && latest.date === latestQuarterly.date ? "quarterly" : "annual",
     epsHistory,
     yahoo: {
       symbol: data.symbol,

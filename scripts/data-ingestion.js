@@ -63,6 +63,7 @@ function financialFields(snapshot) {
     marketCap: snapshot.marketCap ?? null,
     avgVolume: snapshot.avgVolume ?? null,
     hasNegativeEquity: snapshot.hasNegativeEquity ?? null,
+    sourcePeriod: snapshot.sourcePeriod || null,
   };
 }
 

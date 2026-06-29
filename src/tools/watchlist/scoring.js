@@ -25,6 +25,16 @@ function pctFromPoints(score, max) {
   return max > 0 ? clamp((score / max) * 100) : 0;
 }
 
+function qualityLayerLabel(qualityPct, resiliencePct, epsPositive) {
+  if (qualityPct >= 70 && resiliencePct >= 60 && epsPositive === true) {
+    return { id: "high_quality", label: "Alta calidad" };
+  }
+  if (qualityPct >= 45 && resiliencePct >= 40) {
+    return { id: "medium_quality", label: "Calidad media" };
+  }
+  return { id: "low_quality", label: "Calidad baja" };
+}
+
 export function scoreWatchlistItem(item) {
   const ratios = item.ratios || item;
   const epsHistory = item.epsHistory || [];
@@ -97,6 +107,10 @@ export function scoreWatchlistItem(item) {
 
   const status = item.alertLevel === "approved" ? 15 : item.alertLevel === "near" ? 10 : item.alertLevel === "watch" ? 4 : 0;
   const data = item.analysisStatus === "analyzed" ? 10 : item.alertLevel === "reference" ? 0 : 3;
+  const valuationPct = Math.round(pctFromPoints(valuation, 25));
+  const resiliencePct = Math.round(pctFromPoints(resilience, 20));
+  const qualityPct = Math.round(pctFromPoints(quality, 25));
+  const qualityLayer = qualityLayerLabel(qualityPct, resiliencePct, item.epsAllPositive === true || ratios.epsAllPositive === true);
 
   const total = Math.round(clamp(valuation + resilience + quality + status + data));
   const label = total >= 80 ? "Excelente" : total >= 65 ? "Buena" : total >= 50 ? "Interesante" : total >= 35 ? "Debil" : "Riesgo alto";
@@ -104,12 +118,13 @@ export function scoreWatchlistItem(item) {
   return {
     total,
     label,
-    valuation: Math.round(pctFromPoints(valuation, 25)),
-    resilience: Math.round(pctFromPoints(resilience, 20)),
-    quality: Math.round(pctFromPoints(quality, 25)),
+    valuation: valuationPct,
+    resilience: resiliencePct,
+    quality: qualityPct,
     status: Math.round(pctFromPoints(status, 15)),
     data: Math.round(pctFromPoints(data, 10)),
     epsNeverDeclined: epsConsistent,
+    qualityLayer,
     hasBuybackData: false,
   };
 }

@@ -8,10 +8,10 @@
    Requiere `pePb <= 22.5`, `debtRatio < 1`, `currentRatio >= 2`, `epsAllPositive = true`, `pe <= 20` y `pb <= 2`.
 
 2. **EXCELENTE, PERO CARA**
-   Requiere empresa fuerte, EPS positivo, EPS creciente y valuacion fuera del rango Graham: `roe > 0.10`, `roa > 0.05`, `tie > 5`, `quickRatio >= 1`, `fcf > 0`, `epsAllPositive = true`, `epsGrowing = true`, `pePb > 22.5`.
+   Requiere que la empresa pase la base defensiva de balance y liquidez, que la rentabilidad operativa actual sea fuerte y que la valuacion quede fuera del rango Graham. En la practica: deuda/corriente dentro del perfil sectorial, `pe > 0`, `roe > 0.10`, `roa > 0.05`, `tie > 5`, `quickRatio >= 1`, `fcf > 0`, y al menos uno de `pe`, `pb` o `pePb` por arriba del techo del sector.
 
 3. **BUENA EMPRESA, SOBREVALORADA**
-   Misma fortaleza financiera que la categoria anterior, con `epsAllPositive = true`, `pePb > 22.5` y `epsGrowing = false`.
+   Pasa la base defensiva de balance y liquidez, pero no alcanza la fortaleza operativa de la categoria anterior. Sigue siendo una empresa analizable, solo demasiado cara para Graham.
 
 4. **RECHAZADA**
    Default cuando no cumple los criterios anteriores.

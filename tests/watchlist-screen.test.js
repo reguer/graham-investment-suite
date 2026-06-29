@@ -27,8 +27,13 @@ describe("watchlist screening", () => {
   });
 
   it("downgrades when price pushes valuation outside Graham limits", () => {
-    const result = evaluateCandidate(candidate, { price: 180, source: "test" });
-    expect(result.classification.id).not.toBe("graham_approved");
+    const result = evaluateCandidate({
+      ...candidate,
+      roe: 0.2,
+      roa: 0.08,
+      tie: 10,
+    }, { price: 180, source: "test" });
+    expect(result.classification.id).toBe("excellent_expensive");
     expect(result.ratios.pePb).toBeCloseTo(32.4);
   });
 

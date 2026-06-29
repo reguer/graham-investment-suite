@@ -22,7 +22,7 @@ Los datos fundamentales completos se capturan manualmente cuando se necesita una
 
 - Usa `yahoo-finance2` con Node 22 y valida `price.currency` + `financialData.financialCurrency`.
 - Convierte a `USD` por default con pares Yahoo como `CNYUSD=X` o `KRWUSD=X`.
-- Intenta primero `fundamentalsTimeSeries` anual con `module: "all"` para obtener estados financieros e historial EPS.
+- Intenta `fundamentalsTimeSeries` trimestral y anual con `module: "all"`; el snapshot operativo prioriza el ultimo trimestre disponible y usa anual para historial EPS y fallback.
 - Guarda `yahoo_full_fx` cuando el snapshot queda completo y `yahoo_model_rejected` cuando la fuente permite descartar por modelo Graham.
 - Para ADR/listados con escala distinta, infiere una escala por accion desde P/E Yahoo para alinear precio, EPS y estados financieros.
 

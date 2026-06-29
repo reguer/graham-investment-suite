@@ -24,6 +24,15 @@ export function classify(ratios, profile = DEFAULT_PROFILE) {
   // A criterion gate either is omitted for the sector (auto-pass) or must have
   // finite data AND meet the (sector-adjusted) threshold.
   const gate = (omitted, value, ok) => omitted || (isFiniteNumber(value) && ok);
+  const positivePe = isFiniteNumber(ratios.pe) && ratios.pe > 0;
+  const defensiveFoundations =
+    gate(omit.has("debt"), ratios.debtRatio, ratios.debtRatio < t.debtMax) &&
+    gate(omit.has("current"), ratios.currentRatio, ratios.currentRatio >= t.currentMin) &&
+    positivePe;
+  const valuationOutOfRange =
+    (!omit.has("pe") && isFiniteNumber(ratios.pe) && ratios.pe > t.peMax) ||
+    (!omit.has("pb") && isFiniteNumber(pbValue) && pbValue > t.pbMax) ||
+    (!omit.has("pePb") && isFiniteNumber(pePbValue) && pePbValue > t.pePbMax);
 
   const approved =
     gate(omit.has("pePb"), pePbValue, pePbValue <= t.pePbMax) &&
@@ -43,30 +52,22 @@ export function classify(ratios, profile = DEFAULT_PROFILE) {
     };
   }
 
-  // "Out of the defensive range" — measured by P/E x P/B when the sector uses it,
-  // otherwise by P/E (e.g. REITs omit pePb, so a strong-but-pricey REIT is judged
-  // expensive by its P/E rather than silently falling through to "rejected").
-  const outOfRange = omit.has("pePb")
-    ? isFiniteNumber(ratios.pe) && isFiniteNumber(t.peMax) && ratios.pe > t.peMax
-    : isFiniteNumber(pePbValue) && pePbValue > t.pePbMax;
-  const strong = outOfRange && isStrongCompany(ratios) && ratios.epsAllPositive === true;
-
-  if (strong && ratios.epsGrowing === true) {
+  if (valuationOutOfRange && defensiveFoundations && isStrongCompany(ratios)) {
     return {
       id: "excellent_expensive",
       label: "EXCELENTE, PERO CARA",
       color: AC.yellow,
-      reason: "Empresa fuerte, pero cotiza fuera del rango Graham defensivo.",
+      reason: "Empresa fuerte en balance, liquidez y rentabilidad actual, pero cotiza fuera del rango Graham defensivo.",
       sectorId: profile.id,
     };
   }
 
-  if (strong && ratios.epsGrowing === false) {
+  if (valuationOutOfRange && defensiveFoundations) {
     return {
       id: "good_overvalued",
       label: "BUENA EMPRESA, SOBREVALORADA",
       color: AC.orange,
-      reason: "La calidad financiera existe, pero el crecimiento de EPS no es consistente y la valuación excede el límite del sector.",
+      reason: "Pasa la base defensiva de balance y liquidez, pero la calidad no es suficiente para considerarla excelente al precio actual.",
       sectorId: profile.id,
     };
   }

@@ -74,6 +74,55 @@ describe("Yahoo supplemental ingestion", () => {
         defaultKeyStatistics: { priceToBook: 1.5 },
         financialData: { financialCurrency: "CNY" },
       },
+      quarterly: [
+        {
+          date: "2026-03-31",
+          totalAssets: 1100,
+          currentAssets: 650,
+          inventory: 50,
+          totalLiabilitiesNetMinorityInterest: 450,
+          currentLiabilities: 250,
+          stockholdersEquity: 650,
+          dilutedAverageShares: 10,
+          totalRevenue: 210,
+          EBIT: 35,
+          interestExpense: 3,
+          netIncome: 25,
+          operatingCashFlow: 38,
+          investingCashFlow: -12,
+          dilutedEPS: 1.4,
+        },
+        {
+          date: "2025-12-31",
+          totalRevenue: 205,
+          EBIT: 32,
+          interestExpense: 2,
+          netIncome: 24,
+          operatingCashFlow: 35,
+          investingCashFlow: -11,
+          dilutedEPS: 1.3,
+        },
+        {
+          date: "2025-09-30",
+          totalRevenue: 198,
+          EBIT: 29,
+          interestExpense: 2,
+          netIncome: 23,
+          operatingCashFlow: 34,
+          investingCashFlow: -9,
+          dilutedEPS: 1.2,
+        },
+        {
+          date: "2025-06-30",
+          totalRevenue: 192,
+          EBIT: 24,
+          interestExpense: 2,
+          netIncome: 20,
+          operatingCashFlow: 33,
+          investingCashFlow: -8,
+          dilutedEPS: 1.1,
+        },
+      ],
       annual: [
         {
           date: "2025-12-31",
@@ -99,7 +148,10 @@ describe("Yahoo supplemental ingestion", () => {
     expect(result.ok).toBe(true);
     expect(result.snapshot.pe).toBeCloseTo(12);
     expect(result.snapshot.pb).toBeCloseTo(1.5);
-    expect(result.snapshot.currentRatio).toBeCloseTo(3);
+    expect(result.snapshot.currentRatio).toBeCloseTo(2.6);
+    expect(result.snapshot.sourceDate).toBe("2026-03-31");
+    expect(result.snapshot.sourcePeriod).toBe("quarterly");
+    expect(result.snapshot.fcf).toBeCloseTo((38 - 12 + 35 - 11 + 34 - 9 + 33 - 8) * 0.15);
     expect(result.snapshot.epsHistory).toHaveLength(2);
     expect(result.warnings.join(" ")).toContain("Fundamentales convertidos");
   });

@@ -26,6 +26,7 @@ describe("watchlist scoring", () => {
 
     expect(score.total).toBeGreaterThanOrEqual(85);
     expect(score.epsNeverDeclined).toBe(true);
+    expect(score.qualityLayer.label).toBe("Alta calidad");
     expect(score.hasBuybackData).toBe(false);
   });
 
@@ -53,5 +54,6 @@ describe("watchlist scoring", () => {
 
     expect(score.total).toBeLessThan(60);
     expect(score.epsNeverDeclined).toBe(false);
+    expect(score.qualityLayer.label).toBe("Calidad baja");
   });
 });

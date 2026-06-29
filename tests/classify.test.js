@@ -26,8 +26,13 @@ describe("classify", () => {
     expect(result.id).toBe("excellent_expensive");
   });
 
-  it("classifies strong but irregular EPS companies as overvalued", () => {
-    const result = classify({ ...base, pe: 35, pb: 3, pePb: 105, epsGrowing: false });
+  it("keeps strong but expensive companies as excellent even with imperfect EPS history", () => {
+    const result = classify({ ...base, pe: 35, pb: 3, pePb: 105, epsGrowing: false, epsAllPositive: false });
+    expect(result.id).toBe("excellent_expensive");
+  });
+
+  it("classifies valuation-only failures with weaker profitability as overvalued", () => {
+    const result = classify({ ...base, pe: 35, pb: 3, pePb: 105, roe: 0.08, roa: 0.03, tie: 2.5 });
     expect(result.id).toBe("good_overvalued");
   });
 

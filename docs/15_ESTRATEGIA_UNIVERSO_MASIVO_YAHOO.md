@@ -78,7 +78,7 @@ npm run weekly:pipeline -- --no-telegram
 
 ## Limites actuales
 
-Yahoo Chart funciona sin credenciales para precios. Yahoo Quote Summary y `fundamentalsTimeSeries` funcionan localmente con `yahoo-finance2`, pero algunos simbolos BMV/SIC `.MX` no entregan fundamentales o estados anuales. Para esos casos el flujo intenta ticker base USA; si aun falla, se marca como pendiente y requiere captura manual o fuente alternativa.
+Yahoo Chart funciona sin credenciales para precios. Yahoo Quote Summary y `fundamentalsTimeSeries` funcionan localmente con `yahoo-finance2`; el snapshot Graham prioriza el ultimo corte trimestral disponible para balance/liquidez y usa agregados TTM cuando Yahoo entrega cuatro trimestres. Si un simbolo BMV/SIC `.MX` no entrega fundamentales, el flujo intenta ticker base USA; si aun falla, se marca como pendiente y requiere captura manual o fuente alternativa.
 
 Mientras no exista extraccion fundamental validada:
 

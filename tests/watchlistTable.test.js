@@ -27,10 +27,11 @@ const item = {
 };
 
 describe("watchlist table columns", () => {
-  it("defines the dense 31-column dashboard table", () => {
-    expect(WATCHLIST_TABLE_COLUMNS).toHaveLength(31);
+  it("defines the dense 32-column dashboard table", () => {
+    expect(WATCHLIST_TABLE_COLUMNS).toHaveLength(32);
     expect(WATCHLIST_TABLE_COLUMNS.map((column) => column.id)).toContain("action");
     expect(WATCHLIST_TABLE_COLUMNS.map((column) => column.id)).toContain("score");
+    expect(WATCHLIST_TABLE_COLUMNS.map((column) => column.id)).toContain("qualityTag");
   });
 
   it("extracts formatted cell values", () => {
@@ -38,6 +39,7 @@ describe("watchlist table columns", () => {
     expect(byId.ticker).toBe("INGR");
     expect(byId.graham).toBe("APROBADA GRAHAMIANA");
     expect(byId.score).toBe("88 · Excelente");
+    expect(byId.qualityTag).toBe("");
     expect(byId.system).toBe("Aprobada Graham");
     expect(byId.tags).toBe("graham-approved");
   });
