@@ -69,6 +69,10 @@ export default function Watchlist({ onManualCapture }) {
   const allSectors = useMemo(() => collectSectors(results), [results]);
   const dataIssues = useMemo(() => buildDataIssueRows(watchlist), [watchlist]);
   const activeCount = summary.approved.length + summary.near.length;
+  const excellentExpensiveCount = useMemo(
+    () => results.filter((result) => result.classification?.id === "excellent_expensive").length,
+    [results],
+  );
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
   const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
   const positionSet = useMemo(() => new Set(positions.map((item) => item.ticker)), [positions]);
@@ -258,6 +262,7 @@ export default function Watchlist({ onManualCapture }) {
       const matchesView =
         view === "all" ||
         (view === "opportunities" && ["approved", "near"].includes(result.alertLevel)) ||
+        (view === "excellent" && result.classification?.id === "excellent_expensive") ||
         (view === "favorites" && favoriteSet.has(result.ticker.toUpperCase())) ||
         (view === "positions" && positions.some((position) => position.ticker === result.ticker.toUpperCase())) ||
         (view === "analyzed" && result.analysisStatus === "analyzed") ||
@@ -505,6 +510,7 @@ export default function Watchlist({ onManualCapture }) {
         {[
           { label: "Aprobadas", value: summary.approved.length, color: AC.green, targetView: "opportunities" },
           { label: "Cerca", value: summary.near.length, color: AC.yellow, targetView: "opportunities" },
+          { label: "Excelente, cara", value: excellentExpensiveCount, color: AC.yellow, targetView: "excellent" },
           { label: "Observacion", value: summary.watch.length, color: AC.gray, targetView: "discarded" },
           { label: "Referencias", value: summary.reference.length, color: AC.blue, targetView: "reference" },
           { label: "Pendientes", value: summary.pending.length, color: AC.blue, targetView: "pending" },
@@ -526,6 +532,7 @@ export default function Watchlist({ onManualCapture }) {
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
         {[
           ["opportunities", "Oportunidades"],
+          ["excellent", `Excelente, cara (${excellentExpensiveCount})`],
           ["all", "Todo auditado"],
           ["favorites", "Favoritos"],
           ["positions", "Mis posiciones"],
