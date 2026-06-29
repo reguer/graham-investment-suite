@@ -74,6 +74,41 @@ export default function Watchlist({ onManualCapture }) {
   const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
   const positionSet = useMemo(() => new Set(positions.map((item) => item.ticker)), [positions]);
   const systemStatuses = useMemo(() => listSystemStatuses(), []);
+  const tableColumnWidths = useMemo(() => ({
+    ticker: "12ch",
+    name: "28ch",
+    type: "10ch",
+    country: "16ch",
+    exchange: "12ch",
+    market: "12ch",
+    sector: "18ch",
+    industry: "24ch",
+    price: "10ch",
+    currency: "8ch",
+    usd: "6ch",
+    priceSource: "12ch",
+    updated: "18ch",
+    score: "14ch",
+    qualityTag: "16ch",
+    pe: "9ch",
+    pb: "9ch",
+    pePb: "11ch",
+    debt: "9ch",
+    current: "9ch",
+    quick: "9ch",
+    fcf: "12ch",
+    mos: "10ch",
+    maxDef: "13ch",
+    graham: "18ch",
+    system: "18ch",
+    alert: "14ch",
+    analysis: "12ch",
+    validation: "14ch",
+    tags: "22ch",
+    reason: "34ch",
+    action: "14ch",
+  }), []);
+  const wrappedColumnIds = useMemo(() => new Set(["name", "sector", "industry", "tags", "reason", "graham", "system", "validation"]), []);
 
   function formatMxn(value) {
     return Number.isFinite(Number(value)) ? Number(value).toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }) : "N/D";
@@ -752,11 +787,16 @@ export default function Watchlist({ onManualCapture }) {
       </div>
 
       <div className="watchlist-table-shell">
-        <table style={{ width: "100%", minWidth: 2600, borderCollapse: "collapse", fontSize: 12 }}>
+        <table style={{ width: "100%", minWidth: 2600, borderCollapse: "collapse", fontSize: 12, tableLayout: "fixed" }}>
+          <colgroup>
+            {WATCHLIST_TABLE_COLUMNS.map((column) => (
+              <col key={column.id} style={{ width: tableColumnWidths[column.id] || "12ch" }} />
+            ))}
+          </colgroup>
           <thead>
             <tr style={{ color: SURFACE.muted, textAlign: "left" }}>
               {WATCHLIST_TABLE_COLUMNS.map((column) => (
-                <th key={column.id} style={{ padding: "9px 8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: "nowrap", position: "sticky", top: 0, background: SURFACE.panel }}>
+                <th key={column.id} style={{ padding: "9px 8px", borderBottom: `1px solid ${SURFACE.border}`, whiteSpace: wrappedColumnIds.has(column.id) ? "normal" : "nowrap", wordBreak: wrappedColumnIds.has(column.id) ? "break-word" : "normal", overflowWrap: wrappedColumnIds.has(column.id) ? "anywhere" : "normal", verticalAlign: "top", position: "sticky", top: 0, background: SURFACE.panel }}>
                   {column.label}
                 </th>
               ))}
@@ -770,7 +810,7 @@ export default function Watchlist({ onManualCapture }) {
                 style={{ borderTop: `1px solid ${SURFACE.border}`, cursor: "pointer" }}
               >
                 {WATCHLIST_TABLE_COLUMNS.map((column) => (
-                  <td key={column.id} style={{ padding: "8px", verticalAlign: "top", maxWidth: column.id === "reason" ? 420 : 180, whiteSpace: column.id === "reason" ? "normal" : "nowrap", color: ["reason", "tags", "validation"].includes(column.id) ? SURFACE.muted : SURFACE.text }}>
+                  <td key={column.id} style={{ padding: "8px", verticalAlign: "top", whiteSpace: wrappedColumnIds.has(column.id) ? "normal" : "nowrap", wordBreak: wrappedColumnIds.has(column.id) ? "break-word" : "normal", overflowWrap: wrappedColumnIds.has(column.id) ? "anywhere" : "normal", lineHeight: 1.35, color: ["reason", "tags", "validation"].includes(column.id) ? SURFACE.muted : SURFACE.text }}>
                     {column.id === "ticker" ? (
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 7 }}>
                         <Dot color={colorFor(result.alertLevel)} />

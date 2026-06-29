@@ -3,6 +3,7 @@ import { getVisibleWatchReason } from "../tools/watchlist/watchReason.js";
 
 const PDF_COLUMN_IDS = ["ticker", "name", "sector", "price", "score", "qualityTag", "pe", "pb", "pePb", "mos", "maxDef", "graham", "system", "tags", "reason"];
 const EXCLUDED_EXPORT_COLUMN_IDS = new Set(["action"]);
+const WORKSHEET_HEADER_ROW_INDEX = 2;
 const COLUMN_WIDTHS = {
   ticker: 12,
   name: 28,
@@ -60,18 +61,20 @@ function getExportCell(item, column) {
   return getTableCell(item, column);
 }
 
-function computeColumnWidths(sheetData, columns) {
-  const header = sheetData[0] || [];
+function computeColumnWidths(tableData, columns) {
+  const header = tableData[0] || [];
   return header.map((label, index) => {
-    const longestCell = sheetData.reduce((max, row) => Math.max(max, String(row[index] ?? "").length), String(label || "").length);
+    const longestCell = tableData.reduce((max, row) => Math.max(max, String(row[index] ?? "").length), String(label || "").length);
     const preferredWidth = COLUMN_WIDTHS[columns[index]?.id] || 14;
     return { wch: Math.min(48, Math.max(preferredWidth, Math.min(longestCell + 2, preferredWidth + 8))) };
   });
 }
 
-function computeRowHeights(sheetData, columns) {
-  return sheetData.map((row, rowIndex) => {
-    if (rowIndex === 0) return { hpt: 24 };
+function computeRowHeights(sheetRows, columns) {
+  return sheetRows.map((row, rowIndex) => {
+    if (rowIndex === 0) return { hpt: 22 };
+    if (rowIndex === 1) return { hpt: 10 };
+    if (rowIndex === WORKSHEET_HEADER_ROW_INDEX) return { hpt: 24 };
     const estimatedLines = row.reduce((maxLines, cell, columnIndex) => {
       const width = COLUMN_WIDTHS[columns[columnIndex]?.id] || 14;
       const text = String(cell ?? "");
@@ -178,26 +181,33 @@ export function watchlistExportFilename(viewLabel, ext) {
   return `watchlist_${sanitizeToken(viewLabel)}_${date}.${ext}`;
 }
 
+export function buildWatchlistWorksheetRows({ items, filtersSummary, columns = getWatchlistExportColumns() }) {
+  const tableData = watchlistSheetData(items, columns);
+  return [
+    [filtersSummary || "Filtro actual"],
+    [""],
+    ...tableData,
+  ];
+}
+
 export async function exportWatchlistToXlsx({ items, viewLabel, filtersSummary, columns = getWatchlistExportColumns() }) {
   const { utils, writeFileXLSX } = await import("xlsx");
-  const sheetData = watchlistSheetData(items, columns);
+  const tableData = watchlistSheetData(items, columns);
+  const sheetRows = buildWatchlistWorksheetRows({ items, filtersSummary, columns });
   const workbook = utils.book_new();
-  const worksheet = utils.aoa_to_sheet(sheetData);
-  worksheet["!cols"] = computeColumnWidths(sheetData, columns);
-  worksheet["!rows"] = computeRowHeights(sheetData, columns);
-  applyCellWrapping(worksheet, sheetData);
-  if (sheetData.length > 1) {
-    worksheet["!autofilter"] = { ref: utils.encode_range({ s: { r: 0, c: 0 }, e: { r: sheetData.length - 1, c: columns.length - 1 } }) };
+  const worksheet = utils.aoa_to_sheet(sheetRows);
+  worksheet["!cols"] = computeColumnWidths(tableData, columns);
+  worksheet["!rows"] = computeRowHeights(sheetRows, columns);
+  worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: Math.max(columns.length - 1, 0) } }];
+  applyCellWrapping(worksheet, sheetRows);
+  if (tableData.length > 1) {
+    worksheet["!autofilter"] = {
+      ref: utils.encode_range({
+        s: { r: WORKSHEET_HEADER_ROW_INDEX, c: 0 },
+        e: { r: sheetRows.length - 1, c: columns.length - 1 },
+      }),
+    };
   }
-
-  const metadata = [
-    ["Vista", viewLabel || "Filtro actual"],
-    ["Registros", Array.isArray(items) ? items.length : 0],
-    ["Filtros", filtersSummary || "Sin filtros adicionales"],
-    ["Generado", new Date().toLocaleString("es-MX")],
-  ];
-
-  utils.book_append_sheet(workbook, utils.aoa_to_sheet(metadata), "Resumen");
   utils.book_append_sheet(workbook, worksheet, "Watchlist");
 
   const filename = watchlistExportFilename(viewLabel, "xlsx");
@@ -222,6 +232,8 @@ export function buildWatchlistPrintHtml({ items, viewLabel, filtersSummary, colu
       h1 { margin: 0 0 8px; font-size: 24px; }
       .meta { margin-bottom: 16px; color: #4b5563; }
       .meta strong { color: #111827; }
+      .toolbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+      .toolbar button { border: 1px solid #111827; background: #f9fafb; color: #111827; border-radius: 6px; padding: 8px 10px; font: inherit; cursor: pointer; }
       table { width: 100%; border-collapse: collapse; table-layout: fixed; }
       thead { display: table-header-group; }
       th, td { border: 1px solid #d1d5db; padding: 6px 7px; vertical-align: top; word-break: break-word; overflow-wrap: anywhere; white-space: normal; }
@@ -230,6 +242,7 @@ export function buildWatchlistPrintHtml({ items, viewLabel, filtersSummary, colu
     </style>
   </head>
   <body>
+    <div class="toolbar"><button type="button" onclick="window.focus(); window.print();">Imprimir / Guardar PDF</button></div>
     <h1>${escapeHtml(viewLabel || "Watchlist filtrada")}</h1>
     <div class="meta"><strong>Generado:</strong> ${escapeHtml(generatedAt)}<br /><strong>Filtros:</strong> ${escapeHtml(filtersSummary || "Sin filtros adicionales")}</div>
     <table>
@@ -248,7 +261,9 @@ export function buildWatchlistPrintHtml({ items, viewLabel, filtersSummary, colu
     <script>
       window.addEventListener("load", () => {
         window.focus();
-        setTimeout(() => window.print(), 150);
+        requestAnimationFrame(() => {
+          setTimeout(() => window.print(), 350);
+        });
       });
     </script>
   </body>
@@ -256,9 +271,10 @@ export function buildWatchlistPrintHtml({ items, viewLabel, filtersSummary, colu
 }
 
 export function openWatchlistPrintPreview(options) {
-  const printWindow = window.open("", "_blank", "noopener,noreferrer");
+  const html = buildWatchlistPrintHtml(options);
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const printWindow = window.open(url, "_blank");
   if (!printWindow) throw new Error("El navegador bloqueo la ventana emergente para exportar PDF.");
-  printWindow.document.open();
-  printWindow.document.write(buildWatchlistPrintHtml(options));
-  printWindow.document.close();
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }

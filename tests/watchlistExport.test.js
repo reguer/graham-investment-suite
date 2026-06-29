@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildWatchlistExportSummary,
   buildWatchlistPrintHtml,
+  buildWatchlistWorksheetRows,
   getWatchlistExportColumns,
   getWatchlistPdfColumns,
   watchlistExportFilename,
@@ -79,6 +80,16 @@ describe("watchlist export helpers", () => {
     })).toContain("Vista: Excelente, cara (12)");
   });
 
+  it("builds worksheet rows with summary line above the header", () => {
+    const rows = buildWatchlistWorksheetRows({
+      items: [item],
+      filtersSummary: "Vista: Excelente, cara (1) · Registros: 1",
+    });
+    expect(rows[0][0]).toContain("Vista: Excelente, cara (1)");
+    expect(rows[2][0]).toBe("Ticker");
+    expect(rows[3][0]).toBe("MU");
+  });
+
   it("sanitizes export filenames", () => {
     expect(watchlistExportFilename("Excelente, cara (12)", "xlsx")).toMatch(/^watchlist_excelente_cara_12_\d{4}-\d{2}-\d{2}\.xlsx$/);
   });
@@ -91,6 +102,7 @@ describe("watchlist export helpers", () => {
     });
     expect(html).toContain("overflow-wrap: anywhere");
     expect(html).toContain("<colgroup>");
+    expect(html).toContain("Imprimir / Guardar PDF");
     expect(html).toContain("Micron Technology, Inc.");
   });
 });

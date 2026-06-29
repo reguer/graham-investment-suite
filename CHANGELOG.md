@@ -23,6 +23,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 ### Fixed
 - Exportaciones PDF/XLSX con columnas largas (`Nombre`, `Etiquetas`, `Razon`) ahora envuelven texto y conservan legibilidad sin invadir columnas vecinas.
 - El dashboard ya no deja ambiguo si el corte de fundamentales es anual o trimestral; el detalle de empresa muestra periodo y fecha de corte.
+- El `XLSX` ahora sale en una sola hoja `Watchlist` con el resumen del filtro arriba de la tabla; se elimina la confusión de abrir primero una hoja `Resumen` casi vacía.
+- La exportación `PDF` ahora abre un documento imprimible real en `blob:` con contenido visible y botón `Imprimir / Guardar PDF`, corrigiendo la pestaña en blanco que podía abrirse con `window.open(..., noopener)` + `document.write()`.
 
 ### Tests
 - `npm test`
