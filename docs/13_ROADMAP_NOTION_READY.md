@@ -153,6 +153,7 @@
 | **E22 UX Dashboard** | S64 Fecha de snapshot visible en Watchlist | Saber antigüedad de los datos | No se muestra cuándo se actualizaron los precios mostrados | 🟢 Baja | ✅ Completado | — | `src/tools/watchlist/Watchlist.jsx` | Header o footer del Watchlist muestra "Datos al YYYY-MM-DD" | — | Manual | v1.5 |
 | **E22 UX Dashboard** | S65 Tabla candidatos responsive | Tabla usable en < 1000px | minWidth: 760 fuerza scroll horizontal | 🟢 Baja | ✅ Completado | — | `src/tools/graham-analyzer/CandidatePanel.jsx` | Wrapper con overflowX:"auto" y WebkitOverflowScrolling:"touch"; tabla hace scroll horizontal en móvil sin romper layout | — | Manual | v2.0 |
 | **E22 UX Dashboard** | S66 Centralizar colores secundarios | Todos los hex en lib/colors.js | 6+ valores hex hardcodeados fuera del sistema de design tokens | 🟢 Baja | ✅ Completado | — | `src/lib/colors.js`, múltiples componentes | Ningún valor hex hardcodeado fuera de colors.js | — | Manual | v2.0 |
+| **E22 UX Dashboard** | S77 Exportar filtro actual a XLSX/PDF | Sacar reportes accionables desde el dashboard | Agregar botones para exportar la vista filtrada actual a `XLSX` y a documento imprimible para `PDF`, respetando columnas legibles y el resumen de filtros activos | 🟡 Media | ✅ Completado | S22, S64 | `src/tools/watchlist/Watchlist.jsx`, `src/lib/watchlistExport.js`, `tests/watchlistExport.test.js`, `tests/watchReason.test.js` | El usuario puede exportar cualquier filtro activo; XLSX incluye hoja de resumen; PDF abre vista imprimible con texto envuelto por celda y columnas compactas | Muchas columnas pueden deformar el PDF si no se compactan; mantener subset específico para impresión | Auto | v2.3 |
 
 ---
 
@@ -175,6 +176,27 @@
 | **Captura automática local** | `npm run weekly:pipeline` falla con `EINVAL` en Windows por `spawnSync shell:false`; necesita fix para que el scheduler ejecute el pipeline completo sin intervención manual | 🔴 Crítica |
 | **Pipeline semanal robusto** | `weekly-pipeline.js` invoca `npm.cmd` con `spawnSync shell:false`; falla en Windows. Fix: usar `shell: true` o reemplazar con llamada directa a scripts | 🔴 Crítica |
 | **Ingest 11 pendientes** | AA, CMA, DFS, FITB, FNF, HOLX, JNPR, K, MRO, VTRS, X — ejecutar `npm run fundamentals:ingest` manualmente o vía API local | 🟠 Alta |
+
+---
+
+## Actualización operativa 2026-06-29
+
+| Area | Estado | Evidencia | Pendiente |
+|------|--------|-----------|-----------|
+| Corte trimestral/TTM | ✅ Completado | `yahooFundamentals.js` y `data-ingestion.js` guardan `sourcePeriod`; el detalle ahora distingue `Trimestral / TTM` vs `Anual` | Mantener la disciplina en futuras fuentes no-Yahoo |
+| Refresh total desde dashboard | ✅ Completado | `local-dashboard-api.js` corre refresh completo del universo, precios, posiciones y reporte desde `Actualizar todo` | Seguir vigilando tiempos de corrida en universos más grandes |
+| Etiqueta `Excelente, cara` | ✅ Completado | `classify.js`, scoring y watchlist separan empresa excelente pero cara de rechazo puro; tarjeta/filtro dedicado visible en dashboard | Afinar más adelante la explicación Buffett en score V2 |
+| Capa adicional de calidad | ✅ Conservada | Tabla, cards y modal mantienen `qualityLayer` visible sin mezclarla con el freno Graham | Evolucionar a Score V2 sin ocultar fallas de valuación |
+| Exportar filtro actual | ✅ Completado | `Watchlist.jsx` exporta `filteredResults` a `XLSX` y `PDF`; `watchlistExport.js` ajusta anchos y wrap por celda para texto largo | Si el usuario quiere branding o portada, quedaría para una iteración aparte |
+| Legibilidad de exportación | ✅ Completado | Columnas largas (`Nombre`, `Etiquetas`, `Razon`) quedan envueltas en su propia celda; PDF usa subset compacto y XLSX fija anchos/altos | Validar en uso real con filtros de >100 filas |
+| Validación | ✅ Verde | Nuevos tests `watchlistExport` y `watchReason`; pendiente correr suite completa + builds antes de cerrar | — |
+
+### Resumen del día
+
+- Se corrigió la lectura del periodo fundamental para no confundir corte anual con corte trimestral/TTM.
+- El dashboard local ya puede lanzar una actualización integral del universo y de tus posiciones sin salir de la UI.
+- La clasificación `Excelente, cara` quedó operativa como filtro visible, sin perder la capa extra de calidad.
+- Se añadió exportación desde cualquier filtro activo a `XLSX` y a vista imprimible para `PDF`, cuidando que el texto largo no se monte sobre otras columnas.
 
 ---
 

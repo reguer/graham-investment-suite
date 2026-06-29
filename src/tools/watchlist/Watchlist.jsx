@@ -3,6 +3,7 @@ import Dot from "../../components/ui/Dot.jsx";
 import MetricCard from "../../components/ui/MetricCard.jsx";
 import { AC, SURFACE } from "../../lib/colors.js";
 import { fmt, pct } from "../../lib/formatters.js";
+import { buildWatchlistExportSummary, exportWatchlistToXlsx, openWatchlistPrintPreview } from "../../lib/watchlistExport.js";
 import { buildDataIssueRows } from "./dataQuality.js";
 import { DEFAULT_POSITIONS } from "./defaultPositions.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
@@ -11,6 +12,7 @@ import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, mergePositio
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
+import { getVisibleWatchReason } from "./watchReason.js";
 import { buildWatchlist, buildWatchlistMeta, collectSectors, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
 
 function colorFor(level) {
@@ -21,27 +23,22 @@ function colorFor(level) {
   return AC.gray;
 }
 
-const PROCESS_NOTE_PREFIXES = ["snapshot", "sec ", "analisis", "análisis", "pendiente", "datos incompletos", "yahoo", "fundamentales"];
+const SIGNAL_LABELS = {
+  approved: "Aprobadas",
+  near: "Cerca",
+  watch: "Observacion",
+  pending: "Pendientes",
+  reference: "Referencias",
+};
 
-function normalizeReasonPrefix(reason) {
-  return String(reason || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function shouldShowWatchReason(reason) {
-  const text = String(reason || "").trim();
-  if (text.length <= 40) return false;
-  const normalized = normalizeReasonPrefix(text);
-  return !PROCESS_NOTE_PREFIXES.some((prefix) => normalized.startsWith(prefix.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
-}
-
-function getVisibleWatchReason(result) {
-  const reason = businessNoteFor(result);
-  return shouldShowWatchReason(reason) ? reason : "";
-}
+const SORT_LABELS = {
+  system: "Orden por estado",
+  score: "Orden por score",
+  ticker: "Orden por ticker",
+  pePb: "Orden por P/E x P/B",
+  mos: "Orden por MoS",
+  updated: "Orden por fecha",
+};
 
 export default function Watchlist({ onManualCapture }) {
   const [view, setView] = useState("opportunities");
@@ -76,6 +73,7 @@ export default function Watchlist({ onManualCapture }) {
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
   const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
   const positionSet = useMemo(() => new Set(positions.map((item) => item.ticker)), [positions]);
+  const systemStatuses = useMemo(() => listSystemStatuses(), []);
 
   function formatMxn(value) {
     return Number.isFinite(Number(value)) ? Number(value).toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }) : "N/D";
@@ -305,6 +303,66 @@ export default function Watchlist({ onManualCapture }) {
   }, [favoriteSet, favorites, positionSet, positions, query, results, selectedSector, selectedSignal, selectedStatus, selectedTag, sortKey, view]);
 
   const selectedBusinessNote = selectedCompany ? getVisibleWatchReason(selectedCompany) : "";
+  const viewLabels = useMemo(() => ({
+    opportunities: "Oportunidades",
+    excellent: `Excelente, cara (${excellentExpensiveCount})`,
+    all: "Todo auditado",
+    favorites: "Favoritos",
+    positions: "Mis posiciones",
+    analyzed: "Analizadas",
+    discarded: `En observacion (${summary.watch.length})`,
+    statuses: "Estados",
+    reference: "Referencias",
+    requested: "Lote solicitado",
+    pending: "Pendientes",
+    bmv: "BMV/SIC",
+  }), [excellentExpensiveCount, summary.watch.length]);
+  const activeViewLabel = viewLabels[view] || "Filtro actual";
+  const selectedStatusLabel = systemStatuses.find((status) => status.id === selectedStatus)?.label || "";
+  const exportFiltersSummary = useMemo(() => buildWatchlistExportSummary({
+    viewLabel: activeViewLabel,
+    query,
+    signalLabel: selectedSignal ? SIGNAL_LABELS[selectedSignal] || selectedSignal : "",
+    sectorLabel: selectedSector,
+    tagLabel: selectedTag,
+    statusLabel: selectedStatusLabel,
+    sortLabel: SORT_LABELS[sortKey] || "",
+    count: filteredResults.length,
+  }), [activeViewLabel, filteredResults.length, query, selectedSector, selectedSignal, selectedStatusLabel, selectedTag, sortKey]);
+
+  async function handleExportXlsx() {
+    if (!filteredResults.length) {
+      setCaptureMessage("No hay registros en el filtro actual para exportar.");
+      return;
+    }
+    try {
+      const filename = await exportWatchlistToXlsx({
+        items: filteredResults,
+        viewLabel: activeViewLabel,
+        filtersSummary: exportFiltersSummary,
+      });
+      setCaptureMessage(`Exportacion XLSX lista: ${filename}. Registros incluidos: ${filteredResults.length}.`);
+    } catch (error) {
+      setCaptureMessage(error?.message || "No se pudo exportar la vista actual a XLSX.");
+    }
+  }
+
+  function handleExportPdf() {
+    if (!filteredResults.length) {
+      setCaptureMessage("No hay registros en el filtro actual para exportar.");
+      return;
+    }
+    try {
+      openWatchlistPrintPreview({
+        items: filteredResults,
+        viewLabel: activeViewLabel,
+        filtersSummary: exportFiltersSummary,
+      });
+      setCaptureMessage(`Vista lista para PDF: ${activeViewLabel}. Registros incluidos: ${filteredResults.length}.`);
+    } catch (error) {
+      setCaptureMessage(error?.message || "No se pudo abrir la exportacion PDF.");
+    }
+  }
 
   return (
     <section>
@@ -530,20 +588,7 @@ export default function Watchlist({ onManualCapture }) {
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-        {[
-          ["opportunities", "Oportunidades"],
-          ["excellent", `Excelente, cara (${excellentExpensiveCount})`],
-          ["all", "Todo auditado"],
-          ["favorites", "Favoritos"],
-          ["positions", "Mis posiciones"],
-          ["analyzed", "Analizadas"],
-          ["discarded", `En observacion (${summary.watch.length})`],
-          ["statuses", "Estados"],
-          ["reference", "Referencias"],
-          ["requested", "Lote solicitado"],
-          ["pending", "Pendientes"],
-          ["bmv", "BMV/SIC"],
-        ].map(([id, label]) => (
+        {Object.entries(viewLabels).map(([id, label]) => (
           <button
             key={id}
             type="button"
@@ -636,7 +681,7 @@ export default function Watchlist({ onManualCapture }) {
           }}
         >
           <option value="">Todos los estados</option>
-          {listSystemStatuses().map((status) => <option key={status.id} value={status.id}>{status.label}</option>)}
+          {systemStatuses.map((status) => <option key={status.id} value={status.id}>{status.label}</option>)}
         </select>
         <select
           value={sortKey}
@@ -671,6 +716,39 @@ export default function Watchlist({ onManualCapture }) {
         >
           Mejor score
         </button>
+        <button
+          type="button"
+          onClick={handleExportXlsx}
+          disabled={!filteredResults.length}
+          style={{
+            border: `1px solid ${filteredResults.length ? AC.green : SURFACE.border}`,
+            background: filteredResults.length ? SURFACE.activeGreen : SURFACE.navInactive,
+            color: filteredResults.length ? SURFACE.text : SURFACE.muted,
+            borderRadius: 6,
+            padding: "8px 10px",
+            cursor: filteredResults.length ? "pointer" : "not-allowed",
+          }}
+        >
+          Exportar XLSX
+        </button>
+        <button
+          type="button"
+          onClick={handleExportPdf}
+          disabled={!filteredResults.length}
+          style={{
+            border: `1px solid ${filteredResults.length ? AC.blue : SURFACE.border}`,
+            background: filteredResults.length ? SURFACE.activeBlue : SURFACE.navInactive,
+            color: filteredResults.length ? SURFACE.text : SURFACE.muted,
+            borderRadius: 6,
+            padding: "8px 10px",
+            cursor: filteredResults.length ? "pointer" : "not-allowed",
+          }}
+        >
+          Exportar PDF
+        </button>
+      </div>
+      <div style={{ color: SURFACE.muted, fontSize: 12, marginBottom: 12 }}>
+        {exportFiltersSummary}
       </div>
 
       <div className="watchlist-table-shell">

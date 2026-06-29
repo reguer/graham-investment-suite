@@ -6,6 +6,31 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ---
 
+## [Unreleased] — 2026-06-29 Refresh trimestral, calidad y exportación dashboard
+
+### Added
+- `src/lib/watchlistExport.js` — exportación de la vista filtrada del dashboard a `XLSX` y documento imprimible para `PDF`, con hoja `Resumen`, anchos por columna y ajuste de texto dentro de cada celda.
+- `src/tools/watchlist/watchReason.js` — helper reutilizable para mostrar solo razones de negocio visibles y no notas técnicas internas en tabla, cards y exportaciones.
+- `tests/watchlistExport.test.js` + `tests/watchReason.test.js` — cobertura para resumen de filtros, columnas de exportación, nombres de archivo y legibilidad de notas.
+
+### Changed
+- `src/tools/watchlist/Watchlist.jsx` — nuevo filtro y tarjeta `Excelente, cara`, exportación del subconjunto filtrado, resumen activo de filtros y reutilización de razones visibles.
+- `src/tools/watchlist/yahooFundamentals.js` + `scripts/data-ingestion.js` — snapshots fundamentales ahora distinguen `sourcePeriod` trimestral/TTM vs. anual para mostrar corte real de los reportes.
+- `scripts/local-dashboard-api.js` — `Actualizar todo` ejecuta refresh completo del universo, precios, posiciones y reporte desde el dashboard local.
+- `src/tools/watchlist/scoring.js`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/Watchlist.jsx`, `src/tools/graham-analyzer/classify.js` — se mantiene la capa adicional de calidad y se etiqueta como `Excelente, cara` a empresas fuertes que solo fallan valuación Graham.
+- `public/data/companies.json` + `data/public/companies.json` — universo público refrescado para reflejar las últimas corridas de fundamentales/precios y posiciones enlazadas al dashboard.
+
+### Fixed
+- Exportaciones PDF/XLSX con columnas largas (`Nombre`, `Etiquetas`, `Razon`) ahora envuelven texto y conservan legibilidad sin invadir columnas vecinas.
+- El dashboard ya no deja ambiguo si el corte de fundamentales es anual o trimestral; el detalle de empresa muestra periodo y fecha de corte.
+
+### Tests
+- `npm test`
+- `npm run build`
+- `npm run build:artifact`
+
+---
+
 ## [Unreleased] — 2026-06-11 Datos completos y equity negativo
 
 ### Fixed
