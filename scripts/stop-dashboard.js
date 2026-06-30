@@ -14,23 +14,26 @@ export function readDashboardPid(pidPath) {
   return Number.isInteger(pid) && pid > 0 ? pid : null;
 }
 
-export function stopDashboard(argv = process.argv) {
+export function stopDashboard(argv = process.argv, { root = process.cwd() } = {}) {
   const args = parseArgs(argv);
-  const runtime = initRuntime();
+  const runtime = initRuntime({ root });
   const pidPath = join(runtime.runtimeDir, "dashboard.pid");
+  const metaPath = join(runtime.runtimeDir, "dashboard.json");
   const pid = readDashboardPid(pidPath);
 
   if (!pid) {
-    return { ok: false, pid: null, pidPath, message: "No hay PID de dashboard registrado." };
+    rmSync(metaPath, { force: true });
+    return { ok: false, pid: null, pidPath, metaPath, message: "No hay PID de dashboard registrado." };
   }
 
   if (args.dryRun) {
-    return { ok: true, pid, pidPath, dryRun: true, message: `Se detendria el PID ${pid}.` };
+    return { ok: true, pid, pidPath, metaPath, dryRun: true, message: `Se detendria el PID ${pid}.` };
   }
 
   process.kill(pid, "SIGTERM");
   rmSync(pidPath, { force: true });
-  return { ok: true, pid, pidPath, message: `Dashboard detenido: PID ${pid}.` };
+  rmSync(metaPath, { force: true });
+  return { ok: true, pid, pidPath, metaPath, message: `Dashboard detenido: PID ${pid}.` };
 }
 
 const isCli = process.argv[1] && process.argv[1].endsWith("stop-dashboard.js");

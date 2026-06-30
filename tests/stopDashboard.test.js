@@ -1,8 +1,8 @@
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
-import { readDashboardPid } from "../scripts/stop-dashboard.js";
+import { readDashboardPid, stopDashboard } from "../scripts/stop-dashboard.js";
 
 describe("stop-dashboard", () => {
   it("reads a valid dashboard pid", () => {
@@ -18,5 +18,16 @@ describe("stop-dashboard", () => {
     const invalidPath = join(dir, "dashboard.pid");
     writeFileSync(invalidPath, "nope\n", "utf8");
     expect(readDashboardPid(invalidPath)).toBeNull();
+  });
+
+  it("cleans stale metadata when no dashboard pid is registered", () => {
+    const root = mkdtempSync(join(tmpdir(), "graham-stop-"));
+    const runtimeDir = join(root, ".local_runtime");
+    mkdirSync(runtimeDir, { recursive: true });
+    const metaPath = join(runtimeDir, "dashboard.json");
+    writeFileSync(metaPath, "{}\n", "utf8");
+    const result = stopDashboard(["node", "script"], { root });
+    expect(result.ok).toBe(false);
+    expect(existsSync(metaPath)).toBe(false);
   });
 });
