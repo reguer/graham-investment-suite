@@ -18866,6 +18866,27 @@
     "sourcePeriod": "quarterly"
   },
   {
+    "ticker": "MT",
+    "yahooSymbol": "MT",
+    "companyName": "MT",
+    "exchange": "",
+    "market": "US",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "",
+    "industry": "",
+    "source": "dashboard-local",
+    "sourceDate": "2026-06-30",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "needs_manual_review",
+    "tags": [
+      "manual-add",
+      "pending-analysis"
+    ],
+    "notes": "Agregada desde dashboard local; pendiente de procesar fundamentales."
+  },
+  {
     "ticker": "MTB",
     "yahooSymbol": "MTB.MX",
     "companyName": "M&T Bank Corporation",
@@ -20128,6 +20149,27 @@
     "marketCap": 4722368446464,
     "avgVolume": 160883770,
     "sourcePeriod": "quarterly"
+  },
+  {
+    "ticker": "NVO",
+    "yahooSymbol": "NVO",
+    "companyName": "NVO",
+    "exchange": "",
+    "market": "US",
+    "country": "",
+    "currency": "",
+    "quoteType": "EQUITY",
+    "sector": "",
+    "industry": "",
+    "source": "dashboard-local",
+    "sourceDate": "2026-06-30",
+    "analysisStatus": "pending_fundamentals",
+    "validationStatus": "needs_manual_review",
+    "tags": [
+      "manual-add",
+      "pending-analysis"
+    ],
+    "notes": "Agregada desde dashboard local; pendiente de procesar fundamentales."
   },
   {
     "ticker": "NXPI",

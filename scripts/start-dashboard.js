@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { initRuntime } from "./init-runtime.js";
 import { findPreferredNode } from "./node-runtime.js";
+import { buildLocalBinEnv, resolveLocalCommand } from "./run-local-bin.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const runLocalBinPath = join(__dirname, "run-local-bin.js");
@@ -87,6 +88,45 @@ export function isProcessRunning(pid) {
   }
 }
 
+export function buildDashboardLaunch(commandPath, nodePath, host, port, background, stdoutPath, stderrPath) {
+  if (background) {
+    const resolved = resolveLocalCommand("vite", ["--host", host, "--port", String(port)], nodePath);
+    if (!resolved) {
+      throw new Error("No se encontro el binario local de vite.");
+    }
+
+    return {
+      command: resolved.command,
+      args: resolved.commandArgs,
+      options: {
+        cwd: process.cwd(),
+        stdio: [
+          "ignore",
+          openSync(stdoutPath, "a"),
+          openSync(stderrPath, "a"),
+        ],
+        env: resolved.env,
+        shell: false,
+        detached: true,
+        windowsHide: true,
+      },
+    };
+  }
+
+  return {
+    command: nodePath,
+    args: [commandPath, "vite", "--host", host, "--port", String(port)],
+    options: {
+      cwd: process.cwd(),
+      stdio: "inherit",
+      env: buildLocalBinEnv(),
+      shell: false,
+      detached: false,
+      windowsHide: false,
+    },
+  };
+}
+
 export async function startDashboard(argv = process.argv) {
   const args = parseArgs(argv);
   const runtime = initRuntime();
@@ -121,27 +161,16 @@ export async function startDashboard(argv = process.argv) {
   }
 
   const nodePath = findPreferredNode(process.env);
-  const spawnOptions = args.background
-    ? {
-        cwd: process.cwd(),
-        stdio: [
-          "ignore",
-          openSync(stdoutPath, "a"),
-          openSync(stderrPath, "a"),
-        ],
-        shell: false,
-        detached: true,
-        windowsHide: true,
-      }
-    : {
-        cwd: process.cwd(),
-        stdio: "inherit",
-        shell: false,
-        detached: false,
-        windowsHide: false,
-      };
-
-  const child = spawn(nodePath, [runLocalBinPath, "vite", "--host", args.host, "--port", String(port)], spawnOptions);
+  const launch = buildDashboardLaunch(
+    runLocalBinPath,
+    nodePath,
+    args.host,
+    port,
+    args.background,
+    stdoutPath,
+    stderrPath,
+  );
+  const child = spawn(launch.command, launch.args, launch.options);
   writePidFile(pidPath, child.pid);
   writeDashboardMeta(metaPath, {
     pid: child.pid,

@@ -6,6 +6,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ---
 
+## [Unreleased] — 2026-06-30 Dashboard oculto en Windows y sincronizacion Pages
+
+### Added
+- `scripts/start-dashboard-hidden.py`, `scripts/start-dashboard-hidden.vbs`, `scripts/dashboard-keepalive.vbs` y `scripts/dashboard-keepalive.ps1` — launchers auxiliares para arrancar y vigilar el dashboard local en segundo plano desde Windows sin depender de una consola visible.
+
+### Changed
+- `scripts/start-dashboard.js` + `scripts/run-local-bin.js` — el modo background ya no lanza `vite` a traves de un wrapper con `stdio: inherit`; ahora resuelve el binario local y lo ejecuta directo para evitar heredar `conhost.exe`.
+- `scripts/stop-dashboard.js` — en Windows usa `taskkill /T /F` para detener el arbol completo `node/vite` del dashboard de este repo, en lugar de dejar hijos vivos al matar solo el PID padre.
+- `README.md`, `AGENTS.md`, `docs/03_DASHBOARD_LOCAL_GITHUB_PAGES.md`, `docs/11_GITHUB_VERSIONADO_PAGES_SIN_WORKFLOWS.md`, `docs/13_ROADMAP_NOTION_READY.md` y `docs/14_PROMPTS_OPERATIVOS.md` — documentacion alineada con el arranque oculto, el keepalive local y el flujo bilateral `main` + `gh-pages`.
+
+### Fixed
+- El dashboard local de Windows puede seguir corriendo aunque se cierre la terminal que lo disparo, sin reabrir una ventana de PowerShell por herencia del proceso `vite`.
+- `npm run dev:stop` ya no deja un `vite.js` huerfano con `conhost.exe` asociado despues de detener el dashboard.
+
+### Tests
+- `npm test`
+- `npm run build`
+- `npm run build:artifact`
+
+---
+
 ## [Unreleased] — 2026-06-29 Refresh trimestral, calidad y exportación dashboard
 
 ### Added

@@ -215,6 +215,24 @@
 
 ---
 
+## Actualización operativa 2026-06-30
+
+| Area | Estado | Evidencia | Pendiente |
+|------|--------|-----------|-----------|
+| Dashboard oculto Windows | ✅ Completado | `start-dashboard.js` ya resuelve `vite` directo en background; `start-dashboard-hidden.py/.vbs` y `dashboard-keepalive.vbs` permiten arranque oculto sin heredar consola visible | Vigilar en siguientes cambios que ningun wrapper vuelva a usar `stdio: inherit` en background |
+| Stop del dashboard | ✅ Completado | `stop-dashboard.js` usa `taskkill /T /F` en Windows para matar todo el arbol del dashboard | Mantener el comportamiento repo-scoped si se agregan mas procesos auxiliares |
+| Sincronia main + gh-pages | ✅ Operativo | `docs/03` y `docs/11` documentan el flujo `git push origin main` + `npm run deploy:pages` | Repetirlo tras cambios de UI o datos publicos |
+| Validacion | ✅ Verde | `npm test`, `npm run build`, `npm run build:artifact` en verde tras el fix de runtime | — |
+
+### Stories pendientes prioritarias
+
+| Story | Descripción | Prioridad |
+|-------|-------------|-----------|
+| **S93 Endurecer keepalive Windows** | Reducir reintentos innecesarios y asegurar una sola instancia del watchdog por equipo | 🟡 Media |
+| **S94 Telemetria minima de runtime** | Registrar ultimo arranque, ultimo stop y puerto activo en `.local_runtime/dashboard.json` para diagnostico rapido | 🟡 Media |
+
+---
+
 ## Plan futuro 2026-06-29 — Motor Buffett automático con evidencia
 
 ### Objetivo del bloque E25/E26

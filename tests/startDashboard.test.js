@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { mkdtempSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { clearPidFile, findAvailablePort, isProcessRunning, parseArgs, readDashboardMeta, writeDashboardMeta, writePidFile } from "../scripts/start-dashboard.js";
+import { buildDashboardLaunch, clearPidFile, findAvailablePort, isProcessRunning, parseArgs, readDashboardMeta, writeDashboardMeta, writePidFile } from "../scripts/start-dashboard.js";
 
 function listenOn(port, host = "127.0.0.1") {
   const server = net.createServer();
@@ -58,5 +58,49 @@ describe("start-dashboard", () => {
 
   it("recognizes the current process as running", () => {
     expect(isProcessRunning(process.pid)).toBe(true);
+  });
+
+  it("launches vite directly for background mode to avoid inheriting a console", () => {
+    const dir = mkdtempSync(join(tmpdir(), "graham-logs-"));
+    const launch = buildDashboardLaunch(
+      "C:\\repo\\scripts\\run-local-bin.js",
+      "C:\\node\\node.exe",
+      "127.0.0.1",
+      5173,
+      true,
+      join(dir, "stdout.log"),
+      join(dir, "stderr.log"),
+    );
+
+    expect(launch.command).toBe("C:\\node\\node.exe");
+    expect(launch.args[0]).toContain("vite");
+    expect(launch.args).not.toContain("C:\\repo\\scripts\\run-local-bin.js");
+    expect(launch.options.detached).toBe(true);
+    expect(launch.options.windowsHide).toBe(true);
+    expect(Array.isArray(launch.options.stdio)).toBe(true);
+  });
+
+  it("keeps the wrapper path for foreground debugging", () => {
+    const launch = buildDashboardLaunch(
+      "C:\\repo\\scripts\\run-local-bin.js",
+      "C:\\node\\node.exe",
+      "127.0.0.1",
+      5173,
+      false,
+      "stdout.log",
+      "stderr.log",
+    );
+
+    expect(launch.command).toBe("C:\\node\\node.exe");
+    expect(launch.args).toEqual([
+      "C:\\repo\\scripts\\run-local-bin.js",
+      "vite",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "5173",
+    ]);
+    expect(launch.options.stdio).toBe("inherit");
+    expect(launch.options.detached).toBe(false);
   });
 });

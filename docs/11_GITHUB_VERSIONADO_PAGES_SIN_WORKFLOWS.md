@@ -34,6 +34,15 @@ html_url: https://reguer.github.io/graham-investment-suite/
 
 La publicacion actual se hace con build local, copia de `dist/` a un worktree temporal de `gh-pages`, commit y push a `origin gh-pages`.
 
+Flujo bilateral recomendado cuando el sitio publico debe reflejar exactamente el estado local versionado:
+
+```powershell
+git push origin main
+npm run deploy:pages
+```
+
+`main` conserva codigo, docs, tests y snapshots publicos versionados; `gh-pages` publica el build estatico generado desde ese mismo commit local.
+
 ### Base path de Vite
 
 ```javascript
@@ -195,6 +204,17 @@ node scripts/deploy-pages.js --dry-run
 # Publicar
 npm run deploy:pages
 ```
+
+### Orden recomendado de publicacion
+
+```powershell
+git add .
+git commit -m "..."
+git push origin main
+npm run deploy:pages
+```
+
+Esto evita que `gh-pages` publique un build que todavia no exista en `main`.
 
 ### Opción 2: GitHub Pages desde rama main/docs
 

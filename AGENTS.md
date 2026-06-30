@@ -6,6 +6,8 @@
 - Correr `npm test`, `npm run build` y `npm run build:artifact` antes de cerrar cambios.
 - Mantener `artifacts/graham_analyzer.jsx` como standalone con `export default`.
 - No usar `git push --force`.
+- Si el usuario pide publicar el dashboard, hacer `git push` normal a `main` y luego `npm run deploy:pages`; mantener `main` y `gh-pages` sincronizados desde este repo local.
+- En Windows, el dashboard local debe poder arrancar y seguir vivo sin una ventana visible de PowerShell; `npm run dev:stop` debe matar el arbol completo del dashboard de este repo.
 - UI en espanol; codigo, funciones y variables en ingles.
 - FCF es `operatingCF + investingCF`.
 - ADR multiplica EPS, BVPS, TBVPS y NCAV por `adrRatio`.

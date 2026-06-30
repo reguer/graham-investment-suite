@@ -480,6 +480,7 @@ TAREA:
    - `npm run build`
    - `npm run build:artifact`
 7. Si se modifica UI o export público, ejecutar `npm run deploy:pages` sólo si el usuario pide publicar.
+8. Si se toca el runtime del dashboard en Windows, verificar que el modo background no herede consola visible y que `npm run dev:stop` mate el arbol completo del dashboard.
 8. Entregar resumen con archivos modificados, pruebas y cualquier dato que siga requiriendo captura manual.
 
 CRITERIOS DE ACEPTACIÓN:

@@ -77,6 +77,26 @@ npm run dev:safe
 
 Abre `http://localhost:5173` en el navegador.
 
+En Windows, `npm run dev:safe` arranca el dashboard en segundo plano por defecto, guarda PID/logs en `.local_runtime/` y ya no deberia depender de una ventana visible de PowerShell para seguir vivo.
+
+Si quieres lanzarlo manualmente sin dejar una ventana visible de PowerShell, usa:
+
+```powershell
+wscript.exe //B //NoLogo scripts\start-dashboard-hidden.vbs
+```
+
+Para mantenerlo vivo en segundo plano durante toda la sesion de Windows, usa:
+
+```powershell
+wscript.exe //B //NoLogo scripts\dashboard-keepalive.vbs
+```
+
+Para detenerlo limpiamente y matar tambien el arbol `vite/node` asociado:
+
+```bash
+npm run dev:stop
+```
+
 Si el puerto 5173 esta ocupado por otro proyecto:
 
 ```bash
@@ -209,6 +229,17 @@ La app publica esta disponible en https://reguer.github.io/graham-investment-sui
 El mecanismo de deploy local (sin GitHub Actions) esta documentado en `docs/03_DASHBOARD_LOCAL_GITHUB_PAGES.md` y `docs/11_GITHUB_VERSIONADO_PAGES_SIN_WORKFLOWS.md`.
 
 **El deploy nunca debe hacerse por workflows remotos** — siempre desde el equipo local autorizado.
+
+Flujo bilateral recomendado cuando quieras dejar sincronizados local + publico:
+
+```bash
+git add .
+git commit -m "..."
+git push origin main
+npm run deploy:pages
+```
+
+`main` conserva codigo, docs y datos versionados; `gh-pages` publica el build estatico generado desde ese mismo estado.
 
 ---
 
@@ -352,6 +383,12 @@ netstat -ano | findstr :5173
 
 # Usar puerto alternativo
 npm run dev -- --port 5174
+```
+
+Si el dashboard estaba marcado como activo pero ya no responde, limpia el PID obsoleto con:
+
+```bash
+npm run dev:stop
 ```
 
 ### Los tests fallan en TSM

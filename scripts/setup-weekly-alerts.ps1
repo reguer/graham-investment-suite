@@ -7,6 +7,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$wscriptExe = Join-Path $env:SystemRoot "System32\wscript.exe"
+$hiddenStartupScript = Join-Path $PSScriptRoot "start-dashboard-hidden.vbs"
 
 $npmCommand = Get-Command npm.cmd -ErrorAction SilentlyContinue
 if (-not $npmCommand) { $npmCommand = Get-Command npm -ErrorAction SilentlyContinue }
@@ -49,7 +51,8 @@ if (-not $isAdmin) {
 }
 
 # Tarea de arranque: iniciar dashboard al encender el equipo + auto-reinicio.
-$actionStartup  = New-ScheduledTaskAction -Execute $npm -Argument "run dev:safe" -WorkingDirectory $repo
+$startupArguments = "//B //NoLogo `"$hiddenStartupScript`""
+$actionStartup  = New-ScheduledTaskAction -Execute $wscriptExe -Argument $startupArguments -WorkingDirectory $repo
 $triggerStartup = New-ScheduledTaskTrigger -AtLogOn
 # "Siempre vivo": si el dashboard se cae, reiniciarlo (hasta 999 veces, cada 1 min).
 $settingsStartup = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `

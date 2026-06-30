@@ -10,12 +10,13 @@
 
 | Aspecto | Estado |
 |---------|--------|
-| Comando | `npm run dev` |
-| Puerto | 5173 (Vite default) |
-| URL | `http://localhost:5173` |
+| Comando | `npm run dev:safe` |
+| Puerto | 5173 por defecto; usa el siguiente libre si esta ocupado |
+| URL | `http://127.0.0.1:5173/` o siguiente puerto libre |
 | Tecnología | React 18.3 + Vite 5.4 SPA |
-| Datos | En tiempo real desde `localStorage` + cálculos en memoria |
-| Actualización | Al guardar análisis o correr `weekly:screen` |
+| Datos | Export publico + estado local en runtime |
+| Actualización | Al guardar análisis o correr refresh/screening locales |
+| Modo Windows | Segundo plano por defecto, con PID/logs en `.local_runtime/` |
 
 ### GitHub Pages
 
@@ -23,19 +24,21 @@
 |---------|--------|
 | URL pública | `https://reguer.github.io/graham-investment-suite/` |
 | Estado | Activa (responde) |
-| Mecanismo de deploy | **NO VERIFICADO** |
-| Rama gh-pages | No detectada localmente |
+| Mecanismo de deploy | **Verificado: build local + push a `gh-pages`** |
+| Rama gh-pages | Remota activa |
 | Workflows activos | Ninguno (`.github/workflows/` vacío) |
-| Base URL en Vite | Auto-detectada: `/graham-investment-suite/` si `GITHUB_ACTIONS=true` |
+| Base URL en Vite | `/graham-investment-suite/` en build |
 
 ---
 
 ## 2. Cómo funciona el dashboard local
 
 ```
-npm run dev
+npm run dev:safe
     ↓
-Vite inicia en localhost:5173
+start-dashboard.js busca puerto libre
+    ↓
+Lanza Vite en segundo plano con logs en .local_runtime/
     ↓
 React SPA carga en el navegador
     ↓
@@ -44,43 +47,59 @@ React SPA carga en el navegador
   2. Watchlist — screening semanal de 10 candidatos
   3. Macro Radar — indicadores macroeconómicos
     ↓
-Datos se leen de localStorage al cargar
+Datos publicos se leen desde public/data/companies.json
     ↓
-Cambios se guardan automáticamente en localStorage
+Cambios locales se guardan automaticamente en runtime/storage
 ```
 
 El dashboard local es **completamente funcional sin conexión a internet** excepto por:
 - API de Anthropic (análisis IA — opcional)
 - Stooq (actualización de precios en screening semanal — opcional)
 
+### Arranque oculto en Windows
+
+```powershell
+wscript.exe //B //NoLogo scripts\start-dashboard-hidden.vbs
+```
+
+### Keepalive local en Windows
+
+```powershell
+wscript.exe //B //NoLogo scripts\dashboard-keepalive.vbs
+```
+
+### Parada limpia del dashboard local
+
+```bash
+npm run dev:stop
+```
+
+`dev:stop` debe limpiar PID/metadata y matar el arbol completo `node/vite` del dashboard de este repo para no dejar `conhost.exe` huerfanos.
+
 ---
 
-## 3. Cómo funciona GitHub Pages (hipótesis)
+## 3. Cómo funciona GitHub Pages (verificado)
 
-Dado que no hay workflow activo, el deploy más probable es:
-
-**Hipótesis A**: Deploy manual con gh-pages package
+El deploy real no usa workflows remotos. El flujo verificado es:
 
 ```bash
-# Hipótesis — no verificado
-npm run build              # genera dist/
-npx gh-pages -d dist       # sube dist/ a rama gh-pages
+npm run build
+npm run deploy:pages
 ```
 
-**Hipótesis B**: GitHub Pages desde carpeta `docs/` de rama `main`
+El script:
+1. Verifica que el repo este limpio.
+2. Hace `fetch` de `origin/gh-pages`.
+3. Crea un worktree temporal.
+4. Copia `dist/` al worktree.
+5. Hace commit y push normal a `gh-pages`.
 
-Configurado en Settings → Pages → Branch: main → Folder: /docs
-
-**Hipótesis C**: Push manual de `dist/` a rama `gh-pages`
+Para mantener sincronia bilateral:
 
 ```bash
-# Hipótesis — no verificado
-git checkout -b gh-pages
-cp -r dist/* .
-git push origin gh-pages
+git push origin main
+npm run deploy:pages
 ```
-
-**Para verificar el mecanismo real**: Ir a GitHub.com → Settings → Pages y revisar la configuración.
 
 ---
 
@@ -200,49 +219,14 @@ Paso 8: Registrar en logs
 
 ---
 
-## 9. Cómo actualizar GitHub Pages automáticamente desde local
+## 9. Cómo actualizar GitHub Pages desde local
 
-**Propuesta de script `scripts/deploy-pages.js`** (NO existe aún):
-
-```javascript
-// scripts/deploy-pages.js — PROPUESTO
-
-import { execSync } from 'child_process'
-import { existsSync, readFileSync } from 'fs'
-
-// 1. Verificar que es el equipo autorizado
-const device = JSON.parse(readFileSync('.local_runtime/device.json', 'utf8'))
-if (device.device_role !== 'principal' || !device.auto_push_enabled) {
-  console.error('Este equipo no está autorizado para hacer deploy a Pages.')
-  process.exit(1)
-}
-
-// 2. Verificar que el repo está limpio
-const status = execSync('git status --porcelain').toString()
-if (status.trim()) {
-  console.error('El repositorio tiene cambios sin commitear. Abortando deploy.')
-  process.exit(1)
-}
-
-// 3. Build
-execSync('npm run build', { stdio: 'inherit' })
-
-// 4. Validar que dist/ no contiene secretos
-const sensitivePatterns = ['ANTHROPIC_API_KEY', 'TELEGRAM_BOT_TOKEN', 'DEVICE_KEY']
-for (const pattern of sensitivePatterns) {
-  const result = execSync(`grep -r "${pattern}" dist/ || true`).toString()
-  if (result.trim()) {
-    console.error(`¡ALERTA! Se encontró "${pattern}" en dist/. Abortando.`)
-    process.exit(1)
-  }
-}
-
-// 5. Deploy
-execSync('npx gh-pages -d dist', { stdio: 'inherit' })
-
-// 6. Registrar
-console.log(`Deploy realizado desde ${device.device_name} a las ${new Date().toISOString()}`)
+```bash
+npm run build
+npm run deploy:pages
 ```
+
+El script `scripts/deploy-pages.js` ya existe y hace validacion de secretos sobre `dist/` antes de publicar.
 
 ---
 
@@ -279,9 +263,10 @@ Invoke-WebRequest -Uri "http://localhost:5173" -UseBasicParsing | Select-Object 
 
 | Mejora | Prioridad | Estado |
 |--------|-----------|--------|
-| Documentar mecanismo real de deploy | Alta | Pendiente — verificar en GitHub.com |
-| Crear `scripts/deploy-pages.js` | Media | Propuesto |
-| Añadir validación de secretos pre-deploy | Alta | Propuesto |
+| Documentar mecanismo real de deploy | Alta | ✅ Completado |
+| Crear `scripts/deploy-pages.js` | Media | ✅ Completado |
+| Añadir validación de secretos pre-deploy | Alta | ✅ Completado |
 | Configurar `AUTO_PUSH_DASHBOARD` por equipo | Media | Propuesto |
 | Dashboard con datos de base local SQLite | Alta | Pendiente — requiere implementar BD |
 | Build automático al cierre diario | Media | Propuesto (ver `docs/09`) |
+| Arranque oculto estable en Windows | Alta | ✅ Completado |

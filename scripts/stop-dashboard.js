@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
+import * as childProcess from "node:child_process";
 import { initRuntime } from "./init-runtime.js";
 
 export function parseArgs(argv) {
@@ -12,6 +13,29 @@ export function readDashboardPid(pidPath) {
   if (!existsSync(pidPath)) return null;
   const pid = Number(readFileSync(pidPath, "utf8").trim());
   return Number.isInteger(pid) && pid > 0 ? pid : null;
+}
+
+export function stopDashboardProcess(pid, platform = process.platform, exec = childProcess.spawnSync) {
+  if (platform === "win32") {
+    const result = exec("taskkill", ["/PID", String(pid), "/T", "/F"], {
+      stdio: "pipe",
+      encoding: "utf8",
+      shell: false,
+    });
+    if (result.status !== 0) {
+      const output = `${result.stdout || ""}\n${result.stderr || ""}`.trim();
+      if (!/not found|no instance|cannot find|no se encontr[oó]/i.test(output)) {
+        throw new Error(output || `taskkill fallo con codigo ${result.status}`);
+      }
+    }
+    return;
+  }
+
+  try {
+    process.kill(pid, "SIGTERM");
+  } catch (error) {
+    if (error?.code !== "ESRCH") throw error;
+  }
 }
 
 export function stopDashboard(argv = process.argv, { root = process.cwd() } = {}) {
@@ -30,7 +54,7 @@ export function stopDashboard(argv = process.argv, { root = process.cwd() } = {}
     return { ok: true, pid, pidPath, metaPath, dryRun: true, message: `Se detendria el PID ${pid}.` };
   }
 
-  process.kill(pid, "SIGTERM");
+  stopDashboardProcess(pid);
   rmSync(pidPath, { force: true });
   rmSync(metaPath, { force: true });
   return { ok: true, pid, pidPath, metaPath, message: `Dashboard detenido: PID ${pid}.` };
