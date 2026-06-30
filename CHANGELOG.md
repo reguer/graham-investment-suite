@@ -19,6 +19,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 - `scripts/local-dashboard-api.js` — `Actualizar todo` ejecuta refresh completo del universo, precios, posiciones y reporte desde el dashboard local.
 - `src/tools/watchlist/scoring.js`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/Watchlist.jsx`, `src/tools/graham-analyzer/classify.js` — se mantiene la capa adicional de calidad y se etiqueta como `Excelente, cara` a empresas fuertes que solo fallan valuación Graham.
 - `public/data/companies.json` + `data/public/companies.json` — universo público refrescado para reflejar las últimas corridas de fundamentales/precios y posiciones enlazadas al dashboard.
+- `docs/13_ROADMAP_NOTION_READY.md`, `docs/14_PROMPTS_OPERATIVOS.md` y `AGENTS.md` — roadmap futuro detallado para motor Buffett automático con owner earnings, DCF, prompts estructurados, rollout por lotes y reglas para no confundir la capa de calidad actual con una valuación Buffett formal.
 
 ### Fixed
 - Exportaciones PDF/XLSX con columnas largas (`Nombre`, `Etiquetas`, `Razon`) ahora envuelven texto y conservan legibilidad sin invadir columnas vecinas.

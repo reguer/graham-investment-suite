@@ -1,6 +1,6 @@
 # 13 — Roadmap Epics & Stories (Notion-Ready)
 
-> Tabla completa de 20 Epics con Stories. Formato Markdown copiable directamente a Notion.
+> Tabla viva de epics y stories del proyecto. Formato Markdown copiable directamente a Notion.
 > Prioridades: 🔴 Crítica | 🟠 Alta | 🟡 Media | 🟢 Baja
 
 ---
@@ -67,6 +67,21 @@
 | **E24 Moat Manual y Evidencias** | S74 UI Calidad y Moat | Hacer editable y auditable el moat | Agregar en el detalle de empresa una pestaña/sección `Calidad y Moat` con campos manuales y evidencias; lectura en Pages, edición sólo local si API local está disponible | 🟡 Media | 📋 Pendiente | S73 | `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/watchlist.js`, `scripts/local-dashboard-api.js`, `tests/localDashboardApi.test.js` | Dashboard local permite guardar/editar evidencia; GitHub Pages muestra datos ya exportados sin botones rotos | Evitar UI decorativa; todo botón debe guardar, cancelar o abrir fuente real | Manual | v2.3 |
 | **E24 Moat Manual y Evidencias** | S75 Import/export de moat manual | Sincronizar evidencia con el universo público | Crear script para exportar campos manuales a `public/data/company-quality.json` y mezclarlos en `buildWatchlist()` | 🟡 Media | 📋 Pendiente | S73, S74 | `scripts/export-company-quality.js` (nuevo), `public/data/company-quality.json`, `src/tools/watchlist/watchlist.js`, `tests/watchlist.test.js` | Pages muestra moat manual y fuentes sin depender de PostgreSQL/localStorage | Riesgo de publicar notas privadas; revisar contenido antes de commit | Manual | v2.3 |
 | **E24 Moat Manual y Evidencias** | S76 Filtros V2 de calidad | Encontrar empresas por señales cualitativas | Agregar filtros: `buyback positivo`, `sin dilución`, `software quality`, `moat alto`, `contratos top`, `riesgo regulatorio positivo`, `intangibles altos` | 🟡 Media | 📋 Pendiente | S72, S75 | `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/watchlist.js`, `tests/watchlistTable.test.js` | Filtros combinables con sector/estado/favoritos/posiciones; no rompen móvil | Demasiados filtros pueden meter ruido; agrupar por secciones compactas | Manual | v2.3 |
+| **E25 Buffett Auto Engine** | S78 Definir marco Buffett operativo | Separar claramente calidad Buffett de filtro Graham | Documentar definiciones formales: `ownerEarnings`, `maintenanceCapex`, `capitalAllocationScore`, `buffettQualityScore`, `buffettValuationScore`, `buffettCandidateLabel`; declarar qué sí es automático y qué sigue siendo manual | 🔴 Crítica | 📋 Pendiente | E23, E24 | `docs/13_ROADMAP_NOTION_READY.md`, `docs/14_PROMPTS_OPERATIVOS.md`, `AGENTS.md`, `CHANGELOG.md` | Existe glosario único con fórmulas, fuentes y límites; ningún componente vuelve a usar "Buffett" como alias de la capa de calidad actual | Riesgo de mezclar score de calidad con valuación DCF y confundir al usuario | Manual | v2.4 |
+| **E25 Buffett Auto Engine** | S79 Inventario Buffett de datos automáticos | Saber qué datos existen hoy para owner earnings y DCF | Auditar `public/data/companies.json`, snapshots Yahoo/SEC y posibles exports de selected companies para mapear revenue, EBIT, CFO, capex, D&A, cash, debt, shares, margins y series 5-10Y | 🔴 Crítica | 📋 Pendiente | S78, S67 | `data/public/companies.json`, `public/data/companies.json`, `src/tools/watchlist/yahooFundamentals.js`, `src/tools/watchlist/secFundamentals.js`, `scripts/data-ingestion.js`, `tests/dataIngestion.test.js` | Se genera tabla de disponibilidad por campo/fuente/asOf; cada métrica queda marcada como `available`, `partial` o `missing` | Yahoo y SEC no siempre exponen el mismo concepto ni la misma granularidad anual/TTM | Auto | v2.4 |
+| **E25 Buffett Auto Engine** | S80 Series históricas 5-10Y para Buffett | Construir una base temporal normalizada por empresa | Crear extractor normalizado para 5-10 años de `revenue`, `operatingIncome`, `netIncome`, `operatingCF`, `capex`, `depreciationAmortization`, `sharesOutstanding`, `cash`, `totalDebt`, `grossMargin`, `operatingMargin`, `netMargin` usando SEC Company Facts como fuente primaria y Yahoo como fallback | 🔴 Crítica | 📋 Pendiente | S79 | `src/tools/watchlist/buffettSeries.js` (nuevo), `src/tools/watchlist/secFundamentals.js`, `src/tools/watchlist/yahooFundamentals.js`, `scripts/data-ingestion.js`, `tests/buffettSeries.test.js` | Cada serie queda guardada con `fiscalYear`, `value`, `currency`, `source`, `sourceForm`, `asOf`; gaps no se rellenan con cero y splits/dilución quedan separados | Company Facts usa taxonomías alternativas (`RevenueFromContractWithCustomerExcludingAssessedTax` vs `SalesRevenueNet`); requiere mapper defensivo | Auto | v2.4 |
+| **E25 Buffett Auto Engine** | S81 Owner earnings normalizado | Estimar flujo económico del dueño sin captura manual inicial | Calcular `ownerEarnings = operatingCF - maintenanceCapex`, con `maintenanceCapex` estimado por heurística conservadora cuando no exista dato directo; guardar también `reportedCapex`, `growthCapexProxy`, `ownerEarningsYield` y trazabilidad del método aplicado | 🔴 Crítica | 📋 Pendiente | S80 | `src/tools/watchlist/buffettValuation.js` (nuevo), `src/tools/watchlist/buffettSeries.js`, `scripts/data-ingestion.js`, `tests/buffettValuation.test.js`, `docs/formulas.md` | Cada ticker muestra owner earnings con `methodId`; si falta info crítica el cálculo devuelve `null` y razón legible | Maintenance capex no se reporta directo; la heurística debe ser conservadora y explicable para no inventar precisión falsa | Auto | v2.4 |
+| **E25 Buffett Auto Engine** | S82 Heurística maintenance capex y capital intensity | Distinguir negocios ligeros de negocios pesados | Implementar reglas por sector para aproximar maintenance capex: base `min(capex, depreciationAmortization)` con ajustes por estabilidad de PPE/revenue, asset turns y crecimiento; exponer `capitalIntensityTag` y confianza del estimate | 🟠 Alta | 📋 Pendiente | S81 | `src/tools/graham-analyzer/sectorProfiles.js`, `src/tools/watchlist/buffettValuation.js`, `src/tools/watchlist/buffettSeries.js`, `tests/buffettValuation.test.js` | El método devuelve `maintenanceCapex`, `confidence`, `reason`, `sectorAdjustment`; utilities, industriales y semis usan reglas distintas a software/asset-light | Heurística demasiado agresiva puede inflar valor intrínseco; usar sesgo conservador por defecto | Auto | v2.4 |
+| **E25 Buffett Auto Engine** | S83 Capital allocation score | Medir recompras, deuda y disciplina de management | Calcular `shareCountCagr`, recompras netas, dilución, deuda neta, `netDebtToEbit`, `interestCoverage`, reinversión vs FCF y uso de caja; resumir en subscore de asignación de capital | 🔴 Crítica | 📋 Pendiente | S80 | `src/tools/watchlist/qualityMetrics.js`, `src/tools/watchlist/buffettSeries.js`, `src/tools/watchlist/scoring.js`, `tests/watchlistScoring.test.js`, `tests/buffettSeries.test.js` | El detalle distingue recompra real, neutral o dilución; penaliza deuda creciente usada para sostener recompras artificiales | Shares outstanding puede requerir ajuste por splits o ADR; validar unidad antes de puntuar | Auto | v2.4 |
+| **E25 Buffett Auto Engine** | S84 Buffett quality score automático | Detectar empresas excelentes antes de la valuación | Crear `buffettQualityScore` con ROE/ROA/ROIC proxy, márgenes, estabilidad de FCF, consistencia de owner earnings, asignación de capital, resiliencia y dependencia de intangibles; mantenerlo separado de Graham | 🔴 Crítica | 📋 Pendiente | S81, S82, S83 | `src/tools/watchlist/scoring.js`, `src/tools/watchlist/buffettSeries.js`, `src/tools/watchlist/buffettValuation.js`, `tests/watchlistScoring.test.js`, `tests/watchlistTable.test.js` | Score documenta peso por componente y produce razón legible; no aprueba por valuación barata si la calidad es mediocre | ROIC exacto puede faltar por ausencia de invested capital limpio; permitir proxy con flag de confianza | Auto | v2.5 |
+| **E25 Buffett Auto Engine** | S85 DCF Buffett con escenarios | Valuar con owner earnings y margen de seguridad | Implementar DCF a 10 años con escenarios `bear/base/bull`, descuento configurable, crecimiento terminal conservador y `mosBuffett`; incluir sensibilidad y fecha de corte de precio/fundamentales | 🔴 Crítica | 📋 Pendiente | S81, S84 | `src/tools/watchlist/buffettValuation.js`, `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/tableColumns.js`, `tests/buffettValuation.test.js`, `docs/formulas.md` | Cada empresa expone `intrinsicValueBear/Base/Bull`, `requiredReturn`, `terminalGrowth`, `mosBuffett`; no renderiza valor si faltan series suficientes | DCF con crecimiento optimista genera falsas candidatas; el escenario base debe ser deliberadamente conservador | Auto | v2.5 |
+| **E25 Buffett Auto Engine** | S86 Etiquetas Buffett y filtros UI | Hacer operable el motor Buffett en dashboard | Añadir etiquetas `Buffett candidata`, `Excelente empresa, cara`, `Calidad alta sin evidencia`, `Valuación insuficiente`, filtros y columnas de `owner earnings`, `mosBuffett`, `capital allocation`, `confidence` | 🟠 Alta | 📋 Pendiente | S84, S85 | `src/tools/watchlist/Watchlist.jsx`, `src/tools/watchlist/tableColumns.js`, `src/tools/watchlist/statusMapper.js`, `tests/watchlistTable.test.js`, `tests/watchlist-screen.test.js` | La UI separa nítidamente Graham vs Buffett; exportaciones muestran ambos bloques sin mezclar significado | Riesgo de saturar la tabla; quizá se necesite modo compacto Buffett o columnas opcionales | Manual | v2.5 |
+| **E26 IA y Evidencia Buffett** | S87 Ingesta de filings y transcripts seleccionados | Obtener texto fuente para interpretación asistida | Descargar/almacenar 10-K, shareholder letters y transcripts de earnings calls para un subconjunto de empresas seleccionadas; indexar `ticker`, `sourceType`, `period`, `url`, `localPath`, `sha256` y fecha de ingestión | 🟠 Alta | 📋 Pendiente | S79 | `scripts/download-company-docs.js` (nuevo), `data/raw/company-docs/`, `public/data/company-doc-index.json`, `tests/downloadCompanyDocs.test.js` | El sistema puede bajar documentos por lote pequeño y guardar índice auditable; no toca credenciales ni publica PDFs privados por error | Licensing de transcripts y disponibilidad variable; usar sólo fuentes permitidas y guardar metadatos aunque falte el texto | Manual | v2.5 |
+| **E26 IA y Evidencia Buffett** | S88 Prompts de extracción estructurada | Convertir texto largo en señales utilizables con trazabilidad | Diseñar prompts JSON para extraer `pricingPower`, `customerConcentration`, `capitalAllocationDiscipline`, `cyclicality`, `moatClues`, `managementRedFlags`, `guidanceTone`, con citas cortas y confidence score | 🟠 Alta | 📋 Pendiente | S87 | `docs/14_PROMPTS_OPERATIVOS.md`, `src/tools/watchlist/buffettPrompts.js` (nuevo), `tests/buffettPrompts.test.js` | Cada prompt exige salida JSON validable, citas breves, `unknown_if_not_explicit` y separación entre `fact`, `inference`, `risk` | La IA puede alucinar moat o management quality si el prompt no fuerza abstención explícita | Auto | v2.5 |
+| **E26 IA y Evidencia Buffett** | S89 Pipeline de interpretación Claude/Codex | Resumir selected companies sin captura manual completa | Crear flujo batch/local que reciba métricas + filings + transcript + restricciones y genere `buffettNotesAuto`, `evidenceCards[]`, `contradictions[]`, `followUpQuestions[]`; guardar salida con `model`, `runAt`, `sourceRefs` | 🟡 Media | 📋 Pendiente | S88 | `scripts/run-buffett-ai-pass.js` (nuevo), `src/lib/anthropic.js`, `public/data/company-quality-auto.json`, `tests/runBuffettAiPass.test.js` | Cada salida incluye referencias a documento y fragmento; si no hay evidencia suficiente retorna `insufficient_evidence` en vez de inventar | Coste/token y drift de prompts; limitar a universo seleccionado y cachear resultados | Auto | v2.5 |
+| **E26 IA y Evidencia Buffett** | S90 Verificador de contradicciones IA vs números | Evitar que una buena narrativa tape malos fundamentos | Implementar chequeo automático que compare la salida IA con métricas duras: si la nota dice "balance fuerte" pero `netDebtToEbit > 4` o `ownerEarnings < 0`, marcar contradicción y bajar confianza | 🟠 Alta | 📋 Pendiente | S84, S89 | `src/tools/watchlist/buffettValidator.js` (nuevo), `scripts/run-buffett-ai-pass.js`, `tests/buffettValidator.test.js` | Ninguna señal IA se muestra como definitiva si contradice métricas duras; dashboard enseña bandera `requiere revision` | Reglas demasiado estrictas pueden castigar negocios cíclicos; documentar excepciones por sector | Auto | v2.5 |
+| **E26 IA y Evidencia Buffett** | S91 Rollout por lotes seleccionados | Escalar sin intentar todo el universo de golpe | Crear plan operativo por cohortes: `Top 10 actuales`, `Posiciones`, `Semiconductores`, `Software`, `Industriales`; cada lote ejecuta ingestión, series, DCF, IA y revisión humana antes de pasar al siguiente | 🔴 Crítica | 📋 Pendiente | S85, S89, S90 | `docs/13_ROADMAP_NOTION_READY.md`, `reports/buffett-batches/`, `scripts/run-buffett-batch.js` (nuevo) | Existe checklist por lote y un estado `ready_for_review`; no se expande a todo el universo sin métricas de calidad del pipeline | Querer cubrir 300+ empresas de una vez degradaría calidad y coste; el enfoque debe ser incremental | Manual | v2.6 |
+| **E26 IA y Evidencia Buffett** | S92 Exportes y reportes Buffett | Volver operables las conclusiones para decisión | Añadir exportes `XLSX/PDF/Markdown` con bloque Buffett: owner earnings, DCF, escenarios, quality score, citas IA, contradicciones y siguientes pasos | 🟡 Media | 📋 Pendiente | S86, S89, S90 | `src/lib/watchlistExport.js`, `scripts/weekly-screen.js`, `reports/`, `tests/watchlistExport.test.js` | El usuario puede exportar un filtro Buffett o un lote revisado con trazabilidad completa | Exportar demasiadas citas puede volver ilegible el PDF; resumir con enlaces y referencias | Auto | v2.6 |
 
 ---
 
@@ -197,6 +212,343 @@
 - El dashboard local ya puede lanzar una actualización integral del universo y de tus posiciones sin salir de la UI.
 - La clasificación `Excelente, cara` quedó operativa como filtro visible, sin perder la capa extra de calidad.
 - Se añadió exportación desde cualquier filtro activo a `XLSX` y a vista imprimible para `PDF`, cuidando que el texto largo no se monte sobre otras columnas.
+
+---
+
+## Plan futuro 2026-06-29 — Motor Buffett automático con evidencia
+
+### Objetivo del bloque E25/E26
+
+Construir un motor Buffett futuro que no dependa de captura manual para el 80% del trabajo operativo:
+
+1. Extraer series financieras 5-10Y y filings de un universo seleccionado.
+2. Calcular calidad Buffett y valuación por `owner earnings + DCF`.
+3. Generar notas automáticas interpretadas por IA con citas, contradicciones y nivel de confianza.
+4. Dejar sólo el moat profundo y el juicio final como revisión humana.
+
+### Principios obligatorios
+
+- Graham y Buffett deben vivir como motores separados.
+- `qualityLayer` actual no equivale a una valuación Buffett formal.
+- Ningún prompt debe inventar moat, calidad directiva o ventaja competitiva si el texto fuente no lo dice.
+- Toda salida IA debe declarar `fact`, `inference`, `risk`, `confidence` y `sourceRefs`.
+- Si falta un dato duro, el sistema devuelve `null` o `insufficient_evidence`, nunca cero inventado.
+- El rollout debe hacerse por lotes pequeños y auditables, no por todo el universo de golpe.
+
+### Matriz de datos automáticos propuestos
+
+| Métrica / bloque | Fuente primaria | Fallback | Extracción exacta | Procesamiento | Persistencia sugerida | Manual si falta |
+|------------------|-----------------|----------|-------------------|---------------|-----------------------|-----------------|
+| Revenue anual | SEC Company Facts | Yahoo `fundamentalsTimeSeries` / `incomeStatementHistory` | `RevenueFromContractWithCustomerExcludingAssessedTax`, `SalesRevenueNet` | Elegir taxonomía disponible, convertir a USD si aplica, guardar `fiscalYear`, `source`, `asOf` | `buffettSeries.revenue[]` | No |
+| Operating income / EBIT | SEC Company Facts | Yahoo annual statements | `OperatingIncomeLoss` | Normalizar signo y año fiscal; usar para margen operativo y cobertura | `buffettSeries.operatingIncome[]` | No |
+| Net income | SEC Company Facts | Yahoo annual statements | `NetIncomeLoss` o `NetIncomeAvailableToCommonStockholdersBasic` | Base para calidad, owner earnings cross-check y ROE/ROA | `buffettSeries.netIncome[]` | No |
+| Operating cash flow | SEC Company Facts | Yahoo cash flow history | `NetCashProvidedByUsedInOperatingActivities` | Serie anual limpia; validar con moneda y `asOf` | `buffettSeries.operatingCF[]` | No |
+| Capex reportado | SEC Company Facts | Yahoo cash flow history | `PaymentsToAcquirePropertyPlantAndEquipment`, `CapitalExpenditures` | Tomar magnitud absoluta, normalizar signo y guardar método | `buffettSeries.reportedCapex[]` | No |
+| D&A | SEC Company Facts | Yahoo cash flow history | `DepreciationDepletionAndAmortization`, `DepreciationAmortizationAndAccretionNet` | Insumo para heuristic maintenance capex | `buffettSeries.depreciationAmortization[]` | No |
+| Shares outstanding | SEC Company Facts / cover page | Yahoo quote / fundamentalsTimeSeries | `CommonStockSharesOutstanding`, `EntityCommonStockSharesOutstanding` | Ajustar splits/ADR cuando corresponda y calcular CAGR | `buffettSeries.sharesOutstanding[]` | No |
+| Cash y deuda | SEC balance facts | Yahoo balance sheet | `CashAndCashEquivalentsAtCarryingValue`, `LongTermDebtAndCapitalLeaseObligations`, `CurrentPortionOfLongTermDebt` | Construir `netDebt` y `netDebtToEbit` | `buffettSeries.cash[]`, `buffettSeries.totalDebt[]` | No |
+| Márgenes | Derivado de revenue + earnings series | Yahoo ratios snapshot | Revenue, gross profit, operating income, net income | Calcular gross/op margin/net margin y su desviación 5-10Y | `buffettMetrics.marginStats` | No |
+| ROE / ROA / ROIC proxy | Derivado de income + balance series | Snapshot actual | Net income / equity, net income / assets, NOPAT / invested capital proxy | Generar `confidence` alto/medio/bajo según disponibilidad | `buffettMetrics.returns` | No |
+| Filings 10-K / annual report | SEC EDGAR | Investor relations | `10-K`, `10-K/A`, annual letter URL | Descargar, indexar y trocear por secciones | `company-doc-index.json`, carpeta raw | Sí si no hay texto disponible |
+| Earnings call transcript | Fuente permitida / investor site | Manual URL | transcript o prepared remarks | Trocear por speaker, quarter y citas | `company-doc-index.json` | Sí |
+| Shareholder letter | Investor relations | Manual URL | PDF/HTML de annual letter | Indexar y resumir con IA | `company-doc-index.json` | Sí |
+
+### Proceso detallado propuesto
+
+#### Fase 1 — Selección del lote
+
+1. Elegir un lote pequeño:
+   - `Mis posiciones`
+   - `Excelente, cara`
+   - `Top 10 por score`
+   - sector específico
+2. Congelar lista en `data/import/buffett-selected-<fecha>.json`.
+3. Guardar metadatos del lote:
+   - `ticker`
+   - `yahooSymbol`
+   - `cik`
+   - `market`
+   - `sector`
+   - `priority`
+
+#### Fase 2 — Ingesta financiera 5-10Y
+
+1. Resolver `ticker -> cik -> taxonomy map`.
+2. Descargar facts anuales SEC.
+3. Descargar fallback Yahoo anual/TTM.
+4. Convertir moneda a USD si el filing reporta moneda distinta.
+5. Normalizar series a estructura:
+
+```json
+{
+  "metric": "operatingCF",
+  "fiscalYear": 2025,
+  "value": 123456789,
+  "currency": "USD",
+  "source": "sec_companyfacts",
+  "sourceField": "NetCashProvidedByUsedInOperatingActivities",
+  "sourceForm": "10-K",
+  "asOf": "2026-02-14"
+}
+```
+
+6. Detectar gaps, duplicados, cambios de taxonomía y años faltantes.
+7. No interpolar; marcar `missingYears[]`.
+
+#### Fase 3 — Cálculo owner earnings
+
+1. Tomar `operatingCF`.
+2. Tomar `reportedCapex`.
+3. Estimar `maintenanceCapex`.
+4. Calcular:
+   - `ownerEarnings = operatingCF - maintenanceCapex`
+   - `ownerEarningsMargin = ownerEarnings / revenue`
+   - `ownerEarningsYield = ownerEarningsPerShare / price`
+5. Guardar también:
+   - `maintenanceCapexMethodId`
+   - `maintenanceCapexConfidence`
+   - `reportedCapex`
+   - `growthCapexProxy`
+
+#### Fase 4 — Calidad Buffett automática
+
+1. Calcular estabilidad 5-10Y:
+   - revenue CAGR
+   - operating income CAGR
+   - owner earnings CAGR
+   - años con owner earnings negativos
+2. Calcular retornos:
+   - `roeMedian5Y`
+   - `roaMedian5Y`
+   - `roicProxyMedian5Y`
+3. Calcular resiliencia:
+   - `netDebtToEbit`
+   - `interestCoverage`
+   - `fcfConsistency`
+4. Calcular asignación de capital:
+   - `shareCountCagr`
+   - recompras netas
+   - dilución
+   - deuda usada para recompras
+5. Emitir:
+   - `buffettQualityScore`
+   - `capitalAllocationScore`
+   - `qualityConfidence`
+
+#### Fase 5 — DCF con escenarios
+
+1. Definir parámetros por defecto:
+   - `requiredReturn = 10%`
+   - `terminalGrowth = 2.5%`
+   - `forecastYears = 10`
+2. Generar escenarios:
+   - `bear`
+   - `base`
+   - `bull`
+3. Reglas conservadoras:
+   - crecimiento nunca superior al histórico sin justificación
+   - el escenario `base` usa menor entre CAGR histórica y techo sectorial
+   - el `terminalGrowth` siempre menor que `requiredReturn`
+4. Calcular:
+   - `intrinsicValueBear`
+   - `intrinsicValueBase`
+   - `intrinsicValueBull`
+   - `mosBuffett`
+5. Si faltan 5 años mínimos de series limpias:
+   - no emitir DCF
+   - `valuationStatus = insufficient_history`
+
+#### Fase 6 — Ingesta documental
+
+1. Descargar 10-K más reciente y 2 anteriores si están disponibles.
+2. Descargar annual letters / shareholder letters.
+3. Descargar transcripts o prepared remarks de 2-4 trimestres.
+4. Guardar índice:
+
+```json
+{
+  "ticker": "MSFT",
+  "sourceType": "10-K",
+  "period": "FY2025",
+  "url": "https://...",
+  "localPath": "data/raw/company-docs/MSFT/2025-10k.html",
+  "sha256": "..."
+}
+```
+
+5. Trocear por secciones:
+   - `Business`
+   - `Risk Factors`
+   - `MD&A`
+   - `Capital Resources`
+   - `Prepared Remarks`
+   - `Q&A`
+
+#### Fase 7 — Extracción IA estructurada
+
+1. Alimentar a Claude/Codex con:
+   - métricas duras
+   - extractos de filings
+   - transcript chunks
+   - reglas de abstención
+2. Obligar salida JSON.
+3. Guardar:
+   - `facts[]`
+   - `inferences[]`
+   - `risks[]`
+   - `sourceRefs[]`
+   - `followUpQuestions[]`
+
+#### Fase 8 — Verificador de contradicciones
+
+1. Comparar la narrativa IA con métricas duras.
+2. Reglas ejemplo:
+   - si dice `pricing power fuerte` pero gross margin cae 5Y, marcar contradicción media
+   - si dice `balance conservador` pero `netDebtToEbit > 4`, contradicción alta
+   - si dice `recompras disciplinadas` pero `shareCountCagr > 2%`, contradicción alta
+3. Bajar `confidence` si hay contradicción.
+4. No publicar etiqueta Buffett final si la contradicción es alta.
+
+#### Fase 9 — Revisión humana mínima
+
+1. Revisar empresas con:
+   - `buffettQualityScore alto`
+   - `mosBuffett >= 20%`
+   - `contradictions = 0 o bajas`
+2. Validar moat sólo si hay evidencia real.
+3. Cambiar estado a:
+   - `ready_for_review`
+   - `reviewed`
+   - `watch_only`
+
+### Heurística propuesta para `maintenanceCapex`
+
+Mientras no exista un dato directo confiable, usar esta jerarquía:
+
+1. Si hay disclosure explícito de maintenance capex:
+   - usar ese dato.
+2. Si no:
+   - `maintenanceCapex = min(reportedCapex, depreciationAmortization)`
+3. Para sectores pesados:
+   - usar el mayor entre `0.8 * depreciationAmortization` y `min(reportedCapex, depreciationAmortization)`
+4. Para software / asset-light:
+   - usar el menor entre `reportedCapex` y `0.6 * depreciationAmortization`, con `confidence = low`
+5. Si `reportedCapex` falta:
+   - no calcular owner earnings.
+
+La regla debe quedar etiquetada por `methodId` y nunca ocultarse detrás de un número único.
+
+### Prompts operativos sugeridos
+
+#### Prompt A — Extraer señales Buffett de 10-K
+
+```text
+Actúa como analista de calidad empresarial estilo Buffett.
+
+Objetivo:
+Extraer únicamente señales explícitas o inferencias conservadoras desde el 10-K adjunto.
+
+Entrada:
+- JSON de métricas duras: revenue 5Y, owner earnings 5Y, margins 5Y, netDebtToEbit, shareCountCagr.
+- Fragmentos del 10-K: Business, Risk Factors, MD&A, Capital Resources.
+
+Reglas:
+- No inventes moat.
+- Si un punto no es explícito, responde `unknown`.
+- Separa siempre `fact`, `inference`, `risk`.
+- Cada inferencia debe referenciar al menos una cita breve.
+- Si una inferencia contradice las métricas, decláralo.
+
+Salida JSON:
+{
+  "pricingPower": { "value": "strong|mixed|weak|unknown", "confidence": 0-1, "facts": [], "inferences": [], "sourceRefs": [] },
+  "cyclicality": { "value": "high|medium|low|unknown", "confidence": 0-1, "facts": [], "inferences": [], "sourceRefs": [] },
+  "customerConcentration": { "value": "high|medium|low|unknown", "confidence": 0-1, "facts": [], "sourceRefs": [] },
+  "capitalAllocationDiscipline": { "value": "strong|mixed|weak|unknown", "confidence": 0-1, "facts": [], "sourceRefs": [] },
+  "managementRedFlags": [],
+  "followUpQuestions": []
+}
+```
+
+#### Prompt B — Interpretar transcript sin alucinar
+
+```text
+Actúa como analista financiero disciplinado.
+
+Objetivo:
+Resumir el earnings call para detectar tono de guidance, presión competitiva, pricing, demanda y disciplina de gasto.
+
+Entrada:
+- Métricas duras del trimestre y del histórico 5Y.
+- Prepared remarks.
+- Q&A.
+
+Reglas:
+- No infieras moat durable sólo por tono positivo.
+- Marca como `management_claim` todo lo que provenga de declaraciones de directivos.
+- Si no hay evidencia cuantitativa de soporte, la conclusión final debe decir `claim_not_verified`.
+- Devuelve citas cortas, no párrafos largos.
+
+Salida JSON:
+{
+  "guidanceTone": "",
+  "demandSignal": "",
+  "pricingSignal": "",
+  "costDiscipline": "",
+  "managementClaims": [],
+  "claimsNotVerified": [],
+  "sourceRefs": []
+}
+```
+
+#### Prompt C — Verificador IA vs métricas
+
+```text
+Actúa como validador de consistencia.
+
+Objetivo:
+Comparar la narrativa automática con métricas duras y devolver contradicciones.
+
+Entrada:
+- JSON de métricas duras
+- JSON de narrativa IA
+
+Reglas:
+- Si la narrativa afirma algo no soportado por números, márcalo.
+- No reescribas la tesis; sólo valida consistencia.
+
+Salida JSON:
+{
+  "contradictions": [
+    {
+      "severity": "high|medium|low",
+      "statement": "",
+      "metricEvidence": "",
+      "reason": ""
+    }
+  ],
+  "overallConfidenceAdjustment": -0.25
+}
+```
+
+### Forma de trabajo recomendada
+
+1. Empezar con `S78-S80` sólo para 10-20 empresas.
+2. Validar series y owner earnings con tests antes de cualquier UI.
+3. Implementar `S81-S85` sin prompts, sólo números.
+4. Añadir prompts `S87-S90` cuando ya existan métricas duras confiables.
+5. Hacer rollout por cohortes `S91`.
+6. Publicar filtros/exportes `S92` sólo después de tener contradicción checker y revisión humana mínima.
+
+### Entregables esperados por fase
+
+| Fase | Stories | Entregable |
+|------|---------|------------|
+| Fase 1 | S78-S80 | Series financieras 5-10Y auditables |
+| Fase 2 | S81-S85 | Owner earnings + quality score + DCF |
+| Fase 3 | S86 | Etiquetas y filtros Buffett en dashboard |
+| Fase 4 | S87-S90 | Ingesta documental + extracción IA + verificador |
+| Fase 5 | S91-S92 | Rollout por lotes + exportes/reportes Buffett |
 
 ---
 

@@ -542,3 +542,59 @@ RESTRICCIONES:
 - NO crear workflows en .github/workflows/
 - Verificar que dist/ no contiene secretos antes de cualquier push
 ```
+
+---
+
+## Prompt 19: Implementar una story del motor Buffett futuro
+
+```text
+Actúa como desarrollador del proyecto Graham Investment Suite.
+Repositorio: c:\00_Apps_Locales\GrahamAnalizer
+
+OBJETIVO:
+Implementar exactamente UNA story del roadmap Buffett futuro sin romper el motor Graham y sin convertir la capa de calidad actual en una falsa "valuación Buffett".
+
+STORY A IMPLEMENTAR EN ESTA SESIÓN:
+[Elegir UNA: S78 / S79 / S80 / S81 / S82 / S83 / S84 / S85 / S86 / S87 / S88 / S89 / S90 / S91 / S92]
+
+CONTEXTO OBLIGATORIO:
+- Leer `AGENTS.md`.
+- Fuente principal: `HANDOFF_GRAHAM_ECOSYSTEM.md`.
+- Roadmap: `docs/13_ROADMAP_NOTION_READY.md`, secciones `E25 Buffett Auto Engine` y `E26 IA y Evidencia Buffett`.
+- Prompts base: `docs/14_PROMPTS_OPERATIVOS.md`.
+- No tocar `.env`, `.env.local`, tokens ni credenciales.
+
+REGLAS:
+- No cambiar fórmulas Graham sin actualizar tests y documentación.
+- Mantener separados: `grahamScore`, `buffettQualityScore`, `buffettValuationScore`, `moat/manual evidence`.
+- Si falta un dato duro, usar `null`, `unknown` o `insufficient_evidence`; nunca inventar.
+- Toda salida IA debe ser JSON validable con `fact`, `inference`, `risk`, `confidence`, `sourceRefs`.
+- No publicar moat, calidad directiva o ventaja competitiva como hecho si no existe evidencia explícita.
+- Si la story requiere UI, mantener la UI en español y el código en inglés.
+
+PROCESO DE TRABAJO:
+1. Ejecutar `git status --short`.
+2. Leer los archivos afectados por la story elegida.
+3. Resumir en 3-5 líneas el alcance exacto y riesgos.
+4. Implementar sólo la story elegida.
+5. Añadir tests enfocados.
+6. Ejecutar:
+   - `npm test`
+   - `npm run build`
+   - `npm run build:artifact`
+7. No hacer deploy ni tocar Pages salvo petición explícita del usuario.
+8. Entregar:
+   - archivos modificados
+   - fórmula/fuente usada
+   - huecos que siguen requiriendo evidencia manual
+
+PLANTILLA DE VALIDACIÓN PARA SALIDAS IA:
+{
+  "facts": [],
+  "inferences": [],
+  "risks": [],
+  "sourceRefs": [],
+  "confidence": 0,
+  "requiresHumanReview": true
+}
+```
