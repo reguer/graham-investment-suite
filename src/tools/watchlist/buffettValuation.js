@@ -217,4 +217,75 @@ export function estimateMaintenanceCapex(item = {}, options = {}) {
   };
 }
 
+export function buildOwnerEarnings(item = {}, options = {}) {
+  const series = item.buffettSeries || item;
+  const operatingCFEntry = latestSeriesEntry(series.operatingCF);
+  const revenueEntry = latestSeriesEntry(series.revenue);
+  const sharesEntry = latestSeriesEntry(series.sharesOutstanding);
+  const maintenance = estimateMaintenanceCapex(item, options);
+
+  if (!operatingCFEntry) {
+    return {
+      ownerEarnings: null,
+      ownerEarningsMargin: null,
+      ownerEarningsPerShare: null,
+      ownerEarningsYield: null,
+      reportedCapex: maintenance.reportedCapex,
+      maintenanceCapex: maintenance.maintenanceCapex,
+      growthCapexProxy: maintenance.growthCapexProxy,
+      maintenanceCapexMethodId: maintenance.methodId,
+      maintenanceCapexConfidence: maintenance.confidence,
+      methodId: "owner_earnings.insufficient_operating_cf",
+      confidence: "low",
+      reason: "Falta operating cash flow anual; owner earnings queda en null.",
+      yieldReason: "Sin operating cash flow no se puede llegar a owner earnings yield.",
+    };
+  }
+
+  if (maintenance.maintenanceCapex === null) {
+    return {
+      ownerEarnings: null,
+      ownerEarningsMargin: null,
+      ownerEarningsPerShare: null,
+      ownerEarningsYield: null,
+      reportedCapex: maintenance.reportedCapex,
+      maintenanceCapex: null,
+      growthCapexProxy: null,
+      maintenanceCapexMethodId: maintenance.methodId,
+      maintenanceCapexConfidence: maintenance.confidence,
+      methodId: "owner_earnings.insufficient_maintenance_capex",
+      confidence: "low",
+      reason: maintenance.reason,
+      yieldReason: maintenance.reason,
+    };
+  }
+
+  const ownerEarnings = operatingCFEntry.value - maintenance.maintenanceCapex;
+  const ownerEarningsMargin = revenueEntry ? ratioOrNull(ownerEarnings, numberOrNull(revenueEntry.value)) : null;
+  const adrRatio = numberOrNull(item.adrRatio) ?? 1;
+  const shares = numberOrNull(sharesEntry?.value);
+  const ownerEarningsPerShare = shares !== null && shares > 0 ? (ownerEarnings / shares) * adrRatio : null;
+  const derivedMarketCap = deriveMarketCap(item, shares);
+  const ownerEarningsYield = ratioOrNull(ownerEarnings, derivedMarketCap.value);
+
+  return {
+    ownerEarnings,
+    ownerEarningsMargin,
+    ownerEarningsPerShare,
+    ownerEarningsYield,
+    reportedCapex: maintenance.reportedCapex,
+    maintenanceCapex: maintenance.maintenanceCapex,
+    growthCapexProxy: maintenance.growthCapexProxy,
+    maintenanceCapexMethodId: maintenance.methodId,
+    maintenanceCapexConfidence: maintenance.confidence,
+    methodId: "owner_earnings.operating_cf_minus_maintenance_capex",
+    confidence: lowerConfidence("medium", maintenance.confidence),
+    capitalIntensityTag: maintenance.capitalIntensityTag,
+    sectorId: maintenance.sectorId,
+    reason: `Owner earnings calculado como operating CF menos maintenance capex estimado por ${maintenance.methodId}.`,
+    yieldReason: ownerEarningsYield === null ? derivedMarketCap.reason : "Owner earnings yield calculado sobre market cap disponible o derivado.",
+    asOf: operatingCFEntry.asOf || maintenance.asOf || null,
+  };
+}
+
 export { DEFAULT_DECISION_STATUS };
