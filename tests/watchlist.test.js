@@ -44,4 +44,23 @@ describe("watchlist universe merge", () => {
     expect(normalizeTags("core, tech,")).toEqual(["core", "tech"]);
     expect(collectTags([{ tags: ["tech", "core"] }, { tags: "core,manual" }])).toEqual(["core", "manual", "tech"]);
   });
+
+  it("attaches manual moat evidence without mixing it into business notes", () => {
+    const enriched = buildWatchlist(publicCompanies, {
+      CTSH: {
+        moatRating: {
+          value: "Media",
+          sourceUrl: "https://example.com/moat",
+          asOf: "2026-07-03",
+          confidence: "medium",
+          notes: "Solo visible local/public segun export.",
+        },
+      },
+    });
+    const company = enriched.find((item) => item.ticker === "CTSH");
+
+    expect(company.moatManual.moatRating.value).toBe("Media");
+    expect(company.moatSummary.status).toBe("manual_evidence");
+    expect(company.notes || "").not.toContain("Solo visible local/public");
+  });
 });

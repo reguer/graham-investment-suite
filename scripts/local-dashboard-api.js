@@ -2,6 +2,8 @@ import { spawn } from "node:child_process";
 import { dirname } from "node:path";
 import { addCompany } from "./add-company.js";
 import { loadEnvLocal } from "./db-client.js";
+import { normalizeMoatManualRecord } from "../src/tools/watchlist/moatManual.js";
+import { readLocalMoatManual, upsertLocalMoatManual } from "./moat-manual-store.js";
 import { findPreferredNode } from "./node-runtime.js";
 
 const DEFAULT_CAPTURE_TIME = "18:00";
@@ -297,6 +299,43 @@ export function createLocalDashboardApiPlugin() {
               notes: "Agregada desde dashboard local; pendiente de procesar fundamentales.",
             });
             sendJson(response, 200, { ok: true, company: result.company, publicCount: result.publicCount });
+          } catch (error) {
+            sendJson(response, 400, { ok: false, error: error.message });
+          }
+        });
+      });
+
+      server.middlewares.use("/api/local/moat-manual", async (request, response) => {
+        if (request.method === "GET") {
+          try {
+            const query = new URL(request.url || "http://localhost/api/local/moat-manual", "http://localhost");
+            const ticker = String(query.searchParams.get("ticker") || "").trim().toUpperCase();
+            const records = readLocalMoatManual();
+            if (ticker) {
+              sendJson(response, 200, { ok: true, record: normalizeMoatManualRecord(records[ticker] || { ticker }) });
+              return;
+            }
+            sendJson(response, 200, { ok: true, records: Object.values(records) });
+          } catch (error) {
+            sendJson(response, 500, { ok: false, error: error.message });
+          }
+          return;
+        }
+
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+
+        let body = "";
+        request.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+        request.on("end", () => {
+          try {
+            const payload = JSON.parse(body || "{}");
+            const result = upsertLocalMoatManual(payload.record || payload);
+            sendJson(response, 200, { ok: true, record: result.record, filePath: result.filePath });
           } catch (error) {
             sendJson(response, 400, { ok: false, error: error.message });
           }

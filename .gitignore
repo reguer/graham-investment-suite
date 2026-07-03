@@ -18,6 +18,7 @@ data/*.sqlite
 data/*.db-shm
 data/*.db-wal
 data/cache/
+data/local/
 data/export/
 *.pid
 *.log

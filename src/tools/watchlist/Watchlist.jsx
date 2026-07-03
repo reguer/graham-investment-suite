@@ -7,6 +7,7 @@ import { buildWatchlistExportSummary, exportWatchlistToXlsx, openWatchlistPrintP
 import { buildDataIssueRows } from "./dataQuality.js";
 import { DEFAULT_POSITIONS } from "./defaultPositions.js";
 import { normalizeFavorites, sortFavoritesFirst, toggleFavorite, WATCHLIST_FAVORITES_KEY } from "./favorites.js";
+import { MOAT_MANUAL_FIELDS, createEmptyMoatManualRecord, createMoatManualDraft, fetchPublicMoatManual, mergeMoatManualMaps, summarizeMoatManual } from "./moatManual.js";
 import { businessNoteFor } from "./notes.js";
 import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, mergePositions, normalizePositions, parseMoney } from "./positions.js";
 import { screenWatchlist, summarizeScreen } from "./screen.js";
@@ -26,6 +27,13 @@ function colorFor(level) {
 function scoreSummary(score) {
   if (!score) return "N/D";
   return `${score.generalScore?.value ?? score.total} · ${score.generalScore?.label ?? score.label}`;
+}
+
+function confidenceLabel(value) {
+  if (value === "high") return "Alta";
+  if (value === "medium") return "Media";
+  if (value === "low") return "Baja";
+  return "N/D";
 }
 
 const SIGNAL_LABELS = {
@@ -61,9 +69,12 @@ export default function Watchlist({ onManualCapture }) {
   const [sortKey, setSortKey] = useState("system");
   const [positions, setPositions] = useState([]);
   const [positionDraft, setPositionDraft] = useState({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
+  const [moatManualByTicker, setMoatManualByTicker] = useState({});
+  const [moatDraft, setMoatDraft] = useState(null);
+  const [moatSaveInProgress, setMoatSaveInProgress] = useState(false);
   const [usdMxn, setUsdMxn] = useState(String(DEFAULT_USD_MXN));
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const watchlist = useMemo(() => buildWatchlist(publicCompanies), [publicCompanies]);
+  const watchlist = useMemo(() => buildWatchlist(publicCompanies, moatManualByTicker), [moatManualByTicker, publicCompanies]);
   const watchlistMeta = useMemo(() => buildWatchlistMeta(watchlist, publicCompanies), [publicCompanies, watchlist]);
   const results = useMemo(() => screenWatchlist(watchlist), [watchlist]);
   const summary = useMemo(() => summarizeScreen(results), [results]);
@@ -79,6 +90,11 @@ export default function Watchlist({ onManualCapture }) {
   const evaluatedPositions = useMemo(() => evaluatePositions(positions, results, { usdMxn: parseMoney(usdMxn) || DEFAULT_USD_MXN }), [positions, results, usdMxn]);
   const positionSet = useMemo(() => new Set(positions.map((item) => item.ticker)), [positions]);
   const systemStatuses = useMemo(() => listSystemStatuses(), []);
+  const selectedMoatRecord = useMemo(() => {
+    if (!selectedCompany) return null;
+    return moatManualByTicker[selectedCompany.ticker] || createEmptyMoatManualRecord(selectedCompany.ticker);
+  }, [moatManualByTicker, selectedCompany]);
+  const selectedMoatSummary = useMemo(() => summarizeMoatManual(selectedMoatRecord || {}), [selectedMoatRecord]);
   const tableColumnWidths = useMemo(() => ({
     ticker: "12ch",
     name: "28ch",
@@ -182,6 +198,16 @@ export default function Watchlist({ onManualCapture }) {
 
   useEffect(() => {
     let cancelled = false;
+    fetchPublicMoatManual(fetch, import.meta.env.BASE_URL).then((records) => {
+      if (!cancelled) setMoatManualByTicker((current) => mergeMoatManualMaps(current, records));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
     fetch("/api/local/capture-status")
       .then((response) => (response.ok ? response.json() : null))
       .then((payload) => {
@@ -194,6 +220,29 @@ export default function Watchlist({ onManualCapture }) {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!captureStatus.localApi) return undefined;
+    let cancelled = false;
+    fetch("/api/local/moat-manual")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (cancelled || !payload?.ok) return;
+        setMoatManualByTicker((current) => mergeMoatManualMaps(current, payload.records || []));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [captureStatus.localApi]);
+
+  useEffect(() => {
+    if (!selectedCompany) {
+      setMoatDraft(null);
+      return;
+    }
+    setMoatDraft(createMoatManualDraft(selectedMoatRecord || { ticker: selectedCompany.ticker }));
+  }, [selectedCompany, selectedMoatRecord]);
 
   function handleToggleFavorite(ticker) {
     setFavorites((current) => {
@@ -390,6 +439,41 @@ export default function Watchlist({ onManualCapture }) {
     }
   }
 
+  function updateMoatDraft(fieldId, key, value) {
+    setMoatDraft((current) => ({
+      ...(current || createMoatManualDraft({ ticker: selectedCompany?.ticker || "" })),
+      [fieldId]: {
+        ...(current?.[fieldId] || {}),
+        [key]: value,
+      },
+    }));
+  }
+
+  async function handleSaveMoatDraft() {
+    if (!captureStatus.localApi) {
+      setCaptureMessage("El editor de moat solo guarda desde el dashboard local.");
+      return;
+    }
+    if (!selectedCompany || !moatDraft) return;
+    setMoatSaveInProgress(true);
+    try {
+      const response = await fetch("/api/local/moat-manual", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ record: { ticker: selectedCompany.ticker, ...moatDraft } }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo guardar el moat manual.");
+      setMoatManualByTicker((current) => mergeMoatManualMaps(current, [payload.record]));
+      setMoatDraft(createMoatManualDraft(payload.record));
+      setCaptureMessage(`${selectedCompany.ticker}: moat manual guardado en archivo local privado.`);
+    } catch (error) {
+      setCaptureMessage(error.message);
+    } finally {
+      setMoatSaveInProgress(false);
+    }
+  }
+
   function handleExportPdf() {
     if (!filteredResults.length) {
       setCaptureMessage("No hay registros en el filtro actual para exportar.");
@@ -409,16 +493,18 @@ export default function Watchlist({ onManualCapture }) {
 
   return (
     <section>
-      <style>{`
-        .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: SURFACE.panel; margin-bottom: 12px; }
-        .watchlist-card-list { display: none; }
-        .positions-form { display: grid; grid-template-columns: minmax(90px, 120px) minmax(90px, 120px) minmax(150px, 180px) minmax(160px, 1fr) auto; gap: 8px; align-items: end; margin-bottom: 12px; }
-        @media (max-width: 999px) {
-          .watchlist-table-shell { display: none; }
-          .watchlist-card-list { display: grid; gap: 10px; }
-          .positions-form { grid-template-columns: 1fr; }
-        }
-      `}</style>
+        <style>{`
+          .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: SURFACE.panel; margin-bottom: 12px; }
+          .watchlist-card-list { display: none; }
+          .positions-form { display: grid; grid-template-columns: minmax(90px, 120px) minmax(90px, 120px) minmax(150px, 180px) minmax(160px, 1fr) auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+          .moat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+          @media (max-width: 999px) {
+            .watchlist-table-shell { display: none; }
+            .watchlist-card-list { display: grid; gap: 10px; }
+            .positions-form { grid-template-columns: 1fr; }
+            .moat-grid { grid-template-columns: 1fr; }
+          }
+        `}</style>
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ margin: 0, fontSize: 28, letterSpacing: 0 }}>Watchlist Semanal</h1>
         <p style={{ margin: "5px 0 0", color: SURFACE.muted }}>
@@ -1021,6 +1107,65 @@ export default function Watchlist({ onManualCapture }) {
               <p style={{ color: selectedBusinessNote ? SURFACE.text : SURFACE.muted, lineHeight: 1.55, margin: "8px 0 0" }}>
                 {selectedBusinessNote || "Sin nota de negocio visible. La informacion tecnica de extraccion queda fuera de esta seccion."}
               </p>
+            </div>
+
+            <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panelDark, borderRadius: 8, padding: 14, marginBottom: 12 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                <strong>Calidad y moat</strong>
+                <span style={{ color: SURFACE.muted, fontSize: 12 }}>
+                  {captureStatus.localApi
+                    ? "Editable solo en dashboard local. Pages solo leera el export publico sanitizado."
+                    : "Modo lectura. La edicion solo existe en el dashboard local."}
+                </span>
+              </div>
+              <div style={{ color: SURFACE.muted, fontSize: 12, marginTop: 8 }}>
+                Estado: {selectedMoatSummary.label} · Evidencias: {selectedMoatSummary.filledFieldCount} · Confianza base: {confidenceLabel(selectedMoatSummary.confidence)}
+              </div>
+              <div className="moat-grid" style={{ marginTop: 10 }}>
+                {MOAT_MANUAL_FIELDS.map((field) => {
+                  const draftEntry = moatDraft?.[field.id] || createEmptyMoatManualRecord(selectedCompany.ticker)[field.id];
+                  const entry = selectedMoatRecord?.[field.id] || draftEntry;
+                  return (
+                    <div key={field.id} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, borderRadius: 8, padding: 12 }}>
+                      <div style={{ color: SURFACE.text, fontWeight: 700, marginBottom: 8 }}>{field.label}</div>
+                      {captureStatus.localApi ? (
+                        <div style={{ display: "grid", gap: 8 }}>
+                          <input value={draftEntry.value || ""} onChange={(event) => updateMoatDraft(field.id, "value", event.target.value)} placeholder="Valor / juicio manual" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+                          <input value={draftEntry.sourceUrl || ""} onChange={(event) => updateMoatDraft(field.id, "sourceUrl", event.target.value)} placeholder="URL de fuente" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+                          <input value={draftEntry.asOf || ""} onChange={(event) => updateMoatDraft(field.id, "asOf", event.target.value)} placeholder="Fecha (YYYY-MM-DD)" style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }} />
+                          <select value={draftEntry.confidence || ""} onChange={(event) => updateMoatDraft(field.id, "confidence", event.target.value)} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px" }}>
+                            <option value="">Confianza N/D</option>
+                            <option value="high">Alta</option>
+                            <option value="medium">Media</option>
+                            <option value="low">Baja</option>
+                          </select>
+                          <textarea value={draftEntry.notes || ""} onChange={(event) => updateMoatDraft(field.id, "notes", event.target.value)} placeholder="Notas locales" rows={4} style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.page, color: SURFACE.text, borderRadius: 6, padding: "8px 10px", resize: "vertical" }} />
+                        </div>
+                      ) : (
+                        <div style={{ color: SURFACE.muted, lineHeight: 1.65, fontSize: 12 }}>
+                          Valor: {entry.value || "N/D"}<br />
+                          Fuente: {entry.sourceUrl || "N/D"}<br />
+                          Fecha: {entry.asOf || "N/D"}<br />
+                          Confianza: {confidenceLabel(entry.confidence)}<br />
+                          Notas: {entry.notes || "N/D"}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {captureStatus.localApi ? (
+                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
+                  <button
+                    type="button"
+                    onClick={handleSaveMoatDraft}
+                    disabled={moatSaveInProgress}
+                    style={{ border: `1px solid ${AC.green}`, background: SURFACE.activeGreen, color: SURFACE.text, borderRadius: 6, padding: "9px 12px", cursor: moatSaveInProgress ? "not-allowed" : "pointer" }}
+                  >
+                    {moatSaveInProgress ? "Guardando..." : "Guardar moat local"}
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panel, borderRadius: 8, padding: 14 }}>

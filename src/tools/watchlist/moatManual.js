@@ -76,3 +76,79 @@ export function normalizeMoatManualMap(payload = {}) {
       .map((record) => [record.ticker, record]),
   );
 }
+
+function hasEntryContent(entry = {}) {
+  return Boolean(entry.value || entry.sourceUrl || entry.asOf || entry.confidence || entry.notes);
+}
+
+export function hasMoatManualData(record = {}) {
+  const normalized = normalizeMoatManualRecord(record);
+  return MOAT_MANUAL_FIELDS.some((field) => hasEntryContent(normalized[field.id]));
+}
+
+export function summarizeMoatManual(record = {}) {
+  const normalized = normalizeMoatManualRecord(record);
+  const filledFields = MOAT_MANUAL_FIELDS.filter((field) => hasEntryContent(normalized[field.id]));
+  const moatLabel = normalized.moatRating.value || null;
+  const confidence = normalized.moatRating.confidence || filledFields.find((field) => normalized[field.id].confidence)?.id
+    ? normalized[filledFields.find((field) => normalized[field.id].confidence)?.id || "moatRating"]?.confidence || null
+    : null;
+  const hasData = filledFields.length > 0;
+
+  return {
+    hasData,
+    filledFieldCount: filledFields.length,
+    label: moatLabel || (hasData ? `${filledFields.length} evidencias manuales` : "N/D"),
+    confidence,
+    status: hasData ? "manual_evidence" : "pending_manual",
+  };
+}
+
+export function mergeMoatManualMaps(base = {}, override = {}) {
+  return {
+    ...normalizeMoatManualMap(base),
+    ...normalizeMoatManualMap(override),
+  };
+}
+
+export function attachMoatManual(company, moatManualByTicker = {}) {
+  const ticker = String(company?.ticker || "").trim().toUpperCase();
+  const record = ticker && moatManualByTicker[ticker]
+    ? normalizeMoatManualRecord(moatManualByTicker[ticker])
+    : createEmptyMoatManualRecord(ticker);
+  return {
+    ...company,
+    moatManual: record,
+    moatSummary: summarizeMoatManual(record),
+  };
+}
+
+export function attachMoatManualToCompanies(companies = [], moatManualByTicker = {}) {
+  return companies.map((company) => attachMoatManual(company, moatManualByTicker));
+}
+
+export async function fetchPublicMoatManual(fetchImpl = fetch, baseUrl = "/") {
+  try {
+    const response = await fetchImpl(`${baseUrl.replace(/\/?$/, "/")}data/moat-manual.json`);
+    if (!response.ok) throw new Error(`No se pudo cargar moat-manual.json: ${response.status}`);
+    return normalizeMoatManualMap(await response.json());
+  } catch {
+    return {};
+  }
+}
+
+export function createMoatManualDraft(record = {}) {
+  const normalized = normalizeMoatManualRecord(record);
+  return Object.assign(
+    {
+      ticker: normalized.ticker || "",
+    },
+    Object.fromEntries(MOAT_MANUAL_FIELDS.map((field) => [field.id, {
+      value: normalized[field.id].value || "",
+      sourceUrl: normalized[field.id].sourceUrl || "",
+      asOf: normalized[field.id].asOf || "",
+      confidence: normalized[field.id].confidence || "",
+      notes: normalized[field.id].notes || "",
+    }])),
+  );
+}

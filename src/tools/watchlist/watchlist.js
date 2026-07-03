@@ -1,4 +1,5 @@
 import { grahamCandidates } from "../graham-analyzer/candidates.js";
+import { attachMoatManualToCompanies } from "./moatManual.js";
 import { tickerUniverse, universeMeta } from "./universe.js";
 import { businessNoteFor } from "./notes.js";
 
@@ -64,7 +65,7 @@ function mergeByTicker(sources) {
   return [...byTicker.values()];
 }
 
-export function buildWatchlist(publicCompanies = []) {
+export function buildWatchlist(publicCompanies = [], moatManualByTicker = {}) {
   const persistedUniverse = mergeByTicker([tickerUniverse, publicCompanies]);
   const universeWatchlist = persistedUniverse.map((item) => {
   const analyzed = analyzedByTicker.get(item.ticker.toUpperCase());
@@ -125,7 +126,7 @@ export function buildWatchlist(publicCompanies = []) {
   const universeTickerKeys = new Set(persistedUniverse.map((item) => item.ticker.toUpperCase()));
   const analyzedOutsideUniverse = analyzedWatchlist.filter((item) => !universeTickerKeys.has(item.ticker.toUpperCase()));
 
-  return [...universeWatchlist, ...analyzedOutsideUniverse];
+  return attachMoatManualToCompanies([...universeWatchlist, ...analyzedOutsideUniverse], moatManualByTicker);
 }
 
 export function buildWatchlistMeta(watchlist, publicCompanies = []) {
