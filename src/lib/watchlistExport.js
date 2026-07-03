@@ -1,5 +1,8 @@
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "../tools/watchlist/tableColumns.js";
 import { getVisibleWatchReason } from "../tools/watchlist/watchReason.js";
+import { buildBuffettBlock } from "../tools/watchlist/buffettValuation.js";
+import { buildBuffettLabel } from "../tools/watchlist/buffettLabels.js";
+import { fmt as fmtNumber, pct as pctNumber } from "./formatters.js";
 
 const PDF_COLUMN_IDS = ["ticker", "name", "sector", "price", "score", "qualityTag", "pe", "pb", "pePb", "mos", "maxDef", "graham", "system", "tags", "reason"];
 const EXCLUDED_EXPORT_COLUMN_IDS = new Set(["action"]);
@@ -283,4 +286,68 @@ export function openWatchlistPrintPreview(options) {
   const printWindow = window.open(url, "_blank");
   if (!printWindow) throw new Error("El navegador bloqueo la ventana emergente para exportar PDF.");
   window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}
+
+// S92: bloque Buffett para exportes. Es independiente del export Graham actual
+// (no altera sus columnas). Los scores Buffett siguen con pesos placeholder, por
+// eso se incluye la columna "Pesos" con el estado PENDIENTE-DECISION.
+export const BUFFETT_EXPORT_HEADERS = [
+  "Ticker",
+  "Nombre",
+  "Etiqueta Buffett",
+  "Owner Earnings",
+  "OE / accion",
+  "DCF Base",
+  "DCF Bear",
+  "DCF Bull",
+  "MoS Buffett",
+  "Quality Score",
+  "Capital Allocation",
+  "Confidence",
+  "Estado valuacion",
+  "Estado IA",
+  "Pesos",
+];
+
+function buffettBlockFor(item) {
+  return item.buffett || buildBuffettBlock(item);
+}
+
+export function buildBuffettExportRow(item = {}) {
+  const buffett = buffettBlockFor(item);
+  const label = buildBuffettLabel({ ...item, buffett });
+  const ownerEarnings = buffett.ownerEarnings || {};
+  const dcf = buffett.dcf || {};
+  const quality = buffett.qualityScore || {};
+  return {
+    Ticker: item.ticker || "",
+    Nombre: item.companyName || "",
+    "Etiqueta Buffett": label.label,
+    "Owner Earnings": fmtNumber(ownerEarnings.ownerEarnings),
+    "OE / accion": fmtNumber(ownerEarnings.ownerEarningsPerShare),
+    "DCF Base": fmtNumber(dcf.intrinsicValuePerShareBase),
+    "DCF Bear": fmtNumber(dcf.intrinsicValuePerShareBear),
+    "DCF Bull": fmtNumber(dcf.intrinsicValuePerShareBull),
+    "MoS Buffett": pctNumber(dcf.mosBuffett),
+    "Quality Score": quality.value ?? "N/D",
+    "Capital Allocation": quality.capitalAllocationScore ?? "N/D",
+    Confidence: quality.qualityConfidence || "N/D",
+    "Estado valuacion": dcf.valuationStatus || "N/D",
+    "Estado IA": item.buffettAi?.status || "insufficient_evidence",
+    Pesos: quality.weightStatus || "PENDIENTE-DECISION",
+  };
+}
+
+export function watchlistBuffettSheetData(items = []) {
+  const rows = Array.isArray(items) ? items : [];
+  return [
+    BUFFETT_EXPORT_HEADERS,
+    ...rows.map((item) => {
+      const row = buildBuffettExportRow(item);
+      return BUFFETT_EXPORT_HEADERS.map((header) => {
+        const value = row[header];
+        return value === null || value === undefined ? "" : String(value);
+      });
+    }),
+  ];
 }
