@@ -24,7 +24,7 @@ describe("buildBuffettDcf", () => {
     expect(result.requiredReturn).toBe(0.1);
     expect(result.terminalGrowth).toBe(0.025);
     expect(result.forecastYears).toBe(10);
-    expect(result.decisionStatus).toBe("PENDIENTE-DECISION");
+    expect(result.decisionStatus).toBe("APROBADO-2026-07-03");
     // ownerEarnings = 200 - min(capex 100, D&A 80) = 120; flat growth => bear = base = bull.
     expect(result.intrinsicValueBase).toBeCloseTo(1369.6, 0);
     expect(result.intrinsicValueBear).toBeCloseTo(result.intrinsicValueBase, 6);

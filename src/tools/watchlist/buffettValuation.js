@@ -2,9 +2,21 @@ import { detectSector } from "../graham-analyzer/detectSector.js";
 import { assessIntangibleBalance } from "./qualityMetrics.js";
 
 const DEFAULT_DECISION_STATUS = "PENDIENTE-DECISION";
+// S82 y S85 aprobados el 2026-07-03: factores de maintenance capex y defaults DCF.
+const APPROVED_DECISION_STATUS = "APROBADO-2026-07-03";
 const DEFAULT_REQUIRED_RETURN = 0.1;
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const DEFAULT_FORECAST_YEARS = 10;
+
+const BUFFETT_QUALITY_WEIGHTS = {
+  ownerEarningsQuality: 0.2,
+  capitalAllocation: 0.2,
+  fcfConsistency: 0.2,
+  profitability: 0.15,
+  marginStability: 0.1,
+  returns: 0.1,
+  intangibleDependence: 0.05,
+};
 
 const SECTOR_GROWTH_CAP = {
   asset_light: 0.12,
@@ -124,7 +136,7 @@ export function estimateMaintenanceCapex(item = {}, options = {}) {
   const disclosedMaintenanceCapex = numberOrNull(item.disclosedMaintenanceCapex?.value ?? item.disclosedMaintenanceCapex);
   const capexToRevenue = ratioOrNull(reportedCapex, revenueLatest);
   const intensityTag = capitalIntensityTag(item, capexToRevenue);
-  const decisionStatus = options.decisionStatus || DEFAULT_DECISION_STATUS;
+  const decisionStatus = options.decisionStatus || APPROVED_DECISION_STATUS;
 
   if (disclosedMaintenanceCapex !== null) {
     return {
@@ -191,7 +203,7 @@ export function estimateMaintenanceCapex(item = {}, options = {}) {
       methodId: "maintenance_capex.asset_heavy_floor",
       confidence: "medium",
       decisionStatus,
-      reason: "Perfil asset-heavy: se usa el mayor entre min(capex, D&A) y 0.8 x D&A. El factor 0.8 queda en PENDIENTE-DECISION.",
+      reason: "Perfil asset-heavy: se usa el mayor entre min(capex, D&A) y 0.8 x D&A (factor aprobado 2026-07-03; sesgo conservador).",
     };
   }
 
@@ -208,7 +220,7 @@ export function estimateMaintenanceCapex(item = {}, options = {}) {
       methodId: "maintenance_capex.asset_light_cap",
       confidence: "low",
       decisionStatus,
-      reason: "Perfil asset-light: se usa el menor entre reported capex y 0.6 x D&A. El factor 0.6 queda en PENDIENTE-DECISION.",
+      reason: "Perfil asset-light: se usa el menor entre reported capex y 0.6 x D&A (factor aprobado 2026-07-03; sesgo conservador).",
     };
   }
 
@@ -403,7 +415,7 @@ function freeCashFlowSeries(series = {}) {
 
 function component(id, value, reason, extra = {}) {
   const hasData = value !== null && value !== undefined && Number.isFinite(value);
-  return { id, value: hasData ? Math.round(value) : null, weightPlaceholder: 1, hasData, reason, ...extra };
+  return { id, value: hasData ? Math.round(value) : null, weight: BUFFETT_QUALITY_WEIGHTS[id] ?? 0, hasData, reason, ...extra };
 }
 
 function scoreCapitalAllocation(capitalAllocation = {}) {
@@ -428,7 +440,7 @@ function scoreCapitalAllocation(capitalAllocation = {}) {
 
 export function buildBuffettQualityScore(item = {}, options = {}) {
   const series = item.buffettSeries || item;
-  const decisionStatus = options.decisionStatus || DEFAULT_DECISION_STATUS;
+  const decisionStatus = options.decisionStatus || APPROVED_DECISION_STATUS;
   const ownerEarningsResult = options.ownerEarningsResult || buildOwnerEarnings(item, options);
   const capitalAllocation = options.capitalAllocationResult
     || buildCapitalAllocationMetrics(item, { ...options, ownerEarningsResult });
@@ -480,26 +492,30 @@ export function buildBuffettQualityScore(item = {}, options = {}) {
   ];
 
   const available = components.filter((entry) => entry.value !== null);
-  const value = available.length ? Math.round(clamp(mean(available.map((entry) => entry.value)))) : null;
+  const weightSum = available.reduce((sum, entry) => sum + entry.weight, 0);
+  const value = available.length && weightSum > 0
+    ? Math.round(clamp(available.reduce((sum, entry) => sum + entry.value * entry.weight, 0) / weightSum))
+    : null;
   const qualityConfidence = available.length >= 5 ? "high" : available.length >= 3 ? "medium" : "low";
 
   return {
     value,
     label: value === null ? "N/D" : value >= 70 ? "Calidad Buffett alta" : value >= 50 ? "Calidad Buffett media" : "Calidad Buffett baja",
-    weightsApproved: false,
+    weightsApproved: true,
     weightStatus: decisionStatus,
     decisionStatus,
+    weights: BUFFETT_QUALITY_WEIGHTS,
     qualityConfidence,
     capitalAllocationScore: capitalAllocationScore.value,
     components,
-    methodId: "buffett_quality_score.v1_placeholder_weights",
-    reason: "buffettQualityScore combina rentabilidad, estabilidad, FCF, retornos proxy, owner earnings, asignacion de capital e intangibles con pesos iguales placeholder en PENDIENTE-DECISION; no aprueba compra por si solo.",
+    methodId: "buffett_quality_score.v1_weighted",
+    reason: "buffettQualityScore pondera owner earnings y asignacion de capital y FCF (0.20 c/u), rentabilidad (0.15), estabilidad de margen y retornos proxy (0.10 c/u) e intangibles (0.05); pesos aprobados 2026-07-03. No aprueba compra por si solo.",
   };
 }
 
 export function buildBuffettDcf(item = {}, options = {}) {
   const series = item.buffettSeries || item;
-  const decisionStatus = options.decisionStatus || DEFAULT_DECISION_STATUS;
+  const decisionStatus = options.decisionStatus || APPROVED_DECISION_STATUS;
   const ownerEarningsResult = options.ownerEarningsResult || buildOwnerEarnings(item, options);
   const forecastYears = options.forecastYears || DEFAULT_FORECAST_YEARS;
   const requiredReturn = numberOrNull(options.requiredReturn) ?? DEFAULT_REQUIRED_RETURN;
@@ -591,7 +607,7 @@ export function buildBuffettDcf(item = {}, options = {}) {
     capitalIntensityTag: intensityTag,
     decisionStatus,
     methodId: "buffett_dcf.owner_earnings_10y_scenarios",
-    reason: "DCF a 10 anos sobre owner earnings con escenarios bear/base/bull; requiredReturn y terminalGrowth siguen en PENDIENTE-DECISION y el crecimiento base nunca supera el historico ni el techo sectorial.",
+    reason: "DCF a 10 anos sobre owner earnings con escenarios bear/base/bull; requiredReturn 10% y terminalGrowth 2.5% aprobados 2026-07-03; el crecimiento base nunca supera el historico ni el techo sectorial.",
     mosReason: mosBuffett === null ? "Falta precio o valor intrinseco por accion para el margen de seguridad Buffett." : "mosBuffett calculado sobre el escenario base por accion.",
   };
 }
@@ -619,7 +635,9 @@ export function buildBuffettBlock(item = {}, options = {}) {
 
 export {
   DEFAULT_DECISION_STATUS,
+  APPROVED_DECISION_STATUS,
   DEFAULT_REQUIRED_RETURN,
   DEFAULT_TERMINAL_GROWTH,
   DEFAULT_FORECAST_YEARS,
+  BUFFETT_QUALITY_WEIGHTS,
 };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_DECISION_STATUS, estimateMaintenanceCapex } from "../src/tools/watchlist/buffettValuation.js";
+import { APPROVED_DECISION_STATUS, estimateMaintenanceCapex } from "../src/tools/watchlist/buffettValuation.js";
 
 describe("estimateMaintenanceCapex", () => {
   it("uses disclosed maintenance capex when the company reports it explicitly", () => {
@@ -17,7 +17,7 @@ describe("estimateMaintenanceCapex", () => {
     expect(result.confidence).toBe("high");
   });
 
-  it("applies the heavy-sector floor and leaves the factor in pending decision", () => {
+  it("applies the heavy-sector floor with the approved factor", () => {
     const result = estimateMaintenanceCapex({
       sector: "Utilities",
       industry: "Regulated Electric",
@@ -31,7 +31,7 @@ describe("estimateMaintenanceCapex", () => {
     expect(result.maintenanceCapex).toBe(80);
     expect(result.capitalIntensityTag).toBe("asset_heavy");
     expect(result.methodId).toBe("maintenance_capex.asset_heavy_floor");
-    expect(result.decisionStatus).toBe(DEFAULT_DECISION_STATUS);
+    expect(result.decisionStatus).toBe(APPROVED_DECISION_STATUS);
   });
 
   it("applies the asset-light cap with low confidence", () => {

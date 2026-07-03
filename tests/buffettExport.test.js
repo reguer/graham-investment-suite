@@ -39,7 +39,7 @@ describe("buildBuffettExportRow", () => {
 
     expect(row["Etiqueta Buffett"]).toBe("Valuacion insuficiente");
     expect(row["Quality Score"]).toBe("N/D");
-    expect(row.Pesos).toBe("PENDIENTE-DECISION");
+    expect(row.Pesos).toBe("APROBADO-2026-07-03");
   });
 });
 

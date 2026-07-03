@@ -70,3 +70,40 @@ La formula Graham pura no cambia. Para snapshots automaticos desde Yahoo Finance
 - Si los datos necesarios siguen ausentes o no son aplicables, la empresa se marca como `yahoo_model_rejected` cuando puede descartarse por modelo, o queda pendiente solo si el instrumento no es una accion analizable por Graham, como indices o futuros.
 
 Esta decision permite analizar empresas no SEC con moneda local, como BIDU en CNY o SKHYNIX en KRW, sin mezclar monedas ni aceptar ratios de fuentes incompatibles.
+
+## Motor Buffett — parametros aprobados 2026-07-03
+
+Fuente de verdad de los defaults del motor Buffett (E25/E26). Cambiarlos exige actualizar tests y esta seccion.
+
+### Owner earnings (S81)
+- `ownerEarnings = operatingCF - maintenanceCapex`.
+- Si falta operating CF o maintenance capex, se devuelve `null` con razon legible; nunca se rellena con cero.
+
+### Maintenance capex (S82, factores aprobados)
+Jerarquia conservadora:
+1. Disclosure explicito de la empresa, si existe.
+2. Asset-heavy (utilities, industrial, energy, basic materials, semis): `max(min(capex, D&A), 0.8 x D&A)`.
+3. Asset-light (software/SaaS/cloud): `min(capex, 0.6 x D&A)`.
+4. Balanceado: `min(capex, D&A)`.
+
+Los factores `0.8` y `0.6` quedan aprobados con sesgo conservador (subestiman owner earnings antes que inflarlos).
+
+### buffettQualityScore (S84, pesos aprobados)
+Promedio ponderado sobre los componentes con dato disponible (los pesos se renormalizan si falta alguno):
+
+| Componente | Peso |
+|------------|------|
+| ownerEarningsQuality | 0.20 |
+| capitalAllocation | 0.20 |
+| fcfConsistency | 0.20 |
+| profitability | 0.15 |
+| marginStability | 0.10 |
+| returns (proxy ROE/ROA) | 0.10 |
+| intangibleDependence | 0.05 |
+
+Calibrado contra un perfil de alta calidad real (Apple 10-K FY2020-2024) vs un ciclico debil. No aprueba compra por si solo; Graham sigue siendo freno separado.
+
+### DCF Buffett (S85, defaults aprobados)
+- `requiredReturn = 10%` (retorno exigido estilo Buffett, ~ retorno historico de bolsa).
+- `terminalGrowth = 2.5%` (<= crecimiento de largo plazo de la economia; siempre menor que requiredReturn).
+- `forecastYears = 10`. Escenarios `bear/base/bull`; el crecimiento base nunca supera el CAGR historico ni el techo sectorial. Sin DCF si hay menos de 5 anos limpios.
