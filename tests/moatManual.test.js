@@ -7,6 +7,7 @@ import {
   normalizeMoatManualEntry,
   normalizeMoatManualMap,
   normalizeMoatManualRecord,
+  sanitizeMoatManualRecordForPublic,
 } from "../src/tools/watchlist/moatManual.js";
 
 describe("moat manual schema", () => {
@@ -104,5 +105,23 @@ describe("moat manual schema", () => {
       confidence: null,
       notes: null,
     });
+  });
+
+  it("removes private notes from the public export shape", () => {
+    const sanitized = sanitizeMoatManualRecordForPublic({
+      ticker: "TSM",
+      moatRating: {
+        value: "Alta",
+        sourceUrl: "https://example.com/moat",
+        asOf: "2026-07-03",
+        confidence: "high",
+        notes: "Solo local",
+      },
+    });
+
+    expect(sanitized.ticker).toBe("TSM");
+    expect(sanitized.moatRating.notes).toBeNull();
+    expect(sanitized.moatRating.value).toBe("Alta");
+    expect(sanitized.moatRating.sourceUrl).toBe("https://example.com/moat");
   });
 });

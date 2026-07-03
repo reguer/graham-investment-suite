@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { normalizeMoatManualMap, normalizeMoatManualRecord } from "../src/tools/watchlist/moatManual.js";
+import { normalizeMoatManualMap, normalizeMoatManualRecord, sanitizeMoatManualMapForPublic } from "../src/tools/watchlist/moatManual.js";
 
 export function getLocalMoatManualPath(rootDir = process.cwd()) {
   return resolve(rootDir, "data/local/moat-manual.private.json");
@@ -28,4 +28,30 @@ export function upsertLocalMoatManual(record, rootDir = process.cwd(), updatedAt
   current[normalized.ticker] = normalized;
   const saved = writeLocalMoatManual(current, rootDir);
   return { filePath: saved.filePath, record: current[normalized.ticker], records: current };
+}
+
+export function getPublicMoatManualPaths(rootDir = process.cwd()) {
+  return {
+    dataPublicPath: resolve(rootDir, "data/public/moat-manual.json"),
+    publicSitePath: resolve(rootDir, "public/data/moat-manual.json"),
+  };
+}
+
+export function writePublicMoatManual(records = {}, rootDir = process.cwd()) {
+  const sanitized = sanitizeMoatManualMapForPublic(records);
+  const paths = getPublicMoatManualPaths(rootDir);
+  for (const filePath of Object.values(paths)) {
+    mkdirSync(dirname(filePath), { recursive: true });
+    writeFileSync(filePath, `${JSON.stringify(sanitized, null, 2)}\n`, "utf8");
+  }
+  return { ...paths, records: sanitized };
+}
+
+export function exportLocalMoatManualToPublic(rootDir = process.cwd()) {
+  const records = readLocalMoatManual(rootDir);
+  const saved = writePublicMoatManual(records, rootDir);
+  return {
+    ...saved,
+    count: Object.keys(saved.records).length,
+  };
 }

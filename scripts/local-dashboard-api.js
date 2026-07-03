@@ -3,7 +3,7 @@ import { dirname } from "node:path";
 import { addCompany } from "./add-company.js";
 import { loadEnvLocal } from "./db-client.js";
 import { normalizeMoatManualRecord } from "../src/tools/watchlist/moatManual.js";
-import { readLocalMoatManual, upsertLocalMoatManual } from "./moat-manual-store.js";
+import { exportLocalMoatManualToPublic, readLocalMoatManual, upsertLocalMoatManual } from "./moat-manual-store.js";
 import { findPreferredNode } from "./node-runtime.js";
 
 const DEFAULT_CAPTURE_TIME = "18:00";
@@ -340,6 +340,19 @@ export function createLocalDashboardApiPlugin() {
             sendJson(response, 400, { ok: false, error: error.message });
           }
         });
+      });
+
+      server.middlewares.use("/api/local/export-moat-manual", (request, response) => {
+        if (request.method !== "POST") {
+          sendJson(response, 405, { ok: false, error: "Metodo no permitido." });
+          return;
+        }
+        try {
+          const result = exportLocalMoatManualToPublic();
+          sendJson(response, 200, { ok: true, ...result });
+        } catch (error) {
+          sendJson(response, 500, { ok: false, error: error.message });
+        }
       });
     },
   };

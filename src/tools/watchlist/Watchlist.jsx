@@ -474,6 +474,24 @@ export default function Watchlist({ onManualCapture }) {
     }
   }
 
+  async function handleExportMoatManual() {
+    if (!captureStatus.localApi) {
+      setCaptureMessage("La exportacion publica de moat solo corre desde el dashboard local.");
+      return;
+    }
+    setMoatSaveInProgress(true);
+    try {
+      const response = await fetch("/api/local/export-moat-manual", { method: "POST" });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error(payload.error || "No se pudo exportar el moat manual.");
+      setCaptureMessage(`Moat manual exportado a JSON publico para ${payload.count || 0} tickers, sin notas locales privadas.`);
+    } catch (error) {
+      setCaptureMessage(error.message);
+    } finally {
+      setMoatSaveInProgress(false);
+    }
+  }
+
   function handleExportPdf() {
     if (!filteredResults.length) {
       setCaptureMessage("No hay registros en el filtro actual para exportar.");
@@ -1155,7 +1173,15 @@ export default function Watchlist({ onManualCapture }) {
                 })}
               </div>
               {captureStatus.localApi ? (
-                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+                  <button
+                    type="button"
+                    onClick={handleExportMoatManual}
+                    disabled={moatSaveInProgress}
+                    style={{ border: `1px solid ${AC.blue}`, background: SURFACE.activeBlue, color: SURFACE.text, borderRadius: 6, padding: "9px 12px", cursor: moatSaveInProgress ? "not-allowed" : "pointer" }}
+                  >
+                    Exportar publico
+                  </button>
                   <button
                     type="button"
                     onClick={handleSaveMoatDraft}

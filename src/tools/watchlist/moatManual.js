@@ -111,6 +111,26 @@ export function mergeMoatManualMaps(base = {}, override = {}) {
   };
 }
 
+export function sanitizeMoatManualRecordForPublic(record = {}) {
+  const normalized = normalizeMoatManualRecord(record);
+  return Object.assign(
+    {
+      ticker: normalized.ticker,
+      updatedAt: normalized.updatedAt,
+    },
+    Object.fromEntries(MOAT_MANUAL_FIELDS.map((field) => [field.id, {
+      ...normalized[field.id],
+      notes: null,
+    }])),
+  );
+}
+
+export function sanitizeMoatManualMapForPublic(records = {}) {
+  return Object.fromEntries(
+    Object.values(normalizeMoatManualMap(records)).map((record) => [record.ticker, sanitizeMoatManualRecordForPublic(record)]),
+  );
+}
+
 export function attachMoatManual(company, moatManualByTicker = {}) {
   const ticker = String(company?.ticker || "").trim().toUpperCase();
   const record = ticker && moatManualByTicker[ticker]

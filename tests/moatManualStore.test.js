@@ -2,7 +2,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { getLocalMoatManualPath, readLocalMoatManual, upsertLocalMoatManual, writeLocalMoatManual } from "../scripts/moat-manual-store.js";
+import { exportLocalMoatManualToPublic, getLocalMoatManualPath, getPublicMoatManualPaths, readLocalMoatManual, upsertLocalMoatManual, writeLocalMoatManual } from "../scripts/moat-manual-store.js";
 
 describe("moat manual local store", () => {
   it("reads empty state when the local private file does not exist", () => {
@@ -33,5 +33,22 @@ describe("moat manual local store", () => {
     expect(result.record.ticker).toBe("MSFT");
     expect(result.record.updatedAt).toBe("2026-07-03T16:20:00.000Z");
     expect(readLocalMoatManual(rootDir).MSFT.ownerThesis.notes).toBe("Solo local");
+  });
+
+  it("exports the public JSON without local notes", () => {
+    const rootDir = mkdtempSync(join(tmpdir(), "graham-moat-store-"));
+    upsertLocalMoatManual({
+      ticker: "nvda",
+      moatRating: { value: "Alta", notes: "Privada", sourceUrl: "https://example.com" },
+    }, rootDir, "2026-07-03T18:00:00.000Z");
+
+    const result = exportLocalMoatManualToPublic(rootDir);
+    const { dataPublicPath, publicSitePath } = getPublicMoatManualPaths(rootDir);
+
+    expect(result.count).toBe(1);
+    expect(result.dataPublicPath).toBe(dataPublicPath);
+    expect(result.publicSitePath).toBe(publicSitePath);
+    expect(result.records.NVDA.moatRating.notes).toBeNull();
+    expect(result.records.NVDA.moatRating.value).toBe("Alta");
   });
 });
