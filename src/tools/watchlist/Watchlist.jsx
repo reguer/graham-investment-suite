@@ -993,7 +993,7 @@ export default function Watchlist({ onManualCapture }) {
                 <span>Valuacion: {selectedCompany.score?.valuation ?? 0}</span>
                 <span>Resiliencia: {selectedCompany.score?.resilience ?? 0}</span>
                 <span>Calidad: {selectedCompany.score?.quality ?? 0}</span>
-                <span>Capa Buffett: {selectedCompany.score?.qualityLayer?.label || "N/D"}</span>
+                <span>Capa de calidad: {selectedCompany.score?.qualityLayer?.label || "N/D"}</span>
                 <span>Estado: {selectedCompany.score?.status ?? 0}</span>
                 <span>Datos: {selectedCompany.score?.data ?? 0}</span>
                 <span>EPS sin retroceso: {selectedCompany.score?.epsNeverDeclined === true ? "Si" : selectedCompany.score?.epsNeverDeclined === false ? "No" : "N/D"}</span>
