@@ -1,6 +1,7 @@
 import { fmt, pct } from "../../lib/formatters.js";
 import { businessNoteFor } from "./notes.js";
 import { normalizeTags } from "./watchlist.js";
+import { BUFFETT_TABLE_COLUMNS, BUFFETT_UI_ENABLED } from "./buffettLabels.js";
 
 export const WATCHLIST_TABLE_COLUMNS = [
   { id: "ticker", label: "Ticker", value: (item) => item.ticker },
@@ -36,6 +37,12 @@ export const WATCHLIST_TABLE_COLUMNS = [
   { id: "reason", label: "Razon", value: (item) => businessNoteFor(item) },
   { id: "action", label: "Accion", value: (item) => (item.alertLevel === "pending" ? "Captura manual" : "Ver detalle") },
 ];
+
+// S86: las columnas Buffett solo se agregan cuando el flag esta encendido.
+// Por defecto (BUFFETT_UI_ENABLED = false) la tabla es identica a la actual.
+export function getWatchlistTableColumns({ includeBuffett = BUFFETT_UI_ENABLED } = {}) {
+  return includeBuffett ? [...WATCHLIST_TABLE_COLUMNS, ...BUFFETT_TABLE_COLUMNS] : [...WATCHLIST_TABLE_COLUMNS];
+}
 
 export function getTableCell(item, column) {
   return column.value(item);
