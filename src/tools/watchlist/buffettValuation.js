@@ -288,4 +288,62 @@ export function buildOwnerEarnings(item = {}, options = {}) {
   };
 }
 
+export function buildCapitalAllocationMetrics(item = {}, options = {}) {
+  const series = item.buffettSeries || item;
+  const ownerEarningsResult = options.ownerEarningsResult || buildOwnerEarnings(item, options);
+  const sharesSeries = Array.isArray(series.sharesOutstanding) ? series.sharesOutstanding : [];
+  const cashEntry = latestSeriesEntry(series.cash);
+  const debtEntry = latestSeriesEntry(series.totalDebt);
+  const operatingIncomeEntry = latestSeriesEntry(series.operatingIncome);
+  const operatingCFEntry = latestSeriesEntry(series.operatingCF);
+  const capexEntry = latestSeriesEntry(series.capex);
+  const shareCountCagr = seriesCagr(sharesSeries);
+  const buybackDirection = buybackDirectionFromCagr(shareCountCagr);
+  const cashValue = numberOrNull(cashEntry?.value);
+  const debtValue = numberOrNull(debtEntry?.value);
+  const operatingIncomeValue = numberOrNull(operatingIncomeEntry?.value);
+  const operatingCFValue = numberOrNull(operatingCFEntry?.value);
+  const capexValue = numberOrNull(capexEntry?.value);
+  const netDebt = cashValue !== null && debtValue !== null ? debtValue - cashValue : null;
+  const netDebtToOperatingIncome = ratioOrNull(netDebt, operatingIncomeValue);
+  const interestCoverage = numberOrNull(item.ratios?.tie ?? item.tie);
+  const reinvestmentRate = operatingCFValue !== null && operatingCFValue > 0 ? ratioOrNull(capexValue, operatingCFValue) : null;
+  const growthCapexToCapex = capexValue !== null && capexValue > 0
+    ? ratioOrNull(ownerEarningsResult.growthCapexProxy, capexValue)
+    : null;
+  const ownerEarningsCoverage = operatingCFValue !== null && operatingCFValue > 0 && ownerEarningsResult.ownerEarnings !== null
+    ? ratioOrNull(ownerEarningsResult.ownerEarnings, operatingCFValue)
+    : null;
+  const reasons = {
+    shareCountCagr: shareCountCagr === null ? "Faltan al menos dos anos comparables de shares outstanding." : `Share count CAGR calculado con serie ${sharesSeries.length}Y.`,
+    netDebt: netDebt === null ? "Faltan cash y/o total debt para deuda neta." : "Deuda neta calculada con cash y total debt del ultimo ano disponible.",
+    netDebtToOperatingIncome: netDebtToOperatingIncome === null ? "Falta operating income positivo o deuda neta para el ratio de apalancamiento." : "Se usa operating income como proxy de EBIT para este ratio numerico.",
+    interestCoverage: interestCoverage === null ? "No hay tie / interest coverage util en el snapshot actual." : "Se reutiliza tie del snapshot actual; no se infiere una serie adicional en esta story.",
+    reinvestmentRate: reinvestmentRate === null ? "Falta capex u operating CF positivo para medir reinversion." : "Reinvestment rate calculado como reported capex / operating CF.",
+    growthCapexToCapex: growthCapexToCapex === null ? "Falta growth capex proxy o reported capex para medir capex de expansion." : "Growth capex proxy calculado desde maintenance capex estimado.",
+    ownerEarningsCoverage: ownerEarningsCoverage === null ? "Falta operating CF positivo u owner earnings util para medir cobertura." : "Owner earnings coverage calculado como owner earnings / operating CF.",
+  };
+
+  const availableCoreMetrics = [shareCountCagr, netDebt, netDebtToOperatingIncome, reinvestmentRate].filter((value) => value !== null).length;
+  const confidence = availableCoreMetrics >= 4 ? "high" : availableCoreMetrics >= 2 ? "medium" : "low";
+
+  return {
+    shareCountCagr,
+    buybackDirection,
+    netDebt,
+    netDebtToOperatingIncome,
+    interestCoverage,
+    reinvestmentRate,
+    growthCapexProxy: ownerEarningsResult.growthCapexProxy ?? null,
+    growthCapexToCapex,
+    ownerEarningsCoverage,
+    maintenanceCapexMethodId: ownerEarningsResult.maintenanceCapexMethodId || null,
+    methodId: "capital_allocation.v1",
+    confidence,
+    capitalIntensityTag: ownerEarningsResult.capitalIntensityTag || capitalIntensityTag(item, ratioOrNull(capexValue, latestValue(series.revenue))),
+    reason: "Capital allocation numerico construido sobre shares, deuda/caja, cobertura y reinversion; sin convertirlo todavia en score.",
+    reasons,
+  };
+}
+
 export { DEFAULT_DECISION_STATUS };
