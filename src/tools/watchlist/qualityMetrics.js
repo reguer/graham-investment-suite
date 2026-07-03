@@ -439,9 +439,11 @@ function emptyQualitySeries() {
 function pushSeriesPoint(target, metricId, {
   fiscalYear,
   value,
+  currency,
   source,
   asOf,
   sourceField,
+  sourceForm,
 }) {
   const normalizedYear = normalizeFiscalYear(fiscalYear);
   const parsedValue = numberOrNull(value);
@@ -449,9 +451,11 @@ function pushSeriesPoint(target, metricId, {
   target[metricId].push({
     fiscalYear: normalizedYear,
     value: parsedValue,
+    currency: currency || null,
     source,
     asOf: asOf || null,
     sourceField: sourceField || null,
+    sourceForm: sourceForm || null,
   });
 }
 
@@ -471,9 +475,11 @@ function seriesEntries(series = []) {
       .map((entry) => ({
         fiscalYear: normalizeFiscalYear(entry?.fiscalYear ?? entry?.year),
         value: numberOrNull(entry?.value),
+        currency: entry?.currency || null,
         source: entry?.source || null,
         asOf: entry?.asOf || null,
         sourceField: entry?.sourceField || null,
+        sourceForm: entry?.sourceForm || null,
       }))
       .filter((entry) => entry.fiscalYear !== null && entry.value !== null),
   );
@@ -539,6 +545,7 @@ export function buildYahooQualitySeries(data, {
   financialFxRate = numberOrNull(data?.financialFx?.rate) ?? 1,
   shareScale = 1,
   source = "yahoo_fundamentals_time_series",
+  currency = "USD",
 } = {}) {
   const annualRows = latestAnnualRows(data?.annual);
   const series = emptyQualitySeries();
@@ -568,51 +575,65 @@ export function buildYahooQualitySeries(data, {
     pushSeriesPoint(series, "revenue", {
       fiscalYear,
       value: revenueValue,
+      currency,
       source,
       asOf: row.date,
       sourceField: revenue.field,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "eps", {
       fiscalYear,
       value: epsValue,
+      currency,
       source,
       asOf: row.date,
       sourceField: eps.field,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "fcf", {
       fiscalYear,
       value: fcfValue,
+      currency,
       source,
       asOf: row.date,
       sourceField: operatingCashFlow.field && investingCashFlow.field ? `${operatingCashFlow.field}+${investingCashFlow.field}` : null,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "sharesOutstanding", {
       fiscalYear,
       value: shares.value,
+      currency: "shares",
       source,
       asOf: row.date,
       sourceField: shares.field,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "grossMargin", {
       fiscalYear,
       value: ratioOrNull(grossProfitValue, revenueValue),
+      currency: "ratio",
       source,
       asOf: row.date,
       sourceField: grossProfit.field && revenue.field ? `${grossProfit.field}/${revenue.field}` : null,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "operatingMargin", {
       fiscalYear,
       value: ratioOrNull(operatingIncomeValue, revenueValue),
+      currency: "ratio",
       source,
       asOf: row.date,
       sourceField: operatingIncome.field && revenue.field ? `${operatingIncome.field}/${revenue.field}` : null,
+      sourceForm: "annual",
     });
     pushSeriesPoint(series, "netMargin", {
       fiscalYear,
       value: ratioOrNull(netIncomeValue, revenueValue),
+      currency: "ratio",
       source,
       asOf: row.date,
       sourceField: netIncome.field && revenue.field ? `${netIncome.field}/${revenue.field}` : null,
+      sourceForm: "annual",
     });
   }
 
@@ -652,7 +673,7 @@ function secFactEntries(companyFacts, concepts, preferredUnits = ["USD"], { allo
     .sort((left, right) => right.fiscalYear - left.fiscalYear);
 }
 
-export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts" } = {}) {
+export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts", currency = "USD" } = {}) {
   const series = emptyQualitySeries();
   const revenueFacts = secFactEntries(companyFacts, ["RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"], ["USD"]);
   const grossProfitFacts = secFactEntries(companyFacts, ["GrossProfit"], ["USD"]);
@@ -674,9 +695,11 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
     pushSeriesPoint(series, "revenue", {
       fiscalYear: entry.fiscalYear,
       value: entry.value,
+      currency,
       source,
       asOf: entry.fact.end,
       sourceField: entry.field,
+      sourceForm: entry.fact.form,
     });
   }
 
@@ -684,9 +707,11 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
     pushSeriesPoint(series, "eps", {
       fiscalYear: entry.fiscalYear,
       value: entry.value,
+      currency,
       source,
       asOf: entry.fact.end,
       sourceField: entry.field,
+      sourceForm: entry.fact.form,
     });
   }
 
@@ -694,9 +719,11 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
     pushSeriesPoint(series, "sharesOutstanding", {
       fiscalYear: entry.fiscalYear,
       value: entry.value,
+      currency: "shares",
       source,
       asOf: entry.fact.end,
       sourceField: entry.field,
+      sourceForm: entry.fact.form,
     });
   }
 
@@ -705,9 +732,11 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
     pushSeriesPoint(series, "fcf", {
       fiscalYear,
       value: investingEntry ? operatingEntry.value + investingEntry.value : null,
+      currency,
       source,
       asOf: operatingEntry.fact.end,
       sourceField: investingEntry ? `${operatingEntry.field}+${investingEntry.field}` : null,
+      sourceForm: operatingEntry.fact.form,
     });
   }
 
@@ -719,27 +748,443 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
     pushSeriesPoint(series, "grossMargin", {
       fiscalYear,
       value: grossProfitEntry ? ratioOrNull(grossProfitEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
       source,
       asOf: revenueEntry.fact.end,
       sourceField: grossProfitEntry ? `${grossProfitEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
     });
     pushSeriesPoint(series, "operatingMargin", {
       fiscalYear,
       value: operatingIncomeEntry ? ratioOrNull(operatingIncomeEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
       source,
       asOf: revenueEntry.fact.end,
       sourceField: operatingIncomeEntry ? `${operatingIncomeEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
     });
     pushSeriesPoint(series, "netMargin", {
       fiscalYear,
       value: netIncomeEntry ? ratioOrNull(netIncomeEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
       source,
       asOf: revenueEntry.fact.end,
       sourceField: netIncomeEntry ? `${netIncomeEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
     });
   }
 
   return finalizeSeries(series);
+}
+
+export const BUFFETT_SERIES_METRICS = [
+  "revenue",
+  "operatingIncome",
+  "netIncome",
+  "operatingCF",
+  "capex",
+  "depreciationAmortization",
+  "sharesOutstanding",
+  "cash",
+  "totalDebt",
+  "grossMargin",
+  "operatingMargin",
+  "netMargin",
+];
+
+function emptyBuffettSeries() {
+  return Object.fromEntries(BUFFETT_SERIES_METRICS.map((metricId) => [metricId, []]));
+}
+
+function normalizeExpenseOutflow(value) {
+  const parsed = numberOrNull(value);
+  if (parsed === null) return null;
+  return Math.abs(parsed);
+}
+
+function sliceSeriesYears(series = [], maxYears = 10) {
+  return sortSeries(series).slice(0, maxYears);
+}
+
+function latestAnnualRowsLimited(rows = [], maxYears = 10) {
+  return latestAnnualRows(rows).slice(0, maxYears);
+}
+
+function factMapByYear(entries = []) {
+  return new Map(entries.map((entry) => [entry.fiscalYear, entry]));
+}
+
+function mergePreferredSeries(primary = [], fallback = [], { maxYears = 10 } = {}) {
+  const mergedByYear = new Map();
+  for (const entry of sortSeries(primary)) {
+    if (!mergedByYear.has(entry.fiscalYear)) mergedByYear.set(entry.fiscalYear, entry);
+  }
+  for (const entry of sortSeries(fallback)) {
+    if (!mergedByYear.has(entry.fiscalYear)) mergedByYear.set(entry.fiscalYear, entry);
+  }
+  return sliceSeriesYears([...mergedByYear.values()], maxYears);
+}
+
+function findMissingYears(series = []) {
+  const entries = sortSeries(series);
+  if (entries.length < 2) return [];
+  const latest = entries[0].fiscalYear;
+  const oldest = entries[entries.length - 1].fiscalYear;
+  const years = new Set(entries.map((entry) => entry.fiscalYear));
+  const missing = [];
+  for (let year = latest; year >= oldest; year -= 1) {
+    if (!years.has(year)) missing.push(year);
+  }
+  return missing;
+}
+
+function buildBuffettOutput(primarySeries, fallbackSeries, { maxYears = 10 } = {}) {
+  const merged = {};
+  const missingYearsByMetric = {};
+  for (const metricId of BUFFETT_SERIES_METRICS) {
+    merged[metricId] = mergePreferredSeries(primarySeries[metricId], fallbackSeries[metricId], { maxYears });
+    missingYearsByMetric[metricId] = findMissingYears(merged[metricId]);
+  }
+  return {
+    ...merged,
+    missingYearsByMetric,
+  };
+}
+
+export function buildYahooBuffettSeries(data, {
+  financialFxRate = numberOrNull(data?.financialFx?.rate) ?? 1,
+  source = "yahoo_fundamentals_time_series",
+  currency = "USD",
+  maxYears = 10,
+} = {}) {
+  const annualRows = latestAnnualRowsLimited(data?.annual, maxYears);
+  const series = emptyBuffettSeries();
+
+  for (const row of annualRows) {
+    const fiscalYear = normalizeFiscalYear(row.date);
+    const revenue = pickFieldValue(row, ["totalRevenue", "operatingRevenue"]);
+    const grossProfit = pickFieldValue(row, ["grossProfit"]);
+    const operatingIncome = pickFieldValue(row, ["operatingIncome", "EBIT", "normalizedEBITDA"]);
+    const netIncome = pickFieldValue(row, ["netIncome", "netIncomeCommonStockholders"]);
+    const operatingCashFlow = pickFieldValue(row, ["operatingCashFlow", "cashFlowFromContinuingOperatingActivities"]);
+    const capex = pickFieldValue(row, ["capitalExpenditure", "capitalExpenditures", "capitalExpenditureReported"]);
+    const depreciationAmortization = pickFieldValue(row, ["depreciationAndAmortization", "depreciationAmortization", "reconciledDepreciation"]);
+    const shares = pickFieldValue(row, ["dilutedAverageShares", "ordinarySharesNumber", "basicAverageShares"]);
+    const cash = pickFieldValue(row, ["cashAndCashEquivalents", "cashCashEquivalentsAndShortTermInvestments"]);
+    const totalDebt = pickFieldValue(row, ["totalDebt", "currentDebtAndCapitalLeaseObligation", "currentDebt", "longTermDebt"]);
+
+    const revenueValue = revenue.value === null ? null : revenue.value * financialFxRate;
+    const grossProfitValue = grossProfit.value === null ? null : grossProfit.value * financialFxRate;
+    const operatingIncomeValue = operatingIncome.value === null ? null : operatingIncome.value * financialFxRate;
+    const netIncomeValue = netIncome.value === null ? null : netIncome.value * financialFxRate;
+    const operatingCashFlowValue = operatingCashFlow.value === null ? null : operatingCashFlow.value * financialFxRate;
+    const capexValue = capex.value === null ? null : normalizeExpenseOutflow(capex.value * financialFxRate);
+    const depreciationValue = depreciationAmortization.value === null ? null : depreciationAmortization.value * financialFxRate;
+    const cashValue = cash.value === null ? null : cash.value * financialFxRate;
+    const totalDebtValue = totalDebt.value === null ? null : totalDebt.value * financialFxRate;
+
+    pushSeriesPoint(series, "revenue", {
+      fiscalYear,
+      value: revenueValue,
+      currency,
+      source,
+      sourceField: revenue.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "operatingIncome", {
+      fiscalYear,
+      value: operatingIncomeValue,
+      currency,
+      source,
+      sourceField: operatingIncome.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "netIncome", {
+      fiscalYear,
+      value: netIncomeValue,
+      currency,
+      source,
+      sourceField: netIncome.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "operatingCF", {
+      fiscalYear,
+      value: operatingCashFlowValue,
+      currency,
+      source,
+      sourceField: operatingCashFlow.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "capex", {
+      fiscalYear,
+      value: capexValue,
+      currency,
+      source,
+      sourceField: capex.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "depreciationAmortization", {
+      fiscalYear,
+      value: depreciationValue,
+      currency,
+      source,
+      sourceField: depreciationAmortization.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "sharesOutstanding", {
+      fiscalYear,
+      value: shares.value,
+      currency: "shares",
+      source,
+      sourceField: shares.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "cash", {
+      fiscalYear,
+      value: cashValue,
+      currency,
+      source,
+      sourceField: cash.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "totalDebt", {
+      fiscalYear,
+      value: totalDebtValue,
+      currency,
+      source,
+      sourceField: totalDebt.field,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "grossMargin", {
+      fiscalYear,
+      value: ratioOrNull(grossProfitValue, revenueValue),
+      currency: "ratio",
+      source,
+      sourceField: grossProfit.field && revenue.field ? `${grossProfit.field}/${revenue.field}` : null,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "operatingMargin", {
+      fiscalYear,
+      value: ratioOrNull(operatingIncomeValue, revenueValue),
+      currency: "ratio",
+      source,
+      sourceField: operatingIncome.field && revenue.field ? `${operatingIncome.field}/${revenue.field}` : null,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+    pushSeriesPoint(series, "netMargin", {
+      fiscalYear,
+      value: ratioOrNull(netIncomeValue, revenueValue),
+      currency: "ratio",
+      source,
+      sourceField: netIncome.field && revenue.field ? `${netIncome.field}/${revenue.field}` : null,
+      sourceForm: "annual",
+      asOf: row.date,
+    });
+  }
+
+  return Object.fromEntries(BUFFETT_SERIES_METRICS.map((metricId) => [metricId, sliceSeriesYears(series[metricId], maxYears)]));
+}
+
+export function buildSecBuffettSeries(companyFacts, { source = "sec_companyfacts", currency = "USD", maxYears = 10 } = {}) {
+  const series = emptyBuffettSeries();
+  const revenueFacts = secFactEntries(companyFacts, ["RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"], ["USD"]).slice(0, maxYears);
+  const grossProfitFacts = secFactEntries(companyFacts, ["GrossProfit"], ["USD"]).slice(0, maxYears);
+  const operatingIncomeFacts = secFactEntries(companyFacts, ["OperatingIncomeLoss"], ["USD"]).slice(0, maxYears);
+  const netIncomeFacts = secFactEntries(companyFacts, ["NetIncomeLoss", "NetIncomeAvailableToCommonStockholdersBasic"], ["USD"]).slice(0, maxYears);
+  const operatingCashFlowFacts = secFactEntries(companyFacts, ["NetCashProvidedByUsedInOperatingActivities"], ["USD"]).slice(0, maxYears);
+  const capexFacts = secFactEntries(companyFacts, ["PaymentsToAcquirePropertyPlantAndEquipment", "CapitalExpendituresIncurredButNotYetPaid"], ["USD"]).slice(0, maxYears);
+  const depreciationFacts = secFactEntries(companyFacts, ["DepreciationDepletionAndAmortization", "DepreciationAmortizationAndAccretionNet", "DepreciationAndAmortization"], ["USD"]).slice(0, maxYears);
+  const sharesFacts = secFactEntries(companyFacts, ["CommonStockSharesOutstanding", "EntityCommonStockSharesOutstanding"], ["shares"], { allowNonFy: true }).slice(0, maxYears);
+  const cashFacts = secFactEntries(companyFacts, ["CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsAndShortTermInvestments"], ["USD"], { allowNonFy: true }).slice(0, maxYears);
+  const totalDebtFacts = secFactEntries(companyFacts, ["LongTermDebtAndCapitalLeaseObligations", "LongTermDebtAndFinanceLeaseObligations", "LongTermDebtCurrentAndNoncurrent", "DebtAndCapitalLeaseObligations"], ["USD"]).slice(0, maxYears);
+  const currentDebtFacts = secFactEntries(companyFacts, ["LongTermDebtCurrent", "CurrentPortionOfLongTermDebt", "ShortTermBorrowings", "CommercialPaper"], ["USD"]).slice(0, maxYears);
+  const longDebtFacts = secFactEntries(companyFacts, ["LongTermDebtNoncurrent", "LongTermDebt"], ["USD"]).slice(0, maxYears);
+
+  const revenueByYear = factMapByYear(revenueFacts);
+  const grossProfitByYear = factMapByYear(grossProfitFacts);
+  const operatingIncomeByYear = factMapByYear(operatingIncomeFacts);
+  const netIncomeByYear = factMapByYear(netIncomeFacts);
+  const directDebtByYear = factMapByYear(totalDebtFacts);
+  const currentDebtByYear = factMapByYear(currentDebtFacts);
+  const longDebtByYear = factMapByYear(longDebtFacts);
+
+  for (const entry of revenueFacts) {
+    pushSeriesPoint(series, "revenue", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of operatingIncomeFacts) {
+    pushSeriesPoint(series, "operatingIncome", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of netIncomeFacts) {
+    pushSeriesPoint(series, "netIncome", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of operatingCashFlowFacts) {
+    pushSeriesPoint(series, "operatingCF", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of capexFacts) {
+    pushSeriesPoint(series, "capex", {
+      fiscalYear: entry.fiscalYear,
+      value: normalizeExpenseOutflow(entry.value),
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of depreciationFacts) {
+    pushSeriesPoint(series, "depreciationAmortization", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of sharesFacts) {
+    pushSeriesPoint(series, "sharesOutstanding", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency: "shares",
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  for (const entry of cashFacts) {
+    pushSeriesPoint(series, "cash", {
+      fiscalYear: entry.fiscalYear,
+      value: entry.value,
+      currency,
+      source,
+      sourceField: entry.field,
+      sourceForm: entry.fact.form,
+      asOf: entry.fact.end,
+    });
+  }
+
+  const debtYears = new Set([
+    ...directDebtByYear.keys(),
+    ...currentDebtByYear.keys(),
+    ...longDebtByYear.keys(),
+  ]);
+  for (const fiscalYear of [...debtYears].sort((left, right) => right - left).slice(0, maxYears)) {
+    const direct = directDebtByYear.get(fiscalYear);
+    const current = currentDebtByYear.get(fiscalYear);
+    const long = longDebtByYear.get(fiscalYear);
+    const debtValue = direct?.value ?? (
+      Number.isFinite(current?.value) && Number.isFinite(long?.value)
+        ? current.value + long.value
+        : long?.value ?? current?.value ?? null
+    );
+    const asOf = direct?.fact.end || long?.fact.end || current?.fact.end || null;
+    const sourceField = direct?.field || [long?.field, current?.field].filter(Boolean).join("+") || null;
+    const sourceForm = direct?.fact.form || long?.fact.form || current?.fact.form || null;
+
+    pushSeriesPoint(series, "totalDebt", {
+      fiscalYear,
+      value: debtValue,
+      currency,
+      source,
+      sourceField,
+      sourceForm,
+      asOf,
+    });
+  }
+
+  for (const [fiscalYear, revenueEntry] of revenueByYear.entries()) {
+    const grossProfitEntry = grossProfitByYear.get(fiscalYear);
+    const operatingIncomeEntry = operatingIncomeByYear.get(fiscalYear);
+    const netIncomeEntry = netIncomeByYear.get(fiscalYear);
+
+    pushSeriesPoint(series, "grossMargin", {
+      fiscalYear,
+      value: grossProfitEntry ? ratioOrNull(grossProfitEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
+      source,
+      sourceField: grossProfitEntry ? `${grossProfitEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
+      asOf: revenueEntry.fact.end,
+    });
+    pushSeriesPoint(series, "operatingMargin", {
+      fiscalYear,
+      value: operatingIncomeEntry ? ratioOrNull(operatingIncomeEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
+      source,
+      sourceField: operatingIncomeEntry ? `${operatingIncomeEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
+      asOf: revenueEntry.fact.end,
+    });
+    pushSeriesPoint(series, "netMargin", {
+      fiscalYear,
+      value: netIncomeEntry ? ratioOrNull(netIncomeEntry.value, revenueEntry.value) : null,
+      currency: "ratio",
+      source,
+      sourceField: netIncomeEntry ? `${netIncomeEntry.field}/${revenueEntry.field}` : null,
+      sourceForm: revenueEntry.fact.form,
+      asOf: revenueEntry.fact.end,
+    });
+  }
+
+  return Object.fromEntries(BUFFETT_SERIES_METRICS.map((metricId) => [metricId, sliceSeriesYears(series[metricId], maxYears)]));
+}
+
+export function buildBuffettSeries({ companyFacts, yahooData } = {}, options = {}) {
+  const secSeries = companyFacts ? buildSecBuffettSeries(companyFacts, options) : emptyBuffettSeries();
+  const yahooSeries = yahooData ? buildYahooBuffettSeries(yahooData, options) : emptyBuffettSeries();
+  return buildBuffettOutput(secSeries, yahooSeries, options);
 }
 
 export function assessBuybackDilution(item = {}) {
