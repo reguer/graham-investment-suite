@@ -1,3 +1,5 @@
+import { detectSector } from "../graham-analyzer/detectSector.js";
+
 function getPathValue(input, path) {
   return String(path)
     .split(".")
@@ -303,6 +305,10 @@ function pctLabel(value) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
+function sectorIdForItem(item = {}) {
+  return item.sectorProfileId || detectSector({ sector: item.sector, industry: item.industry, sicCode: item.sicCode });
+}
+
 function latestAnnualRows(rows = []) {
   const byYear = new Map();
   for (const row of rows) {
@@ -588,5 +594,107 @@ export function assessBuybackDilution(item = {}) {
     hasData: true,
     shareCountCagr: cagr,
     reason: `Las acciones en circulacion crecieron ${pctLabel(cagr)} CAGR; hay dilucion neta, aunque todavia no es extrema.`,
+  };
+}
+
+export function assessIntangibleBalance(item = {}) {
+  const sectorId = sectorIdForItem(item);
+  const pbTangible = numberOrNull(item.ratios?.pbTangible ?? item.pbTangible);
+  const tangibleBvps = numberOrNull(item.ratios?.tangibleBvps ?? item.tangibleBvps);
+  const roe = numberOrNull(item.ratios?.roe ?? item.roe);
+  const roa = numberOrNull(item.ratios?.roa ?? item.roa);
+  const fcf = numberOrNull(item.ratios?.fcf ?? item.fcf);
+  const sectorTolerance = {
+    tech: { label: "alta", caution: 6, high: 10, allowsCompensation: true },
+    healthcare: { label: "alta", caution: 5, high: 8, allowsCompensation: true },
+    consumer_staples: { label: "media", caution: 4, high: 6, allowsCompensation: true },
+    default: { label: "estandar", caution: 3, high: 5, allowsCompensation: false },
+    industrial: { label: "estandar", caution: 3, high: 5, allowsCompensation: false },
+    energy: { label: "baja", caution: 2.5, high: 4, allowsCompensation: false },
+    basic_materials: { label: "baja", caution: 2.5, high: 4, allowsCompensation: false },
+    utilities: { label: "media", caution: 4, high: 6, allowsCompensation: false },
+  }[sectorId] || { label: "estandar", caution: 3, high: 5, allowsCompensation: false };
+
+  if (sectorId === "financial" || sectorId === "reit") {
+    return {
+      id: "intangibleBalance",
+      label: "N/D",
+      scoreImpact: null,
+      hasData: false,
+      sectorId,
+      reason: "El perfil sectorial no usa esta senal de intangibles como criterio principal de calidad.",
+    };
+  }
+
+  if (pbTangible === null && tangibleBvps === null) {
+    return {
+      id: "intangibleBalance",
+      label: "N/D",
+      scoreImpact: null,
+      hasData: false,
+      sectorId,
+      reason: "Faltan P/B tangible o TBVPS para estimar la dependencia del balance intangible.",
+    };
+  }
+
+  if (tangibleBvps !== null && tangibleBvps <= 0) {
+    return {
+      id: "intangibleBalance",
+      label: "Dependencia alta",
+      scoreImpact: -2,
+      hasData: true,
+      sectorId,
+      reason: `TBVPS ${tangibleBvps.toFixed(2)} indica balance tangible debil o negativo; la dependencia de intangibles es alta para el perfil ${sectorId}.`,
+    };
+  }
+
+  const qualityCompensates = (roe !== null && roe >= 0.15) && (roa !== null && roa >= 0.08) && fcf !== null && fcf > 0;
+
+  if (pbTangible !== null && pbTangible <= sectorTolerance.caution) {
+    return {
+      id: "intangibleBalance",
+      label: "Dependencia baja",
+      scoreImpact: 1,
+      hasData: true,
+      sectorId,
+      reason: `P/B tangible ${pbTangible.toFixed(2)} se mantiene dentro de la tolerancia ${sectorTolerance.label} del perfil ${sectorId}.`,
+    };
+  }
+
+  if (
+    pbTangible !== null &&
+    pbTangible > sectorTolerance.caution &&
+    pbTangible <= sectorTolerance.high &&
+    sectorTolerance.allowsCompensation &&
+    qualityCompensates
+  ) {
+    return {
+      id: "intangibleBalance",
+      label: "Dependencia alta, compensada",
+      scoreImpact: 0,
+      hasData: true,
+      sectorId,
+      reason: `P/B tangible ${pbTangible.toFixed(2)} refleja dependencia relevante de intangibles, pero el perfil ${sectorId} la compensa con ROE ${pctLabel(roe)}, ROA ${pctLabel(roa)} y FCF positivo.`,
+    };
+  }
+
+  if (pbTangible !== null && pbTangible <= sectorTolerance.high) {
+    return {
+      id: "intangibleBalance",
+      label: "Dependencia moderada",
+      scoreImpact: -1,
+      hasData: true,
+      sectorId,
+      reason: `P/B tangible ${pbTangible.toFixed(2)} supera la zona comoda del perfil ${sectorId}; la dependencia de intangibles ya exige mas disciplina de calidad.`,
+    };
+  }
+
+  return {
+    id: "intangibleBalance",
+    label: "Dependencia alta",
+    scoreImpact: -2,
+    hasData: true,
+    sectorId,
+    reason: `P/B tangible ${pbTangible !== null ? pbTangible.toFixed(2) : "N/D"} queda muy por encima de la tolerancia ${sectorTolerance.label} del perfil ${sectorId}.`,
   };
 }

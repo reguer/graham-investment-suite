@@ -9,6 +9,7 @@ describe("watchlist scoring", () => {
       alertLevel: "approved",
       pe: 14,
       pb: 1.4,
+      pbTangible: 2.2,
       pePb: 19.6,
       debtRatio: 0.4,
       currentRatio: 3,
@@ -26,6 +27,7 @@ describe("watchlist scoring", () => {
           { fiscalYear: 2023, value: 100 },
         ],
       },
+      tangibleBvps: 8,
       roe: 0.25,
       roa: 0.12,
     });
@@ -35,6 +37,7 @@ describe("watchlist scoring", () => {
     expect(score.qualityLayer.label).toBe("Alta calidad");
     expect(score.hasBuybackData).toBe(true);
     expect(score.buybackDilution.label).toBe("Recompra neta");
+    expect(score.intangibleBalance.label).toBe("Dependencia baja");
   });
 
   it("penalizes expensive companies with weak EPS history even when they have liquidity", () => {

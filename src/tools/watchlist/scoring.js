@@ -1,4 +1,4 @@
-import { assessBuybackDilution } from "./qualityMetrics.js";
+import { assessBuybackDilution, assessIntangibleBalance } from "./qualityMetrics.js";
 
 function numberOrNull(value) {
   const number = Number(value);
@@ -40,6 +40,7 @@ function qualityLayerLabel(qualityPct, resiliencePct, epsPositive) {
 export function scoreWatchlistItem(item) {
   const ratios = item.ratios || item;
   const buybackDilution = assessBuybackDilution(item);
+  const intangibleBalance = assessIntangibleBalance({ ...item, ratios });
   const epsHistory = item.epsHistory || [];
   const epsConsistent = epsNeverDeclined(epsHistory);
   const pe = ratios.pe ?? item.pe;
@@ -129,6 +130,7 @@ export function scoreWatchlistItem(item) {
     epsNeverDeclined: epsConsistent,
     qualityLayer,
     buybackDilution,
+    intangibleBalance,
     hasBuybackData: buybackDilution.hasData,
   };
 }

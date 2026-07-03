@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assessBuybackDilution, buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
+import { assessBuybackDilution, assessIntangibleBalance, buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
 
 describe("quality metrics annual series", () => {
   it("builds normalized Yahoo annual series with FX, share scale and real gaps", () => {
@@ -209,6 +209,48 @@ describe("quality metrics annual series", () => {
       qualitySeries: {
         sharesOutstanding: [{ fiscalYear: 2025, value: 100 }],
       },
+    });
+
+    expect(result.label).toBe("N/D");
+    expect(result.scoreImpact).toBeNull();
+    expect(result.hasData).toBe(false);
+  });
+
+  it("weights intangible dependence by sector instead of applying one universal penalty", () => {
+    const compensatedTech = assessIntangibleBalance({
+      sector: "Technology",
+      industry: "Software - Infrastructure",
+      pbTangible: 7.5,
+      tangibleBvps: 4,
+      roe: 0.24,
+      roa: 0.11,
+      fcf: 100,
+    });
+    const penalizedIndustrial = assessIntangibleBalance({
+      sector: "Industrials",
+      industry: "Specialty Industrial Machinery",
+      pbTangible: 7.5,
+      tangibleBvps: 4,
+      roe: 0.24,
+      roa: 0.11,
+      fcf: 100,
+    });
+
+    expect(compensatedTech.label).toBe("Dependencia alta, compensada");
+    expect(compensatedTech.scoreImpact).toBe(0);
+    expect(compensatedTech.reason).toContain("perfil tech");
+
+    expect(penalizedIndustrial.label).toBe("Dependencia alta");
+    expect(penalizedIndustrial.scoreImpact).toBe(-2);
+    expect(penalizedIndustrial.reason).toContain("perfil industrial");
+  });
+
+  it("returns N/D for financial profiles where tangible-intangible balance is not the main quality signal", () => {
+    const result = assessIntangibleBalance({
+      sector: "Financial Services",
+      industry: "Banks - Regional",
+      pbTangible: 3,
+      tangibleBvps: 10,
     });
 
     expect(result.label).toBe("N/D");
