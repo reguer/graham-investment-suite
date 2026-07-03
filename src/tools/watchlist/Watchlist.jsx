@@ -13,6 +13,7 @@ import { DEFAULT_USD_MXN, POSITIONS_STORAGE_KEY, evaluatePositions, mergePositio
 import { screenWatchlist, summarizeScreen } from "./screen.js";
 import { listSystemStatuses } from "./statusMapper.js";
 import { WATCHLIST_TABLE_COLUMNS, getTableCell } from "./tableColumns.js";
+import { matchesV2Filters } from "./watchlistFilters.js";
 import { getVisibleWatchReason } from "./watchReason.js";
 import { buildWatchlist, buildWatchlistMeta, collectSectors, collectTags, fetchPublicCompanies, normalizeTags } from "./watchlist.js";
 
@@ -53,6 +54,17 @@ const SORT_LABELS = {
   updated: "Orden por fecha",
 };
 
+const QUALITY_FILTER_LABELS = {
+  strong: "Fuerte",
+  medium: "Media",
+  weak: "Debil",
+};
+
+const MOAT_FILTER_LABELS = {
+  manual_evidence: "Con evidencia manual",
+  pending_manual: "Pendiente manual",
+};
+
 export default function Watchlist({ onManualCapture }) {
   const [view, setView] = useState("opportunities");
   const [query, setQuery] = useState("");
@@ -66,6 +78,9 @@ export default function Watchlist({ onManualCapture }) {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedSector, setSelectedSector] = useState("");
   const [selectedSignal, setSelectedSignal] = useState("");
+  const [selectedQualityBand, setSelectedQualityBand] = useState("");
+  const [selectedMoatState, setSelectedMoatState] = useState("");
+  const [selectedMoatConfidence, setSelectedMoatConfidence] = useState("");
   const [sortKey, setSortKey] = useState("system");
   const [positions, setPositions] = useState([]);
   const [positionDraft, setPositionDraft] = useState({ ticker: "", shares: "", entryPriceMxn: "", notes: "" });
@@ -368,7 +383,12 @@ export default function Watchlist({ onManualCapture }) {
       const matchesStatus = !selectedStatus || result.systemStatus?.id === selectedStatus;
       const matchesSector = !selectedSector || result.sector === selectedSector;
       const matchesSignal = !selectedSignal || result.alertLevel === selectedSignal;
-      return matchesView && matchesQuery && matchesTag && matchesStatus && matchesSector && matchesSignal;
+      const matchesV2 = matchesV2Filters(result, {
+        selectedQualityBand,
+        selectedMoatState,
+        selectedMoatConfidence,
+      });
+      return matchesView && matchesQuery && matchesTag && matchesStatus && matchesSector && matchesSignal && matchesV2;
     });
     const sorted = sortFavoritesFirst(matches, favorites).sort((a, b) => {
       const positionDelta = Number(positionSet.has(b.ticker.toUpperCase())) - Number(positionSet.has(a.ticker.toUpperCase()));
@@ -392,7 +412,7 @@ export default function Watchlist({ onManualCapture }) {
       const bv = getTableCell(b, column);
       return String(av).localeCompare(String(bv), "es", { numeric: true });
     });
-  }, [favoriteSet, favorites, positionSet, positions, query, results, selectedSector, selectedSignal, selectedStatus, selectedTag, sortKey, view]);
+  }, [favoriteSet, favorites, positionSet, positions, query, results, selectedMoatConfidence, selectedMoatState, selectedQualityBand, selectedSector, selectedSignal, selectedStatus, selectedTag, sortKey, view]);
 
   const selectedBusinessNote = selectedCompany ? getVisibleWatchReason(selectedCompany) : "";
   const viewLabels = useMemo(() => ({
@@ -411,6 +431,9 @@ export default function Watchlist({ onManualCapture }) {
   }), [excellentExpensiveCount, summary.watch.length]);
   const activeViewLabel = viewLabels[view] || "Filtro actual";
   const selectedStatusLabel = systemStatuses.find((status) => status.id === selectedStatus)?.label || "";
+  const selectedQualityLabel = QUALITY_FILTER_LABELS[selectedQualityBand] || "";
+  const selectedMoatLabel = MOAT_FILTER_LABELS[selectedMoatState] || "";
+  const selectedMoatConfidenceLabel = selectedMoatConfidence ? confidenceLabel(selectedMoatConfidence) : "";
   const exportFiltersSummary = useMemo(() => buildWatchlistExportSummary({
     viewLabel: activeViewLabel,
     query,
@@ -418,9 +441,12 @@ export default function Watchlist({ onManualCapture }) {
     sectorLabel: selectedSector,
     tagLabel: selectedTag,
     statusLabel: selectedStatusLabel,
+    qualityLabel: selectedQualityLabel,
+    moatLabel: selectedMoatLabel,
+    moatConfidenceLabel: selectedMoatConfidenceLabel,
     sortLabel: SORT_LABELS[sortKey] || "",
     count: filteredResults.length,
-  }), [activeViewLabel, filteredResults.length, query, selectedSector, selectedSignal, selectedStatusLabel, selectedTag, sortKey]);
+  }), [activeViewLabel, filteredResults.length, query, selectedMoatConfidenceLabel, selectedMoatLabel, selectedQualityLabel, selectedSector, selectedSignal, selectedStatusLabel, selectedTag, sortKey]);
 
   async function handleExportXlsx() {
     if (!filteredResults.length) {
@@ -515,11 +541,13 @@ export default function Watchlist({ onManualCapture }) {
           .watchlist-table-shell { display: block; overflow-x: auto; border: 1px solid ${SURFACE.border}; border-radius: 8px; background: SURFACE.panel; margin-bottom: 12px; }
           .watchlist-card-list { display: none; }
           .positions-form { display: grid; grid-template-columns: minmax(90px, 120px) minmax(90px, 120px) minmax(150px, 180px) minmax(160px, 1fr) auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+          .watchlist-filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 14px; }
           .moat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
           @media (max-width: 999px) {
             .watchlist-table-shell { display: none; }
             .watchlist-card-list { display: grid; gap: 10px; }
             .positions-form { grid-template-columns: 1fr; }
+            .watchlist-filter-grid { grid-template-columns: 1fr; }
             .moat-grid { grid-template-columns: 1fr; }
           }
         `}</style>
@@ -734,7 +762,7 @@ export default function Watchlist({ onManualCapture }) {
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
         {Object.entries(viewLabels).map(([id, label]) => (
           <button
             key={id}
@@ -752,6 +780,8 @@ export default function Watchlist({ onManualCapture }) {
             {label}
           </button>
         ))}
+      </div>
+      <div className="watchlist-filter-grid">
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -784,6 +814,56 @@ export default function Watchlist({ onManualCapture }) {
           <option value="watch">Observacion</option>
           <option value="pending">Pendientes</option>
           <option value="reference">Referencias</option>
+        </select>
+        <select
+          value={selectedQualityBand}
+          onChange={(event) => setSelectedQualityBand(event.target.value)}
+          style={{
+            minWidth: 170,
+            border: `1px solid ${SURFACE.border}`,
+            background: SURFACE.panel,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Toda la calidad V2</option>
+          <option value="strong">Calidad fuerte</option>
+          <option value="medium">Calidad media</option>
+          <option value="weak">Calidad debil</option>
+        </select>
+        <select
+          value={selectedMoatState}
+          onChange={(event) => setSelectedMoatState(event.target.value)}
+          style={{
+            minWidth: 180,
+            border: `1px solid ${SURFACE.border}`,
+            background: SURFACE.panel,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Todo el moat manual</option>
+          <option value="manual_evidence">Con evidencia manual</option>
+          <option value="pending_manual">Pendiente manual</option>
+        </select>
+        <select
+          value={selectedMoatConfidence}
+          onChange={(event) => setSelectedMoatConfidence(event.target.value)}
+          style={{
+            minWidth: 170,
+            border: `1px solid ${SURFACE.border}`,
+            background: SURFACE.panel,
+            color: SURFACE.text,
+            borderRadius: 6,
+            padding: "8px 10px",
+          }}
+        >
+          <option value="">Toda la confianza moat</option>
+          <option value="high">Alta</option>
+          <option value="medium">Media</option>
+          <option value="low">Baja</option>
         </select>
         <select
           value={selectedSector}

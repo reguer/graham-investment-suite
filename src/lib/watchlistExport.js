@@ -159,6 +159,9 @@ export function buildWatchlistExportSummary({
   sectorLabel,
   tagLabel,
   statusLabel,
+  qualityLabel,
+  moatLabel,
+  moatConfidenceLabel,
   sortLabel,
   count,
 }) {
@@ -170,6 +173,9 @@ export function buildWatchlistExportSummary({
     sectorLabel ? `Sector: ${sectorLabel}` : null,
     tagLabel ? `Etiqueta: ${tagLabel}` : null,
     statusLabel ? `Estado: ${statusLabel}` : null,
+    qualityLabel ? `Calidad V2: ${qualityLabel}` : null,
+    moatLabel ? `Moat manual: ${moatLabel}` : null,
+    moatConfidenceLabel ? `Confianza moat: ${moatConfidenceLabel}` : null,
     sortLabel ? `Orden: ${sortLabel}` : null,
   ]
     .filter(Boolean)

@@ -90,9 +90,8 @@ export function summarizeMoatManual(record = {}) {
   const normalized = normalizeMoatManualRecord(record);
   const filledFields = MOAT_MANUAL_FIELDS.filter((field) => hasEntryContent(normalized[field.id]));
   const moatLabel = normalized.moatRating.value || null;
-  const confidence = normalized.moatRating.confidence || filledFields.find((field) => normalized[field.id].confidence)?.id
-    ? normalized[filledFields.find((field) => normalized[field.id].confidence)?.id || "moatRating"]?.confidence || null
-    : null;
+  const firstConfidenceField = filledFields.find((field) => normalized[field.id].confidence);
+  const confidence = normalized.moatRating.confidence || (firstConfidenceField ? normalized[firstConfidenceField.id].confidence : null);
   const hasData = filledFields.length > 0;
 
   return {
