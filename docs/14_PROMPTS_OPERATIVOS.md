@@ -599,3 +599,15 @@ PLANTILLA DE VALIDACIÓN PARA SALIDAS IA:
   "requiresHumanReview": true
 }
 ```
+
+---
+
+## Prompt Buffett S88 — Extracción estructurada (implementado)
+
+> Implementado en código como constructor puro (sin llamadas a API) en `src/tools/watchlist/buffettPrompts.js` y validado en `tests/buffettPrompts.test.js`. La corrida real es S89 y sigue en dry-run.
+
+- **Constructor:** `buildBuffettExtractionPrompt({ ticker, metrics, filingExcerpts, transcriptChunks })` devuelve `{ system, user, schema }`.
+- **Señales extraídas:** `pricingPower`, `customerConcentration`, `capitalAllocationDiscipline`, `cyclicality`, `moatClues`, `managementRedFlags`, `guidanceTone`, `financialStrength`; cada una con `assessment` (`strong|moderate|weak|unknown`) y `confidence` en `[0,1]`.
+- **Reglas forzadas en el system prompt:** salida exclusivamente JSON; separación `fact` / `inference` / `risk`; abstención `unknown` cuando la fuente no lo dice explícito; cada `fact` cita un `sourceRef` corto; nunca inventar moat, contratos ni calidad directiva.
+- **Validación estructural:** `validateBuffettExtraction(json)` devuelve `{ valid, errors, normalized }` y rechaza assessments no permitidos, `confidence` fuera de rango y `facts` sin `sourceRef`.
+- **Verificador S90:** `checkBuffettContradictions({ extraction, metrics })` (en `src/tools/watchlist/buffettValidator.js`) cruza la narrativa contra métricas duras (`netDebtToEbit`, `shareCountCagr`, `grossMarginTrend5y`, `ownerEarnings`), baja `confidence` y marca `blocksBuffettLabel` cuando la contradicción es alta.
