@@ -48,6 +48,15 @@ describe("watchlist scoring", () => {
     expect(score.buybackDilution.label).toBe("Recompra neta");
     expect(score.intangibleBalance.label).toBe("Dependencia baja");
     expect(score.softwareQuality.label).toBe("Software fuerte");
+    expect(score.grahamScore.value).toBe(score.valuation);
+    expect(score.qualityScore.value).toBe(score.quality);
+    expect(score.moatScore.value).toBeNull();
+    expect(score.moatScore.label).toBe("N/D");
+    expect(score.generalScore.value).toBe(score.total);
+    expect(score.generalScore.label).toBe(score.label);
+    expect(score.generalScore.weightsApproved).toBe(false);
+    expect(score.generalScore.weightStatus).toBe("PENDIENTE-DECISION");
+    expect(score.generalScore.usesLegacyRanking).toBe(true);
   });
 
   it("penalizes expensive companies with weak EPS history even when they have liquidity", () => {

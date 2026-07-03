@@ -120,6 +120,43 @@
 6. **Parte F — Manual moat/evidencias:** S73-S75. Entregable: schema, UI local editable, export público.
 7. **Parte G — Filtros V2:** S76. Entregable: filtros nuevos en dashboard y Pages.
 
+### PENDIENTE-DECISION — Pesos S72
+
+Mientras no exista aprobación explícita de pesos V2:
+
+- `grahamScore.weight = null`
+- `qualityScore.weight = null`
+- `moatScore.weight = null`
+- `generalScore.weightsApproved = false`
+- `generalScore.weightStatus = PENDIENTE-DECISION`
+
+Implementación provisional aprobada para S72:
+
+- `grahamScore` expone el componente actual de valuación Graham como placeholder estructural.
+- `qualityScore` expone el componente actual de calidad y deja resiliencia + subscores automáticos como soporte.
+- `moatScore` permanece en `null / N/D` hasta captura manual con evidencia.
+- `generalScore` replica el `score.total` legado para no alterar el ranking actual ni la lectura visual hasta que los pesos sean aprobados.
+
+### Decision de arquitectura 2026-07-03 — E23 y Buffett
+
+Decisión técnica:
+
+- Buffett **debe compartir la capa de datos normalizada de E23** (`qualityMetrics.js`) para series, cobertura e insumos automáticos.
+- Buffett **debe mantenerse separado** en scoring, owner earnings, DCF, prompts, contradicciones y etiquetas finales.
+
+Justificación:
+
+1. `S79` duplica el inventario ya resuelto por `S67`; `S80` duplica la normalización anual de `S68`; `S83` pisa directamente la lógica de recompras/dilución de `S69`.
+2. Si E23 y Buffett normalizan por separado `fiscalYear`, `source`, `asOf`, gaps, FX, `sharesOutstanding` o márgenes, el riesgo de desincronización es alto y los diagnósticos se vuelven inconsistentes.
+3. Compartir la capa de datos reduce duplicación y concentra los tests críticos en un solo lugar.
+4. Mantener Buffett separado en lógica de negocio evita mezclar `qualityScore` actual con valuación Buffett formal, owner earnings o DCF.
+
+Límite explícito de la decisión:
+
+- Compartir datos **no** implica compartir scores ni etiquetas.
+- Graham sigue siendo un motor independiente.
+- Buffett reutilizará inputs normalizados, pero tendrá sus propios módulos de valuación, narrativa y revisión humana.
+
 ### Datos manuales obligatorios para V2
 
 | Dato | Motivo | Campo sugerido |

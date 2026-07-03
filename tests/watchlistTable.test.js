@@ -23,7 +23,11 @@ const item = {
   validationStatus: "sec_auto_snapshot",
   tags: ["graham-approved"],
   watchReason: "Cumple criterios defensivos.",
-  score: { total: 88, label: "Excelente" },
+  score: {
+    total: 88,
+    label: "Excelente",
+    generalScore: { value: 88, label: "Excelente" },
+  },
 };
 
 describe("watchlist table columns", () => {

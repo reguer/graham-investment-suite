@@ -23,6 +23,11 @@ function colorFor(level) {
   return AC.gray;
 }
 
+function scoreSummary(score) {
+  if (!score) return "N/D";
+  return `${score.generalScore?.value ?? score.total} · ${score.generalScore?.label ?? score.label}`;
+}
+
 const SIGNAL_LABELS = {
   approved: "Aprobadas",
   near: "Cerca",
@@ -330,7 +335,10 @@ export default function Watchlist({ onManualCapture }) {
         if (favoriteDelta) return favoriteDelta;
       }
       if (sortKey === "system") return (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
-      if (sortKey === "score") return (b.score?.total ?? -1) - (a.score?.total ?? -1) || (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
+      if (sortKey === "score") {
+        return (b.score?.generalScore?.value ?? b.score?.total ?? -1) - (a.score?.generalScore?.value ?? a.score?.total ?? -1)
+          || (a.systemStatus?.rank ?? 99) - (b.systemStatus?.rank ?? 99);
+      }
       const av = getTableCell(a, column);
       const bv = getTableCell(b, column);
       return String(av).localeCompare(String(bv), "es", { numeric: true });
@@ -970,7 +978,7 @@ export default function Watchlist({ onManualCapture }) {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: 18 }}>
               {[
                 ["Precio", fmt(selectedCompany.livePrice ?? selectedCompany.lastPrice ?? selectedCompany.price)],
-                ["Score", selectedCompany.score ? `${selectedCompany.score.total} · ${selectedCompany.score.label}` : "N/D"],
+                ["Score", scoreSummary(selectedCompany.score)],
                 ["Calidad", selectedCompany.score?.qualityLayer?.label || "N/D"],
                 ["Max defensivo", fmt(selectedCompany.ratios?.maxDefensivePrice)],
                 ["MoS", pct(selectedCompany.ratios?.marginOfSafety)],
@@ -997,7 +1005,15 @@ export default function Watchlist({ onManualCapture }) {
                 <span>Estado: {selectedCompany.score?.status ?? 0}</span>
                 <span>Datos: {selectedCompany.score?.data ?? 0}</span>
                 <span>EPS sin retroceso: {selectedCompany.score?.epsNeverDeclined === true ? "Si" : selectedCompany.score?.epsNeverDeclined === false ? "No" : "N/D"}</span>
+                <span>Graham V2: {selectedCompany.score?.grahamScore?.value ?? "N/D"}</span>
+                <span>Calidad V2: {selectedCompany.score?.qualityScore?.value ?? "N/D"}</span>
+                <span>Moat V2: {selectedCompany.score?.moatScore?.label || "N/D"}</span>
+                <span>General V2: {selectedCompany.score?.generalScore?.value ?? "N/D"}</span>
+                <span>Pesos V2: {selectedCompany.score?.generalScore?.weightStatus || "N/D"}</span>
               </div>
+              <p style={{ color: SURFACE.muted, lineHeight: 1.5, margin: "10px 0 0", fontSize: 12 }}>
+                {selectedCompany.score?.generalScore?.reason || "Sin nota de score V2."}
+              </p>
             </div>
 
             <div style={{ border: `1px solid ${SURFACE.border}`, background: SURFACE.panelDark, borderRadius: 8, padding: 14, marginBottom: 12 }}>

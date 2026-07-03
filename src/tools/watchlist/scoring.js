@@ -1,5 +1,7 @@
 import { assessBuybackDilution, assessIntangibleBalance, assessSoftwareQuality } from "./qualityMetrics.js";
 
+export const SCORE_V2_WEIGHT_STATUS = "PENDIENTE-DECISION";
+
 function numberOrNull(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
@@ -35,6 +37,53 @@ function qualityLayerLabel(qualityPct, resiliencePct, epsPositive) {
     return { id: "medium_quality", label: "Calidad media" };
   }
   return { id: "low_quality", label: "Calidad baja" };
+}
+
+function buildScoreV2({
+  total,
+  label,
+  valuationPct,
+  resiliencePct,
+  qualityPct,
+  buybackDilution,
+  intangibleBalance,
+  softwareQuality,
+}) {
+  return {
+    grahamScore: {
+      value: valuationPct,
+      label: valuationPct >= 70 ? "Graham fuerte" : valuationPct >= 45 ? "Graham medio" : "Graham debil",
+      weight: null,
+      weightStatus: SCORE_V2_WEIGHT_STATUS,
+      reason: "Placeholder V2: mientras no se aprueben pesos, grahamScore reutiliza el componente actual de valuacion Graham y mantiene el veredicto Graham por separado.",
+    },
+    qualityScore: {
+      value: qualityPct,
+      label: qualityPct >= 70 ? "Calidad fuerte" : qualityPct >= 45 ? "Calidad media" : "Calidad debil",
+      weight: null,
+      weightStatus: SCORE_V2_WEIGHT_STATUS,
+      resilience: resiliencePct,
+      buybackDilution,
+      intangibleBalance,
+      softwareQuality,
+      reason: "Placeholder V2: qualityScore conserva el componente actual de calidad; resiliencia y subscores automaticos quedan expuestos como apoyo sin fijar pesos todavia.",
+    },
+    moatScore: {
+      value: null,
+      label: "N/D",
+      weight: null,
+      weightStatus: SCORE_V2_WEIGHT_STATUS,
+      reason: "Moat score sigue bloqueado hasta la captura manual con evidencia, fuente URL y fecha.",
+    },
+    generalScore: {
+      value: total,
+      label,
+      weightsApproved: false,
+      weightStatus: SCORE_V2_WEIGHT_STATUS,
+      usesLegacyRanking: true,
+      reason: "Mientras los pesos V2 sigan en PENDIENTE-DECISION, generalScore replica el score total legado para no alterar el ranking actual.",
+    },
+  };
 }
 
 export function scoreWatchlistItem(item) {
@@ -119,6 +168,16 @@ export function scoreWatchlistItem(item) {
 
   const total = Math.round(clamp(valuation + resilience + quality + status + data));
   const label = total >= 80 ? "Excelente" : total >= 65 ? "Buena" : total >= 50 ? "Interesante" : total >= 35 ? "Debil" : "Riesgo alto";
+  const scoreV2 = buildScoreV2({
+    total,
+    label,
+    valuationPct,
+    resiliencePct,
+    qualityPct,
+    buybackDilution,
+    intangibleBalance,
+    softwareQuality,
+  });
 
   return {
     total,
@@ -134,5 +193,6 @@ export function scoreWatchlistItem(item) {
     intangibleBalance,
     softwareQuality,
     hasBuybackData: buybackDilution.hasData,
+    ...scoreV2,
   };
 }
