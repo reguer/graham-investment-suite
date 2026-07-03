@@ -292,6 +292,10 @@ function latestAndOldestSeriesEntry(series = []) {
   return { latest: entries[0], oldest: entries[entries.length - 1] };
 }
 
+function latestSeriesEntry(series = []) {
+  return seriesEntries(series)[0] || null;
+}
+
 function seriesCagr(series = []) {
   const bounds = latestAndOldestSeriesEntry(series);
   if (!bounds) return null;
@@ -307,6 +311,22 @@ function pctLabel(value) {
 
 function sectorIdForItem(item = {}) {
   return item.sectorProfileId || detectSector({ sector: item.sector, industry: item.industry, sicCode: item.sicCode });
+}
+
+function isSoftwareCompany(item = {}) {
+  const text = `${item.sector || ""} ${item.industry || ""}`.toLowerCase();
+  return [
+    "software",
+    "saas",
+    "cloud",
+    "application",
+    "infrastructure",
+    "it services",
+    "internet services",
+    "information technology services",
+    "artificial intelligence",
+    "ai",
+  ].some((keyword) => text.includes(keyword));
 }
 
 function latestAnnualRows(rows = []) {
@@ -696,5 +716,88 @@ export function assessIntangibleBalance(item = {}) {
     hasData: true,
     sectorId,
     reason: `P/B tangible ${pbTangible !== null ? pbTangible.toFixed(2) : "N/D"} queda muy por encima de la tolerancia ${sectorTolerance.label} del perfil ${sectorId}.`,
+  };
+}
+
+export function assessSoftwareQuality(item = {}) {
+  if (!isSoftwareCompany(item)) {
+    return {
+      id: "softwareQuality",
+      label: "N/D",
+      scoreImpact: null,
+      hasData: false,
+      reason: "La empresa no cae en el universo conservador de software/IA para este subscore.",
+    };
+  }
+
+  const revenueSeries = item.qualitySeries?.revenue || [];
+  const grossMarginSeries = item.qualitySeries?.grossMargin || [];
+  const operatingMarginSeries = item.qualitySeries?.operatingMargin || [];
+  const fcfSeries = item.qualitySeries?.fcf || [];
+  const revenueLatest = latestSeriesEntry(revenueSeries);
+  const grossMarginLatest = latestSeriesEntry(grossMarginSeries);
+  const operatingMarginLatest = latestSeriesEntry(operatingMarginSeries);
+  const fcfLatest = latestSeriesEntry(fcfSeries);
+  const revenueCagr = seriesCagr(revenueSeries);
+  const buybackDilution = item.buybackDilution || assessBuybackDilution(item);
+  const fcfMargin = revenueLatest && fcfLatest && revenueLatest.fiscalYear === fcfLatest.fiscalYear
+    ? ratioOrNull(fcfLatest.value, revenueLatest.value)
+    : null;
+  const ruleOf40 = revenueCagr !== null && fcfMargin !== null ? revenueCagr + fcfMargin : null;
+
+  if (!grossMarginLatest && !operatingMarginLatest && !fcfMargin && revenueCagr === null) {
+    return {
+      id: "softwareQuality",
+      label: "N/D",
+      scoreImpact: null,
+      hasData: false,
+      reason: "Faltan series anuales de revenue, margenes o FCF para evaluar software quality.",
+    };
+  }
+
+  let positives = 0;
+  if (grossMarginLatest?.value !== null && grossMarginLatest.value >= 0.6) positives += 1;
+  if (operatingMarginLatest?.value !== null && operatingMarginLatest.value >= 0.15) positives += 1;
+  if (fcfMargin !== null && fcfMargin >= 0.15) positives += 1;
+  if (revenueCagr !== null && revenueCagr >= 0.1) positives += 1;
+  if (ruleOf40 !== null && ruleOf40 >= 0.4) positives += 1;
+
+  const dilutionPenalty = buybackDilution.label === "Dilucion / SBC" ? 1 : 0;
+  const weakSoftware = (fcfMargin !== null && fcfMargin < 0) || (operatingMarginLatest?.value !== null && operatingMarginLatest.value < 0);
+
+  let label = "Software aceptable";
+  let scoreImpact = 0;
+  if (positives >= 4 && dilutionPenalty === 0 && !weakSoftware) {
+    label = "Software fuerte";
+    scoreImpact = 2;
+  } else if (weakSoftware || dilutionPenalty === 1 || positives <= 1) {
+    label = "Software debil";
+    scoreImpact = -2;
+  } else if (positives >= 2) {
+    label = "Software aceptable";
+    scoreImpact = 1;
+  } else {
+    label = "Software mixto";
+    scoreImpact = -1;
+  }
+
+  const parts = [
+    grossMarginLatest?.value !== null ? `gross margin ${pctLabel(grossMarginLatest.value)}` : null,
+    operatingMarginLatest?.value !== null ? `operating margin ${pctLabel(operatingMarginLatest.value)}` : null,
+    fcfMargin !== null ? `FCF margin ${pctLabel(fcfMargin)}` : null,
+    revenueCagr !== null ? `revenue CAGR ${pctLabel(revenueCagr)}` : null,
+    ruleOf40 !== null ? `rule of 40 ${pctLabel(ruleOf40)}` : null,
+    buybackDilution.hasData ? `dilucion ${buybackDilution.label.toLowerCase()}` : null,
+  ].filter(Boolean);
+
+  return {
+    id: "softwareQuality",
+    label,
+    scoreImpact,
+    hasData: true,
+    revenueCagr,
+    fcfMargin,
+    ruleOf40,
+    reason: `${parts.join(", ")}. Este subscore no relaja deuda, liquidez ni FCF como senales duras.`,
   };
 }

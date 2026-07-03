@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assessBuybackDilution, assessIntangibleBalance, buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
+import { assessBuybackDilution, assessIntangibleBalance, assessSoftwareQuality, buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
 
 describe("quality metrics annual series", () => {
   it("builds normalized Yahoo annual series with FX, share scale and real gaps", () => {
@@ -256,5 +256,51 @@ describe("quality metrics annual series", () => {
     expect(result.label).toBe("N/D");
     expect(result.scoreImpact).toBeNull();
     expect(result.hasData).toBe(false);
+  });
+
+  it("scores software quality from data without relaxing liquidity or solvency", () => {
+    const strong = assessSoftwareQuality({
+      sector: "Technology",
+      industry: "Software - Infrastructure",
+      qualitySeries: {
+        revenue: [
+          { fiscalYear: 2025, value: 132 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+        grossMargin: [{ fiscalYear: 2025, value: 0.72 }],
+        operatingMargin: [{ fiscalYear: 2025, value: 0.18 }],
+        fcf: [{ fiscalYear: 2025, value: 28 }],
+        sharesOutstanding: [
+          { fiscalYear: 2025, value: 96 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+      },
+    });
+    const weak = assessSoftwareQuality({
+      sector: "Technology",
+      industry: "Software - Application",
+      qualitySeries: {
+        revenue: [
+          { fiscalYear: 2025, value: 120 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+        grossMargin: [{ fiscalYear: 2025, value: 0.54 }],
+        operatingMargin: [{ fiscalYear: 2025, value: -0.05 }],
+        fcf: [{ fiscalYear: 2025, value: -12 }],
+        sharesOutstanding: [
+          { fiscalYear: 2025, value: 118 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+      },
+    });
+
+    expect(strong.label).toBe("Software fuerte");
+    expect(strong.scoreImpact).toBe(2);
+    expect(strong.reason).toContain("rule of 40");
+    expect(strong.reason).toContain("no relaja deuda");
+
+    expect(weak.label).toBe("Software debil");
+    expect(weak.scoreImpact).toBe(-2);
+    expect(weak.reason).toContain("Dilucion / SBC".toLowerCase());
   });
 });

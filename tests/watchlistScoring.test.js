@@ -22,11 +22,20 @@ describe("watchlist scoring", () => {
         { year: 2023, eps: 3 },
       ],
       qualitySeries: {
+        revenue: [
+          { fiscalYear: 2025, value: 132 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+        grossMargin: [{ fiscalYear: 2025, value: 0.72 }],
+        operatingMargin: [{ fiscalYear: 2025, value: 0.18 }],
+        fcf: [{ fiscalYear: 2025, value: 28 }],
         sharesOutstanding: [
           { fiscalYear: 2025, value: 90 },
           { fiscalYear: 2023, value: 100 },
         ],
       },
+      sector: "Technology",
+      industry: "Software - Infrastructure",
       tangibleBvps: 8,
       roe: 0.25,
       roa: 0.12,
@@ -38,6 +47,7 @@ describe("watchlist scoring", () => {
     expect(score.hasBuybackData).toBe(true);
     expect(score.buybackDilution.label).toBe("Recompra neta");
     expect(score.intangibleBalance.label).toBe("Dependencia baja");
+    expect(score.softwareQuality.label).toBe("Software fuerte");
   });
 
   it("penalizes expensive companies with weak EPS history even when they have liquidity", () => {
