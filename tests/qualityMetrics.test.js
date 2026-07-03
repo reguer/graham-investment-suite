@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
+import { assessBuybackDilution, buildSecQualitySeries, buildYahooQualitySeries } from "../src/tools/watchlist/qualityMetrics.js";
 
 describe("quality metrics annual series", () => {
   it("builds normalized Yahoo annual series with FX, share scale and real gaps", () => {
@@ -175,5 +175,44 @@ describe("quality metrics annual series", () => {
     expect(series.revenue.some((entry) => entry.fiscalYear === 2024)).toBe(false);
     expect(series.netMargin[0].source).toBe("sec_companyfacts");
     expect(series.fcf[0].sourceField).toBe("NetCashProvidedByUsedInOperatingActivities+NetCashProvidedByUsedInInvestingActivities");
+  });
+
+  it("distinguishes net buybacks from dilution with a legible reason", () => {
+    const buyback = assessBuybackDilution({
+      qualitySeries: {
+        sharesOutstanding: [
+          { fiscalYear: 2025, value: 90 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+      },
+    });
+    const dilution = assessBuybackDilution({
+      qualitySeries: {
+        sharesOutstanding: [
+          { fiscalYear: 2025, value: 115 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+      },
+    });
+
+    expect(buyback.label).toBe("Recompra neta");
+    expect(buyback.scoreImpact).toBe(2);
+    expect(buyback.reason).toContain("recompra neta real");
+
+    expect(dilution.label).toBe("Dilucion / SBC");
+    expect(dilution.scoreImpact).toBe(-2);
+    expect(dilution.reason).toContain("compatible con SBC");
+  });
+
+  it("returns N/D when there is not enough annual share-count history", () => {
+    const result = assessBuybackDilution({
+      qualitySeries: {
+        sharesOutstanding: [{ fiscalYear: 2025, value: 100 }],
+      },
+    });
+
+    expect(result.label).toBe("N/D");
+    expect(result.scoreImpact).toBeNull();
+    expect(result.hasData).toBe(false);
   });
 });

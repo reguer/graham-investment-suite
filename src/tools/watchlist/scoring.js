@@ -1,3 +1,5 @@
+import { assessBuybackDilution } from "./qualityMetrics.js";
+
 function numberOrNull(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
@@ -37,6 +39,7 @@ function qualityLayerLabel(qualityPct, resiliencePct, epsPositive) {
 
 export function scoreWatchlistItem(item) {
   const ratios = item.ratios || item;
+  const buybackDilution = assessBuybackDilution(item);
   const epsHistory = item.epsHistory || [];
   const epsConsistent = epsNeverDeclined(epsHistory);
   const pe = ratios.pe ?? item.pe;
@@ -125,6 +128,7 @@ export function scoreWatchlistItem(item) {
     data: Math.round(pctFromPoints(data, 10)),
     epsNeverDeclined: epsConsistent,
     qualityLayer,
-    hasBuybackData: false,
+    buybackDilution,
+    hasBuybackData: buybackDilution.hasData,
   };
 }

@@ -20,6 +20,12 @@ describe("watchlist scoring", () => {
         { year: 2024, eps: 4 },
         { year: 2023, eps: 3 },
       ],
+      qualitySeries: {
+        sharesOutstanding: [
+          { fiscalYear: 2025, value: 90 },
+          { fiscalYear: 2023, value: 100 },
+        ],
+      },
       roe: 0.25,
       roa: 0.12,
     });
@@ -27,7 +33,8 @@ describe("watchlist scoring", () => {
     expect(score.total).toBeGreaterThanOrEqual(85);
     expect(score.epsNeverDeclined).toBe(true);
     expect(score.qualityLayer.label).toBe("Alta calidad");
-    expect(score.hasBuybackData).toBe(false);
+    expect(score.hasBuybackData).toBe(true);
+    expect(score.buybackDilution.label).toBe("Recompra neta");
   });
 
   it("penalizes expensive companies with weak EPS history even when they have liquidity", () => {

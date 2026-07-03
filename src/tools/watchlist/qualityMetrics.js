@@ -270,6 +270,39 @@ function finalizeSeries(series) {
   return Object.fromEntries(Object.entries(series).map(([metricId, rows]) => [metricId, sortSeries(rows)]));
 }
 
+function seriesEntries(series = []) {
+  return sortSeries(
+    (Array.isArray(series) ? series : [])
+      .map((entry) => ({
+        fiscalYear: normalizeFiscalYear(entry?.fiscalYear ?? entry?.year),
+        value: numberOrNull(entry?.value),
+        source: entry?.source || null,
+        asOf: entry?.asOf || null,
+        sourceField: entry?.sourceField || null,
+      }))
+      .filter((entry) => entry.fiscalYear !== null && entry.value !== null),
+  );
+}
+
+function latestAndOldestSeriesEntry(series = []) {
+  const entries = seriesEntries(series);
+  if (entries.length < 2) return null;
+  return { latest: entries[0], oldest: entries[entries.length - 1] };
+}
+
+function seriesCagr(series = []) {
+  const bounds = latestAndOldestSeriesEntry(series);
+  if (!bounds) return null;
+  const spanYears = bounds.latest.fiscalYear - bounds.oldest.fiscalYear;
+  if (spanYears < 1 || bounds.latest.value <= 0 || bounds.oldest.value <= 0) return null;
+  return (bounds.latest.value / bounds.oldest.value) ** (1 / spanYears) - 1;
+}
+
+function pctLabel(value) {
+  if (!Number.isFinite(value)) return "N/D";
+  return `${(value * 100).toFixed(1)}%`;
+}
+
 function latestAnnualRows(rows = []) {
   const byYear = new Map();
   for (const row of rows) {
@@ -488,4 +521,72 @@ export function buildSecQualitySeries(companyFacts, { source = "sec_companyfacts
   }
 
   return finalizeSeries(series);
+}
+
+export function assessBuybackDilution(item = {}) {
+  const sharesSeries = item.qualitySeries?.sharesOutstanding || item.sharesOutstandingSeries || [];
+  const cagr = seriesCagr(sharesSeries);
+  if (cagr === null) {
+    return {
+      id: "buybackDilution",
+      label: "N/D",
+      scoreImpact: null,
+      hasData: false,
+      shareCountCagr: null,
+      reason: "Sin serie anual suficiente de acciones en circulacion para evaluar recompras o dilucion.",
+    };
+  }
+
+  if (cagr <= -0.02) {
+    return {
+      id: "buybackDilution",
+      label: "Recompra neta",
+      scoreImpact: 2,
+      hasData: true,
+      shareCountCagr: cagr,
+      reason: `Las acciones en circulacion bajaron ${pctLabel(Math.abs(cagr))} CAGR; hay evidencia de recompra neta real en la serie anual.`,
+    };
+  }
+
+  if (cagr < -0.005) {
+    return {
+      id: "buybackDilution",
+      label: "Ligera recompra",
+      scoreImpact: 1,
+      hasData: true,
+      shareCountCagr: cagr,
+      reason: `Las acciones en circulacion bajaron ${pctLabel(Math.abs(cagr))} CAGR; la recompra existe, pero todavia es moderada.`,
+    };
+  }
+
+  if (cagr < 0.015) {
+    return {
+      id: "buybackDilution",
+      label: "Capital estable",
+      scoreImpact: 0,
+      hasData: true,
+      shareCountCagr: cagr,
+      reason: `Las acciones en circulacion cambiaron ${pctLabel(cagr)} CAGR; no hay señal clara ni de recompra agresiva ni de dilucion relevante.`,
+    };
+  }
+
+  if (cagr >= 0.02) {
+    return {
+      id: "buybackDilution",
+      label: "Dilucion / SBC",
+      scoreImpact: -2,
+      hasData: true,
+      shareCountCagr: cagr,
+      reason: `Las acciones en circulacion crecieron ${pctLabel(cagr)} CAGR; la serie apunta a dilucion neta y es compatible con SBC o emision persistente.`,
+    };
+  }
+
+  return {
+    id: "buybackDilution",
+    label: "Ligera dilucion",
+    scoreImpact: -1,
+    hasData: true,
+    shareCountCagr: cagr,
+    reason: `Las acciones en circulacion crecieron ${pctLabel(cagr)} CAGR; hay dilucion neta, aunque todavia no es extrema.`,
+  };
 }
