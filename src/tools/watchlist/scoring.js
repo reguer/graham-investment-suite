@@ -39,49 +39,64 @@ function qualityLayerLabel(qualityPct, resiliencePct, epsPositive) {
   return { id: "low_quality", label: "Calidad baja" };
 }
 
+function labelForScore(value) {
+  return value >= 80 ? "Excelente" : value >= 65 ? "Buena" : value >= 50 ? "Interesante" : value >= 35 ? "Debil" : "Riesgo alto";
+}
+
 function buildScoreV2({
-  total,
-  label,
   valuationPct,
   resiliencePct,
   qualityPct,
   buybackDilution,
   intangibleBalance,
   softwareQuality,
+  moatSummary,
 }) {
+  // S72: score general separado del Graham puro. Interim 0.55 graham + 0.45
+  // quality mientras no exista moat manual; la ponderacion final que incluya
+  // moatScore queda en PENDIENTE-DECISION.
+  const generalValue = Math.round(clamp(0.55 * valuationPct + 0.45 * qualityPct));
   return {
     grahamScore: {
       value: valuationPct,
       label: valuationPct >= 70 ? "Graham fuerte" : valuationPct >= 45 ? "Graham medio" : "Graham debil",
-      weight: null,
+      weight: 0.55,
       weightStatus: SCORE_V2_WEIGHT_STATUS,
-      reason: "Placeholder V2: mientras no se aprueben pesos, grahamScore reutiliza el componente actual de valuacion Graham y mantiene el veredicto Graham por separado.",
+      reason: "Interim V2: grahamScore reutiliza el componente de valuacion Graham y pesa 0.55 en el score general. El Graham puro (clasificacion y gate de seguridad) se mantiene aparte.",
     },
     qualityScore: {
       value: qualityPct,
       label: qualityPct >= 70 ? "Calidad fuerte" : qualityPct >= 45 ? "Calidad media" : "Calidad debil",
-      weight: null,
+      weight: 0.45,
       weightStatus: SCORE_V2_WEIGHT_STATUS,
       resilience: resiliencePct,
       buybackDilution,
       intangibleBalance,
       softwareQuality,
-      reason: "Placeholder V2: qualityScore conserva el componente actual de calidad; resiliencia y subscores automaticos quedan expuestos como apoyo sin fijar pesos todavia.",
+      reason: "Interim V2: qualityScore pesa 0.45 en el score general; resiliencia y subscores automaticos quedan como apoyo.",
     },
     moatScore: {
       value: null,
-      label: "N/D",
+      label: moatSummary?.hasData ? moatSummary.label : "N/D (captura pendiente)",
       weight: null,
       weightStatus: SCORE_V2_WEIGHT_STATUS,
-      reason: "Moat score sigue bloqueado hasta la captura manual con evidencia, fuente URL y fecha.",
+      captured: moatSummary?.hasData === true,
+      confidence: moatSummary?.confidence ?? null,
+      filledFieldCount: moatSummary?.filledFieldCount ?? 0,
+      status: moatSummary?.status ?? "pending_manual",
+      reason: moatSummary?.hasData
+        ? "Moat capturado manualmente; falta definir la rubrica numerica para ponderarlo en el score general (PENDIENTE-DECISION)."
+        : "Moat sin captura manual todavia. Registralo en la seccion Calidad y Moat con evidencia, fuente URL y fecha.",
     },
     generalScore: {
-      value: total,
-      label,
+      value: generalValue,
+      label: labelForScore(generalValue),
       weightsApproved: false,
       weightStatus: SCORE_V2_WEIGHT_STATUS,
-      usesLegacyRanking: true,
-      reason: "Mientras los pesos V2 sigan en PENDIENTE-DECISION, generalScore replica el score total legado para no alterar el ranking actual.",
+      interimWeights: { graham: 0.55, quality: 0.45, moat: null },
+      moatWeightPending: true,
+      usesLegacyRanking: false,
+      reason: "Score general separado del Graham puro: interim 0.55 grahamScore + 0.45 qualityScore. La ponderacion final que incluya moatScore queda en PENDIENTE-DECISION hasta capturar moat manual.",
     },
   };
 }
@@ -167,16 +182,16 @@ export function scoreWatchlistItem(item) {
   const qualityLayer = qualityLayerLabel(qualityPct, resiliencePct, item.epsAllPositive === true || ratios.epsAllPositive === true);
 
   const total = Math.round(clamp(valuation + resilience + quality + status + data));
-  const label = total >= 80 ? "Excelente" : total >= 65 ? "Buena" : total >= 50 ? "Interesante" : total >= 35 ? "Debil" : "Riesgo alto";
+  const label = labelForScore(total);
+  const moatSummary = item.moatSummary || null;
   const scoreV2 = buildScoreV2({
-    total,
-    label,
     valuationPct,
     resiliencePct,
     qualityPct,
     buybackDilution,
     intangibleBalance,
     softwareQuality,
+    moatSummary,
   });
 
   return {

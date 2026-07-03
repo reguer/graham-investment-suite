@@ -51,12 +51,13 @@ describe("watchlist scoring", () => {
     expect(score.grahamScore.value).toBe(score.valuation);
     expect(score.qualityScore.value).toBe(score.quality);
     expect(score.moatScore.value).toBeNull();
-    expect(score.moatScore.label).toBe("N/D");
-    expect(score.generalScore.value).toBe(score.total);
-    expect(score.generalScore.label).toBe(score.label);
+    expect(score.moatScore.label).toBe("N/D (captura pendiente)");
+    expect(score.moatScore.captured).toBe(false);
+    expect(score.generalScore.value).toBe(Math.round(0.55 * score.valuation + 0.45 * score.quality));
     expect(score.generalScore.weightsApproved).toBe(false);
     expect(score.generalScore.weightStatus).toBe("PENDIENTE-DECISION");
-    expect(score.generalScore.usesLegacyRanking).toBe(true);
+    expect(score.generalScore.usesLegacyRanking).toBe(false);
+    expect(score.generalScore.moatWeightPending).toBe(true);
   });
 
   it("penalizes expensive companies with weak EPS history even when they have liquidity", () => {
@@ -84,5 +85,25 @@ describe("watchlist scoring", () => {
     expect(score.total).toBeLessThan(60);
     expect(score.epsNeverDeclined).toBe(false);
     expect(score.qualityLayer.label).toBe("Calidad baja");
+  });
+
+  it("surfaces captured manual moat in moatScore while keeping the numeric weight pending", () => {
+    const score = scoreWatchlistItem({
+      ticker: "MOAT",
+      analysisStatus: "analyzed",
+      alertLevel: "approved",
+      pe: 14,
+      pb: 1.4,
+      pePb: 19.6,
+      roe: 0.2,
+      roa: 0.1,
+      moatSummary: { hasData: true, label: "Wide moat", confidence: "high", filledFieldCount: 3, status: "manual_evidence" },
+    });
+
+    expect(score.moatScore.captured).toBe(true);
+    expect(score.moatScore.label).toBe("Wide moat");
+    expect(score.moatScore.confidence).toBe("high");
+    expect(score.moatScore.value).toBeNull();
+    expect(score.generalScore.moatWeightPending).toBe(true);
   });
 });
