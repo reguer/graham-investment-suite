@@ -1,0 +1,220 @@
+import { detectSector } from "../graham-analyzer/detectSector.js";
+
+const DEFAULT_DECISION_STATUS = "PENDIENTE-DECISION";
+
+function numberOrNull(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function ratioOrNull(numerator, denominator) {
+  if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator === 0) return null;
+  return numerator / denominator;
+}
+
+function latestSeriesEntry(series = []) {
+  const entries = Array.isArray(series) ? [...series] : [];
+  return entries
+    .filter((entry) => Number.isFinite(Number(entry?.value)) && Number.isFinite(Number(entry?.fiscalYear)))
+    .sort((left, right) => Number(right.fiscalYear) - Number(left.fiscalYear) || String(right.asOf || "").localeCompare(String(left.asOf || "")))[0] || null;
+}
+
+function seriesBounds(series = []) {
+  const entries = Array.isArray(series) ? [...series] : [];
+  const normalized = entries
+    .filter((entry) => Number.isFinite(Number(entry?.value)) && Number.isFinite(Number(entry?.fiscalYear)))
+    .sort((left, right) => Number(right.fiscalYear) - Number(left.fiscalYear) || String(right.asOf || "").localeCompare(String(left.asOf || "")));
+  if (normalized.length < 2) return null;
+  return { latest: normalized[0], oldest: normalized[normalized.length - 1] };
+}
+
+function seriesCagr(series = []) {
+  const bounds = seriesBounds(series);
+  if (!bounds) return null;
+  const spanYears = Number(bounds.latest.fiscalYear) - Number(bounds.oldest.fiscalYear);
+  const latestValue = numberOrNull(bounds.latest.value);
+  const oldestValue = numberOrNull(bounds.oldest.value);
+  if (spanYears < 1 || latestValue === null || oldestValue === null || latestValue <= 0 || oldestValue <= 0) return null;
+  return (latestValue / oldestValue) ** (1 / spanYears) - 1;
+}
+
+function confidenceRank(value) {
+  if (value === "high") return 3;
+  if (value === "medium") return 2;
+  if (value === "low") return 1;
+  return 0;
+}
+
+function lowerConfidence(left, right) {
+  return confidenceRank(left) <= confidenceRank(right) ? left : right;
+}
+
+function sectorIdForItem(item = {}) {
+  return item.sectorProfileId || detectSector({ sector: item.sector, industry: item.industry, sicCode: item.sicCode });
+}
+
+function capitalIntensityTag(item = {}, capexToRevenue = null) {
+  const sectorId = sectorIdForItem(item);
+  const text = `${item.sector || ""} ${item.industry || ""}`.toLowerCase();
+  if (["utilities", "industrial", "energy", "basic_materials"].includes(sectorId)) return "asset_heavy";
+  if (text.includes("semiconductor")) return "asset_heavy";
+  if (text.includes("software") || text.includes("saas") || text.includes("cloud") || text.includes("internet services")) return "asset_light";
+  if (capexToRevenue !== null && capexToRevenue >= 0.12) return "asset_heavy";
+  if (capexToRevenue !== null && capexToRevenue <= 0.05) return "asset_light";
+  return "balanced";
+}
+
+function latestValue(series = []) {
+  return numberOrNull(latestSeriesEntry(series)?.value);
+}
+
+function latestMeta(series = []) {
+  const entry = latestSeriesEntry(series);
+  return {
+    asOf: entry?.asOf || null,
+    source: entry?.source || null,
+    sourceForm: entry?.sourceForm || null,
+  };
+}
+
+function deriveMarketCap(item = {}, latestShares = null) {
+  const explicit = numberOrNull(item.marketCap);
+  if (explicit !== null) return { value: explicit, methodId: "market_cap.explicit", reason: "Se uso marketCap disponible en el snapshot/export publico." };
+  const price = numberOrNull(item.livePrice ?? item.lastPrice ?? item.price);
+  const shares = numberOrNull(latestShares);
+  const adrRatio = numberOrNull(item.adrRatio) ?? 1;
+  if (price === null || shares === null || adrRatio <= 0) {
+    return { value: null, methodId: "market_cap.unavailable", reason: "Falta marketCap o una combinacion valida de precio + acciones para derivar owner earnings yield." };
+  }
+  return {
+    value: (price * shares) / adrRatio,
+    methodId: "market_cap.derived_from_price_and_shares",
+    reason: adrRatio !== 1
+      ? "Se derivo marketCap desde precio y acciones ajustando ADR ratio."
+      : "Se derivo marketCap desde precio y acciones.",
+  };
+}
+
+function buybackDirectionFromCagr(cagr) {
+  if (cagr === null) return "N/D";
+  if (cagr <= -0.02) return "recompra_neta";
+  if (cagr < -0.005) return "ligera_recompra";
+  if (cagr < 0.015) return "capital_estable";
+  if (cagr >= 0.02) return "dilucion_sbc";
+  return "ligera_dilucion";
+}
+
+export function estimateMaintenanceCapex(item = {}, options = {}) {
+  const series = item.buffettSeries || item;
+  const sectorId = sectorIdForItem(item);
+  const revenueLatest = latestValue(series.revenue);
+  const reportedCapex = numberOrNull(item.reportedCapex ?? latestValue(series.capex));
+  const depreciationAmortization = numberOrNull(item.depreciationAmortization ?? latestValue(series.depreciationAmortization));
+  const disclosedMaintenanceCapex = numberOrNull(item.disclosedMaintenanceCapex?.value ?? item.disclosedMaintenanceCapex);
+  const capexToRevenue = ratioOrNull(reportedCapex, revenueLatest);
+  const intensityTag = capitalIntensityTag(item, capexToRevenue);
+  const decisionStatus = options.decisionStatus || DEFAULT_DECISION_STATUS;
+
+  if (disclosedMaintenanceCapex !== null) {
+    return {
+      maintenanceCapex: disclosedMaintenanceCapex,
+      reportedCapex,
+      depreciationAmortization,
+      growthCapexProxy: reportedCapex !== null ? Math.max(reportedCapex - disclosedMaintenanceCapex, 0) : null,
+      capitalIntensityTag: intensityTag,
+      sectorId,
+      sectorAdjustment: "disclosed",
+      methodId: "maintenance_capex.disclosed",
+      confidence: "high",
+      decisionStatus,
+      reason: "La empresa reporta maintenance capex explicito; se usa directamente sin heuristica.",
+    };
+  }
+
+  if (reportedCapex === null) {
+    return {
+      maintenanceCapex: null,
+      reportedCapex: null,
+      depreciationAmortization,
+      growthCapexProxy: null,
+      capitalIntensityTag: intensityTag,
+      sectorId,
+      sectorAdjustment: "missing_capex",
+      methodId: "maintenance_capex.insufficient_data",
+      confidence: "low",
+      decisionStatus,
+      reason: "Falta reported capex; sin ese dato no se calcula maintenance capex ni owner earnings.",
+    };
+  }
+
+  if (depreciationAmortization === null) {
+    return {
+      maintenanceCapex: null,
+      reportedCapex,
+      depreciationAmortization: null,
+      growthCapexProxy: null,
+      capitalIntensityTag: intensityTag,
+      sectorId,
+      sectorAdjustment: "missing_depreciation_amortization",
+      methodId: "maintenance_capex.insufficient_data",
+      confidence: "low",
+      decisionStatus,
+      reason: "Falta depreciation & amortization; la heuristica Buffett queda en null hasta definir un fallback adicional.",
+    };
+  }
+
+  const baseMaintenanceCapex = Math.min(reportedCapex, depreciationAmortization);
+  const heavyFloor = depreciationAmortization * 0.8;
+  const lightCap = depreciationAmortization * 0.6;
+
+  if (intensityTag === "asset_heavy") {
+    const maintenanceCapex = Math.max(baseMaintenanceCapex, heavyFloor);
+    return {
+      maintenanceCapex,
+      reportedCapex,
+      depreciationAmortization,
+      growthCapexProxy: Math.max(reportedCapex - maintenanceCapex, 0),
+      capitalIntensityTag: intensityTag,
+      sectorId,
+      sectorAdjustment: "heavy_floor_0.8_da",
+      methodId: "maintenance_capex.asset_heavy_floor",
+      confidence: "medium",
+      decisionStatus,
+      reason: "Perfil asset-heavy: se usa el mayor entre min(capex, D&A) y 0.8 x D&A. El factor 0.8 queda en PENDIENTE-DECISION.",
+    };
+  }
+
+  if (intensityTag === "asset_light") {
+    const maintenanceCapex = Math.min(reportedCapex, lightCap);
+    return {
+      maintenanceCapex,
+      reportedCapex,
+      depreciationAmortization,
+      growthCapexProxy: Math.max(reportedCapex - maintenanceCapex, 0),
+      capitalIntensityTag: intensityTag,
+      sectorId,
+      sectorAdjustment: "asset_light_cap_0.6_da",
+      methodId: "maintenance_capex.asset_light_cap",
+      confidence: "low",
+      decisionStatus,
+      reason: "Perfil asset-light: se usa el menor entre reported capex y 0.6 x D&A. El factor 0.6 queda en PENDIENTE-DECISION.",
+    };
+  }
+
+  return {
+    maintenanceCapex: baseMaintenanceCapex,
+    reportedCapex,
+    depreciationAmortization,
+    growthCapexProxy: Math.max(reportedCapex - baseMaintenanceCapex, 0),
+    capitalIntensityTag: intensityTag,
+    sectorId,
+    sectorAdjustment: "base_min_capex_da",
+    methodId: "maintenance_capex.base_min_capex_da",
+    confidence: "medium",
+    decisionStatus,
+    reason: "Sin disclosure directo ni ajuste sectorial extremo, se usa min(reported capex, D&A).",
+  };
+}
+
+export { DEFAULT_DECISION_STATUS };

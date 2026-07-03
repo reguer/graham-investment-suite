@@ -137,6 +137,21 @@ Implementación provisional aprobada para S72:
 - `moatScore` permanece en `null / N/D` hasta captura manual con evidencia.
 - `generalScore` replica el `score.total` legado para no alterar el ranking actual ni la lectura visual hasta que los pesos sean aprobados.
 
+### PENDIENTE-DECISION — Defaults S82 maintenance capex
+
+Implementacion tecnica habilitada para S82, pero estos defaults quedan pendientes de aprobacion explicita:
+
+- `asset_heavy_floor = 0.8 * depreciationAmortization`
+- `asset_light_cap = 0.6 * depreciationAmortization`
+- `balanced_base = min(reportedCapex, depreciationAmortization)`
+- si falta `depreciationAmortization`, por ahora `maintenanceCapex = null` y `ownerEarnings = null`
+
+Notas del alcance:
+
+- La heuristica ya queda etiquetada por `methodId`, `confidence`, `capitalIntensityTag` y `reason`.
+- No se infiere un fallback adicional mientras estos multiplicadores sigan en `PENDIENTE-DECISION`.
+- `S81` y `S83` pueden consumir esta salida numerica sin convertirla todavia en score ni DCF.
+
 ### Decision de arquitectura 2026-07-03 — E23 y Buffett
 
 Decisión técnica:
