@@ -596,6 +596,27 @@ export function buildBuffettDcf(item = {}, options = {}) {
   };
 }
 
+// Ensambla el bloque Buffett numerico de un item reutilizando una sola corrida
+// de owner earnings. Consumido por el pipeline (S89) y el export (S92).
+export function buildBuffettBlock(item = {}, options = {}) {
+  const ownerEarningsResult = buildOwnerEarnings(item, options);
+  const capitalAllocationResult = buildCapitalAllocationMetrics(item, { ...options, ownerEarningsResult });
+  const qualityScore = buildBuffettQualityScore(item, { ...options, ownerEarningsResult, capitalAllocationResult });
+  const dcf = buildBuffettDcf(item, { ...options, ownerEarningsResult });
+  return {
+    ownerEarnings: ownerEarningsResult,
+    capitalAllocation: capitalAllocationResult,
+    qualityScore,
+    dcf,
+    hardMetrics: {
+      ownerEarnings: ownerEarningsResult.ownerEarnings,
+      netDebtToEbit: capitalAllocationResult.netDebtToOperatingIncome,
+      shareCountCagr: capitalAllocationResult.shareCountCagr,
+      grossMarginTrend5y: null,
+    },
+  };
+}
+
 export {
   DEFAULT_DECISION_STATUS,
   DEFAULT_REQUIRED_RETURN,
