@@ -219,6 +219,7 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
               source: `${snapshot.source || "Yahoo"} + ${secResult.snapshot.source}`,
             };
             const { profile, classification } = classifyWithSector(item, merged);
+            const watchReason = actionableReason(merged, profile);
             const publicRecord = {
               ...item,
               ...financialFields(merged),
@@ -229,7 +230,9 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
               sectorProfileId: profile.id,
               classificationId: classification.id,
               classificationLabel: classification.label,
-              watchReason: actionableReason(merged, profile),
+              watchReason,
+              notes: watchReason,
+              autoAnalysisNote: undefined,
             };
             byTicker.set(ticker, publicRecord);
             const dbResult = persist({ ticker, snapshot: merged, classification, publicRecord });
@@ -238,6 +241,7 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
             continue;
           }
           const { profile, classification } = classifyWithSector(item, snapshot);
+          const watchReason = actionableReason(snapshot, profile);
           const publicRecord = {
             ...item,
             ...financialFields(snapshot),
@@ -248,7 +252,9 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
             sectorProfileId: profile.id,
             classificationId: classification.id,
             classificationLabel: classification.label,
-            watchReason: actionableReason(snapshot, profile),
+            watchReason,
+            notes: watchReason,
+            autoAnalysisNote: undefined,
           };
           byTicker.set(ticker, publicRecord);
           const dbResult = persist({ ticker, snapshot, classification, publicRecord });
@@ -272,6 +278,7 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
       }
 
       const { profile, classification } = classifyWithSector(item, built.snapshot);
+      const watchReason = actionableReason(built.snapshot, profile);
       const normalized = normalizeCompany({
         ...item,
         ticker,
@@ -288,7 +295,9 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
         sectorProfileId: profile.id,
         classificationId: classification.id,
         classificationLabel: classification.label,
-        watchReason: actionableReason(built.snapshot, profile),
+        watchReason,
+        notes: watchReason,
+        autoAnalysisNote: undefined,
       };
       byTicker.set(ticker, publicRecord);
       const dbResult = persist({ ticker, snapshot: built.snapshot, classification, publicRecord });
@@ -299,6 +308,7 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
       const secResult = await trySecFallback(ticker, item.yahooSymbol || item.yahoo_symbol);
       if (secResult) {
         const { profile, classification } = classifyWithSector(item, secResult.snapshot);
+        const watchReason = actionableReason(secResult.snapshot, profile);
         const publicRecord = {
           ...item,
           ...financialFields(secResult.snapshot),
@@ -310,7 +320,9 @@ export async function ingestYahooSupplemental({ argv = process.argv, fetcher = f
           classificationId: classification.id,
           classificationLabel: classification.label,
           secSnapshot: secResult.snapshot.sec,
-          watchReason: actionableReason(secResult.snapshot, profile),
+          watchReason,
+          notes: watchReason,
+          autoAnalysisNote: undefined,
         };
         byTicker.set(ticker, publicRecord);
         results.push({ ticker, status: "sec_fallback", classification: classification.id });

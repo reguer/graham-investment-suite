@@ -30,6 +30,38 @@ export function buildUniverseSyncPayload(items = tickerUniverse) {
   return { companies: [...byTicker.values()], duplicateTickers };
 }
 
+function isBlank(value) {
+  return value === undefined || value === null || String(value).trim() === "";
+}
+
+function isPlaceholderText(value, fallbacks = []) {
+  if (isBlank(value)) return true;
+  const normalized = String(value).trim().toUpperCase();
+  return fallbacks
+    .filter((item) => !isBlank(item))
+    .some((item) => normalized === String(item).trim().toUpperCase());
+}
+
+function preferUniverseText(universeValue, existingValue, fallbacks = []) {
+  if (isPlaceholderText(existingValue, fallbacks) && !isBlank(universeValue)) return universeValue;
+  return existingValue || universeValue;
+}
+
+function preferUniverseYahooSymbol(company, existing) {
+  const universeSymbol = company?.yahooSymbol;
+  const existingSymbol = existing?.yahooSymbol;
+  if (isBlank(universeSymbol)) return existingSymbol || universeSymbol;
+  if (isBlank(existingSymbol)) return universeSymbol;
+
+  const placeholderCandidates = [
+    existing?.ticker,
+    existing?.rawTicker,
+    existing?.companyName,
+  ];
+  if (isPlaceholderText(existingSymbol, placeholderCandidates)) return universeSymbol;
+  return existingSymbol;
+}
+
 function shouldPreserveSnapshot(existing) {
   return (
     existing?.analysisStatus === "analyzed" ||
@@ -56,10 +88,14 @@ export function mergeUniverseWithPublic(companies, existingCompanies = loadPubli
       byTicker.set(company.ticker, {
         ...company,
         ...existing,
-        yahooSymbol: existing.yahooSymbol || company.yahooSymbol,
-        market: existing.market || company.market,
+        yahooSymbol: preferUniverseYahooSymbol(company, existing),
+        rawTicker: preferUniverseText(company.rawTicker, existing.rawTicker, [existing.ticker]),
+        companyName: preferUniverseText(company.companyName, existing.companyName, [existing.ticker, existing.rawTicker]),
+        market: preferUniverseText(company.market, existing.market, ["US"]),
+        exchange: preferUniverseText(company.exchange, existing.exchange),
         sector: sectorFromUniverse || existing.sector || company.sector,
         industry: industryFromUniverse || existing.industry || company.industry,
+        quoteType: preferUniverseText(company.quoteType, existing.quoteType),
       });
     } else {
       byTicker.set(company.ticker, { ...(existing || {}), ...company });
