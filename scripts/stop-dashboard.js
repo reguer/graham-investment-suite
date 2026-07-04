@@ -24,7 +24,10 @@ export function stopDashboardProcess(pid, platform = process.platform, exec = ch
     });
     if (result.status !== 0) {
       const output = `${result.stdout || ""}\n${result.stderr || ""}`.trim();
-      if (!/not found|no instance|cannot find|no se encontr[oó]/i.test(output)) {
+      // taskkill emite en la codepage OEM; al leerlo como utf8 la "o" acentuada
+      // de "no se encontro" se corrompe. Se matchea "no se encontr" sin exigir la
+      // vocal final para tolerar cualquier codificacion de Windows.
+      if (!/not found|no instance|cannot find|no se encontr/i.test(output)) {
         throw new Error(output || `taskkill fallo con codigo ${result.status}`);
       }
     }
