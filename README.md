@@ -145,6 +145,8 @@ Los datos se capturan manualmente desde Yahoo Finance: Balance Sheet, Income Sta
 
 La ingesta automatica complementaria usa `yahoo-finance2` con Node 22 para intentar rescatar empresas que SEC no pudo analizar. Primero intenta `fundamentalsTimeSeries` + FX controlado; si Yahoo entrega estados anuales, EPS historico, precio, P/E, P/B, deuda y liquidez, guarda un snapshot `yahoo_full_fx`. Si la empresa queda descartada por P/E nulo, P/B nulo, liquidez no aplicable o ratios faltantes, se marca como `yahoo_model_rejected` en vez de dejarla pendiente.
 
+`scripts/data-ingestion.js` prueba **todos** los simbolos candidatos de una empresa (el listado `.MX` de BMV/SIC primero, el ticker base USA despues) antes de marcarla incompleta — no se detiene en el primer candidato que devuelva un snapshot inservible. El modo por defecto (`incomplete`, usado por el boton "Solo precios" del dashboard ademas de "Actualizar todo") tambien reintenta cualquier registro ya `analyzed` cuyo `validationStatus` siga en `yahoo_partial_incomplete`, `yahoo_model_rejected`, `yahoo_fetch_failed` o `currency_rejected`, para que una empresa no quede incompleta para siempre solo porque una corrida anterior fallo.
+
 En la corrida local del 2026-06-09 el universo quedo asi: 306 instrumentos, 290 analizados, 8 referencias de indice/ETF, 3 referencias macro y 5 pendientes por fuente/captura. `npm run universe:refresh` resolvio precios para 287 de 306 instrumentos. Los pendientes no se eliminan: quedan marcados como `DATOS INSUFICIENTES`, `yahoo_partial_incomplete`, `yahoo_fetch_failed` o `source_required` hasta tener una fuente alternativa confiable o captura manual. Indices, ETFs y futuros quedan como referencias y no se muestran como pendientes Graham.
 
 Flujo local recomendado para alimentar datos sin depender de sesiones Codex:
@@ -224,13 +226,15 @@ npm run run:mode -- --mode watch --interval-minutes 15
 
 ## GitHub Pages
 
-La app publica esta disponible en https://reguer.github.io/graham-investment-suite/
+La app publica esta disponible en https://reguer.github.io/graham-investment-suite/ y funciona como espejo del dashboard local.
 
 El mecanismo de deploy local (sin GitHub Actions) esta documentado en `docs/03_DASHBOARD_LOCAL_GITHUB_PAGES.md` y `docs/11_GITHUB_VERSIONADO_PAGES_SIN_WORKFLOWS.md`.
 
 **El deploy nunca debe hacerse por workflows remotos** — siempre desde el equipo local autorizado.
 
-Flujo bilateral recomendado cuando quieras dejar sincronizados local + publico:
+**Publicacion automatica:** los botones "Actualizar todo" y "Solo precios" del dashboard local corren `scripts/publish-pages.js` despues de refrescar datos — comitea `data/public/`, `public/data/` y `reports/weekly/` a `main`, hace push, y despliega el build a `gh-pages`. El mensaje de estado en el dashboard indica si la publicacion fue exitosa o fallo (sin bloquear el refresh local).
+
+Publicacion manual (si el repo tiene otros cambios sin comitear o quieres controlar el momento exacto):
 
 ```bash
 git add .

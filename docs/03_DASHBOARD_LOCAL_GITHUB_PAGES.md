@@ -23,8 +23,8 @@
 | Aspecto | Estado |
 |---------|--------|
 | URL pública | `https://reguer.github.io/graham-investment-suite/` |
-| Estado | Activa (responde) |
-| Mecanismo de deploy | **Verificado: build local + push a `gh-pages`** |
+| Estado | Activa (responde), espejo automático del dashboard local |
+| Mecanismo de deploy | **Verificado: build local + push a `gh-pages`, disparado automáticamente por `scripts/publish-pages.js` desde los botones Actualizar del dashboard** |
 | Rama gh-pages | Remota activa |
 | Workflows activos | Ninguno (`.github/workflows/` vacío) |
 | Base URL en Vite | `/graham-investment-suite/` en build |
@@ -80,21 +80,31 @@ npm run dev:stop
 
 ## 3. Cómo funciona GitHub Pages (verificado)
 
-El deploy real no usa workflows remotos. El flujo verificado es:
+El deploy real no usa workflows remotos.
+
+**Automático (por defecto):** cada vez que el dashboard local corre "Actualizar todo" o "Solo precios" (`/api/local/update-all`, `/api/local/update-prices`, `/api/local/yahoo-supplemental`, y la captura programada diaria), el servidor local ejecuta `node scripts/publish-pages.js` después de refrescar los datos:
+
+1. Si `data/public/`, `public/data/` o `reports/weekly/` cambiaron, los comitea a `main` con un mensaje `chore(data): auto-sync dashboard update ...` y hace push.
+2. Corre `npm run build`.
+3. Corre el mismo flujo de `deploy-pages.js` (worktree temporal de `gh-pages`, copia de `dist/`, commit y push).
+
+El resultado (éxito o error) se muestra en el mensaje de estado del dashboard sin bloquear el refresh de datos si la publicación falla (por ejemplo, sin red).
+
+**Manual (fallback):** si prefieres controlar el momento exacto o el repo tiene cambios ajenos sin comitear:
 
 ```bash
 npm run build
 npm run deploy:pages
 ```
 
-El script:
+El script `deploy-pages.js`:
 1. Verifica que el repo este limpio.
 2. Hace `fetch` de `origin/gh-pages`.
 3. Crea un worktree temporal.
 4. Copia `dist/` al worktree.
 5. Hace commit y push normal a `gh-pages`.
 
-Para mantener sincronia bilateral:
+Para mantener sincronia bilateral manualmente:
 
 ```bash
 git push origin main
@@ -221,12 +231,16 @@ Paso 8: Registrar en logs
 
 ## 9. Cómo actualizar GitHub Pages desde local
 
+**Automático:** usar los botones "Actualizar todo" / "Solo precios" del dashboard (`npm run dev:safe`) — publican solos vía `scripts/publish-pages.js`.
+
+**Manual:**
+
 ```bash
 npm run build
 npm run deploy:pages
 ```
 
-El script `scripts/deploy-pages.js` ya existe y hace validacion de secretos sobre `dist/` antes de publicar.
+El script `scripts/deploy-pages.js` ya existe y hace validacion de secretos sobre `dist/` antes de publicar. `scripts/publish-pages.js` lo reutiliza: primero comitea/pushea los datos pendientes a `main`, luego llama a `deployPages()`.
 
 ---
 
@@ -252,7 +266,7 @@ Invoke-WebRequest -Uri "http://localhost:5173" -UseBasicParsing | Select-Object 
 | Datos | Tiempo real (localStorage) | Snapshot en el momento del build |
 | Análisis guardados | Sí — persistidos en localStorage | No — solo la UI estática |
 | AI Analysis | Sí — si VITE_ANTHROPIC_API_KEY configurado | No — sin clave en prod |
-| Actualización | Inmediata | Requiere nuevo build + deploy |
+| Actualización | Inmediata | Automática al usar Actualizar en el dashboard (build + deploy corren solos); build+deploy manual sigue disponible como fallback |
 | Privacidad | 100% privado | Público — cualquiera puede verlo |
 | Datos sensibles | Permitidos | Prohibidos |
 | Velocidad | Fast (HMR) | Fast (CDN) |
@@ -267,6 +281,7 @@ Invoke-WebRequest -Uri "http://localhost:5173" -UseBasicParsing | Select-Object 
 | Crear `scripts/deploy-pages.js` | Media | ✅ Completado |
 | Añadir validación de secretos pre-deploy | Alta | ✅ Completado |
 | Configurar `AUTO_PUSH_DASHBOARD` por equipo | Media | Propuesto |
+| Auto-publicar a `gh-pages` desde los botones Actualizar del dashboard | Alta | ✅ Completado (`scripts/publish-pages.js`, 2026-07-10) |
 | Dashboard con datos de base local SQLite | Alta | Pendiente — requiere implementar BD |
 | Build automático al cierre diario | Media | Propuesto (ver `docs/09`) |
 | Arranque oculto estable en Windows | Alta | ✅ Completado |

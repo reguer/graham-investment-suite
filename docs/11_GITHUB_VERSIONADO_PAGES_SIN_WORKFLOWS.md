@@ -34,7 +34,9 @@ html_url: https://reguer.github.io/graham-investment-suite/
 
 La publicacion actual se hace con build local, copia de `dist/` a un worktree temporal de `gh-pages`, commit y push a `origin gh-pages`.
 
-Flujo bilateral recomendado cuando el sitio publico debe reflejar exactamente el estado local versionado:
+**Desde 2026-07-10 esto es automatico**: los botones "Actualizar todo" y "Solo precios" del dashboard local corren `scripts/publish-pages.js` despues de refrescar datos, que comitea/pushea `data/public/`, `public/data/` y `reports/weekly/` a `main` y luego ejecuta el mismo flujo de `deploy-pages.js` hacia `gh-pages`. El sitio publico queda como espejo del estado local sin pasos manuales adicionales.
+
+Flujo bilateral manual (si el repo tiene otros cambios pendientes o quieres controlar el momento exacto):
 
 ```powershell
 git push origin main

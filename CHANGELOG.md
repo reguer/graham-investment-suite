@@ -6,6 +6,32 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
 ---
 
+## [Unreleased] — 2026-07-10 Espejo automatico a GitHub Pages y captura de datos completa
+
+### Added
+- `scripts/publish-pages.js` — comitea `data/public/`, `public/data/` y `reports/weekly/` a `main` (si cambiaron), hace push, y despliega `dist/` a `gh-pages` reutilizando `deployPages()` de `scripts/deploy-pages.js`. Pensado para correr desde el dashboard local, no solo desde terminal.
+- `tests/dataIngestion.test.js` — casos nuevos para `selectTargets` (reintenta `analyzed` con `validationStatus` incompleto/rechazado) y `fetchBuiltSnapshot` (fallback entre candidatos `.MX` → ticker base cuando el primero no entrega datos usables).
+
+### Changed
+- `scripts/local-dashboard-api.js` — `/api/local/update-all`, `/api/local/update-prices`, `/api/local/yahoo-supplemental` y la captura programada diaria ahora llaman a `publishAfterRefresh()` tras un refresh exitoso, que corre `scripts/publish-pages.js` en un proceso separado (no bloquea el servidor Vite) y agrega `publishOk` / `publishError` a la respuesta.
+- `scripts/local-dashboard-api.js` — `runPriceRefresh()` (boton "Solo precios") ahora tambien reintenta tickers marcados incompletos (`data-ingestion.js` en modo `incomplete`) ademas de refrescar precios, sin esperar a la corrida completa de "Actualizar todo".
+- `src/tools/watchlist/Watchlist.jsx` — el mensaje de estado tras "Actualizar todo" / "Solo precios" ahora indica si la publicacion a GitHub Pages fue exitosa o fallo.
+- `scripts/data-ingestion.js` — `selectTargets()` en modo `incomplete` ahora tambien selecciona registros `analyzed` cuyo `validationStatus` sigue en `yahoo_partial_incomplete`, `yahoo_model_rejected`, `yahoo_fetch_failed` o `currency_rejected` (antes solo miraba `analysisStatus`, asi que una vez marcado `analyzed` el registro nunca se reintentaba de nuevo, aunque el snapshot fuera incompleto).
+- `scripts/data-ingestion.js` — `fetchBuiltSnapshot()` ahora prueba **todos** los simbolos candidatos (`buildSymbolCandidates`) completos (deep + supplemental) antes de rendirse; antes se detenia en el primer candidato que devolviera un resultado `ok:false` sin lanzar excepcion, sin llegar a probar el ticker base USA.
+- `AGENTS.md`, `README.md`, `docs/03_DASHBOARD_LOCAL_GITHUB_PAGES.md`, `docs/11_GITHUB_VERSIONADO_PAGES_SIN_WORKFLOWS.md` — documentado el flujo de publicacion automatica y el comportamiento corregido de reintento de captura.
+
+### Fixed
+- 12 tickers de gran capitalizacion (AVGO, MDT, WEC, ED, KDP, LNT, OGE, POR, WTRG, PLTR, VRT, BR) quedaban permanentemente marcados `yahoo_partial_incomplete` porque su listado `.MX` (BMV/SIC) no entrega `fundamentalsTimeSeries` y cotiza en MXN — el codigo nunca llegaba a intentar el ticker base USA, que si tenia datos completos. Corregido junto con el fix de `fetchBuiltSnapshot`.
+- 29 tickers marcados incompletos/rechazados (algunos desde 2026-03-31) nunca se reintentaban en corridas posteriores porque `analysisStatus` ya decia `analyzed`. Tras los dos fixes de ingesta, 17 quedaron completamente resueltos (`yahoo_full_fx` / `yahoo_sec_merged`); los 12 restantes (bancos sin current/debt ratio en el modelo de Yahoo, micro-caps/IPOs recientes con cobertura escasa, un ticker europeo en SEK) quedan marcados honestamente por limitacion real de la fuente, no por el bug.
+- GitHub Pages llevaba desde el 30 de junio sin actualizarse aunque el dashboard local seguia refrescando datos — la publicacion dependia de correr `npm run deploy:pages` manualmente y nadie lo hacia en cada actualizacion.
+
+### Tests
+- `npm test` (381 tests, 78 suites)
+- `node scripts/publish-pages.js` (verificado en vivo: commit + push a `main` + build + deploy a `gh-pages`)
+- `node scripts/data-ingestion.js` (verificado en vivo contra Yahoo Finance real para los 29 tickers incompletos)
+
+---
+
 ## [Unreleased] — 2026-06-30 Dashboard oculto en Windows y sincronizacion Pages
 
 ### Added
