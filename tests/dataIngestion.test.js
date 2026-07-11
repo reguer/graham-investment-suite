@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSymbolCandidates, parseArgs } from "../scripts/data-ingestion.js";
+import { buildSymbolCandidates, fetchBuiltSnapshot, parseArgs, selectTargets } from "../scripts/data-ingestion.js";
 import { buildYahooDeepSnapshot, buildYahooSupplementalSnapshot } from "../src/tools/watchlist/yahooFundamentals.js";
 
 const yahooFixture = {
@@ -21,6 +21,59 @@ describe("Yahoo supplemental ingestion", () => {
   it("parses unsupported and ticker modes", () => {
     expect(parseArgs(["node", "script", "--all-unsupported", "--limit", "5"]).limit).toBe(5);
     expect(parseArgs(["node", "script", "--ticker", "mu"]).ticker).toBe("MU");
+  });
+
+  it("retries analyzed records whose validation status still flags incomplete/rejected data", () => {
+    const records = [
+      { ticker: "OK", quoteType: "EQUITY", analysisStatus: "analyzed", validationStatus: "yahoo_full_fx" },
+      { ticker: "GAP", quoteType: "EQUITY", analysisStatus: "analyzed", validationStatus: "yahoo_partial_incomplete" },
+      { ticker: "REJ", quoteType: "EQUITY", analysisStatus: "analyzed", validationStatus: "yahoo_model_rejected" },
+      { ticker: "NEW", quoteType: "EQUITY", analysisStatus: "analysis_pending", validationStatus: "" },
+      { ticker: "IDX", quoteType: "INDEX", analysisStatus: "analysis_unsupported", validationStatus: "unsupported_sec_analysis" },
+    ];
+
+    const targets = selectTargets(records, { mode: "incomplete", limit: Infinity }).map((item) => item.ticker);
+
+    expect(targets).toEqual(["GAP", "REJ", "NEW"]);
+  });
+
+  it("falls back to the lighter quoteSummary snapshot when fundamentalsTimeSeries returns no statements", async () => {
+    const deepFetcher = async () => ({ symbol: "AVGO" }); // no annual/quarterly -> buildYahooDeepSnapshot returns ok:false
+    const fetcher = async () => yahooFixture;
+
+    const result = await fetchBuiltSnapshot(["AVGO"], { fetcher, deepFetcher, expectedCurrency: "USD" });
+
+    expect(result.built.ok).toBe(true);
+    expect(result.built.snapshot.pe).toBe(10);
+    expect(result.built.snapshot.source).toBe("Yahoo Finance quoteSummary supplemental");
+  });
+
+  it("keeps the deep-snapshot failure reason when the supplemental fetch has no price either", async () => {
+    const deepFetcher = async () => ({ symbol: "GHOST" });
+    const fetcher = async () => ({});
+
+    const result = await fetchBuiltSnapshot(["GHOST"], { fetcher, deepFetcher, expectedCurrency: "USD" });
+
+    expect(result.built.ok).toBe(false);
+    expect(result.built.reason).toContain("fundamentalsTimeSeries");
+  });
+
+  it("falls through a BMV/SIC .MX candidate with no timeseries and an MXN price to the plain US ticker", async () => {
+    // Reproduces AVGO: the .MX dual listing has no fundamentalsTimeSeries data
+    // and its price is quoted in MXN, so neither source is usable for it — but
+    // the plain US ticker has everything. Both candidates must be tried before
+    // the record is flagged incomplete.
+    const deepFetcher = async (symbol) => ({ symbol }); // no annual/quarterly for either candidate
+    const fetcher = async (symbol) =>
+      symbol === "AVGO.MX"
+        ? { ...yahooFixture, price: { ...yahooFixture.price, currency: "MXN" } }
+        : yahooFixture;
+
+    const result = await fetchBuiltSnapshot(["AVGO.MX", "AVGO"], { fetcher, deepFetcher, expectedCurrency: "USD" });
+
+    expect(result.symbol).toBe("AVGO");
+    expect(result.built.ok).toBe(true);
+    expect(result.built.snapshot.pe).toBe(10);
   });
 
   it("tries the BMV/SIC Yahoo symbol first and then the base ticker", () => {

@@ -79,13 +79,27 @@ function savePublicRecords(records) {
   return sorted;
 }
 
-function selectTargets(records, args) {
+// Records that reached analysisStatus "analyzed" but with a snapshot the
+// ingestion pipeline itself flagged as incomplete/rejected. "incomplete" mode
+// used to only look at analysisStatus, so these were captured once, marked
+// "analyzed", and then silently skipped on every future incomplete-mode run —
+// the dashboard's Actualizar buttons never retried them again.
+export const INCOMPLETE_VALIDATION_STATUSES = new Set([
+  "yahoo_partial_incomplete",
+  "yahoo_model_rejected",
+  "yahoo_fetch_failed",
+  "currency_rejected",
+]);
+
+export function selectTargets(records, args) {
   let targets = records;
   if (args.ticker) targets = targets.filter((item) => item.ticker.toUpperCase() === args.ticker);
   if (!args.ticker && args.mode === "unsupported") {
     targets = targets.filter((item) => item.analysisStatus === "analysis_unsupported");
   } else if (!args.ticker && args.mode === "incomplete") {
-    targets = targets.filter((item) => item.analysisStatus !== "analyzed");
+    targets = targets.filter(
+      (item) => item.analysisStatus !== "analyzed" || INCOMPLETE_VALIDATION_STATUSES.has(item.validationStatus),
+    );
   }
   // mode === "all": no status filter — re-procesa también las "analyzed".
   return targets
@@ -100,27 +114,43 @@ export function buildSymbolCandidates(item, ticker) {
   ].filter(Boolean))];
 }
 
-async function fetchBuiltSnapshot(symbols, { fetcher, deepFetcher, expectedCurrency }) {
+export async function fetchBuiltSnapshot(symbols, { fetcher, deepFetcher, expectedCurrency }) {
   let lastError = null;
+  let bestPartial = null;
+
   for (const symbol of symbols) {
+    let deepBuilt = null;
     try {
-      try {
-        return {
-          symbol,
-          built: buildYahooDeepSnapshot(await deepFetcher(symbol, { expectedCurrency })),
-        };
-      } catch (deepError) {
-        lastError = deepError;
-        const raw = await fetcher(symbol);
-        return {
-          symbol,
-          built: buildYahooSupplementalSnapshot(raw, { symbol, expectedCurrency }),
-        };
-      }
-    } catch (error) {
-      lastError = error;
+      deepBuilt = buildYahooDeepSnapshot(await deepFetcher(symbol, { expectedCurrency }));
+    } catch (deepError) {
+      lastError = deepError;
+    }
+    if (deepBuilt?.ok) return { symbol, built: deepBuilt };
+
+    // Deep snapshot missing/incomplete (fundamentalsTimeSeries often returns
+    // nothing even for well-covered large caps) — fall back to the lighter
+    // quoteSummary modules before giving up on this symbol candidate.
+    let supplementalBuilt = null;
+    try {
+      const raw = await fetcher(symbol);
+      supplementalBuilt = buildYahooSupplementalSnapshot(raw, { symbol, expectedCurrency });
+    } catch (supplementalError) {
+      lastError = supplementalError;
+    }
+    if (supplementalBuilt?.ok) return { symbol, built: supplementalBuilt };
+
+    // Neither source produced a complete snapshot for THIS symbol (e.g. a
+    // BMV/SIC ".MX" dual listing with no fundamentalsTimeSeries data and a
+    // price quoted in MXN instead of the expected USD) — remember the most
+    // informative attempt and keep trying the remaining candidate symbols
+    // (typically the plain US ticker) instead of stopping here.
+    const candidate = supplementalBuilt?.snapshot?.price ? supplementalBuilt : deepBuilt || supplementalBuilt;
+    if (candidate && (!bestPartial || (candidate.snapshot?.price && !bestPartial.built.snapshot?.price))) {
+      bestPartial = { symbol, built: candidate };
     }
   }
+
+  if (bestPartial) return bestPartial;
   throw lastError || new Error("No se pudo consultar Yahoo Finance.");
 }
 

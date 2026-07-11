@@ -109,12 +109,15 @@ export async function runCompanyCapture(options = {}) {
 export async function runPriceRefresh(options = {}) {
   const prices = await runLocalScript("scripts/refresh-universe.js", [], options);
   if (!prices.ok) return enrichRunResult(prices);
+  // Best-effort: retry tickers still flagged incomplete/rejected so gaps don't
+  // sit untouched between the (expensive) full "Actualizar todo" runs.
+  const incompleteRetry = await runLocalScript("scripts/data-ingestion.js", [], options);
   const report = await runLocalScript("scripts/weekly-screen.js", [], options);
   return enrichRunResult({
     ok: report.ok,
     code: report.code,
-    stdout: `${prices.stdout}\n${report.stdout}`,
-    stderr: `${prices.stderr}\n${report.stderr}`,
+    stdout: `${prices.stdout}\n${incompleteRetry.stdout}\n${report.stdout}`,
+    stderr: `${prices.stderr}\n${incompleteRetry.stderr}\n${report.stderr}`,
   });
 }
 
