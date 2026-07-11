@@ -83,6 +83,17 @@ function enrichRunResult(result) {
   };
 }
 
+async function publishAfterRefresh(result, options) {
+  if (!result.ok) return result;
+  const publish = await runLocalScript("scripts/publish-pages.js", [], options);
+  return {
+    ...result,
+    publishOk: publish.ok,
+    publishStdout: publish.stdout,
+    publishError: publish.ok ? "" : (publish.stderr || publish.error || "Publicacion a GitHub Pages fallida.").trim(),
+  };
+}
+
 export async function runCompanyCapture(options = {}) {
   const analysis = await runLocalScript("scripts/analyze-watchlist.js", ["--all"], options);
   if (!analysis.ok) return enrichRunResult(analysis);
@@ -161,7 +172,7 @@ export function createLocalDashboardApiPlugin() {
     }
     captureInProgress = true;
     const startedAt = new Date().toISOString();
-    const result = await runCompanyCapture();
+    const result = await publishAfterRefresh(await runCompanyCapture());
     lastCapture = { ...result, trigger, startedAt, finishedAt: new Date().toISOString() };
     captureInProgress = false;
     return lastCapture;
@@ -234,7 +245,7 @@ export function createLocalDashboardApiPlugin() {
         }
         captureInProgress = true;
         const startedAt = new Date().toISOString();
-        const result = await runPriceRefresh();
+        const result = await publishAfterRefresh(await runPriceRefresh());
         lastCapture = { ...result, trigger: "manual-price-refresh", startedAt, finishedAt: new Date().toISOString() };
         captureInProgress = false;
         sendJson(response, result.ok ? 200 : 500, lastCapture);
@@ -251,7 +262,7 @@ export function createLocalDashboardApiPlugin() {
         }
         captureInProgress = true;
         const startedAt = new Date().toISOString();
-        const result = await runFullRefresh();
+        const result = await publishAfterRefresh(await runFullRefresh());
         lastCapture = { ...result, trigger: "manual-full-refresh", startedAt, finishedAt: new Date().toISOString() };
         captureInProgress = false;
         sendJson(response, result.ok ? 200 : 500, lastCapture);
@@ -268,7 +279,7 @@ export function createLocalDashboardApiPlugin() {
         }
         captureInProgress = true;
         const startedAt = new Date().toISOString();
-        const result = await runYahooSupplemental();
+        const result = await publishAfterRefresh(await runYahooSupplemental());
         lastCapture = { ...result, trigger: "manual-yahoo-supplemental", startedAt, finishedAt: new Date().toISOString() };
         captureInProgress = false;
         sendJson(response, result.ok ? 200 : 500, lastCapture);

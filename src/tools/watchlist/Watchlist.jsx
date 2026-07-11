@@ -329,7 +329,13 @@ export default function Watchlist({ onManualCapture }) {
       const companies = await reloadPublicCompanies();
       setCaptureStatus((current) => ({ ...current, captureInProgress: false, lastCapture: payload }));
       const yahooText = Number.isFinite(payload.partial) && payload.partial > 0 ? ` Parciales Yahoo: ${payload.partial}.` : "";
-      setCaptureMessage(`${doneText}. Registros recargados: ${companies.length}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}.${yahooText} Reporte: ${payload.reportPath || "generado"}`);
+      const publishText =
+        payload.publishOk === false
+          ? ` Publicacion a GitHub Pages fallida: ${payload.publishError || "revisa logs locales"}.`
+          : payload.publishOk === true
+            ? " Publicado en GitHub Pages."
+            : "";
+      setCaptureMessage(`${doneText}. Registros recargados: ${companies.length}. Analizadas: ${payload.analyzed || 0}. No soportadas/fallidas: ${payload.unsupported || 0}.${yahooText} Reporte: ${payload.reportPath || "generado"}.${publishText}`);
     } catch (error) {
       setCaptureStatus((current) => ({ ...current, captureInProgress: false }));
       setCaptureMessage(error.message);
