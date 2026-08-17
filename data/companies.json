@@ -11,7 +11,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -100,7 +100,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -189,7 +189,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -278,7 +278,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -367,7 +367,7 @@
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -513,7 +513,7 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -649,7 +649,7 @@
     "sector": "Technology",
     "industry": "Consumer Electronics",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -795,7 +795,7 @@
     "sector": "Healthcare",
     "industry": "Drug Manufacturers General",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -1309,7 +1309,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -1729,7 +1729,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -2789,7 +2789,7 @@
     "sector": "Financial Services",
     "industry": "Insurance Brokers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -2935,7 +2935,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -3339,7 +3339,7 @@
     "sector": "Financial Services",
     "industry": "Credit Services",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -3448,7 +3448,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -3594,7 +3594,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -3858,7 +3858,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -4273,7 +4273,7 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -4535,7 +4535,7 @@
     "sector": "Technology",
     "industry": "Computer Hardware",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -4681,7 +4681,7 @@
     "sector": "Financial Services",
     "industry": "Insurance Brokers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -4827,7 +4827,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -4973,7 +4973,7 @@
     "sector": "Basic Materials",
     "industry": "Specialty Chemicals",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -5119,7 +5119,7 @@
     "sector": "Technology",
     "industry": "Electronic Components",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -5660,7 +5660,7 @@
     "sector": "Technology",
     "industry": "Semiconductor - Broad Line",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -6063,7 +6063,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Auto Parts",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -6206,7 +6206,7 @@
     "sector": "Financial Services / Banks",
     "industry": "Banks Diversified",
     "source": "Yahoo Finance quoteSummary/key-statistics",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -6352,7 +6352,7 @@
     "sector": "Industrials",
     "industry": "Aerial Firefighting & Emergency Services",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -6467,7 +6467,7 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments & Supplies",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -7276,7 +7276,7 @@
     "sector": "Communication Services",
     "industry": "Internet Content & Information",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -7408,7 +7408,7 @@
     "sector": "Healthcare",
     "industry": "Biotechnology",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -7554,7 +7554,7 @@
     "sector": "Financial Services",
     "industry": "Asset Management",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -7668,7 +7668,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Travel Services",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -8085,7 +8085,7 @@
     "sector": "Healthcare",
     "industry": "Drug Manufacturers General",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -8231,7 +8231,7 @@
     "sector": "Technology",
     "industry": "Information Technology Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -8377,7 +8377,7 @@
     "sector": "Technology",
     "industry": "AI Cloud & HPC Infrastructure",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -8635,7 +8635,7 @@
     "sector": "Financial Services",
     "industry": "Banks Diversified",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -8778,7 +8778,7 @@
     "sector": "Consumer Defensive",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -8924,7 +8924,7 @@
     "sector": "Healthcare",
     "industry": "Medical Distribution",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -9055,7 +9055,7 @@
     "sector": "Consumer Defensive",
     "industry": "Farm Products",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -9201,7 +9201,7 @@
     "sector": "Industrials",
     "industry": "Building Products & Equipment",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -9461,7 +9461,7 @@
     "sector": "Technology",
     "industry": "AI Accelerators & Systems",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -9736,7 +9736,7 @@
     "sector": "Utilities / Nuclear AI Infrastructure",
     "industry": "Utilities Independent Power Producers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -10011,7 +10011,7 @@
     "sector": "Financial Services / Banking",
     "industry": "Banks Regional",
     "source": "Yahoo Finance quoteSummary/key-statistics",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -10145,7 +10145,7 @@
     "sector": "Consumer Defensive",
     "industry": "Household & Personal Products",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -10434,7 +10434,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -10580,7 +10580,7 @@
     "sector": "Consumer Defensive",
     "industry": "Household & Personal Products",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -10726,7 +10726,7 @@
     "sector": "Basic Materials",
     "industry": "Steel",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -11278,7 +11278,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -11424,7 +11424,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -11696,7 +11696,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -11968,7 +11968,7 @@
     "sector": "Financial Services",
     "industry": "Credit Services",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -12111,7 +12111,7 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments & Supplies",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -12257,7 +12257,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas E&P",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -12403,7 +12403,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -12637,7 +12637,7 @@
     "sector": "Consumer Defensive",
     "industry": "Discount Stores",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -12783,7 +12783,7 @@
     "sector": "Consumer Defensive",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -12929,7 +12929,7 @@
     "sector": "Industrials",
     "industry": "Specialty Business Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -13075,7 +13075,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -13221,7 +13221,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -13363,7 +13363,7 @@
     "sector": "Technology",
     "industry": "AI Cloud Infrastructure",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -13478,7 +13478,7 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -13624,7 +13624,7 @@
     "sector": "Industrials",
     "industry": "Railroads",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -14044,7 +14044,7 @@
     "sector": "Technology / IT Services",
     "industry": "",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -14318,7 +14318,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -14464,7 +14464,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas Integrated",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -14610,7 +14610,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -14899,7 +14899,7 @@
     "sector": "Basic Materials",
     "industry": "Specialty Chemicals",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -15176,7 +15176,7 @@
     "sector": "Technology",
     "industry": "Computer Hardware",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -15439,7 +15439,7 @@
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -15728,7 +15728,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -16131,7 +16131,7 @@
     "sector": "Healthcare",
     "industry": "Medical Care Facilities",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -16393,7 +16393,7 @@
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -16539,7 +16539,7 @@
     "sector": "Communication Services",
     "industry": "Electronic Gaming & Multimedia",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -16685,7 +16685,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Internet Retail",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -16831,7 +16831,7 @@
     "sector": "Basic Materials",
     "industry": "Specialty Chemicals",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -17103,7 +17103,7 @@
     "sector": "Industrials",
     "industry": "Consulting Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -17249,7 +17249,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -17395,7 +17395,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -17655,7 +17655,7 @@
     "sector": "Technology",
     "industry": "Solar",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -18516,7 +18516,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -18662,7 +18662,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas E&P",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -19225,7 +19225,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -19371,7 +19371,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -19660,7 +19660,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -19906,7 +19906,7 @@
     "sector": "Technology",
     "industry": "Solar",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -20053,7 +20053,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -20342,7 +20342,7 @@
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -20480,7 +20480,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -21031,7 +21031,7 @@
     "sector": "Consumer Defensive / Packaged Foods",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -21179,7 +21179,7 @@
     "sector": "Technology",
     "industry": "Electronic Components",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -21325,7 +21325,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Auto Manufacturers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -21471,7 +21471,7 @@
     "sector": "Industrials",
     "industry": "Electrical Equipment & Parts",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -21617,7 +21617,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -22525,7 +22525,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -22656,7 +22656,7 @@
     "sector": "Healthcare",
     "industry": "Medical Care Facilities",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -22799,7 +22799,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Home Improvement Retail",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -23071,7 +23071,7 @@
     "sector": "Technology",
     "industry": "HPC & Digital Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -23332,7 +23332,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Lodging",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -23618,7 +23618,7 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -23764,7 +23764,7 @@
     "sector": "Technology",
     "industry": "Computer Hardware",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -24181,7 +24181,7 @@
     "sector": "Industrials / Electrical Equipment",
     "industry": "Electrical Equipment & Parts",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -24329,7 +24329,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -24475,7 +24475,7 @@
     "sector": "Technology",
     "industry": "Information Technology Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -24621,7 +24621,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -24767,7 +24767,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -24903,7 +24903,7 @@
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -25049,7 +25049,7 @@
     "sector": "Solicitados",
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -25140,7 +25140,7 @@
     "sector": "Consumer Defensive / Packaged Foods",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -25289,7 +25289,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -25433,7 +25433,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -25580,7 +25580,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -25726,7 +25726,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Materials",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -25858,7 +25858,7 @@
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -26136,7 +26136,7 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments & Supplies",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -26408,7 +26408,7 @@
     "sector": "Healthcare",
     "industry": "Drug Manufacturers General",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -26554,7 +26554,7 @@
     "sector": "Financial Services",
     "industry": "Banks Diversified",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -26697,7 +26697,7 @@
     "sector": "Consumer Defensive",
     "industry": "Beverages Non-Alcoholic",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -26974,7 +26974,7 @@
     "sector": "Consumer Defensive",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -27120,7 +27120,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -27409,7 +27409,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas Midstream",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -27698,7 +27698,7 @@
     "sector": "Consumer Defensive",
     "industry": "Grocery Stores",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -27844,7 +27844,7 @@
     "sector": "Consumer Defensive",
     "industry": "Household & Personal Products",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -27982,7 +27982,7 @@
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -28128,7 +28128,7 @@
     "sector": "Basic Materials",
     "industry": "Specialty Chemicals",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -28548,7 +28548,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Home Improvement Retail",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -28691,7 +28691,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -28838,7 +28838,7 @@
     "sector": "Consumer Defensive",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -28984,7 +28984,7 @@
     "sector": "Financial Services",
     "industry": "Credit Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -29130,7 +29130,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Lodging",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -29273,7 +29273,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Restaurants",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -29560,7 +29560,7 @@
     "sector": "Healthcare",
     "industry": "Medical Distribution",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -29703,7 +29703,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -29849,7 +29849,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -29980,7 +29980,7 @@
     "sector": "Consumer Defensive",
     "industry": "Confectioners",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -30126,7 +30126,7 @@
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -30673,7 +30673,7 @@
     "sector": "Basic Materials",
     "industry": "Building Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -31105,7 +31105,7 @@
     "sector": "Consumer Defensive",
     "industry": "Tobacco",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -31248,7 +31248,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -31394,7 +31394,7 @@
     "sector": "Basic Materials",
     "industry": "Agricultural Inputs",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -31526,7 +31526,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas Refining & Marketing",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -31672,7 +31672,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -32231,7 +32231,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -32374,7 +32374,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -32663,7 +32663,7 @@
     "sector": "Financial Services",
     "industry": "Asset Management",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -32937,7 +32937,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -33212,7 +33212,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -33348,7 +33348,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -33494,7 +33494,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -33771,7 +33771,7 @@
     "sector": "Communication Services",
     "industry": "Entertainment",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -34318,7 +34318,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -34595,7 +34595,7 @@
     "sector": "Technology",
     "industry": "Computer Hardware",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -34741,7 +34741,7 @@
     "sector": "Financial Services",
     "industry": "Asset Management",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -34872,7 +34872,7 @@
     "sector": "Basic Materials",
     "industry": "Steel",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -35018,7 +35018,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -35295,7 +35295,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -35442,7 +35442,7 @@
     "sector": "Industrials",
     "industry": "Trucking",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -35588,7 +35588,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -35877,7 +35877,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -36024,7 +36024,7 @@
     "sector": "Technology",
     "industry": "Electronic Components",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -36297,7 +36297,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Auto Parts",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -36440,7 +36440,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -36714,7 +36714,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -37278,7 +37278,7 @@
     "sector": "Consumer Defensive",
     "industry": "Beverages Non-Alcoholic",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -37424,7 +37424,7 @@
     "sector": "Healthcare / Pharmaceuticals",
     "industry": "Drug Manufacturers General",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -37572,7 +37572,7 @@
     "sector": "Consumer Defensive",
     "industry": "Household & Personal Products",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -37844,7 +37844,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -38133,7 +38133,7 @@
     "sector": "Consumer Defensive",
     "industry": "Tobacco",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -38276,7 +38276,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -38419,7 +38419,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -38696,7 +38696,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -38842,7 +38842,7 @@
     "sector": "Industrials",
     "industry": "Electrical Equipment & Parts",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -39114,7 +39114,7 @@
     "sector": "Financial Services / Insurance",
     "industry": "Insurance Life",
     "source": "Yahoo Finance quoteSummary/key-statistics",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -39231,7 +39231,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas Refining & Marketing",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -39377,7 +39377,7 @@
     "sector": "Financial Services",
     "industry": "Credit Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -39523,7 +39523,7 @@
     "sector": "Technology / Semiconductors",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -39671,7 +39671,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -39891,7 +39891,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Travel Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -40037,7 +40037,7 @@
     "sector": "Healthcare / Biotechnology",
     "industry": "Biotechnology",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -40185,7 +40185,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -40561,7 +40561,7 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments & Supplies",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -41108,7 +41108,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Restaurants",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -41512,7 +41512,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -41787,7 +41787,7 @@
     "sector": "Technology",
     "industry": "Communication Equipment",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -41923,7 +41923,7 @@
     "sector": "Solicitados",
     "industry": "FUTURE",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -42014,7 +42014,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -42146,7 +42146,7 @@
     "sector": "Consumer Defensive",
     "industry": "Packaged Foods",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -42424,7 +42424,7 @@
     "sector": "Energy",
     "industry": "Oil & Gas Equipment & Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -42570,7 +42570,7 @@
     "sector": "Technology",
     "industry": "Computer Hardware",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -42717,7 +42717,7 @@
     "sector": "Industrials",
     "industry": "Tools & Accessories",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -43003,7 +43003,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "Yahoo Finance quoteSummary supplemental + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -43138,7 +43138,7 @@
     "sector": "Technology",
     "industry": "Software Infrastructure",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -43284,7 +43284,7 @@
     "sector": "Utilities",
     "industry": "Utilities Regulated Electric",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -43430,7 +43430,7 @@
     "sector": "Solicitados",
     "industry": "INDEX",
     "source": "User requested batch + Yahoo Finance Search",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -43521,7 +43521,7 @@
     "sector": "Technology",
     "industry": "Space Connectivity & Launch Infrastructure",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -43636,7 +43636,7 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -43782,7 +43782,7 @@
     "sector": "",
     "industry": "",
     "source": "yahoo-reference",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -44014,7 +44014,7 @@
     "sector": "Healthcare",
     "industry": "Medical Instruments",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -44160,7 +44160,7 @@
     "sector": "Basic Materials",
     "industry": "Steel",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -44306,7 +44306,7 @@
     "sector": "Financial Services",
     "industry": "Asset Management",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -44449,7 +44449,7 @@
     "sector": "Technology",
     "industry": "Data Storage",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -44870,7 +44870,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -45016,7 +45016,7 @@
     "sector": "Financial Services",
     "industry": "Credit Services",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -45147,7 +45147,7 @@
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -45407,7 +45407,7 @@
     "sector": "Consumer Defensive",
     "industry": "Beverages Brewers",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -45642,7 +45642,7 @@
     "sector": "Technology",
     "industry": "Electronic Components",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -45788,7 +45788,7 @@
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -45934,7 +45934,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -47017,7 +47017,7 @@
     "sector": "Financial Services / Insurance",
     "industry": "Insurance Property & Casualty",
     "source": "Yahoo Finance quoteSummary/key-statistics",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -47146,7 +47146,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Auto Manufacturers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -47556,7 +47556,7 @@
     "sector": "Technology",
     "industry": "Semiconductors",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -47702,7 +47702,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -47979,7 +47979,7 @@
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -48268,7 +48268,7 @@
     "sector": "Industrials",
     "industry": "Rental & Leasing Services",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -48414,7 +48414,7 @@
     "sector": "Financial Services / Banking",
     "industry": "Banks Regional",
     "source": "Yahoo Finance quoteSummary/key-statistics",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -48846,7 +48846,7 @@
     "sector": "Industrials",
     "industry": "Consulting Services",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -48989,7 +48989,7 @@
     "sector": "Industrials",
     "industry": "Electrical Equipment & Parts",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -49136,7 +49136,7 @@
     "sector": "Healthcare",
     "industry": "Biotechnology",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -49282,7 +49282,7 @@
     "sector": "Utilities / Power Generation",
     "industry": "Utilities Independent Power Producers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -49573,7 +49573,7 @@
     "sector": "Industrials",
     "industry": "Railroads",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -49719,7 +49719,7 @@
     "sector": "Technology",
     "industry": "Software Application",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -50123,7 +50123,7 @@
     "sector": "Financial Services",
     "industry": "Banks Diversified",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX + SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -50266,7 +50266,7 @@
     "sector": "Industrials",
     "industry": "Waste Management",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -51057,7 +51057,7 @@
     "sector": "Financial Services",
     "industry": "Insurance Brokers",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -51609,7 +51609,7 @@
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -51755,7 +51755,7 @@
     "sector": "Consumer Cyclical",
     "industry": "Restaurants",
     "source": "Yahoo Finance fundamentalsTimeSeries quarterly/TTM + annual + FX",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -51898,7 +51898,7 @@
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
@@ -52044,7 +52044,7 @@
     "sector": "Financial Services",
     "industry": "Banks Regional",
     "source": "Yahoo Finance quoteSummary supplemental",
-    "sourceDate": "2026-08-15",
+    "sourceDate": "2026-08-16",
     "analysisStatus": "analysis_unsupported",
     "validationStatus": "unsupported_sec_analysis",
     "tags": [
@@ -52153,7 +52153,7 @@
     "sector": "Healthcare",
     "industry": "Drug Manufacturers Specialty & Generic",
     "source": "SEC EDGAR companyfacts + Yahoo Chart price",
-    "sourceDate": "2026-08-16",
+    "sourceDate": "2026-08-17",
     "analysisStatus": "analyzed",
     "validationStatus": "sec_auto_snapshot",
     "tags": [
